@@ -1,0 +1,204 @@
+[
+	{
+		"pk": 1,
+		"model": "equipements.equipementfonction",
+		"fields": {
+			"nom": "Salle de Spectacle"
+		}
+	}, {
+		"pk": 5,
+		"model": "equipements.equipement",
+		"fields": {
+			"meta_description": "",
+			"fax": "",
+			"image": "uploads/equipements/salle_spectacle.jpg",
+			"telephone": "01 69 00 13 15",
+			"presentation": "En cours de r\u00e9daction...",
+			"email": "",
+			"fonction": 1
+		}
+	}, {
+		"pk": 1,
+		"model": "localisations.ville",
+		"fields": {
+			"meta_description": "ville d'yerres",
+			"nom": "Yerres",
+			"code_postal": "91150",
+			"description": "Commune d'Yerres",
+			"communaute_agglo": true,
+			"lien": "http://www.yerres.fr/",
+			"slug": "403"
+		}
+	}, {
+		"pk": 2,
+		"model": "localisations.ville",
+		"fields": {
+			"meta_description": "Ville de Boussy-Saint-Antoine dans l'Essone, r\u00e9gion \u00eele de france",
+			"nom": "Boussy-Saint-Antoine",
+			"code_postal": "91800",
+			"description": "<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"/sites/default/files/carte_boussy.jpg\" alt=\"\" height=\"300\" width=\"202\"></p><p>Situ\u00e9 entre Quincy-Sous-S\u00e9nart, en amont, et \u00c9pinay-sous-S\u00e9nart, en aval, Boussy-Saint-Antoine est au centre du Val d'Yerres, sur la rivi\u00e8re l'Yerres (affluent de la Seine).<br><br>\u2022&nbsp;Arrondissement&nbsp;: Evry<br>\u2022&nbsp;Canton&nbsp;: Epinay sous S\u00e9nart<br>\u2022&nbsp;Superficie&nbsp;: 270 hectares<br>\u2022&nbsp;Population&nbsp;: 6 729 habitants ( recensement 2009)<br>\u2022&nbsp;Habitants&nbsp;: Les Buxaciens</p><p><strong>Origine du nom</strong><br>Lieu plant\u00e9 de \u00ab godeux \u00bb (arbrisseaux \u00e9pineux), assise essart\u00e9e gagn\u00e9e par les hommes sur la for\u00eat tut\u00e9laire (S\u00e9nart), est d\u00e9sign\u00e9 dans les textes anciens (XIIIe s) comme Bucciacus ou Butiaco, Bussiacum ou Buciacum / des noms de forme latine d\u00e9cadente n\u00e9s de \u00ab Buxus \u00bb, mais aussi \u00abBuisson\u00bb que l'idiome local faisait prononcer Bouss-\u00ee, : d'o\u00f9 \u00abBussy\u00bb, \u00abBucy\u00bb, \u00abBoucy\u00bb, et enfin \u00abBoussy\u00bb; Boussy-Saint-Pierre au XIVe s, Boussy Saint-Antoine au XVe s.</p><p>&nbsp;</p><p><strong>Le blason</strong><br><br><img src=\"/media/images/Blason_Boussy_Saint_Antoine.png\" alt=\"\" height=\"165\" width=\"150\"></p><p><br>Cr\u00e9\u00e9 en 1960. Inspir\u00e9 des armoiries de deux communaut\u00e9s religieuses, propri\u00e9taires terriens : les armoiries de l\u2019Abbaye de Chaume, en Brie, seigneur de Boussy jusqu'en 1426, pour ses soutiens (2 cl\u00e9s de st-Pierre et 2 fleurs de Lys) et de celles de l'abbaye de St-Antoine de Viennois, seigneur de Boussy de 1426 \u00e0 1778, pour l'Aigle \u00e9ploy\u00e9 (non bic\u00e9phale) et le Tau de Saint-Antoine brochant au c\u0153ur de l'\u00e9cu.<br><br><strong>Historique </strong><br>Un Menhir de gr\u00e8s (h. 1,85 m), M.H. 1911, dress\u00e9 (pierre-fitte) en rive droite de l'Yerres au sud du Vieux-village atteste, semble-t-il, de la pr\u00e9sence de l'homme au n\u00e9olithique. <br>Bien-fonds eccl\u00e9siastique, Boussy est n\u00e9e du d\u00e9membrement du domaine royal de Brunoy apr\u00e8s que le dernier roi m\u00e9rovingien, Child\u00e9ric III, ait \u00e9t\u00e9 d\u00e9tr\u00f4n\u00e9 en 750. Son histoire se d\u00e9gage peu \u00e0 peu des brumes du pass\u00e9 par la connaissance des d\u00e9pendances que quatre grandes communaut\u00e9s ont poss\u00e9d\u00e9 successivement \u00e0 cet endroit de la vall\u00e9e.<br>Dans la premi\u00e8re moiti\u00e9 du XIVe s, celle de Sainte-Genevi\u00e8ve de Paris, par sa maison d'Epinay (pr\u00e8s de S\u00e9nart), tirait des revenus de cette terre noble; puis ce fut celle de Saint-Pierre, \u00e0 chaumes (en Brie) qui, pendant un si\u00e8cle, en fut le seigneur. Celle des Antonins, de la puissante Abbaye hospitali\u00e8re de Saint-Antoine en Viennois (Is\u00e8re), prit la suite, trois si\u00e8cles et demi durant, au profit de sa pr\u00e9ceptorie parisienne. Enfin, en 1778, la terre de Boussy passait dans les possessions de celle de l'ordre hospitalier de Malte qui en sera d\u00e9poss\u00e9d\u00e9e douze ann\u00e9es plus tard par la r\u00e9volution.<br>Au XIXe s, la rusticit\u00e9 champ\u00eatre, la valeur du terroir, la campagne giboyeuse, la beaut\u00e9 du site et le chemin de fer (1849/1850, gare de Brunoy \u00e0 3 km) attirait de grands bourgeois parisiens qui y gard\u00e8rent longtemps des habitudes de week-end dans de belles propri\u00e9t\u00e9s.<br>En 1960, les bulldozers, qui chambard\u00e8rent son paysage pour cr\u00e9er les infrastructures d'une \u00ab ville \u00e0 la campagne \u00bb, effac\u00e8rent quinze si\u00e8cles de ruralit\u00e9. Au vieux village, pr\u00e8s de l'\u00e9glise et de la mairie, l'ancienne ferme briarde (centre agricole de 117 ha. en 1958) est devenue le Centre socioculturel de la commune, en 1996.</p><p>&nbsp;</p><table style=\"background-color: #dedede;\" align=\"center\" border=\"0\" cellpadding=\"20\"><tbody><tr><td><img src=\"/media/images/boussy.jpg\" alt=\"\"></td><td><div class=\"coordville\">5 place des Droits de l'Homme<br><div class=\"coordvilleadr\">91800 Boussy-saint-Antoine<br> T\u00e9l. : 01 69 00 32 27</div> <div class=\"lnkville\"><a href=\"http://www.ville-boussy-saint-antoine.fr/\"></a><a href=\"http://www.ville-boussy.fr/\">http://www.ville-boussy.fr</a></div></div></td></tr></tbody></table>",
+			"communaute_agglo": true,
+			"lien": "http://www.ville-boussy.fr/",
+			"slug": "404/"
+		}
+	}, {
+		"pk": 3,
+		"model": "localisations.ville",
+		"fields": {
+			"meta_description": "Ville de Brunoy dans l'Essone, r\u00e9gion \u00eele de france",
+			"nom": "Brunoy",
+			"code_postal": "91800",
+			"description": "<p style=\"text-align: justify;\"><strong>Brunoy, une ville dans un jardin...</strong><br><br>Les ch\u00e2teaux et jardins princiers appartiennent au pass\u00e9 mais Brunoy demeure une commune r\u00e9sidentielle dans un environnement privil\u00e9gi\u00e9 et convoit\u00e9, en lisi\u00e8re des 3 000 hectares de la for\u00eat de S\u00e9nart et en bordure de l'Yerres.<br>Contrairement \u00e0 de nombreuses autres villes de la banlieue parisienne o\u00f9 le pavillonnaire du d\u00e9but du si\u00e8cle a fait place aux grands ensembles, Brunoy a su conserver une implantation d'origine. La municipalit\u00e9 s'emploi \u00e0 pr\u00e9server les parcs d'autrefois ainsi que les \u00e9l\u00e9ments remarquables de son histoire (Eglise Saint-M\u00e9dard, orgue, villas du XIXe...).<br><br>Encore consid\u00e9r\u00e9 comme un petit village il y a quelques ann\u00e9es,&nbsp; Brunoy compte aujourd'hui 26 324 habitants, r\u00e9partis sur les&nbsp;662 hectares de la commune.<br><br>Jumel\u00e9e avec trois villes Europ\u00e9ennes&nbsp;: Wittlich (Allemagne), Reigate and Banstead (Angleterre) et Espinho (Portugual), Brunoy entretient une tradition d'hospitalit\u00e9.<br>Ces jumelages donnent lieu \u00e0 des \u00e9changes r\u00e9guliers organis\u00e9s par le Comit\u00e9 de jumelage au niveau des \u00e9tablissements scolaires et des associations.<br>La commune a \u00e9galement sign\u00e9 un pacte d'amiti\u00e9 avec la ville du G\u00e9n\u00e9ral San Martin (Argentine) et parraine depuis 1989 le village de Corbi (Roumanie).<br><br>Au fil des ann\u00e9e, Brunoy a su s'adapter aux attentes des ses habitants gr\u00e2ce \u00e0 une activit\u00e9 \u00e9conomique de proximit\u00e9 fleurissante et une offre d'animations croissante.</p><p style=\"text-align: justify;\">De nombreux \u00e9v\u00e9nements, initi\u00e9s par la ville et ses habitants sont ancr\u00e9s dans les habitudes de chacun et profitent \u00e0 la vie de notre cit\u00e9. La Municipalit\u00e9 attache en effet une grande importance \u00e0 la d\u00e9mocratie participative, laquelle s'exprime au travers de Comit\u00e9s consultatifs tels que les Conseils de quartiers, le Conseil municipal des jeunes ou encore le Conseil des seniors. Les grands rendez-vous comme le Carnaval des quartiers, les 10 Bornes de la Saint-M\u00e9dard, la f\u00eate de la ville ou les Journ\u00e9es du patrimoine, le Grand Prix Cycliste du Conseil Municipal et le March\u00e9 de No\u00ebl, rythment l'ann\u00e9e au d\u00e9tour notamment de tous les spectacles, expositions, guinguettes et th\u00e9matiques diverses propos\u00e9s par les diff\u00e9rentes structures municipales (Th\u00e9\u00e2tre de la Vall\u00e9e de l'Yerres, Mus\u00e9e municipal Robert Dubois-Corneau, Maison des arts - le R\u00e9veillon, Relais jeunes, Centre social municipal...).<br><br>Ainsi, Brunoy demeure \u00ab&nbsp;une ville dans un jardin&nbsp;\u00bb et continue de cultiver son art de vivre.</p><table style=\"background-color: #dedede;\" align=\"center\" border=\"0\" cellpadding=\"20\"><tbody><tr><td><img src=\"/media/Blason_Brunoy.png\" alt=\"\" height=\"65\" width=\"85\"></td><td><div class=\"coordville\">place de la Mairie<br><div class=\"coordvilleadr\">91800 Brunoy<br> T\u00e9l. : 01 69 39 89 89</div> <div class=\"lnkville\"><a href=\"http://www.brunoy.fr/\">www.brunoy.fr</a></div></div></td></tr></tbody></table>",
+			"communaute_agglo": true,
+			"lien": "http://www.brunoy.fr/",
+			"slug": "405"
+		}
+	}, {
+		"pk": 4,
+		"model": "localisations.lieu",
+		"fields": {
+			"ville": 1,
+			"longitude": 123.0,
+			"rue": "Marc",
+			"nom_lieu": "CEC - Salle de Spectacle",
+			"latitude": 123.0,
+			"slug": "406"
+		}
+	}, {
+		"pk": 5,
+		"model": "localisations.lieu",
+		"fields": {
+			"ville": 2,
+			"longitude": 2.528459,
+			"rue": "La Ferme - Cours Neuenhaus",
+			"nom_lieu": "Salle G\u00e9rard Philipe",
+			"latitude": 48.689686,
+			"slug": "407"
+		}
+	}, {
+		"pk": 1,
+		"model": "evenements.contact",
+		"fields": {
+			"ville": 2,
+			"fax": "hetrhgf",
+			"nom": "eatery",
+			"telephone": "gtehltrh",
+			"rue": "dhgfdhtg",
+			"email": "rglrytz@free.fr"
+		}
+	}, {
+		"pk": 1,
+		"model": "evenements.saison",
+		"fields": {
+			"nom": "Saison Culturelle 2012-2013",
+			"debut": "2012-09-01T06:00:00Z",
+			"fin": "2013-06-30T21:00:00Z",
+			"slug": "408"
+		}
+	}, {
+		"pk": 2,
+		"model": "evenements.saison",
+		"fields": {
+			"nom": "2\u00e8me Festival de contes",
+			"debut": "2012-09-12T17:00:00Z",
+			"fin": "2012-10-06T21:00:00Z",
+			"slug": "409"
+		}
+	}, {
+		"pk": 1,
+		"model": "evenements.saisonculturelle",
+		"fields": {}
+	}, {
+		"pk": 2,
+		"model": "evenements.festival",
+		"fields": {
+			"saison_culture": 1
+		}
+	}, {
+		"pk": 1,
+		"model": "evenements.typeevenement",
+		"fields": {
+			"nom": "Th\u00e9\u00e2tre"
+		}
+	}, {
+		"pk": 1,
+		"model": "evenements.evenement",
+		"fields": {
+			"meta_description": "et\"'z",
+			"nom": "essai test truc machin",
+			"communal": true,
+			"description": "tery",
+			"communautaire": false,
+			"url": "http://www.yerres-peche.fr/",
+			"type": 1,
+			"image": "uploads/testouessai.jpeg",
+			"debut": "2012-08-01T06:00:00Z",
+			"tarif": "",
+			"contact": 1,
+			"lieu": [5],
+			"cadre_evenement": 1,
+			"fin": "2012-08-17T10:00:00Z",
+			"slug": "essai-test-truc-1"
+		}
+	}, {
+		"pk": 4,
+		"model": "evenements.evenement",
+		"fields": {
+			"meta_description": "zefsz",
+			"nom": "essai test truc",
+			"communal": true,
+			"description": "ghyikguk",
+			"communautaire": false,
+			"url": "http://www.yerres-peche.fr/",
+			"type": 1,
+			"image": "uploads/testouessai.jpeg",
+			"debut": "2012-08-01T02:32:00Z",
+			"tarif": "",
+			"contact": 1,
+			"lieu": [5],
+			"cadre_evenement": 1,
+			"fin": "2012-08-15T06:00:00Z",
+			"slug": "essai-test-truc-2"
+		}
+	}, {
+		"pk": 6,
+		"model": "evenements.evenement",
+		"fields": {
+			"meta_description": "zef",
+			"nom": "essai test truc",
+			"communal": true,
+			"description": "zetgergfs",
+			"communautaire": false,
+			"url": "http://www.yerres-peche.fr/",
+			"type": 1,
+			"image": "uploads/testouessai.jpeg",
+			"debut": "2012-08-01T10:00:00Z",
+			"tarif": "",
+			"contact": 1,
+			"lieu": [5],
+			"cadre_evenement": 1,
+			"fin": "2012-08-31T06:00:00Z",
+			"slug": "essai-test-truc"
+		}
+	}, {
+		"pk": 7,
+		"model": "evenements.evenement",
+		"fields": {
+			"meta_description": "fezf",
+			"nom": "essai test truc",
+			"communal": true,
+			"description": "gsdfger",
+			"communautaire": false,
+			"url": "http://www.yerres-peche.fr/",
+			"type": 1,
+			"image": "uploads/testouessai.jpeg",
+			"debut": "2012-08-08T10:00:00Z",
+			"tarif": "",
+			"contact": 1,
+			"lieu": [5],
+			"cadre_evenement": 1,
+			"fin": "2012-08-31T10:00:00Z",
+			"slug": "essai-test-truc-4"
+		}
+	}
+]
