@@ -1,17 +1,28 @@
 # -*- coding: utf-8 -*-
-from evenements.models import Evenement, Contact, SaisonCulturelle, TypeEvenement, Festival
+from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival
 from django.contrib import admin
 from django.template import defaultfilters
+from django.forms import Textarea
+from django.db import models
+
+        
 
 class EvenementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'Lieu', 'debut', 'fin']
     fieldsets = [
-        ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image', 'url', 'contact']}),
-        ('Saison Culturelle', {'fields': ['cadre_evenement', 'communal', 'communautaire']}),
+        ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'tarif', 'image', 'url']}),
+        ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur']}),
         ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
     ]
     search_fields = ['nom']
     
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
+        
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.nom)
         if obj.slug == "":
@@ -23,7 +34,7 @@ class EvenementAdmin(admin.ModelAdmin):
         obj.save()
 
     
-class ContactAdmin(admin.ModelAdmin):
+class OrganisateurAdmin(admin.ModelAdmin):
     list_display = ['nom', 'email', 'ville']
     fieldsets = [
         (None, {'fields': ['nom' ]}),
@@ -70,7 +81,7 @@ class SaisonCulturelleAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(Evenement, EvenementAdmin)
-admin.site.register(Contact, ContactAdmin)
+admin.site.register(Organisateur, OrganisateurAdmin)
 admin.site.register(SaisonCulturelle, SaisonCulturelleAdmin)
 admin.site.register(TypeEvenement)
 admin.site.register(Festival, FestivalAdmin)

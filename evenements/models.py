@@ -3,7 +3,7 @@ from django.db import models
 from filebrowser.fields import FileBrowseField
 from localisations.models import Ville, Lieu
 
-class Contact(models.Model):
+class Organisateur(models.Model):
     nom = models.CharField(max_length=255)
     email = models.EmailField(max_length=254, blank=True)
     telephone = models.CharField(max_length=25)
@@ -45,15 +45,13 @@ class Evenement(models.Model):
     description = models.TextField()
     debut = models.DateTimeField("Date de début")
     fin = models.DateTimeField("date de fin")
-    contact = models.ForeignKey(Contact)
+    organisateur = models.ManyToManyField(Organisateur)
     image = FileBrowseField("Image", max_length=200, directory="evenements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     url = models.URLField("Url (falcultatif)")
     cadre_evenement = models.ForeignKey(Saison)
-    communal = models.BooleanField()
-    communautaire = models.BooleanField()
     type = models.ForeignKey(TypeEvenement)
     lieu = models.ManyToManyField(Lieu)
-    tarif = models.CharField(max_length=255)
+    tarif = models.TextField()
     slug = models.SlugField(max_length=255, unique=True)
     
     def Lieu(self):

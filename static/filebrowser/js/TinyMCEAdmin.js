@@ -28,7 +28,7 @@ tinyMCE.init({
     // Init
     mode: 'textareas',
     theme: 'advanced',
-    skin: 'grappelli',
+    skin: 'default',
     
     // General
     //accessibility_warnings: false,
@@ -36,8 +36,8 @@ tinyMCE.init({
     dialog_type: 'window',
     editor_deselector: 'mceNoEditor',
     keep_styles: false,
-    language: 'en',
-    object_resizing: false,
+    language: 'fr',
+    object_resizing: true,
     media_strict: true,
     
     // Callbackss
@@ -65,14 +65,20 @@ tinyMCE.init({
     // content_css : "css/example.css",
     
     // Plugins
-    plugins: 'advimage,advlink,fullscreen,paste,media,searchreplace,grappelli,grappelli_contextmenu,template',
+    plugins: 'advimage,advlink,fullscreen,paste,media,searchreplace,template',
     
     // Theme Advanced
     theme_advanced_toolbar_location: 'top',
     theme_advanced_toolbar_align: 'left',
     theme_advanced_statusbar_location: 'bottom',
-    theme_advanced_buttons1: 'formatselect,styleselect,|,bold,italic,underline,|,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,|,image,|,fullscreen,|,grappelli_adv',
-    theme_advanced_buttons2: 'search,|,pasteword,template,media,charmap,|,code,|,table,cleanup,grappelli_documentstructure',
+    theme_advanced_buttons1: 'formatselect,styleselect,fontsizeselect,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,anchor,|,image,|,fullscreen',
+   
+    // Ligne avec les templates actif
+    //theme_advanced_buttons2: 'search,|,pasteword,template,media,charmap,|,code,|,table,cleanup',
+    
+    // Ligne avec les templates inactif
+    theme_advanced_buttons2: 'search,|,pasteword,charmap,|,code,|,table,cleanup,|,sub,sup,|,hr,newdocument',
+    
     theme_advanced_buttons3: '',
     theme_advanced_path: false,
     theme_advanced_blockformats: 'p,h2,h3,h4,pre',
