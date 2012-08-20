@@ -12,7 +12,6 @@ class LieuAdmin(admin.ModelAdmin):
     ]
     list_filter = ['ville__nom']
     search_fields = ['nom_lieu']
-    prepopulated_fields = {"slug": ("nom_lieu",)}
     
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.nom_lieu)
@@ -32,7 +31,13 @@ class VilleAdmin(admin.ModelAdmin):
     ]
     list_filter = ['communaute_agglo']
     search_fields = ['nom']
-    prepopulated_fields = {"slug": ("nom",)}
+    
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
 
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.nom)

@@ -65,7 +65,7 @@ tinyMCE.init({
     // content_css : "css/example.css",
     
     // Plugins
-    plugins: 'advimage,advlink,fullscreen,paste,media,searchreplace,grappelli,grappelli_contextmenu,template',
+    plugins: 'advimage,fullscreen,paste,media,searchreplace,grappelli,grappelli_contextmenu,template',
     
     // Theme Advanced
     theme_advanced_toolbar_location: 'top',
@@ -108,7 +108,7 @@ tinyMCE.init({
     ],
     
     // Adv
-    advlink_styles: 'Internal Link=internal;External Link=external',
+    //advlink_styles: 'Internal Link=internal;External Link=external',
     advimage_update_dimensions_onchange: true,
     
     // Grappelli

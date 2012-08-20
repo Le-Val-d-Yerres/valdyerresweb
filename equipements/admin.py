@@ -11,6 +11,13 @@ class EquipementAdmin(admin.ModelAdmin):
     ]
     list_filter = ['fonction__nom', 'ville__nom']
     search_fields = ['nom_lieu']
+    
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
 
 class EquipementFonctionAdmin(admin.ModelAdmin):
     search_fields = ['nom']

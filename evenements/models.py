@@ -2,12 +2,13 @@
 from django.db import models
 from filebrowser.fields import FileBrowseField
 from localisations.models import Ville, Lieu
+from django.db.models.fields.related import ManyToManyField
 
 class Organisateur(models.Model):
     nom = models.CharField(max_length=255)
-    email = models.EmailField(max_length=254, blank=True)
+    email = models.EmailField("Mail (facultatif)", max_length=254, blank=True)
     telephone = models.CharField(max_length=25)
-    fax = models.CharField(max_length=25, blank=True)
+    fax = models.CharField("Fax (facultatif)", max_length=25, blank=True)
     rue = models.CharField(max_length=255)
     ville = models.ForeignKey(Ville)
     
@@ -18,6 +19,7 @@ class Saison(models.Model):
     nom = models.CharField(max_length=255)
     debut = models.DateTimeField("Date de début")
     fin = models.DateTimeField("date de fin")
+    description = models.TextField()
     slug = models.SlugField(max_length=255, unique=True)
     
     def __unicode__(self):
@@ -44,19 +46,72 @@ class Evenement(models.Model):
     meta_description = models.CharField(max_length=200)
     description = models.TextField()
     debut = models.DateTimeField("Date de début")
-    fin = models.DateTimeField("date de fin")
+    fin = models.DateTimeField("date de fin (facultatif)")
     organisateur = models.ManyToManyField(Organisateur)
-    image = FileBrowseField("Image", max_length=200, directory="evenements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
-    url = models.URLField("Url (falcultatif)")
+    image = FileBrowseField("Image (facultatif)", max_length=200, directory="evenements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
+    url = models.URLField("Site de l'Organisateur (falcultatif)", blank=True)
     cadre_evenement = models.ForeignKey(Saison)
     type = models.ForeignKey(TypeEvenement)
     lieu = models.ManyToManyField(Lieu)
-    tarif = models.TextField()
+    publish = models.BooleanField("Publié")
+    haut_page = models.BooleanField("Haut de page")
     slug = models.SlugField(max_length=255, unique=True)
     
     def Lieu(self):
         return "\n;\n".join([s.nom_lieu for s in self.lieu.all()])
-
+    
+    def Organisateurs(self):
+        return "\n;\n".join([s.nom for s in self.organisateur.all()])
+        
     def __unicode__(self):
         return self.nom
+    
+class Prix (models.Model):
+    gratuit = models.BooleanField()
+    nom = models.CharField(max_length=255)
+    prix = models.FloatField("Prix (facultatif)", blank=True)
+    
+    def __unicode__(self):
+        return self.nom+" - "+str(self.prix)+u"€"
+    
+    class Meta:
+        verbose_name_plural = "Prix"
+    
+class Tarification(models.Model):
+    evenement = ManyToManyField(Evenement)
+    prix = ManyToManyField(Prix)
+    
+    def Evenenents(self):
+        return "\n;\n".join([s.nom for s in self.evenement.all()])
+    
+    def Prix(self):
+        i = 1
+        for s in self.prix.all():
+            if s.gratuit:
+                if i == 1:
+                    resultat = s.nom+" - Gratuit"
+                    i=i+1
+                else:
+                    resultat = resultat+" ; "+s.nom+" - Gratuit"
+            else:
+                if i == 1:
+                    resultat = s.nom+" - "+str(s.prix)+u"€"
+                    i=i+1
+                else:
+                    resultat = resultat+" ; "+s.nom+" - "+str(s.prix)+u"€"
+        return resultat
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     

@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival
+from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, Tarification
 from django.contrib import admin
 from django.template import defaultfilters
-from django.forms import Textarea
-from django.db import models
-
-        
 
 class EvenementAdmin(admin.ModelAdmin):
-    list_display = ['nom', 'Lieu', 'debut', 'fin']
+    list_display = ['nom', 'Organisateurs', 'Lieu', 'debut', 'publish']
     fieldsets = [
-        ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'tarif', 'image', 'url']}),
-        ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur']}),
+        ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
+        ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url']}),
         ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
+        ('Options de publication', {'fields': ['publish', 'haut_page']}),
     ]
     search_fields = ['nom']
+    list_filter = ['publish']
+    filter_horizontal = ("lieu", "organisateur",)
+
     
     class Media:
         js = [
@@ -46,11 +46,18 @@ class OrganisateurAdmin(admin.ModelAdmin):
 class FestivalAdmin(admin.ModelAdmin):
     list_display = ['nom', 'saison_culture', 'debut', 'fin']
     fieldsets = [
-        (None, {'fields': ['nom', 'saison_culture']}),
+        (None, {'fields': ['nom', 'description', 'saison_culture']}),
         ('Date', {'fields': ['debut', 'fin']}),
     ]
     list_filter = ['saison_culture__nom']
     search_fields = ['nom']
+    
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
     
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.nom)
@@ -65,10 +72,17 @@ class FestivalAdmin(admin.ModelAdmin):
 class SaisonCulturelleAdmin(admin.ModelAdmin):
     list_display = ['nom', 'debut', 'fin']
     fieldsets = [
-        (None, {'fields': ['nom']}),
+        (None, {'fields': ['nom', 'description']}),
         ('Date', {'fields': ['debut', 'fin']}),
     ]
     search_fields = ['nom']
+    
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
     
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.nom)
@@ -80,8 +94,27 @@ class SaisonCulturelleAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
 
+class PrixAdmin(admin.ModelAdmin):
+    list_display = ['nom', 'prix', 'gratuit']
+    fieldsets = [
+        (None, {'fields': ['nom']}),
+        ('Prix', {'fields': ['gratuit', 'prix']}),
+    ]
+    search_fields = ['nom']
+    list_filter = ['gratuit']
+    
+class TarificationAdmin(admin.ModelAdmin):
+    list_display = ['Evenenents', 'Prix']
+    fieldsets = [
+        ('Evenement', {'fields': ['evenement']}),
+        ('Prix', {'fields': ['prix']}),
+    ]
+    filter_horizontal = ("evenement", "prix")
+
 admin.site.register(Evenement, EvenementAdmin)
 admin.site.register(Organisateur, OrganisateurAdmin)
 admin.site.register(SaisonCulturelle, SaisonCulturelleAdmin)
 admin.site.register(TypeEvenement)
 admin.site.register(Festival, FestivalAdmin)
+admin.site.register(Prix, PrixAdmin)
+admin.site.register(Tarification, TarificationAdmin)

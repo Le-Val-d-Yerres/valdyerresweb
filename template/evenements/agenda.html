@@ -1,0 +1,13 @@
+{% include "./include/head.html" %}
+
+	{% if liste_evenement %}
+	    <ul>
+	    {% for evenement in liste_evenement %}
+	        <li><a href="{{ evenement.slug }}/">{{ evenement.nom }}</a></li>
+	    {% endfor %}
+	    </ul>
+	{% else %}
+	    <p>Aucune Saison Culturelle trouvée.</p>
+	{% endif %}
+
+{% include "./include/foot.html" %}

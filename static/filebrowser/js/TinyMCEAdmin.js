@@ -33,9 +33,9 @@ tinyMCE.init({
     // General
     //accessibility_warnings: false,
     browsers: 'gecko,msie,safari,opera',
-    dialog_type: 'window',
+    dialog_type: 'modal',
     editor_deselector: 'mceNoEditor',
-    keep_styles: false,
+    keep_styles: true,
     language: 'fr',
     object_resizing: true,
     media_strict: true,
@@ -65,7 +65,7 @@ tinyMCE.init({
     // content_css : "css/example.css",
     
     // Plugins
-    plugins: 'advimage,advlink,fullscreen,paste,media,searchreplace,template',
+    plugins: 'fullscreen,paste,media,searchreplace,template',
     
     // Theme Advanced
     theme_advanced_toolbar_location: 'top',
@@ -86,6 +86,28 @@ tinyMCE.init({
     theme_advanced_resize_horizontal: false,
     theme_advanced_resizing_use_cookie: true,
     theme_advanced_styles: 'Image Left=img_left;Image Right=img_right;Image Block=img_block',
+    
+    
+    
+    // Theme Simple
+    theme_simple_toolbar_location: 'top',
+    theme_simple_toolbar_align: 'left',
+    theme_simple_statusbar_location: 'bottom',
+    theme_simple_buttons1: 'formatselect,styleselect,fontsizeselect,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,anchor,|,image,|,fullscreen',
+   
+    // Ligne avec les templates actif
+    //theme_simple_buttons2: 'search,|,pasteword,template,media,charmap,|,code,|,table,cleanup',
+    
+    // Ligne avec les templates inactif
+    theme_simple_buttons2: 'search,|,pasteword,charmap,|,code,|,table,cleanup,|,sub,sup,|,hr,newdocument',
+    
+    theme_simple_buttons3: '',
+    theme_simple_path: false,
+    theme_simple_blockformats: 'p,h2,h3,h4,pre',
+    theme_simple_resizing: true,
+    theme_simple_resize_horizontal: false,
+    theme_simple_resizing_use_cookie: true,
+    theme_simple_styles: 'Image Left=img_left;Image Right=img_right;Image Block=img_block',
     
     // Style formats
     // see http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/style_formats
@@ -114,7 +136,7 @@ tinyMCE.init({
     ],
     
     // Adv
-    advlink_styles: 'Internal Link=internal;External Link=external',
+    advlink_styles: 'Internal Link=interne;External Link=externe',
     advimage_update_dimensions_onchange: true,
     
     // Grappelli

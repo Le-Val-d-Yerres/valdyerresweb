@@ -1,0 +1,36 @@
+{% include "./include/head.html" %}
+
+	{% load filtres %}
+	{% if saison %}
+		
+		<h1><a href="../{{ saison.slug }}/">{{ saison.nom }}</a></h1>
+		
+		{{ saison.description|safe }}
+		
+		{% if liste_evenement %}
+		
+		    <h2>Les évènements</h2>
+		    <ul>
+		    {% for evenement in liste_evenement %}
+		        <li>
+		        	<h3><a href="evenements/{{ evenement.slug }}.html">{{ evenement.nom }}</a></h3>
+		        	<p>{{ evenement.type.nom }}</p>
+		        	{% if evenement.cadre_evenement_id != saison.id %}
+		        	<p><a href="{{ evenement.cadre_evenement.slug }}/">{{ evenement.cadre_evenement.nom }}</a></p>
+		        	{% endif %}
+		        	<p>{{evenement.debut|dateCustom:evenement.fin }}, {{ evenement.Lieu }}</p>
+		        	<p>{{ evenement.description|resume:150|safe }}</p>
+		        	<p>Plus d'info sur <a href="">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
+		        </li>
+		    {% endfor %}
+		    </ul>
+		
+		{% else %}
+		    <p>Aucun Evènement trouvé.</p>
+		{% endif %}
+	
+	{% else %}
+	    <p>Erreur interne.</p>
+	{% endif %}
+
+{% include "./include/foot.html" %}
