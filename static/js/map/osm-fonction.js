@@ -19,8 +19,9 @@ aggloGPS['latitude'] = 48.698867;
 
 var feature = [];
     
-function map_init()
+function map_init(zoomMulti)
 {
+	zoomMulti = (zoomMulti) ? zoomMulti : 12;
 	OpenLayers.Lang.setCode("fr");
    	map = new OpenLayers.Map("map");
 	var osm = new OpenLayers.Layer.OSM();            
@@ -40,7 +41,7 @@ function map_init()
     	feature = new OpenLayers.Feature.Vector(
 			new OpenLayers.Geometry.Point( listeMarkers[i]['longitude'], listeMarkers[i]['latitude'] ).transform(epsg4326, projectTo),
 			{description: listeMarkers[i]['description']} ,
-			{externalGraphic: '/static/js/openstreetmap/img/'+listeMarkers[i]['marker']+'.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
+			{externalGraphic: '/media/'+listeMarkers[i]['marker'], graphicHeight: 35, graphicWidth: 35, graphicXOffset:-12, graphicYOffset:-25  }
 		);
 	
     	vectorLayer.addFeatures(feature);
@@ -49,7 +50,7 @@ function map_init()
     if (nbreEvenement > 1)
 	{
 		var lonLat = new OpenLayers.LonLat( aggloGPS['longitude'], aggloGPS['latitude'] ).transform(epsg4326, projectTo);
-		zoom=12;
+		zoom=zoomMulti;
 	}
 	else
 	{

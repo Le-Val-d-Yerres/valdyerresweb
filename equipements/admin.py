@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from equipements.models import Equipement, EquipementFonction
+from equipements.models import *
 from django.contrib import admin
 from django.template import defaultfilters
 from localisations.models import Lieu
@@ -35,5 +35,45 @@ class EquipementFonctionAdmin(admin.ModelAdmin):
     search_fields = ['nom']
     list_display = ['nom']
     
+    fieldsets = [
+        (None, {'fields': ['nom', 'picto']}),
+    ]
+    
+    def save_model(self, request, obj, form, change):
+        monslug = defaultfilters.slugify(obj.nom)
+        if obj.slug == "":
+            listelieu = EquipementFonction.objects.filter(slug=monslug)
+            listsize = len(listelieu)
+            if listsize > 0:
+                monslug = monslug+'-'+str(listsize+1)
+            obj.slug = monslug
+        obj.save()
+    
+class FaciliteAdmin(admin.ModelAdmin):
+    list_display = ['nom', 'importance']
+    fieldsets = [
+        ('Nom', {'fields': ('nom', 'description')}),
+        ('Options', {'fields': ['importance', 'picto']}),
+    ]
+    search_fields = ['nom']
+    
+    def save_model(self, request, obj, form, change):
+        monslug = defaultfilters.slugify(obj.nom)
+        if obj.slug == "":
+            listefacilite = Facilite.objects.filter(slug=monslug)
+            listsize = len(listefacilite)
+            if listsize > 0:
+                monslug = monslug+'-'+str(listsize+1)
+            obj.slug = monslug
+        obj.save()
+        
+class FacilitesAdmin(admin.ModelAdmin):
+    list_display = ['Equipement', 'Facilites']
+    search_fields = ['Equipement']
+    
+    filter_horizontal = ("facilites",)
+    
 admin.site.register(Equipement, EquipementAdmin)
 admin.site.register(EquipementFonction, EquipementFonctionAdmin)
+admin.site.register(Facilites, FacilitesAdmin)
+admin.site.register(Facilite, FaciliteAdmin)

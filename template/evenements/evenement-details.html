@@ -1,5 +1,8 @@
 {% extends "include/main.html" %}
 	
+{% if saison %}
+	{% block meta-description %}{{ evenement.meta_description }}{% endblock %}
+	
 	{% block import %}
 		<script src="/static/js/openstreetmap/OpenLayers.js"></script>
 		<script src="/static/js/openstreetmap/lib/OpenLayers/Lang/fr.js"></script>
@@ -7,14 +10,14 @@
 		<script src="/static/js/map/osm-fonction.js"></script>
 	{% endblock %}	
 
-{% block bodyLoad %}<body onload="map_init();">{% endblock %}	
+	{% block bodyLoad %}<body onload="map_init();">{% endblock %}	
+		
+	{% load filtres %}
+	{% load tz %}
 	
-{% load filtres %}
-{% load tz %}
-
-
-{% block contenu %}
-	{% if saison %}
+	
+	{% block contenu %}
+	
 		
 		{% if evenement.image %}
 			<img alt="{{ evenement.nom }}" src="{{ evenement.image|thumbnail:'512x300x1' }}">
@@ -30,6 +33,13 @@
 			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 
 			<p>Cadre : <a href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></p>
+			<p>Organisateur(s) : 
+				<ul>
+					{% for each in evenement.organisateur.all %}
+						<li><a href="">{{ each.nom }}</a> | {{ each.telephone }}</li>
+					{% endfor %}
+				</ul>
+			</p>
 		{% endif %}
 		
 		<meta itemprop="startDate" content="{{ evenement.debut|dateSEO }}">
@@ -44,7 +54,7 @@
 		<hr \>
 		
 		
-		{% for each in evenement.lieu.all %}
+		{% for each in liste_lieux %}
 			<div itemprop="location" itemscope itemtype="http://schema.org/Place">
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 					<p><span itemprop="addressLocality" >{{ each.ville.nom }}</span> : <a itemprop="url" href="">{{ each.nom_lieu }}</a></p>
@@ -60,7 +70,7 @@
 				<p>Latitude : {{ each.latitude }} - Longitude : {{ each.longitude }}</p>
 				<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr|take:forloop.counter0 }}"/><br/>
 				<script>
-					nouveauMarker({{ each.longitude|toFloatjs }}, {{ each.latitude|toFloatjs }}, '{{ each.nom_lieu }} - {{ each.ville.nom }}', 'marker'); 
+					nouveauMarker({{ each.longitude|toFloatjs }}, {{ each.latitude|toFloatjs }}, '{{ each.nom_lieu }} - {{ each.ville.nom }}', 'uploads/picto/marker.png'); 
 				</script>
 			</div>
 		{% endfor %}
@@ -75,9 +85,8 @@
 			{% endfor %}
 			</ul>
 		{% endif %}
-		
-	{% else %}
-	    <p>Erreur interne.</p>
-	{% endif %}
-</div>
-{% endblock %}	
+	</div>
+	{% endblock %}
+{% else %}
+    <p>Erreur interne.</p>
+{% endif %}

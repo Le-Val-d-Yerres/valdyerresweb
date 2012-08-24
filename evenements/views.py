@@ -55,11 +55,11 @@ def SaisonEvenementDetailsHtml(request, saison_slug, evenement_slug, festival_sl
         saison = Saison.objects.get(slug=saison_slug)
         evenement = Evenement.objects.select_related(depth=1).get(slug=evenement_slug)
         tarifs = Tarification.objects.filter(evenement_id=evenement.id)
-        
+        liste_lieux = evenement.lieu.select_related(depth=1).all()
         evenement_qr = GenerationQrCode(EvenementDetailsIcalendar(evenement))
         
         localisation_qr = list()
-        for each in evenement.lieu.all():
+        for each in liste_lieux:
             localisation_qr.append(GenerationQrCode("geo:"+str(each.latitude)+","+str(each.longitude)))
 
         #<trash>
@@ -76,7 +76,7 @@ def SaisonEvenementDetailsHtml(request, saison_slug, evenement_slug, festival_sl
             festival = None   
     except SaisonCulturelle.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'festival': festival, 'tarifs': tarifs, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr })
+    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'festival': festival, 'tarifs': tarifs, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr,'liste_lieux': liste_lieux })
 
 
 

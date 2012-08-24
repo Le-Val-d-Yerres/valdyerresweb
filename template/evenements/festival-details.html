@@ -1,12 +1,14 @@
 {% extends "include/main.html" %}
 
-{% block contenu %}
+{% if saison %}
 
-
-{% load filtres %}
-{% load tz %}
-
-	{% if saison %}
+	{% block meta-description %}Liste des évènements du {{ details_festival.nom|safe }} de la {{ saison.nom }}{% endblock %}
+	
+	{% block contenu %}
+	
+	
+	{% load filtres %}
+	{% load tz %}
 	
 		<h1><a href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></h1>
 		
@@ -35,9 +37,9 @@
 		    <p>Aucun Festival trouvé.</p>
 	
 		{% endif %}
-	
-	{% else %}
-	    <p>Erreur interne.</p>
-	{% endif %}
 
-{% endblock %}
+	{% endblock %}
+
+{% else %}
+	<p>Erreur interne.</p>
+{% endif %}
