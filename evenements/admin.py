@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, Tarification
+
 from django.contrib import admin
 from django.template import defaultfilters
 
@@ -104,12 +105,12 @@ class PrixAdmin(admin.ModelAdmin):
     list_filter = ['gratuit']
     
 class TarificationAdmin(admin.ModelAdmin):
-    list_display = ['Evenenents', 'Prix']
+    list_display = ['Evenement', 'Prix']
     fieldsets = [
-        ('Evenement', {'fields': ['evenement']}),
+        ('Evènement', {'fields': ['evenement']}),
         ('Prix', {'fields': ['prix']}),
     ]
-    filter_horizontal = ("evenement", "prix")
+    filter_horizontal = ("prix",)
 
 admin.site.register(Evenement, EvenementAdmin)
 admin.site.register(Organisateur, OrganisateurAdmin)

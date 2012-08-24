@@ -72,17 +72,24 @@ class Prix (models.Model):
     prix = models.FloatField("Prix (facultatif)", blank=True)
     
     def __unicode__(self):
-        return self.nom+" - "+str(self.prix)+u"€"
+        if self.gratuit:
+            resultat = self.nom+" - Gratuit"
+        else:
+            resultat = self.nom+" - "+str(self.prix)+u"€"
+        return resultat
     
     class Meta:
         verbose_name_plural = "Prix"
     
 class Tarification(models.Model):
-    evenement = ManyToManyField(Evenement)
-    prix = ManyToManyField(Prix)
+    evenement = models.ForeignKey(Evenement)
+    prix = models.ManyToManyField(Prix)
     
-    def Evenenents(self):
-        return "\n;\n".join([s.nom for s in self.evenement.all()])
+    def __unicode__(self):
+        return self.evenement.nom
+    
+    def Evenement(self):
+        return self.evenement.nom
     
     def Prix(self):
         i = 1

@@ -1,13 +1,18 @@
-{% include "./include/head.html" %}
+{% extends "include/main.html" %}
+
+{% block contenu %}
+
+{% load filtres %}
 
 	{% if liste_evenement %}
 	    <ul>
 	    {% for evenement in liste_evenement %}
-	        <li><a href="{{ evenement.slug }}/">{{ evenement.nom }}</a></li>
+	        <li><a href="{% url evenements.views.SaisonDetailsHtml saison_slug=evenement.slug %}">{{ evenement.nom }}</a></li>
 	    {% endfor %}
 	    </ul>
 	{% else %}
 	    <p>Aucune Saison Culturelle trouvée.</p>
 	{% endif %}
+	
+{% endblock %}
 
-{% include "./include/foot.html" %}

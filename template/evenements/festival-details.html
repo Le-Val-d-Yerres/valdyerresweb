@@ -1,17 +1,33 @@
-{% include "./include/head.html" %}
+{% extends "include/main.html" %}
+
+{% block contenu %}
+
+
+{% load filtres %}
+{% load tz %}
 
 	{% if saison %}
 	
-		<h2>{{ saison.nom }}</h2>
+		<h1><a href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></h1>
 		
-		{{ festival_details }}
+		<h2><a href="{% url evenements.views.SaisonFestivalDetailsHtml saison_slug=saison.slug festival_slug=details_festival.slug %}">{{ details_festival.nom }}</a></h2>
+		
+		<p>{{ details_festival.debut|localtime|dateCustom:details_festival.fin }}</p>
+		
+		{{ details_festival.description|safe }}
 		
 		{% if liste_evenement %}
 		
-			<h3>Liste des évènements</h3>
+		    <h3>Les évènements</h3>
 		    <ul>
 		    {% for evenement in liste_evenement %}
-		        <li><a href="{{ evenement.slug }}.html">{{ evenement.nom }}</a></li>
+		        <li>
+		        	<h4><a href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug festival_slug=details_festival.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a></h4>
+		        	<p>{{ evenement.type.nom }}</p>
+		        	<p>{{evenement.debut|localtime|dateCustom:evenement.fin }}, {{ evenement.Lieu }}</p>
+		        	<p>{{ evenement.description|resume:150|safe }}</p>
+		        	<p>Plus d'info sur <a href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug festival_slug=details_festival.slug evenement_slug=evenement.slug %}">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
+		        </li>
 		    {% endfor %}
 		    </ul>
 		    
@@ -24,4 +40,4 @@
 	    <p>Erreur interne.</p>
 	{% endif %}
 
-{% include "./include/foot.html" %}
+{% endblock %}

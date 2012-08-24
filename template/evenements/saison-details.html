@@ -1,9 +1,14 @@
-{% include "./include/head.html" %}
+{% extends "include/main.html" %}
 
-	{% load filtres %}
+{% block contenu %}
+
+	
+{% load filtres %}
+{% load tz %}
+	
 	{% if saison %}
 		
-		<h1><a href="../{{ saison.slug }}/">{{ saison.nom }}</a></h1>
+		<h1><a href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></h1>
 		
 		{{ saison.description|safe }}
 		
@@ -13,14 +18,20 @@
 		    <ul>
 		    {% for evenement in liste_evenement %}
 		        <li>
-		        	<h3><a href="evenements/{{ evenement.slug }}.html">{{ evenement.nom }}</a></h3>
-		        	<p>{{ evenement.type.nom }}</p>
 		        	{% if evenement.cadre_evenement_id != saison.id %}
-		        	<p><a href="{{ evenement.cadre_evenement.slug }}/">{{ evenement.cadre_evenement.nom }}</a></p>
+			        	<h3><a href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a></h3>
+			        	<p>{{ evenement.type.nom }}</p>
+			        	<p><a href="{% url evenements.views.SaisonFestivalDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug %}">{{ evenement.cadre_evenement.nom }}</a></p>
+			        	<p>{{evenement.debut|localtime|dateCustom:evenement.fin }}, {{ evenement.Lieu }}</p>
+			        	<p>{{ evenement.description|resume:150|safe }}</p>
+			        	<p>Plus d'info : <a href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
+		        	{% else %}
+		        		<h3><a href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a></h3>
+			        	<p>{{ evenement.type.nom }}</p>
+			        	<p>{{evenement.debut|localtime|dateCustom:evenement.fin }}, {{ evenement.Lieu }}</p>
+			        	<p>{{ evenement.description|resume:150|safe }}</p>
+			        	<p>Plus d'info : <a href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
 		        	{% endif %}
-		        	<p>{{evenement.debut|dateCustom:evenement.fin }}, {{ evenement.Lieu }}</p>
-		        	<p>{{ evenement.description|resume:150|safe }}</p>
-		        	<p>Plus d'info sur <a href="">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
 		        </li>
 		    {% endfor %}
 		    </ul>
@@ -33,4 +44,4 @@
 	    <p>Erreur interne.</p>
 	{% endif %}
 
-{% include "./include/foot.html" %}
+{% endblock %}

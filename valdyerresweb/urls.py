@@ -19,5 +19,6 @@ urlpatterns = patterns('',
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^agenda/', include('evenements.urls')),
+    url(r'^equipements/', include('equipements.urls')),
     url(r'^debug/', include('debug_toolbar.urls')),
 )

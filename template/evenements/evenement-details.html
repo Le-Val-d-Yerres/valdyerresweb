@@ -1,0 +1,83 @@
+{% extends "include/main.html" %}
+	
+	{% block import %}
+		<script src="/static/js/openstreetmap/OpenLayers.js"></script>
+		<script src="/static/js/openstreetmap/lib/OpenLayers/Lang/fr.js"></script>
+		<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+		<script src="/static/js/map/osm-fonction.js"></script>
+	{% endblock %}	
+
+{% block bodyLoad %}<body onload="map_init();">{% endblock %}	
+	
+{% load filtres %}
+{% load tz %}
+
+
+{% block contenu %}
+	{% if saison %}
+		
+		{% if evenement.image %}
+			<img alt="{{ evenement.nom }}" src="{{ evenement.image|thumbnail:'512x300x1' }}">
+		{% endif %}
+		
+		{% if festival != None %}
+		<div itemscope itemtype="http://schema.org/Event">
+			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
+
+			<p>Cadre : <a href="{% url evenements.views.SaisonFestivalDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug %}">{{ festival.nom }}</a> - <a itemprop="url" href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></p>
+		{% else %}
+		<div itemscope itemtype="http://schema.org/Event">
+			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
+
+			<p>Cadre : <a href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></p>
+		{% endif %}
+		
+		<meta itemprop="startDate" content="{{ evenement.debut|dateSEO }}">
+		<meta itemprop="endDate" content="{{ evenement.fin|dateSEO }}">
+		<p>{{ evenement.debut|dateCustom:evenement.fin }}</p>
+		
+		<div itemprop="description">{{ evenement.description|safe }}</div>
+		<div>
+		<img alt="QrCode : {{ evenement.nom }}" src="data:image/png;base64,{{ evenement_qr }}"/><br/>
+		<a href="{% url evenements.views.SaisonEvenementDetailsICS saison_slug=saison.slug evenement_slug=evenement.slug %}">Ajouter cet évènement à votre calendrier (Format ICal)</a>
+		</div>
+		<hr \>
+		
+		
+		{% for each in evenement.lieu.all %}
+			<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+					<p><span itemprop="addressLocality" >{{ each.ville.nom }}</span> : <a itemprop="url" href="">{{ each.nom_lieu }}</a></p>
+					<p>Adresse : {{ each.rue }}</p>
+					<p>code Postal : {{ each.ville.code_postal }}</p>
+				</div>
+				
+				 <span itemprop="geo" itemscope itemtype="http://data-vocabulary.org/​Geo">
+			        <meta itemprop="latitude" content="{{ each.latitude }}" />
+			        <meta itemprop="longitude" content="{{ each.longitude }}" />
+     			</span>
+     			
+				<p>Latitude : {{ each.latitude }} - Longitude : {{ each.longitude }}</p>
+				<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr|take:forloop.counter0 }}"/><br/>
+				<script>
+					nouveauMarker({{ each.longitude|toFloatjs }}, {{ each.latitude|toFloatjs }}, '{{ each.nom_lieu }} - {{ each.ville.nom }}', 'marker'); 
+				</script>
+			</div>
+		{% endfor %}
+		
+		<div id="map" style="width: 512px; height: 450px"></div>
+		
+		
+		{% if tarifs %}
+			<ul>
+			{% for each in tarifs.prix.all %}
+				<li>{{ each.nom }} : {{ each.prix }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+		
+	{% else %}
+	    <p>Erreur interne.</p>
+	{% endif %}
+</div>
+{% endblock %}	
