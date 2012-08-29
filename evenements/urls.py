@@ -1,12 +1,12 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('evenements.views',
-    url(r'^$', 'Agenda'),
-    url(r'^(?P<saison_slug>[^\/]+)/$', 'SaisonDetailsHtml'),
-    url(r'^(?P<saison_slug>[^\/]+)/evenement/(?P<evenement_slug>[^\/]+).html$', 'SaisonEvenementDetailsHtml'),
-    url(r'^(?P<saison_slug>[^\/]+)/(?P<festival_slug>[^\/]+)/(?P<evenement_slug>[^\/]+).html$', 'SaisonEvenementDetailsHtml'),
-    url(r'^(?P<saison_slug>[^\/]+)/(?P<festival_slug>[^\/]+)/$', 'SaisonFestivalDetailsHtml'),
+    url(r'^$', 'AgendaNow'),
+    url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/$', 'AgendaMois', name="agenda-mois"),
+    url(r'^(?P<annee>\d{4})/$', 'AgendaAnnee', name='agenda-annee'),
     
-    url(r'^(?P<saison_slug>[^\/]+)/evenement/(?P<evenement_slug>[^\/]+).ics$', 'SaisonEvenementDetailsICS'),
-    url(r'^(?P<saison_slug>[^\/]+)/(?P<festival_slug>[^\/]+)/(?P<evenement_slug>[^\/]+).ics$', 'SaisonEvenementDetailsICS'),
+    url(r'^(?P<slug>[^\/]+)/$', 'SaisonDetailsHtml'),
+    
+    url(r'^(?P<slug>[^\/]+)/(?P<evenement_slug>[^\/]+).html$', 'EvenementDetailsHtml', name="event-details"),
+    url(r'^(?P<slug>[^\/]+)/(?P<evenement_slug>[^\/]+).ics$', 'EvenementDetailsICS'),
 )

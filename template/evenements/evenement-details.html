@@ -25,14 +25,14 @@
 		
 		{% if festival != None %}
 		<div itemscope itemtype="http://schema.org/Event">
-			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
+			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 
 			<p>Cadre : <a href="{% url evenements.views.SaisonFestivalDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug %}">{{ festival.nom }}</a> - <a itemprop="url" href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></p>
 		{% else %}
 		<div itemscope itemtype="http://schema.org/Event">
-			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.SaisonEvenementDetailsHtml saison_slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
+			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 
-			<p>Cadre : <a href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></p>
+			<p>Cadre : <a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a></p>
 			<p>Organisateur(s) : 
 				<ul>
 					{% for each in evenement.organisateur.all %}
@@ -47,9 +47,14 @@
 		<p>{{ evenement.debut|dateCustom:evenement.fin }}</p>
 		
 		<div itemprop="description">{{ evenement.description|safe }}</div>
+		
+		{% if evenement.url != "" %}
+			<p><a href="{{ evenement.url }}">Plus d'informations sur le site de l'évènement</a></p>
+		{% endif %}
+		
 		<div>
 		<img alt="QrCode : {{ evenement.nom }}" src="data:image/png;base64,{{ evenement_qr }}"/><br/>
-		<a href="{% url evenements.views.SaisonEvenementDetailsICS saison_slug=saison.slug evenement_slug=evenement.slug %}">Ajouter cet évènement à votre calendrier (Format ICal)</a>
+		<a href="{% url evenements.views.EvenementDetailsICS slug=saison.slug evenement_slug=evenement.slug %}">Ajouter cet évènement à votre calendrier (Format ICal)</a>
 		</div>
 		<hr \>
 		
@@ -57,7 +62,11 @@
 		{% for each in liste_lieux %}
 			<div itemprop="location" itemscope itemtype="http://schema.org/Place">
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-					<p><span itemprop="addressLocality" >{{ each.ville.nom }}</span> : <a itemprop="url" href="">{{ each.nom_lieu }}</a></p>
+					{% if each.presentation %}
+						<p><span itemprop="addressLocality" >{{ each.ville.nom }}</span> : <a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.fonction.slug equipement_slug=each.slug%}">{{ each.nom_lieu }}</a></p>
+					{%else %}
+						<p><span itemprop="addressLocality" >{{ each.ville.nom }}</span> : {{ each.nom_lieu }}</p>
+					{% endif %}
 					<p>Adresse : {{ each.rue }}</p>
 					<p>code Postal : {{ each.ville.code_postal }}</p>
 				</div>
@@ -70,7 +79,7 @@
 				<p>Latitude : {{ each.latitude }} - Longitude : {{ each.longitude }}</p>
 				<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr|take:forloop.counter0 }}"/><br/>
 				<script>
-					nouveauMarker({{ each.longitude|toFloatjs }}, {{ each.latitude|toFloatjs }}, '{{ each.nom_lieu }} - {{ each.ville.nom }}', 'uploads/picto/marker.png'); 
+					nouveauMarker({{ each.longitude|toFloatjs }}, {{ each.latitude|toFloatjs }}, '{{ each.nom_lieu }} - {{ each.ville.nom }}', '{{ each.type.picto }}'); 
 				</script>
 			</div>
 		{% endfor %}

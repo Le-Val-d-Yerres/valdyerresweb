@@ -15,16 +15,28 @@
 
 {% load filtres %}
 
+	<h1><a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a></h1>
+	
 	{% if equipement %}
 		{% if equipement.image %}
 			<img alt="{{ equipement.nom_lieu }}" src="{{ equipement.image|thumbnail:'512x300x1' }}">
 		{% endif %}
 		<div itemscope itemtype="http://schema.org/Place">
-			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom_lieu }}</a></h1>
+			<h2 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom_lieu }}</a></h2>
 			
 			Type d'équipement : <a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.nom }}</a>
 			
 			{{ equipement.presentation|safe }}
+			
+			{% if facilites %}
+				<ul>
+				    {% for facilite in facilites.facilites.all %}
+				    	<li></li><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}</li>
+				    {% endfor %}
+			    </ul>
+		    {% endif %}
+		    
+		    <hr />
 			
 			<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 				<p itemprop="addressLocality">Ville : {{ equipement.ville.nom }}</p>
@@ -50,26 +62,20 @@
 			<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qrcode }}"/>
 			
 			<script>
-				nouveauMarker({{ equipement.longitude|toFloatjs }}, {{ equipement.latitude|toFloatjs }}, '{{ each.nom_lieu }} - {{ each.ville.nom }}', 'uploads/picto/marker.png'); 
+				nouveauMarker({{ equipement.longitude|toFloatjs }}, {{ equipement.latitude|toFloatjs }}, '{{ equipement.nom_lieu }}', '{{ equipement.fonction.picto }}'); 
 			</script>
-			
-			<ul>
-			{% for each in fonction %}
-				<li>{{ each.nom }}
-				    <ul>
-					    {% for equipement in equipements %}
-					    	<script>
-								nouveauMarker({{ equipement.longitude|toFloatjs }}, {{ equipement.latitude|toFloatjs }}, '{{ equipement.nom_lieu }} - {{ equipement.ville.nom }}', '{{ each.picto }}'); 
-							</script>
-					        <li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a></li>
-					    {% endfor %}
-				    </ul>
-			    </li>
-		    {% endfor %}
-		    </ul>
 		    
 		    <div id="map" style="width: 512px; height: 450px"></div>
-	   </div>
+		    
+		    {% if Evenements %}
+		    	<ul>
+		    		{% for each in Evenements %}
+		    			<li>{{ each.type.nom }} : <a href="">{{ each.nom }}</a></li>
+		    		{% endfor %}
+		    	</ul>
+		    {% endif %}
+		      
+		</div>
 	{% else %}
 	    <p>Erreur interne.</p>
 	{% endif %}

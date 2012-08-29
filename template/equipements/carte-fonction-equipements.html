@@ -16,8 +16,10 @@
 {% load filtres %}
 
 	{% if equipements %}
+	
+		<h1><a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a></h1>
 		
-		<h1><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=fonction.slug %}">{{ fonction.nom }}</a></h1>
+		<h2><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=fonction.slug %}">{{ fonction.pluriel }}</a></h2>
 	
 		 <ul>
 			{% for equipement in equipements %}

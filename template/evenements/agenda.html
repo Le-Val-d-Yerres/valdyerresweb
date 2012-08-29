@@ -1,17 +1,20 @@
 {% extends "include/main.html" %}
 
+	{% block import %}<link rel="stylesheet" href="/static/css/calendrier.css" />{% endblock %}
+	
 {% block contenu %}
+	
+	<div style="width:960px;margin-left: auto;margin-right: auto;">
+		<table width="100%">
+			<tr>
+				<td width="50%"><a href="{% url evenements.views.AgendaMois annee=annee_prec mois=mois_prec %}">&lt;&lt; mois précédent</a></td>
+				<td width="50%" style="text-align: right;"><a href="{% url evenements.views.AgendaMois annee=annee_suiv mois=mois_suiv %}">mois suivant &gt;&gt;</a></td>
+			</tr>
+		</table>
 
-{% load filtres %}
-
-	{% if liste_evenement %}
-	    <ul>
-	    {% for evenement in liste_evenement %}
-	        <li><a href="{% url evenements.views.SaisonDetailsHtml saison_slug=evenement.slug %}">{{ evenement.nom }}</a></li>
-	    {% endfor %}
-	    </ul>
-	{% else %}
-	    <p>Aucune Saison Culturelle trouvée.</p>
-	{% endif %}
+		<div id="calendar">
+			{{ calendrier|safe }}
+		</div>
+	</div>
 	
 {% endblock %}

@@ -62,10 +62,10 @@ def toFloatjs(num):
         return str(num).replace(',','.')
  
 @register.filter(is_safe=True)    
-def dateFormatUTC(dateUTC):
-    TZone = timezone('UTC')
+def dateFormat(dateUTC):
+    TZone = timezone(settings.TIME_ZONE)
     date = dateUTC.astimezone(TZone)
-    return date.strftime("%Y")+date.strftime("%m")+date.strftime("%d")+"T"+date.strftime("%H")+date.strftime("%M")+date.strftime("%S")+"Z"
+    return date.strftime("%Y")+date.strftime("%m")+date.strftime("%d")+"T"+date.strftime("%H")+date.strftime("%M")+date.strftime("%S")
 
 @register.filter(is_safe=True)    
 def take(listeQr, i):
@@ -80,11 +80,11 @@ def dateSEO(dateUTC):
 @register.filter(is_safe=True)   
 def thumbnail(file, size='100x100x1'):
     file.path = settings.MEDIA_ROOT+file.path
+    print file.path+'\n'
     # defining the size
     x, y, ratio = [int(x) for x in size.split('x')]
     # defining the filename and the miniature filename
     filehead, filetail = os.path.split(file.path)
-    print filehead+'\n'
     basename, format = os.path.splitext(filetail)
     miniature = basename + '_' + size + format
     filename = file.path
@@ -103,7 +103,5 @@ def thumbnail(file, size='100x100x1'):
             image.save(miniature_filename, image.format, quality=90, optimize=1)
         except:
             image.save(miniature_filename, image.format, quality=90)
-    
-    print filehead 
 
     return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)

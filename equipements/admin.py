@@ -36,7 +36,7 @@ class EquipementFonctionAdmin(admin.ModelAdmin):
     list_display = ['nom']
     
     fieldsets = [
-        (None, {'fields': ['nom', 'picto']}),
+        (None, {'fields': ['nom', 'pluriel', 'picto']}),
     ]
     
     def save_model(self, request, obj, form, change):

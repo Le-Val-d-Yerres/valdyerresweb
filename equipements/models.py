@@ -5,6 +5,7 @@ from localisations.models import Lieu
 
 class EquipementFonction(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Fonction")
+    pluriel = models.CharField(max_length=255, verbose_name="Nom de la fonction au pluriel")
     picto = FileBrowseField("Pictogramme", max_length=200, directory="picto/equipements", extensions=[".png"])
     slug = models.SlugField(max_length=255,unique=True)
 
@@ -27,7 +28,7 @@ class Facilite(models.Model):
     nom = models.CharField(max_length=255)
     description = models.TextField()
     importance = models.IntegerField("Degrée d'Importance (de 0 à 100)")
-    picto = FileBrowseField("Pictogramme", max_length=200, directory="equipements", extensions=[".png"])
+    picto = FileBrowseField("Pictogramme", max_length=200, directory="picto", extensions=[".png"])
     slug = models.SlugField(max_length=255,unique=True)
     
     def __unicode__(self):

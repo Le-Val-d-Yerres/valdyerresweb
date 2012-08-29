@@ -3,6 +3,7 @@ from django.db import models
 from filebrowser.fields import FileBrowseField
 from localisations.models import Ville, Lieu
 from django.db.models.fields.related import ManyToManyField
+from model_utils.managers import InheritanceManager
 
 class Organisateur(models.Model):
     nom = models.CharField(max_length=255)
@@ -21,6 +22,8 @@ class Saison(models.Model):
     fin = models.DateTimeField("date de fin")
     description = models.TextField()
     slug = models.SlugField(max_length=255, unique=True)
+    
+    objects = InheritanceManager()
     
     def __unicode__(self):
         return self.nom
@@ -52,7 +55,7 @@ class Evenement(models.Model):
     url = models.URLField("Site de l'Organisateur (falcultatif)", blank=True)
     cadre_evenement = models.ForeignKey(Saison)
     type = models.ForeignKey(TypeEvenement)
-    lieu = models.ManyToManyField(Lieu)
+    lieu = models.ManyToManyField(Lieu, related_name="lieu_evenements")
     publish = models.BooleanField("Publié")
     haut_page = models.BooleanField("Haut de page")
     slug = models.SlugField(max_length=255, unique=True)

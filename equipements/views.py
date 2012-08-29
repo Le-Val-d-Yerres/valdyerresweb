@@ -1,10 +1,10 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response
 from equipements.models import *
-from localisations.models import Lieu
+from evenements.models import Evenement
 from datetime import datetime
 from django.db.models import Q
-from django.template import Context,loader
+from django.conf import settings
 import qrcode
 import base64
 import StringIO
@@ -15,7 +15,7 @@ def CarteEquipements(request):
         fonction = EquipementFonction.objects.all()
     except Equipement.DoesNotExist:
         raise Http404
-    return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'fonction': fonction})
+    return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'fonction': fonction, 'mediaDir': settings.MEDIA_DIR_NAME})
 
 def GenerationQrCode(data):
     img_io = StringIO.StringIO()
@@ -36,9 +36,19 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         
         qrcode = GenerationQrCode("geo:"+str(equipement.latitude)+","+str(equipement.longitude))
         
+        facilites = Facilites.objects.filter(equipement_id=equipement.id)
+        
+        Evenements = equipement.lieu_evenements.select_related().filter(fin__gt=datetime.now())
+        #<trash>
+        try:
+            facilites = facilites[0]
+        except:
+            facilites = None
+        #</trash>
+        
     except Equipement.DoesNotExist:
         raise Http404
-    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qrcode': qrcode})
+    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qrcode': qrcode, 'facilites': facilites, 'Evenements': Evenements})
 
 def FonctionDetailsHtml(request, fonction_slug):
     try:

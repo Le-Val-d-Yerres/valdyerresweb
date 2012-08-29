@@ -1,7 +1,7 @@
 {% load tz %}{% load filtres %}BEGIN:VEVENT
 SUMMARY:{{ evenement.nom|safe }}
-DTSTART:{{ evenement.debut|dateFormatUTC }}
-DTEND:{{ evenement.fin|dateFormatUTC }}
+DTSTART:{{ evenement.debut|dateFormat }}
+DTEND:{{ evenement.fin|dateFormat }}
 LOCATION:http://www.levaldyerres.fr
 DESCRIPTION:{{ evenement.type|safe }}
 END:VEVENT

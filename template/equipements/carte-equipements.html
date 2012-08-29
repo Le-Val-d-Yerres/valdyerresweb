@@ -16,16 +16,25 @@
 {% load filtres %}
 
 	{% if equipements %}
+	
+		<h1><a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a></h1>
+		
 		<div id="map" style="width: 1000px; height: 600px"></div>
 		
 		<ul>
 		{% for each in fonction %}
-			<li><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=each.slug %}">{{ each.nom }}</a>
+			<li><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=each.slug %}">{{ each.pluriel }}</a>
 			    <ul>
 				    {% for equipement in equipements %}
-				    	<script>
-							nouveauMarker({{ equipement.longitude|toFloatjs }}, {{ equipement.latitude|toFloatjs }}, '{{ equipement.nom_lieu }} - {{ equipement.ville.nom }}', '{{ each.picto }}'); 
-						</script>
+				    	{% if equipement.image %}
+					    	<script>
+								nouveauMarker({{ equipement.longitude|toFloatjs }}, {{ equipement.latitude|toFloatjs }}, '<div style="float: left;"><img alt="{{ equipement.nom_lieu }}" src="{{ equipement.image|thumbnail:'100x100x0' }}"/></div><div style="height: 105px;"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}</div>', '{{ each.picto }}'); 
+							</script>
+						{% else %}
+							<script>
+								nouveauMarker({{ equipement.longitude|toFloatjs }}, {{ equipement.latitude|toFloatjs }}, '<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}', '{{ each.picto }}'); 
+							</script>
+						{% endif %}
 				        <li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a></li>
 				    {% endfor %}
 			    </ul>
