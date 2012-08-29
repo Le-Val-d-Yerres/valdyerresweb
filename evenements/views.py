@@ -11,7 +11,10 @@ import base64
 import StringIO
 import calendar
 from equipements.models import Equipement
-    
+from pytz import tzinfo,timezone
+from valdyerresweb import settings
+
+utcTZ = timezone("UTC")
         
 def AgendaMois(request, annee, mois):
     try:
@@ -25,8 +28,6 @@ def AgendaMois(request, annee, mois):
             annee_prec = str(year)
             mois_prec = entierAvecZero(month-1)
             
-        print annee_prec
-
 
         if month == 12:
             mois_suiv = '01'
@@ -38,7 +39,7 @@ def AgendaMois(request, annee, mois):
         dayEnd = calendar.monthrange(year, month)[1]
         dayStart = 1
         
-        DateDebut = datetime.date(year, month, dayStart)
+        DateDebut = datetime.datetime(year, month, dayStart,0,0,0,tzinfo=utcTZ)
         DateFin = datetime.date(year, month, dayEnd)
         
         liste_event = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin)
@@ -86,8 +87,6 @@ def AgendaNow(request):
             annee_prec = str(year)
             mois_prec = entierAvecZero(month-1)
             
-        print annee_prec
-
 
         if month == 12:
             mois_suiv = '01'

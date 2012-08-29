@@ -44,7 +44,6 @@ class CAVYCalendar(HTMLCalendar):
             TZone = timezone(settings.TIME_ZONE)
 
             for each in self.ListeEvenement:
-                print each
                 dateDebut = each.debut.astimezone(TZone)
                 dateFin = each.fin.astimezone(TZone)
                 
