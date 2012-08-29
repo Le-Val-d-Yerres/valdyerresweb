@@ -3,17 +3,17 @@
 {% block meta-description %}Liste des évènements de la {{ saison.nom }}{% endblock %}
 
 {% block contenu %}
-
 	
 {% load filtres %}
 {% load tz %}
 	
 	{% if saison %}
 		
-		<h1><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a></h1>
-		
-		{% if isfestival %}
-			<h2><a href="{% url evenements.views.SaisonDetailsHtml slug=festival.slug %}">{{ festival.nom }}</a></h2>
+		{% if isfestival == "True" %}
+			<h1><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.saison_culture.slug %}">{{ saison.saison_culture.nom }}</a></h1>
+			<h2><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a></h2>
+		{% else %}
+			<h1><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a></h1>
 		{% endif %}
 		
 		{{ saison.description|safe }}
@@ -24,14 +24,21 @@
 		    <ul>
 		    {% for evenement in liste_evenement %}
 		        <li>
-		        	<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a></h3>
-			        <p>{{ evenement.type.nom }}</p>
-			        {% if evenement.cadre_evenement_id != saison.id and isfestival == False %}
-			        	<p>{{ evenement.cadre_evenement.nom }}</p>
+		        	{% if isfestival == "False" and evenement.cadre_evenement_id != saison.id %}
+		        		<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a></h3>
+			        	<p>{{ evenement.type.nom }}</p>
+			        	<p><a href="{% url evenements.views.SaisonDetailsHtml slug=evenement.cadre_evenement.slug  %}">{{ evenement.cadre_evenement.nom }}</a></p>
+			        {% else %}
+			        	<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a></h3>
+			        	<p>{{ evenement.type.nom }}</p>
 			        {% endif %}
 			        <p>{{evenement.debut|localtime|dateCustom:evenement.fin }}, {{ evenement.Lieu }}</p>
 			        <p>{{ evenement.description|resume:150|safe }}</p>
-			        <p>Plus d'info : <a href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
+			        {% if isfestival == "False" and evenement.cadre_evenement_id != saison.id %}
+			        	<p>Plus d'info : <a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
+		        	{% else %}
+		        		<p>Plus d'info : <a href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
+		        	{% endif %}
 		        </li>
 		    {% endfor %}
 		    </ul>

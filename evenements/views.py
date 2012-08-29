@@ -63,7 +63,16 @@ def AgendaMois(request, annee, mois):
     return render_to_response('evenements/agenda.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv})
 
 def AgendaAnnee(request, annee):
-    return True
+    try:
+        year = int(annee)
+        
+        DateDebut = datetime.date(year, 1, 31)
+        DateFin = datetime.date(year, 12, 31)
+        liste_evenements = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin)
+        
+    except SaisonCulturelle.DoesNotExist:
+        raise Http404
+    return render_to_response('evenements/agenda-annee.html', {'liste_evenement': liste_evenements, 'annee': annee})
 
 def AgendaNow(request):
     try:
@@ -115,30 +124,25 @@ def AgendaNow(request):
 
 def SaisonDetailsHtml(request, slug):
     try:
-        saison = Saison.objects.get(slug=slug).select_subclasses()
-        festival = Festival.objects.filter(saison_culture_id=saison.id)
-        isfestival = False
-        
-        if len(festival) > 0:
+        saison = Saison.objects.select_related().select_subclasses().get(slug=slug)
+
+        if type(saison) == Festival:
+            liste_evenement = Evenement.objects.select_related().order_by('-haut_page').filter(fin__gt=datetime.datetime.now()).filter(publish=1).filter(cadre_evenement_id=saison.id)
+            isfestival = "True"
+        else:
             evenements = Evenement.objects.select_related(depth=1).filter(fin__gt=datetime.datetime.now()).filter(publish=1)
+            festival = Festival.objects.select_related().filter(saison_culture_id=saison.id)
             
             filtre = Q(cadre_evenement_id=saison.id)
             for each in festival:
                 filtre.add(Q(cadre_evenement_id=each.id), 'OR')
                 
             liste_evenement = evenements.order_by('-haut_page').filter(filtre)
-            isfestival = False
-            SaisonSlug = saison.slug
-        else:
-            liste_evenement = Evenement.objects.select_related(depth=1).filter(fin__gt=datetime.datetime.now()).filter(publish=1).filter(cadre_evenement_id=saison.id)
-            isfestival = True
-            festival = Festival.objects.select_related().get(slug=slug)
-            saison = festival.saison_culture
-            SaisonSlug = festival.slug
+            isfestival = "False"
         
     except SaisonCulturelle.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/saison-details.html', {'liste_evenement': liste_evenement, 'saison': saison, 'isfestival': isfestival, 'festival': festival, 'slug': SaisonSlug})
+    return render_to_response('evenements/saison-details.html', {'liste_evenement': liste_evenement, 'saison': saison, 'isfestival': isfestival})
 
 def EvenementDetailsIcalendar(evenement):
     myTemplate = loader.get_template('evenements/evenement-details.ics.html')

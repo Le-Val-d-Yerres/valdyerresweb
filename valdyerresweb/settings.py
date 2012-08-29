@@ -123,7 +123,7 @@ INSTALLED_APPS = (
     'horaires',
     'grappelli',
     'filebrowser',
-    'django-model-utils',
+    'model_utils',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
