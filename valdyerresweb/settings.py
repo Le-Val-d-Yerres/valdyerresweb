@@ -1,4 +1,8 @@
 # Django settings for valdyerresweb project.
+import os
+PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
+SUPPROJECT_PATH = os.path.split(PROJECT_PATH)[0]
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -14,7 +18,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'valdyerresweb',                      # Or path to database file if using sqlite3.
         'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'sql58PO2',                  # Not used with sqlite3.
+        'PASSWORD': 'toto',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -45,7 +49,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/home/loic/valdyerresweb/media/'
+MEDIA_ROOT = SUPPROJECT_PATH+'/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -56,7 +60,7 @@ MEDIA_URL = 'http://127.0.0.1:8080/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/loic/valdyerresweb/static/'
+STATIC_ROOT = SUPPROJECT_PATH+'/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -105,8 +109,8 @@ ROOT_URLCONF = 'valdyerresweb.urls'
 WSGI_APPLICATION = 'valdyerresweb.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/home/loic/valdyerresweb/template',
-    '/home/loic/valdyerresweb/debug_toolbar/templates',
+    SUPPROJECT_PATH+'/template',
+    SUPPROJECT_PATH+'/debug_toolbar/templates',
 )
 
 INSTALLED_APPS = (
@@ -114,6 +118,7 @@ INSTALLED_APPS = (
     'equipements',
     'localisations',
     'evenements',
+    'horaires',
     'grappelli',
     'filebrowser',
     'django.contrib.auth',
