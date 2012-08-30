@@ -1,0 +1,10 @@
+{% extends "admin/change_form.html" %}
+
+{% block extrahead %}
+    <script type="text/javascript">
+		var myForm	= document.getElementById("horaires_form");
+		myForm.lundi_journee_continue.checked = true;
+		myForm.lundi_journee_continue.setAttribute('onclick', 'setVisibility();'); 
+		
+		    </script>
+{% endblock %}
