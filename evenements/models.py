@@ -2,7 +2,6 @@
 from django.db import models
 from filebrowser.fields import FileBrowseField
 from localisations.models import Ville, Lieu
-from django.db.models.fields.related import ManyToManyField
 from model_utils.managers import InheritanceManager
 
 class Organisateur(models.Model):
