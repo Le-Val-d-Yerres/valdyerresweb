@@ -8,6 +8,7 @@ from django.conf import settings
 import qrcode
 import base64
 import StringIO
+from pytz import timezone
 
 def CarteEquipements(request):
     try:
@@ -38,7 +39,8 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         
         facilites = Facilites.objects.filter(equipement_id=equipement.id)
         
-        Evenements = equipement.lieu_evenements.select_related().filter(fin__gt=datetime.now())
+        evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id).filter(publish=1).order_by('-haut_page').order_by('debut')
+        
         #<trash>
         try:
             facilites = facilites[0]
@@ -48,7 +50,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         
     except Equipement.DoesNotExist:
         raise Http404
-    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qrcode': qrcode, 'facilites': facilites, 'Evenements': Evenements})
+    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qrcode': qrcode, 'facilites': facilites, 'Evenements': evenements})
 
 def FonctionDetailsHtml(request, fonction_slug):
     try:

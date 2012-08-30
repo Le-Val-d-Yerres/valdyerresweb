@@ -59,30 +59,28 @@
 		<hr \>
 		
 		
-		{% for each in liste_lieux %}
-			<div itemprop="location" itemscope itemtype="http://schema.org/Place">
-				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-					{% if each.presentation %}
-						<p><span itemprop="addressLocality" >{{ each.ville.nom }}</span> : <a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.fonction.slug equipement_slug=each.slug%}">{{ each.nom_lieu }}</a></p>
-					{%else %}
-						<p><span itemprop="addressLocality" >{{ each.ville.nom }}</span> : {{ each.nom_lieu }}</p>
-					{% endif %}
-					<p>Adresse : {{ each.rue }}</p>
-					<p>code Postal : {{ each.ville.code_postal }}</p>
-				</div>
-				
-				 <span itemprop="geo" itemscope itemtype="http://data-vocabulary.org/​Geo">
-			        <meta itemprop="latitude" content="{{ each.latitude }}" />
-			        <meta itemprop="longitude" content="{{ each.longitude }}" />
-     			</span>
-     			
-				<p>Latitude : {{ each.latitude }} - Longitude : {{ each.longitude }}</p>
-				<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr|take:forloop.counter0 }}"/><br/>
-				<script>
-					nouveauMarker({{ each.longitude|toFloatjs }}, {{ each.latitude|toFloatjs }}, '{{ each.nom_lieu }} - {{ each.ville.nom }}', '{{ each.type.picto }}'); 
-				</script>
+		<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+			<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+				{% if evenement.lieu.presentation %}
+					<p><span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span> : <a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}">{{ evenement.lieu.nom_lieu }}</a></p>
+				{% else %}
+					<p><span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span> : {{ evenement.lieu.nom_lieu }}</p>
+				{% endif %}
+				<p>Adresse : {{ evenement.lieu.rue }}</p>
+				<p>code Postal : {{ evenement.lieu.ville.code_postal }}</p>
 			</div>
-		{% endfor %}
+				
+			<span itemprop="geo" itemscope itemtype="http://data-vocabulary.org/​Geo">
+				<meta itemprop="latitude" content="{{ evenement.lieu.latitude }}" />
+			    <meta itemprop="longitude" content="{{ evenement.lieu.longitude }}" />
+     		</span>
+     			
+			<p>Latitude : {{ evenement.lieu.latitude }} - Longitude : {{ evenement.lieu.longitude }}</p>
+			<img alt="QrCode : {{ evenement.lieu.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr }}"/><br/>
+			<script>
+					nouveauMarker({{ evenement.lieu.longitude|toFloatjs }}, {{ evenement.lieu.latitude|toFloatjs }}, '{{ evenement.lieu.nom_lieu }} - {{ evenement.lieu.ville.nom }}', '{{ evenement.lieu|lieuMarker }}'); 
+			</script>
+		</div>
 		
 		<div id="map" style="width: 512px; height: 450px"></div>
 		

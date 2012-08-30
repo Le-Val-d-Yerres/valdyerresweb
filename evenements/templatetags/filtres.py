@@ -67,10 +67,6 @@ def dateFormat(dateUTC):
     date = dateUTC.astimezone(TZone)
     return date.strftime("%Y")+date.strftime("%m")+date.strftime("%d")+"T"+date.strftime("%H")+date.strftime("%M")+date.strftime("%S")
 
-@register.filter(is_safe=True)    
-def take(listeQr, i):
-    return listeQr[i]
-
 @register.filter(is_safe=True)   
 def dateSEO(dateUTC):
     TZone = timezone(settings.TIME_ZONE)
@@ -105,3 +101,13 @@ def thumbnail(file, size='100x100x1'):
             image.save(miniature_filename, image.format, quality=90)
 
     return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
+
+
+# evenements
+@register.filter(is_safe=True) 
+def lieuMarker(lieu):
+    try:
+        picto = lieu.fonction.picto
+    except:
+        picto = settings.PICTO_LIEU
+    return picto

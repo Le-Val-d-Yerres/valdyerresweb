@@ -16,8 +16,6 @@ class HorairesAdmin(admin.ModelAdmin):
                    }),
                  
                  )
-    
-    print fieldsets[0]
 
 
 admin.site.register(Horaires, HorairesAdmin)

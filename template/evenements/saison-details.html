@@ -21,25 +21,10 @@
 		{% if liste_evenement %}
 		
 		    <h2>Les évènements</h2>
+		    
 		    <ul>
 		    {% for evenement in liste_evenement %}
-		        <li>
-		        	{% if isfestival == "False" and evenement.cadre_evenement_id != saison.id %}
-		        		<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a></h3>
-			        	<p>{{ evenement.type.nom }}</p>
-			        	<p><a href="{% url evenements.views.SaisonDetailsHtml slug=evenement.cadre_evenement.slug  %}">{{ evenement.cadre_evenement.nom }}</a></p>
-			        {% else %}
-			        	<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a></h3>
-			        	<p>{{ evenement.type.nom }}</p>
-			        {% endif %}
-			        <p>{{evenement.debut|localtime|dateCustom:evenement.fin }}, {{ evenement.Lieu }}</p>
-			        <p>{{ evenement.description|resume:150|safe }}</p>
-			        {% if isfestival == "False" and evenement.cadre_evenement_id != saison.id %}
-			        	<p>Plus d'info : <a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
-		        	{% else %}
-		        		<p>Plus d'info : <a href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.type.nom }} : {{ evenement.nom }}</a></p>
-		        	{% endif %}
-		        </li>
+		        {{ evenement|safe }}
 		    {% endfor %}
 		    </ul>
 		

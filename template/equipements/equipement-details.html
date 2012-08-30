@@ -70,7 +70,7 @@
 		    {% if Evenements %}
 		    	<ul>
 		    		{% for each in Evenements %}
-		    			<li>{{ each.type.nom }} : <a href="">{{ each.nom }}</a></li>
+		    			<li>{{ each.type.nom }} : <a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a></li>
 		    		{% endfor %}
 		    	</ul>
 		    {% endif %}
