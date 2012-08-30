@@ -21,8 +21,7 @@ class CAVYCalendar(HTMLCalendar):
     listeJour = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
     listeMois = ['Janvier', u'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', u'Août', 'Septembre', 'Octobre', 'Novembre', u'Décembre']
     
-    def __init__(self, evenements, festivals, firstweekday=0):
-        self.ListeFestival = festivals
+    def __init__(self, evenements, firstweekday=0):
         self.ListeEvenement = evenements
         self.evenementIterateur = 0
         self.firstweekday = firstweekday
@@ -41,13 +40,14 @@ class CAVYCalendar(HTMLCalendar):
         if day != 0:
             
             content = str(day)+"<br \>"
-            TZone = timezone(settings.TIME_ZONE)
+            TZone = timezone('UTC')
 
             for each in self.ListeEvenement:
                 dateDebut = each.debut.astimezone(TZone)
                 dateFin = each.fin.astimezone(TZone)
-                
+
                 if int(dateDebut.strftime("%d")) <= day and day <= int(dateFin.strftime("%d")):
+                    
                     content = content+"<p><a href="+reverse('event-details', kwargs={'slug': each.cadre_evenement.slug, 'evenement_slug': each.slug })+">"+each.nom+"</a><br \>"
                     content = content+each.type.nom+"<br \>"
                     if dateDebut.strftime("%d") == dateFin.strftime("%d"):
@@ -60,7 +60,7 @@ class CAVYCalendar(HTMLCalendar):
                         else:
                             content = content+"Toute la journée"
                         content = content+"</p>"
-                    self.ListeEvenement.pop()
+                    self.ListeEvenement.remove(each)
                 else:
                     break
             return '<td class="dayNumber">'+content+'</td>'

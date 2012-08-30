@@ -54,13 +54,10 @@ class Evenement(models.Model):
     url = models.URLField("Site de l'Organisateur (falcultatif)", blank=True)
     cadre_evenement = models.ForeignKey(Saison)
     type = models.ForeignKey(TypeEvenement)
-    lieu = models.ManyToManyField(Lieu, related_name="lieu_evenements")
+    lieu = models.ForeignKey(Lieu)
     publish = models.BooleanField("Publié")
     haut_page = models.BooleanField("Haut de page")
     slug = models.SlugField(max_length=255, unique=True)
-    
-    def Lieu(self):
-        return "\n;\n".join([s.nom_lieu for s in self.lieu.all()])
     
     def Organisateurs(self):
         return "\n;\n".join([s.nom for s in self.organisateur.all()])

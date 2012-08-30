@@ -18,8 +18,6 @@ class HorairesAdmin(admin.ModelAdmin):
                   { 'fields' : ('mardi_matin_debut','mardi_matin_fin','mardi_am_debut','mardi_am_fin','mardi_journee_continue')
                    }),
                  )
-    
-    print fieldsets[0]
 
 
 admin.site.register(Horaires, HorairesAdmin)

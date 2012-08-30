@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from model_utils.managers import InheritanceManager
 
 class Ville(models.Model):
     nom = models.CharField(max_length=150)
@@ -20,6 +21,8 @@ class Lieu(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     slug = models.SlugField(max_length=255, unique=True)
+    
+    objects = InheritanceManager()
     
     class Meta:
         verbose_name_plural = "Lieux"

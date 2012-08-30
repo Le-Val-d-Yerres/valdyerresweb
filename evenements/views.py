@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response
 from evenements.models import *
@@ -13,9 +14,14 @@ import calendar
 from equipements.models import Equipement
 from pytz import tzinfo,timezone
 from valdyerresweb import settings
+from django.core.urlresolvers import reverse
+from model_utils.managers import InheritanceManager
 
 utcTZ = timezone("UTC")
-        
+
+ListeMois = ['janvier', u'février', 'mars', 'avril', 'mai', 'juin', 'juillet', u'août', 'septembre', 'octobre', 'novembre', u'décembre']
+ListeJours = ['dimanche','lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi']    
+    
 def AgendaMois(request, annee, mois):
     try:
         month = int(mois)
@@ -40,23 +46,15 @@ def AgendaMois(request, annee, mois):
         dayStart = 1
         
         DateDebut = datetime.datetime(year, month, dayStart,0,0,0,tzinfo=utcTZ)
-        DateFin = datetime.date(year, month, dayEnd)
+        DateFin = datetime.datetime(year, month, dayEnd,23,59,0,tzinfo=utcTZ)
         
         liste_event = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin)
         evenements = list()
-        
-        saisons = SaisonCulturelle.objects.filter(fin__gt=datetime.datetime.now())
-        listeFestival = list()
-        
-        for each in saisons:
-            festivals = Festival.objects.select_related().filter(saison_culture_id=each.id)
-            for eachFestival in festivals:
-                listeFestival.append(eachFestival)
             
         for each in liste_event:
             evenements.append(each)
             
-        CAVYcalendrier = CAVYCalendar(evenements, listeFestival)
+        CAVYcalendrier = CAVYCalendar(evenements)
 
         calendrier = CAVYcalendrier.formatmonth(year, month)
     except Saison.DoesNotExist:
@@ -67,18 +65,62 @@ def AgendaAnnee(request, annee):
     try:
         year = int(annee)
         
-        DateDebut = datetime.date(year, 1, 31)
-        DateFin = datetime.date(year, 12, 31)
-        liste_evenements = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin)
+        DateDebut = datetime.datetime(year, 1, 1,0,0,0,tzinfo=utcTZ)
+        DateFin = datetime.datetime(year, 12, 31,23,59,tzinfo=utcTZ)
+        evenements = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin).filter(publish=1).order_by('debut')
+        liste_lieux = Lieu.objects.select_related().select_subclasses().all()
         
+        listeLieux = {}
+        for each in liste_lieux:
+            listeLieux[each.id] = each
+
+        liste_evenements = list()
+        for each in evenements:
+            each.lieu = listeLieux[each.lieu_id]
+            liste_evenements.append(each)
+            
+        listeHtml = list()
+        
+        TZone = timezone(settings.TIME_ZONE)
+        debut = liste_evenements[0].debut.astimezone(TZone)
+        
+        mois = int(debut.strftime("%m"));
+            
+        listeHtml.append('<li>'+ListeMois[mois]+'<ul>')
+        
+        if type(liste_evenements[0].lieu) == Equipement:
+            lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': liste_evenements[0].lieu.fonction.slug, 'equipement_slug': liste_evenements[0].lieu.slug})+'">'+liste_evenements[0].lieu.nom_lieu+'</a> - '
+        else:
+            lien = ''
+        
+        listeHtml.append('<li>'+ListeJours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" - "+debut.strftime("%H")+"h"+debut.strftime("%M")+" : <a href=\""+reverse('event-details', kwargs={'slug': liste_evenements[0].cadre_evenement.slug, 'evenement_slug': liste_evenements[0].slug})+"\">"+liste_evenements[0].nom+"</a> | "+lien+liste_evenements[0].lieu.ville.nom+"</li>")
+        
+        liste_evenements.remove(liste_evenements[0])
+        
+        for each in liste_evenements:
+            TZone = timezone(settings.TIME_ZONE)
+            debut = each.debut.astimezone(TZone)
+            
+            if int(debut.strftime("%m")) != mois:
+                mois = int(debut.strftime("%m"))
+                listeHtml.append("</ul></li><li>"+ListeMois[mois]+"<ul>")
+                
+            if type(each.lieu) == Equipement:
+                lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': each.lieu.fonction.slug, 'equipement_slug': each.lieu.slug})+'">'+each.lieu.nom_lieu+'</a> - '
+            else:
+                lien = ''
+            
+            listeHtml.append('<li>'+ListeJours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" - "+debut.strftime("%H")+"h"+debut.strftime("%M")+" : <a href=\""+reverse('event-details', kwargs={'slug': each.cadre_evenement.slug, 'evenement_slug': each.slug})+"\">"+each.nom+"</a> | "+lien+each.lieu.ville.nom+"</li>")
+        
+        listeHtml.append('</ul>')
     except SaisonCulturelle.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/agenda-annee.html', {'liste_evenement': liste_evenements, 'annee': annee})
+    return render_to_response('evenements/agenda-annee.html', {'liste_evenement': listeHtml, 'annee': annee})
 
 def AgendaNow(request):
     try:
-        month = datetime.datetime.now().month
-        year = datetime.datetime.now().year
+        month = datetime.datetime.now(utcTZ).month
+        year = datetime.datetime.now(utcTZ).year
         
         if month == 1:
             mois_prec = '12'
@@ -98,13 +140,13 @@ def AgendaNow(request):
         dayEnd = calendar.monthrange(year, month)[1]
         dayStart = 1
         
-        DateDebut = datetime.date(year, month, dayStart)
-        DateFin = datetime.date(year, month, dayEnd)
+        DateDebut = datetime.datetime(year, month, dayStart,0,0,0,tzinfo=utcTZ)
+        DateFin = datetime.datetime(year, month, dayEnd,23,59,0,tzinfo=utcTZ)
         
         liste_event = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin)
         evenements = list()
         
-        saisons = SaisonCulturelle.objects.filter(fin__gt=datetime.datetime.now())
+        saisons = SaisonCulturelle.objects.filter(fin__gt=datetime.datetime.now(utcTZ))
         listeFestival = list()
         
         for each in saisons:
@@ -115,7 +157,7 @@ def AgendaNow(request):
         for each in liste_event:
             evenements.append(each)
         
-        CAVYcalendrier = CAVYCalendar(evenements, listeFestival)
+        CAVYcalendrier = CAVYCalendar(evenements)
         calendrier = CAVYcalendrier.formatmonth(year, month)
     except Saison.DoesNotExist:
         raise Http404
@@ -126,26 +168,72 @@ def SaisonDetailsHtml(request, slug):
         saison = Saison.objects.select_related().select_subclasses().get(slug=slug)
 
         if type(saison) == Festival:
-            liste_evenement = Evenement.objects.select_related().order_by('-haut_page').filter(fin__gt=datetime.datetime.now()).filter(publish=1).filter(cadre_evenement_id=saison.id)
+            evenements = Evenement.objects.select_related().filter(fin__gt=datetime.datetime.now(utcTZ)).filter(publish=1).filter(cadre_evenement_id=saison.id)
             isfestival = "True"
         else:
-            evenements = Evenement.objects.select_related(depth=1).filter(fin__gt=datetime.datetime.now()).filter(publish=1)
+            Qevenements = Evenement.objects.select_related().filter(fin__gt=datetime.datetime.now(utcTZ)).filter(publish=1)
             festival = Festival.objects.select_related().filter(saison_culture_id=saison.id)
             
             filtre = Q(cadre_evenement_id=saison.id)
             for each in festival:
                 filtre.add(Q(cadre_evenement_id=each.id), 'OR')
                 
-            liste_evenement = evenements.order_by('-haut_page').filter(filtre)
+            evenements = Qevenements.order_by('debut').filter(filtre)
             isfestival = "False"
+
+        liste_lieux = Lieu.objects.select_related().select_subclasses().all()
+        
+        listeLieux = {}
+        for each in liste_lieux:
+            listeLieux[each.id] = each
+
+        liste_evenements = list()
+        for each in evenements:
+            each.lieu = listeLieux[each.lieu_id]
+            liste_evenements.append(each)
+            
+        listeHtml = list()
+        
+        TZone = timezone(settings.TIME_ZONE)
+        debut = liste_evenements[0].debut.astimezone(TZone)
+        
+        mois = int(debut.strftime("%m"));
+            
+        listeHtml.append('<li>'+ListeMois[mois]+' - '+debut.strftime("%Y")+'<ul>')
+        
+        if type(liste_evenements[0].lieu) == Equipement:
+            lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': liste_evenements[0].lieu.fonction.slug, 'equipement_slug': liste_evenements[0].lieu.slug})+'">'+liste_evenements[0].lieu.nom_lieu+'</a> - '
+        else:
+            lien = ''
+            
+        listeHtml.append('<li>'+ListeJours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" - "+debut.strftime("%H")+"h"+debut.strftime("%M")+" : <a href=\""+reverse('event-details', kwargs={'slug': liste_evenements[0].cadre_evenement.slug, 'evenement_slug': liste_evenements[0].slug})+"\">"+liste_evenements[0].nom+"</a> | "+lien+liste_evenements[0].lieu.ville.nom+"</li>")
+        
+        liste_evenements.remove(liste_evenements[0])
+        
+        for each in liste_evenements:
+            TZone = timezone(settings.TIME_ZONE)
+            debut = each.debut.astimezone(TZone)
+            
+            if int(debut.strftime("%m")) != mois:
+                mois = int(debut.strftime("%m"))
+                listeHtml.append("</ul></li><li>"+ListeMois[mois]+" - "+debut.strftime("%Y")+"<ul>")
+                
+            if type(each.lieu) == Equipement:
+                lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': each.lieu.fonction.slug, 'equipement_slug': each.lieu.slug})+'">'+each.lieu.nom_lieu+'</a> - '
+            else:
+                lien = ''
+            
+            listeHtml.append('<li>'+ListeJours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" - "+debut.strftime("%H")+"h"+debut.strftime("%M")+" : <a href=\""+reverse('event-details', kwargs={'slug': each.cadre_evenement.slug, 'evenement_slug': each.slug})+"\">"+each.nom+"</a> | "+lien+each.lieu.ville.nom+"</li>")
+        
+        listeHtml.append('</ul>')
         
     except SaisonCulturelle.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/saison-details.html', {'liste_evenement': liste_evenement, 'saison': saison, 'isfestival': isfestival})
+    return render_to_response('evenements/saison-details.html', {'liste_evenement': listeHtml, 'saison': saison, 'isfestival': isfestival, 'evenements': evenements})
 
 def EvenementDetailsIcalendar(evenement):
     myTemplate = loader.get_template('evenements/evenement-details.ics.html')
-    myContext = Context({"evenement": evenement})
+    myContext = Context({"evenement": evenement, "settings": settings})
     return myTemplate.render(myContext)
     
 def GenerationQrCode(data):
@@ -164,26 +252,14 @@ def GenerationQrCode(data):
 def EvenementDetailsHtml(request, slug, evenement_slug):
     try:
         saison = Saison.objects.get(slug=slug)
-        evenement = Evenement.objects.select_related(depth=1).get(slug=evenement_slug)
+        evenement = Evenement.objects.select_related().get(slug=evenement_slug)
         tarifs = Tarification.objects.filter(evenement_id=evenement.id)
-        liste_lieux = evenement.lieu.select_related(depth=1).all()
-        liste_equipements = Equipement.objects.select_related(depth=1).all()
         evenement_qr = GenerationQrCode(EvenementDetailsIcalendar(evenement))
         
-        ListeLieux = list()
-        
-        for each in liste_lieux:
-            correspondance = True
-            for eachEquipement in liste_equipements:
-                if eachEquipement.id == each.id:
-                    ListeLieux.append(eachEquipement)
-                    correspondance = False
-            if correspondance:
-                ListeLieux.append(each)
+        evenement.lieu = Lieu.objects.select_subclasses().get(id=evenement.lieu.id)
 
-        localisation_qr = list()
-        for each in liste_lieux:
-            localisation_qr.append(GenerationQrCode("geo:"+str(each.latitude)+","+str(each.longitude)))
+
+        localisation_qr = GenerationQrCode("geo:"+str(evenement.lieu.latitude)+","+str(evenement.lieu.longitude))
 
         #<trash>
         try:
@@ -193,7 +269,7 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
         #</trash>  
     except SaisonCulturelle.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'tarifs': tarifs, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr,'liste_lieux': ListeLieux })
+    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'tarifs': tarifs, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr })
 
 
 
@@ -204,4 +280,3 @@ def EvenementDetailsICS(request, slug, evenement_slug, festival_slug = None):
     except Evenement.DoesNotExist:
         raise Http404
     return HttpResponse(myText,content_type="text/calendar")
-    #return render_to_response('evenements/evenement-details.ics.html', {'evenement': evenement})

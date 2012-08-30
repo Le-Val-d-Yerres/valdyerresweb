@@ -1,6 +1,90 @@
 [
 	{
 		"pk": 1,
+		"model": "equipements.equipementfonction",
+		"fields": {
+			"nom": "Salle de Spectacle",
+			"pluriel": "Salles de Spectacle",
+			"slug": "salle-de-spectacle",
+			"picto": "uploads/picto/equipements/spectacle.png"
+		}
+	}, {
+		"pk": 5,
+		"model": "equipements.equipement",
+		"fields": {
+			"meta_description": "",
+			"fax": "",
+			"image": "uploads/equipements/salle_spectacle.jpg",
+			"telephone": "01 69 00 13 15",
+			"presentation": "<p>Am&eacute;nag&eacute;e tout r&eacute;cemment (2011) dans le corps d&rsquo;une ancienne ferme seigneuriale construite au XV e<br />si&egrave;cle autour d&rsquo;une magnifique cour pav&eacute;e, la salle G&eacute;rard Philipe est modulable et peut comporter<br />jusqu&rsquo;&agrave; 140 places assises. Les mat&eacute;riaux utilis&eacute;s offrent une excellente acoustique. La salle est un<br />&eacute;crin id&eacute;al pour la tenue de spectacles intimistes, po&eacute;tiques et oniriques, et restitue &agrave; la perfection<br />le talent des interpr&egrave;tes. A noter qu&rsquo;un espace de restauration a &eacute;t&eacute; cr&eacute;&eacute; au rez-de-chauss&eacute;e pour<br />palier les petites faims d&rsquo;avant ou d&rsquo;apr&egrave;s spectacle&hellip;</p>",
+			"email": "",
+			"fonction": 1
+		}
+	}, {
+		"pk": 6,
+		"model": "equipements.equipement",
+		"fields": {
+			"meta_description": "",
+			"fax": "",
+			"image": "uploads/equipements/spectacle.jpg",
+			"telephone": "01 69 02 34 35",
+			"presentation": "<p>Inaugur&eacute; en mai 2012, le Nouveau CEC de Yerres est le dernier n&eacute; des salles de spectacles du Val<br />d&rsquo;Yerres, en attendant la future Maison des Arts Urbains d&rsquo;Epinay-sous-S&eacute;nart pr&eacute;vue pour 2014.<br />Ce fabuleux vaisseau propose une salle de spectacles de grande capacit&eacute; (1.000 places assises)<br />permettant d&rsquo;accueillir des t&ecirc;tes d&rsquo;affiche renomm&eacute;es, des concerts, des spectacles de danse, des<br />pi&egrave;ces de th&eacute;&acirc;tre&hellip; Esth&eacute;tiquement, ce nouvel espace (qui comprend aussi une m&eacute;diath&egrave;que, un<br />cin&eacute;ma, une brasserie, des salles de conf&eacute;rences&hellip;) est particuli&egrave;rement r&eacute;ussi. Espaces paysag&eacute;s,<br />murs v&eacute;g&eacute;talis&eacute;s, apport de lumi&egrave;re naturelle, am&eacute;liorent encore la convivialit&eacute; de l&rsquo;endroit&hellip;</p>",
+			"email": "",
+			"fonction": 1
+		}
+	}, {
+		"pk": 8,
+		"model": "equipements.equipement",
+		"fields": {
+			"meta_description": "",
+			"fax": "",
+			"image": "uploads/equipements/theatre.jpg",
+			"telephone": "01 69 12 24 50",
+			"presentation": "<p>Le Th&eacute;&acirc;tre de la Vall&eacute;e de l&rsquo;Yerres, commun&eacute;ment appel&eacute; Th&eacute;&acirc;tre de Brunoy, est situ&eacute; au c&oelig;ur du<br />centre-ville, &agrave; deux pas de la mairie et de la biblioth&egrave;que. En fonction depuis 2007, il est &eacute;tudi&eacute; pour<br />accueillir dans les meilleures conditions pi&egrave;ces de th&eacute;&acirc;tre et concerts. Ses 500 places assises sont<br />tr&egrave;s confortables et la sc&egrave;ne, haute et profonde, permet l&rsquo;installation de d&eacute;cors imposants mais<br />aussi d&rsquo;am&eacute;nagements sp&eacute;cifiques pour la tenue de spectacles de cirques par exemple. Un parking<br />souterrain de 150 places permet un stationnement ais&eacute; les soirs de spectacles.</p>",
+			"email": "",
+			"fonction": 1
+		}
+	}, {
+		"pk": 9,
+		"model": "equipements.equipement",
+		"fields": {
+			"meta_description": "",
+			"fax": "",
+			"image": "uploads/equipements/salle_rene_fallet.jpg",
+			"telephone": "01 01 01 01  01",
+			"presentation": "<p>Dans le r&eacute;seau des salles de spectacles du Val d&rsquo;Yerres, l&rsquo;Espace Ren&eacute; Fallet de Crosne est un<br />&eacute;quipement pour ainsi dire magique... Par sa structure ext&eacute;rieure originale tout d&rsquo;abord, par<br />sa polyvalence ensuite. Ses tribunes t&eacute;lescopiques permettent d&rsquo;accueillir dans de tr&egrave;s bonnes<br />conditions jusqu&rsquo;&agrave; 400 spectateurs assis. L&rsquo;espace sc&eacute;nique, modulable lui aussi, est adapt&eacute; &agrave; la<br />tenue de spectacles de tous types. Ce qui permet &agrave; l&rsquo;Espace Ren&eacute; Fallet de d&eacute;velopper une ligne<br />artistique riche et &eacute;clectique, destin&eacute;e &agrave; un large public : des concerts de vari&eacute;t&eacute; aux sessions de jazz,<br />en passant par des spectacles comiques, des contes pour enfant et m&ecirc;me, des s&eacute;ances de cin&eacute;ma&hellip;</p>",
+			"email": "",
+			"fonction": 1
+		}
+	}, {
+		"pk": 2,
+		"model": "equipements.facilite",
+		"fields": {
+			"importance": 100,
+			"nom": "Accessibilit\u00e9 handicap\u00e9",
+			"description": "Le b\u00e2timent \u00e0 \u00e9t\u00e9 con\u00e7u pour faciliter l'acc\u00e8s aux handicap\u00e9s",
+			"picto": "uploads/picto/wheelchair_symbol.png",
+			"slug": "accessibilite-handicape"
+		}
+	}, {
+		"pk": 3,
+		"model": "equipements.facilite",
+		"fields": {
+			"importance": 98,
+			"nom": "Toilette handicap\u00e9",
+			"description": "Les toilettes sont pr\u00e9vu pour recevoir des handicap\u00e9s.",
+			"picto": "uploads/picto/toilettes-handicape.png",
+			"slug": "toilette-handicape"
+		}
+	}, {
+		"pk": 1,
+		"model": "equipements.facilites",
+		"fields": {
+			"facilites": [2, 3],
+			"equipement": 6
+		}
+	}, {
+		"pk": 1,
 		"model": "evenements.organisateur",
 		"fields": {
 			"ville": 4,
@@ -125,7 +209,7 @@
 			"debut": "2012-09-12T17:30:00Z",
 			"organisateur": [1],
 			"publish": true,
-			"lieu": [5],
+			"lieu": 5,
 			"cadre_evenement": 2,
 			"fin": "2012-09-12T17:30:00Z",
 			"slug": "peau-dane",
@@ -144,7 +228,7 @@
 			"debut": "2013-01-26T19:30:00Z",
 			"organisateur": [2],
 			"publish": true,
-			"lieu": [6],
+			"lieu": 6,
 			"cadre_evenement": 1,
 			"fin": "2013-01-26T21:10:00Z",
 			"slug": "the-a-la-menthe-ou-tes-citron",
@@ -163,7 +247,7 @@
 			"debut": "2013-04-12T18:30:00Z",
 			"organisateur": [2],
 			"publish": true,
-			"lieu": [8],
+			"lieu": 8,
 			"cadre_evenement": 1,
 			"fin": "2013-04-12T20:30:00Z",
 			"slug": "le-songe-dune-nuit-dete",
@@ -182,7 +266,7 @@
 			"debut": "2013-04-13T18:30:00Z",
 			"organisateur": [2],
 			"publish": true,
-			"lieu": [6],
+			"lieu": 6,
 			"cadre_evenement": 1,
 			"fin": "2013-04-13T20:00:00Z",
 			"slug": "le-quatuor",
@@ -201,7 +285,7 @@
 			"debut": "2013-04-05T18:30:00Z",
 			"organisateur": [2],
 			"publish": true,
-			"lieu": [6],
+			"lieu": 6,
 			"cadre_evenement": 1,
 			"fin": "2013-04-05T20:00:00Z",
 			"slug": "noa",
@@ -220,7 +304,7 @@
 			"debut": "2013-03-22T22:00:00Z",
 			"organisateur": [2],
 			"publish": true,
-			"lieu": [6],
+			"lieu": 6,
 			"cadre_evenement": 1,
 			"fin": "2013-03-22T21:10:00Z",
 			"slug": "lady-oscar",
@@ -239,7 +323,7 @@
 			"debut": "2013-02-23T19:30:00Z",
 			"organisateur": [2],
 			"publish": true,
-			"lieu": [6],
+			"lieu": 6,
 			"cadre_evenement": 1,
 			"fin": "2013-02-23T21:00:00Z",
 			"slug": "ropartz-et-caillebotte",
@@ -258,7 +342,7 @@
 			"debut": "2012-09-23T08:00:00Z",
 			"organisateur": [3],
 			"publish": true,
-			"lieu": [11],
+			"lieu": 11,
 			"cadre_evenement": 3,
 			"fin": "2012-09-23T16:00:00Z",
 			"slug": "fete-de-la-foret-de-senart",
@@ -309,102 +393,6 @@
 		"fields": {
 			"prix": [1, 3],
 			"evenement": 2
-		}
-	}, {
-		"pk": 1,
-		"model": "equipements.equipementfonction",
-		"fields": {
-			"nom": "Salle de Spectacle",
-			"pluriel": "Salles de Spectacle",
-			"slug": "salle-de-spectacle",
-			"picto": "uploads/picto/equipements/spectacle.png"
-		}
-	}, {
-		"pk": 5,
-		"model": "equipements.equipement",
-		"fields": {
-			"meta_description": "",
-			"fax": "",
-			"image": "uploads/equipements/salle_spectacle.jpg",
-			"telephone": "01 69 00 13 15",
-			"presentation": "<p>Am&eacute;nag&eacute;e tout r&eacute;cemment (2011) dans le corps d&rsquo;une ancienne ferme seigneuriale construite au XV e<br />si&egrave;cle autour d&rsquo;une magnifique cour pav&eacute;e, la salle G&eacute;rard Philipe est modulable et peut comporter<br />jusqu&rsquo;&agrave; 140 places assises. Les mat&eacute;riaux utilis&eacute;s offrent une excellente acoustique. La salle est un<br />&eacute;crin id&eacute;al pour la tenue de spectacles intimistes, po&eacute;tiques et oniriques, et restitue &agrave; la perfection<br />le talent des interpr&egrave;tes. A noter qu&rsquo;un espace de restauration a &eacute;t&eacute; cr&eacute;&eacute; au rez-de-chauss&eacute;e pour<br />palier aux petites faims d&rsquo;avant ou d&rsquo;apr&egrave;s spectacle&hellip;</p>",
-			"email": "",
-			"fonction": 1
-		}
-	}, {
-		"pk": 6,
-		"model": "equipements.equipement",
-		"fields": {
-			"meta_description": "",
-			"fax": "",
-			"image": "uploads/equipements/spectacle.jpg",
-			"telephone": "01 69 02 34 35",
-			"presentation": "<p>Inaugur&eacute; en mai 2012, le Nouveau CEC de Yerres est le dernier n&eacute; des salles de spectacles du Val<br />d&rsquo;Yerres, en attendant la future Maison des Arts Urbains d&rsquo;Epinay-sous-S&eacute;nart pr&eacute;vue pour 2014.<br />Ce fabuleux vaisseau propose une salle de spectacles de grande capacit&eacute; (1.000 places assises)<br />permettant d&rsquo;accueillir des t&ecirc;tes d&rsquo;affiche renomm&eacute;es, des concerts, des spectacles de danse, des<br />pi&egrave;ces de th&eacute;&acirc;tre&hellip; Esth&eacute;tiquement, ce nouvel espace (qui comprend aussi une m&eacute;diath&egrave;que, un<br />cin&eacute;ma, une brasserie, des salles de conf&eacute;rences&hellip;) est particuli&egrave;rement r&eacute;ussi. Espaces paysag&eacute;s,<br />murs v&eacute;g&eacute;talis&eacute;s, apport de lumi&egrave;re naturelle, am&eacute;liorent encore la convivialit&eacute; de l&rsquo;endroit&hellip;</p>",
-			"email": "",
-			"fonction": 1
-		}
-	}, {
-		"pk": 8,
-		"model": "equipements.equipement",
-		"fields": {
-			"meta_description": "",
-			"fax": "",
-			"image": "uploads/equipements/theatre.jpg",
-			"telephone": "01 69 12 24 50",
-			"presentation": "<p>Le Th&eacute;&acirc;tre de la Vall&eacute;e de l&rsquo;Yerres, commun&eacute;ment appel&eacute; Th&eacute;&acirc;tre de Brunoy, est situ&eacute; au c&oelig;ur du<br />centre-ville, &agrave; deux pas de la mairie et de la biblioth&egrave;que. En fonction depuis 2007, il est &eacute;tudi&eacute; pour<br />accueillir dans les meilleures conditions pi&egrave;ces de th&eacute;&acirc;tre et concerts. Ses 500 places assises sont<br />tr&egrave;s confortables et la sc&egrave;ne, haute et profonde, permet l&rsquo;installation de d&eacute;cors imposants mais<br />aussi d&rsquo;am&eacute;nagements sp&eacute;cifiques pour la tenue de spectacles de cirques par exemple. Un parking<br />souterrain de 150 places permet un stationnement ais&eacute; les soirs de spectacles.</p>",
-			"email": "",
-			"fonction": 1
-		}
-	}, {
-		"pk": 9,
-		"model": "equipements.equipement",
-		"fields": {
-			"meta_description": "",
-			"fax": "",
-			"image": "uploads/equipements/salle_rene_fallet.jpg",
-			"telephone": "01 01 01 01  01",
-			"presentation": "<p>Dans le r&eacute;seau des salles de spectacles du Val d&rsquo;Yerres, l&rsquo;Espace Ren&eacute; Fallet de Crosne est un<br />&eacute;quipement pour ainsi dire magique... Par sa structure ext&eacute;rieure originale tout d&rsquo;abord, par<br />sa polyvalence ensuite. Ses tribunes t&eacute;lescopiques permettent d&rsquo;accueillir dans de tr&egrave;s bonnes<br />conditions jusqu&rsquo;&agrave; 400 spectateurs assis. L&rsquo;espace sc&eacute;nique, modulable lui aussi, est adapt&eacute; &agrave; la<br />tenue de spectacles de tous types. Ce qui permet &agrave; l&rsquo;Espace Ren&eacute; Fallet de d&eacute;velopper une ligne<br />artistique riche et &eacute;clectique, destin&eacute;e &agrave; un large public : des concerts de vari&eacute;t&eacute; aux sessions de jazz,<br />en passant par des spectacles comiques, des contes pour enfant et m&ecirc;me, des s&eacute;ances de cin&eacute;ma&hellip;</p>",
-			"email": "",
-			"fonction": 1
-		}
-	}, {
-		"pk": 10,
-		"model": "equipements.equipement",
-		"fields": {
-			"meta_description": "",
-			"fax": "",
-			"image": "",
-			"telephone": "01 01 01 01  01",
-			"presentation": "<p>La Salle M&egrave;re Marie Pia, c&rsquo;est un univers &agrave; part ! Une salle intimiste au charme particulier. On se sent<br />presque chez soi &agrave; l&rsquo;int&eacute;rieur de cet environnement familier et on communie avec les artistes qui<br />sont &agrave; quelques m&egrave;tres. Musiques, lectures, magie, spectacles interactifs pour enfant&hellip;, autant de<br />moments remplis d&rsquo;&eacute;motion qui rythment chaque saison la vie de la Salle M&egrave;re Parie Pia&hellip;</p>",
-			"email": "",
-			"fonction": 1
-		}
-	}, {
-		"pk": 2,
-		"model": "equipements.facilite",
-		"fields": {
-			"importance": 100,
-			"nom": "Accessibilit\u00e9 handicap\u00e9",
-			"description": "Le b\u00e2timent \u00e0 \u00e9t\u00e9 con\u00e7u pour faciliter l'acc\u00e8s aux handicap\u00e9s",
-			"picto": "uploads/picto/wheelchair_symbol.png",
-			"slug": "accessibilite-handicape"
-		}
-	}, {
-		"pk": 3,
-		"model": "equipements.facilite",
-		"fields": {
-			"importance": 98,
-			"nom": "Toilette handicap\u00e9",
-			"description": "Les toilettes sont pr\u00e9vu pour recevoir des handicap\u00e9s.",
-			"picto": "uploads/picto/toilettes-handicape.png",
-			"slug": "toilette-handicape"
-		}
-	}, {
-		"pk": 1,
-		"model": "equipements.facilites",
-		"fields": {
-			"facilites": [2, 3],
-			"equipement": 6
 		}
 	}, {
 		"pk": 1,

@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.template import defaultfilters
 
 class EvenementAdmin(admin.ModelAdmin):
-    list_display = ['nom', 'Organisateurs', 'Lieu', 'debut', 'publish']
+    list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
     fieldsets = [
         ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
         ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url']}),
@@ -14,7 +14,7 @@ class EvenementAdmin(admin.ModelAdmin):
     ]
     search_fields = ['nom']
     list_filter = ['publish']
-    filter_horizontal = ("lieu", "organisateur",)
+    filter_horizontal = ("organisateur",)
 
     
     class Media:
