@@ -36,6 +36,9 @@
 			    </ul>
 		    {% endif %}
 		    
+		    <img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_vcard }}"/>
+		    <br \>
+		    <a href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Télécharger la Vcard de l'équipement</a>
 		    <hr />
 			
 			<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
@@ -59,7 +62,7 @@
 				<p>Mail : {{ equipement.mail }}</p>
 			{% endif %}
 			
-			<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qrcode }}"/>
+			<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
 			
 			<script>
 				nouveauMarker({{ equipement.longitude|toFloatjs }}, {{ equipement.latitude|toFloatjs }}, '{{ equipement.nom_lieu }}', '{{ equipement.fonction.picto }}'); 

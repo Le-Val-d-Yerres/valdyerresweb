@@ -1,0 +1,9 @@
+BEGIN:VCALENDAR{% for evenement in liste_evenement %}
+{% load tz %}{% load filtres %}BEGIN:VEVENT
+SUMMARY:{{ evenement.nom|safe }}
+DTSTART:{{ evenement.debut|dateFormat }}
+{% if evenement.debut != evenement.fin %}DTEND:{{ evenement.fin|dateFormat }}
+{% endif %}LOCATION;ALTREP="{{ settings.NOM_DOMAINE}}{% url equipements.views.EquipementVCF slug=evenement.lieu.slug %}":{{ evenement.lieu.rue }} {{ evenement.lieu.ville.code_postal }} {{ evenement.lieu.ville.nom }} 
+DESCRIPTION:{{ evenement.type|safe }}
+END:VEVENT{% endfor %}
+END:VCALENDAR
