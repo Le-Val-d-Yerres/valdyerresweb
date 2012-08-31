@@ -26,7 +26,9 @@ def AgendaMois(request, annee, mois):
     try:
         month = int(mois)
         year = int(annee)
-    
+        
+        mois = entierAvecZero(month)
+        
         if month == 1:
             mois_prec = '12'
             annee_prec = str(year-1)
@@ -50,16 +52,44 @@ def AgendaMois(request, annee, mois):
         
         liste_event = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin)
         evenements = list()
-            
+        
+        nbre_evenement = 0
         for each in liste_event:
             evenements.append(each)
+            nbre_evenement = nbre_evenement+1
             
         CAVYcalendrier = CAVYCalendar(evenements)
 
         calendrier = CAVYcalendrier.formatmonth(year, month)
+        
+        now ="False"
+        
     except Saison.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/agenda.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv})
+    return render_to_response('evenements/agenda.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv, 'now': now, 'mois': mois, 'annee': year, 'nbre_evenement': nbre_evenement})
+
+def AgendaMoisICS(request, annee, mois):
+    try:
+        month = int(mois)
+        year = int(annee)
+    
+        dayEnd = calendar.monthrange(year, month)[1]
+        dayStart = 1
+        
+        DateDebut = datetime.datetime(year, month, dayStart,0,0,0,tzinfo=utcTZ)
+        DateFin = datetime.datetime(year, month, dayEnd,23,59,0,tzinfo=utcTZ)
+        
+        liste_event = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin)
+    
+        evenements = list()   
+        for each in liste_event:
+            evenements.append(each)
+            
+        myText = MultiEvenementsDetailsIcalendar(evenements)
+        
+    except Saison.DoesNotExist:
+        raise Http404
+    return HttpResponse(myText,content_type="text/calendar")
 
 def AgendaAnnee(request, annee):
     try:
@@ -117,6 +147,23 @@ def AgendaAnnee(request, annee):
         raise Http404
     return render_to_response('evenements/agenda-annee.html', {'liste_evenement': listeHtml, 'annee': annee})
 
+def AgendaAnneeICS(request, annee):
+    try:
+        year = int(annee)
+        
+        DateDebut = datetime.datetime(year, 1, 1,0,0,0,tzinfo=utcTZ)
+        DateFin = datetime.datetime(year, 12, 31,23,59,tzinfo=utcTZ)
+        evenements = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin).filter(publish=1).order_by('debut')
+
+        liste_evenements = list()
+        for each in evenements:
+            liste_evenements.append(each)
+        
+        myText = MultiEvenementsDetailsIcalendar(liste_evenements)
+    except SaisonCulturelle.DoesNotExist:
+        raise Http404
+    return HttpResponse(myText,content_type="text/calendar")
+
 def AgendaNow(request):
     try:
         month = datetime.datetime.now(utcTZ).month
@@ -153,15 +200,42 @@ def AgendaNow(request):
             festivals = Festival.objects.select_related().filter(saison_culture_id=each.id)
             for eachFestival in festivals:
                 listeFestival.append(eachFestival)
-            
+        
+        nbre_evenement = 0  
         for each in liste_event:
             evenements.append(each)
+            nbre_evenement = nbre_evenement+1
+        
         
         CAVYcalendrier = CAVYCalendar(evenements)
         calendrier = CAVYcalendrier.formatmonth(year, month)
+        
+        now = "True"
     except Saison.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/agenda.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv})
+    return render_to_response('evenements/agenda.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv, 'now': now, 'nbre_evenement': nbre_evenement})
+
+def AgendaNowICS(request):
+    try:
+        month = datetime.datetime.now(utcTZ).month
+        year = datetime.datetime.now(utcTZ).year
+        
+        dayEnd = calendar.monthrange(year, month)[1]
+        dayStart = 1
+        
+        DateDebut = datetime.datetime(year, month, dayStart,0,0,0,tzinfo=utcTZ)
+        DateFin = datetime.datetime(year, month, dayEnd,23,59,0,tzinfo=utcTZ)
+        
+        liste_event = Evenement.objects.select_related().filter(debut__gt=DateDebut).filter(fin__lt=DateFin)
+        
+        evenements = list()    
+        for each in liste_event:
+            evenements.append(each)
+        
+        myText = MultiEvenementsDetailsIcalendar(evenements)
+    except Saison.DoesNotExist:
+        raise Http404
+    return HttpResponse(myText,content_type="text/calendar")
 
 def SaisonDetailsHtml(request, slug):
     try:
@@ -231,10 +305,41 @@ def SaisonDetailsHtml(request, slug):
         raise Http404
     return render_to_response('evenements/saison-details.html', {'liste_evenement': listeHtml, 'saison': saison, 'isfestival': isfestival, 'evenements': evenements})
 
+def SaisonDetailsICS(request, slug):
+    try:
+        saison = Saison.objects.select_related().select_subclasses().get(slug=slug)
+
+        if type(saison) == Festival:
+            evenements = Evenement.objects.select_related().filter(fin__gt=datetime.datetime.now(utcTZ)).filter(publish=1).filter(cadre_evenement_id=saison.id)
+        else:
+            Qevenements = Evenement.objects.select_related().filter(fin__gt=datetime.datetime.now(utcTZ)).filter(publish=1)
+            festival = Festival.objects.select_related().filter(saison_culture_id=saison.id)
+            
+            filtre = Q(cadre_evenement_id=saison.id)
+            for each in festival:
+                filtre.add(Q(cadre_evenement_id=each.id), 'OR')
+                
+            evenements = Qevenements.order_by('debut').filter(filtre)
+
+        liste_evenements = list()
+        for each in evenements:
+            liste_evenements.append(each)
+        
+        myText = MultiEvenementsDetailsIcalendar(evenements)
+    except SaisonCulturelle.DoesNotExist:
+        raise Http404
+    return HttpResponse(myText,content_type="text/calendar")
+
 def EvenementDetailsIcalendar(evenement):
     myTemplate = loader.get_template('evenements/evenement-details.ics.html')
     myContext = Context({"evenement": evenement, "settings": settings})
     return myTemplate.render(myContext)
+
+def MultiEvenementsDetailsIcalendar(evenements):
+    myTemplate = loader.get_template('evenements/multi-evenement-details.ics.html')
+    myContext = Context({"liste_evenement": evenements, "settings": settings})
+    return myTemplate.render(myContext)
+    
     
 def GenerationQrCode(data):
     img_io = StringIO.StringIO()

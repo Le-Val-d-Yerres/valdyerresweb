@@ -195,7 +195,13 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.logger.LoggingPanel',
 )
 
+# Variables perso
+
 PICTO_LIEU = 'uploads/picto/lieu.png'
+
+NOM_ORGANISATION = "Le Val d'Yerres"
+
+MAIL_ORGANISATION = "levaldyerres@levaldyerres.fr"
 
 NOM_DOMAINE = 'http://127.0.0.1:8080'
 

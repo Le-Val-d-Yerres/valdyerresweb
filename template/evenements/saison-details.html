@@ -28,6 +28,8 @@
 		    {% endfor %}
 		    </ul>
 		
+		<a href="{% url evenements.views.SaisonDetailsICS slug=saison.slug %}">Télécharger la liste des évènements au format Icalendar</a>
+		
 		{% else %}
 		    <p>Aucun Evènement trouvé.</p>
 		{% endif %}

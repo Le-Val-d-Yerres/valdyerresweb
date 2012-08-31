@@ -36,7 +36,7 @@
 			<p>Organisateur(s) : 
 				<ul>
 					{% for each in evenement.organisateur.all %}
-						<li><a href="">{{ each.nom }}</a> | {{ each.telephone }}</li>
+						<li>{{ each.nom }} | {{ each.telephone }}</li>
 					{% endfor %}
 				</ul>
 			</p>

@@ -16,6 +16,7 @@
 			{% endfor %}
 		</ul>
 		
+		<a href="{% url evenements.views.AgendaAnneeICS annee=annee%}">Télécharger la liste des évènements au format Icalendar</a>
 	{% else %}
 	    <p>Erreur interne.</p>
 	{% endif %}

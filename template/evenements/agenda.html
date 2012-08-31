@@ -15,6 +15,15 @@
 		<div id="calendar">
 			{{ calendrier|safe }}
 		</div>
+		
+		{% if nbre_evenement > 0 %}
+			{% if now == "True" %}
+				<a href="{% url evenements.views.AgendaNowICS %}">Télécharger la liste des évènements au format Icalendar</a>
+			{% else %}
+				<a href="{% url evenements.views.AgendaMoisICS annee=annee mois=mois %}">Télécharger la liste des évènements au format Icalendar</a>
+			{% endif %}
+		{% endif %}
+	
 	</div>
 	
 {% endblock %}
