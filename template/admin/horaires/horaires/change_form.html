@@ -4,8 +4,12 @@
     <script type="text/javascript">
 		
 		var myForm	= document.getElementById("horaires_form");
-
-
+ (function($) {
+		$(document).ready(function()
+		{
+			
+			
+		});
 		myForm.lundi_journee_continue.onclick = function (argument) {
 		  if (myForm.id_lundi_matin_fin.disabled == true) 
 		  	{
@@ -16,7 +20,7 @@
 		    {
 		  		myForm.id_lundi_matin_fin.disabled = true;
 		  		myForm.id_lundi_matin_fin.nextSibling.disabled=true;
-		  		$('#id_lundi_matin_fin').hide();
+		  		/**$('#id_lundi_matin_fin').hide();**/
 		  		myForm.id_lundi_matin_fin.value='';
 		    }
 		    
@@ -34,6 +38,6 @@
 		  
 		  
 		}
-		
+	})(grp.jQuery);
 		    </script>
 {% endblock %}

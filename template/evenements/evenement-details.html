@@ -1,99 +1,140 @@
 {% extends "include/main.html" %}
-	
-{% if saison %}
-	{% block meta-description %}{{ evenement.meta_description }}{% endblock %}
-	
-	{% block import %}
-		<script src="/static/js/openstreetmap/OpenLayers.js"></script>
-		<script src="/static/js/openstreetmap/lib/OpenLayers/Lang/fr.js"></script>
-		<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
-		<script src="/static/js/map/osm-fonction.js"></script>
-	{% endblock %}	
 
-	{% block bodyLoad %}<body onload="map_init();">{% endblock %}	
-		
+{% if saison %}
+{% block meta-description %}{{ evenement.meta_description }}{% endblock %}
+
+{% block import %}
+
+{% endblock %}
+
+
+
 	{% load filtres %}
 	{% load tz %}
-	
-	
-	{% block contenu %}
-	
-		
-		{% if evenement.image %}
-			<img alt="{{ evenement.nom }}" src="{{ evenement.image|thumbnail:'512x300x1' }}">
-		{% endif %}
-		
-		{% if festival != None %}
-		<div itemscope itemtype="http://schema.org/Event">
-			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 
-			<p>Cadre : <a href="{% url evenements.views.SaisonFestivalDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug %}">{{ festival.nom }}</a> - <a itemprop="url" href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a></p>
+	{% block contenu %}
+
+	{% if evenement.image %}
+	<img alt="{{ evenement.nom }}" src="{{ evenement.image|thumbnail:'512x300x1' }}">
+	{% endif %}
+
+	{% if festival != None %}
+	<div itemscope itemtype="http://schema.org/Event">
+		<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
+
+		<p>
+			Cadre : <a href="{% url evenements.views.SaisonFestivalDetailsHtml saison_slug=saison.slug festival_slug=evenement.cadre_evenement.slug %}">{{ festival.nom }}</a> - <a itemprop="url" href="{% url evenements.views.SaisonDetailsHtml saison_slug=saison.slug %}">{{ saison.nom }}</a>
+		</p>
 		{% else %}
 		<div itemscope itemtype="http://schema.org/Event">
 			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 
-			<p>Cadre : <a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a></p>
-			<p>Organisateur(s) : 
+			<p>
+				Cadre : <a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a>
+			</p>
+			<p>
+				Organisateur(s) :
 				<ul>
 					{% for each in evenement.organisateur.all %}
-						<li>{{ each.nom }} | {{ each.telephone }}</li>
+					<li>
+						{{ each.nom }} | {{ each.telephone }}
+					</li>
 					{% endfor %}
 				</ul>
 			</p>
-		{% endif %}
-		
-		<meta itemprop="startDate" content="{{ evenement.debut|dateSEO }}">
-		<meta itemprop="endDate" content="{{ evenement.fin|dateSEO }}">
-		<p>{{ evenement.debut|dateCustom:evenement.fin }}</p>
-		
-		<div itemprop="description">{{ evenement.description|safe }}</div>
-		
-		{% if evenement.url != "" %}
-			<p><a href="{{ evenement.url }}">Plus d'informations sur le site de l'évènement</a></p>
-		{% endif %}
-		
-		<div>
-		<img alt="QrCode : {{ evenement.nom }}" src="data:image/png;base64,{{ evenement_qr }}"/><br/>
-		<a href="{% url evenements.views.EvenementDetailsICS slug=saison.slug evenement_slug=evenement.slug %}">Ajouter cet évènement à votre calendrier (Format ICal)</a>
-		</div>
-		<hr \>
-		
-		
-		<div itemprop="location" itemscope itemtype="http://schema.org/Place">
-			<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-				{% if evenement.lieu.presentation %}
-					<p><span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span> : <a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}">{{ evenement.lieu.nom_lieu }}</a></p>
-				{% else %}
-					<p><span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span> : {{ evenement.lieu.nom_lieu }}</p>
-				{% endif %}
-				<p>Adresse : {{ evenement.lieu.rue }}</p>
-				<p>code Postal : {{ evenement.lieu.ville.code_postal }}</p>
+			{% endif %}
+
+			<meta itemprop="startDate" content="{{ evenement.debut|dateSEO }}">
+			<meta itemprop="endDate" content="{{ evenement.fin|dateSEO }}">
+			<p>
+				{{ evenement.debut|dateCustom:evenement.fin }}
+			</p>
+
+			<div itemprop="description">
+				{{ evenement.description|safe }}
 			</div>
-				
-			<span itemprop="geo" itemscope itemtype="http://data-vocabulary.org/​Geo">
-				<meta itemprop="latitude" content="{{ evenement.lieu.latitude }}" />
-			    <meta itemprop="longitude" content="{{ evenement.lieu.longitude }}" />
-     		</span>
-     			
-			<p>Latitude : {{ evenement.lieu.latitude }} - Longitude : {{ evenement.lieu.longitude }}</p>
-			<img alt="QrCode : {{ evenement.lieu.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr }}"/><br/>
-			<script>
-					nouveauMarker({{ evenement.lieu.longitude|toFloatjs }}, {{ evenement.lieu.latitude|toFloatjs }}, '{{ evenement.lieu.nom_lieu }} - {{ evenement.lieu.ville.nom }}', '{{ evenement.lieu|lieuMarker }}'); 
-			</script>
-		</div>
-		
-		<div id="map" style="width: 512px; height: 450px"></div>
-		
-		
-		{% if tarifs %}
+
+			{% if evenement.url != "" %}
+			<p>
+				<a href="{{ evenement.url }}">Plus d'informations sur le site de l'évènement</a>
+			</p>
+			{% endif %}
+
+			<div>
+				<img alt="QrCode : {{ evenement.nom }}" src="data:image/png;base64,{{ evenement_qr }}"/>
+				<br/>
+				<a href="{% url evenements.views.EvenementDetailsICS slug=saison.slug evenement_slug=evenement.slug %}">Ajouter cet évènement à votre calendrier (Format ICal)</a>
+			</div>
+			<hr \>
+
+			<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+					{% if evenement.lieu.presentation %}
+					<p>
+						<span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span> : <a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}">{{ evenement.lieu.nom_lieu }}</a>
+					</p>
+					{% else %}
+					<p>
+						<span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span> : {{ evenement.lieu.nom_lieu }}
+					</p>
+					{% endif %}
+					<p>
+						Adresse : {{ evenement.lieu.rue }}
+					</p>
+					<p>
+						code Postal : {{ evenement.lieu.ville.code_postal }}
+					</p>
+				</div>
+
+				<span itemprop="geo" itemscope itemtype="http://data-vocabulary.org/​Geo">
+					<meta itemprop="latitude" content="{{ evenement.lieu.latitude }}" />
+					<meta itemprop="longitude" content="{{ evenement.lieu.longitude }}" />
+				</span>
+
+				<p>
+					Latitude : {{ evenement.lieu.latitude }} - Longitude : {{ evenement.lieu.longitude }}
+				</p>
+				<img alt="QrCode : {{ evenement.lieu.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr }}"/>
+				<br/>
+				<script>
+				function LoadMap() {
+					var tabEquipement = Array();
+					var myMarker = Object(); 
+				    		myMarker['longitude'] ={{evenement.lieu.longitude|toFloatjs}}  ; 
+							myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}}; 
+							my{{forloop.counter0}}Marker['description'] = '{{evenement.lieu.nom_lieu }} - {{evenement.lieu.ville.nom }}';
+							my{{forloop.counter0}}Marker['marker'] ='{{evenement.lieu|lieuMarker }}';
+							tabEquipement.push(myMarker);
+					setMarkers(tabEquipement);
+					map_init();
+				  
+				}
+					
+				</script>
+			</div>
+
+			<div id="map" style="width: 512px; height: 450px"></div>
+
+			{% if tarifs %}
 			<ul>
-			{% for each in tarifs.prix.all %}
-				<li>{{ each.nom }} : {{ each.prix }}</li>
-			{% endfor %}
+				{% for each in tarifs.prix.all %}
+				<li>
+					{{ each.nom }} : {{ each.prix }}
+				</li>
+				{% endfor %}
 			</ul>
+			{% endif %}
+		</div>
+		{% endblock %}
+		{% else %}
+		<p>
+			Erreur interne.
+		</p>
 		{% endif %}
-	</div>
-	{% endblock %}
-{% else %}
-    <p>Erreur interne.</p>
-{% endif %}
+
+		{% block jsload%}
+		<script src="/static/js/openstreetmap/OpenLayers.js"></script>
+		<script src="/static/js/openstreetmap/lib/OpenLayers/Lang/fr.js"></script>
+		<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+		<script src="/static/js/map/osm-fonction.js"></script>
+		{% endblock%}

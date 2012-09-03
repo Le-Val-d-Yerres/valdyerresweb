@@ -1,7 +1,7 @@
-// variables global
+// variables globales
 var nbreEvenement = 0;
 var zoom=16;
-var listeMarkers = new Array(2);
+var listeMarkers = new Array();
 var feature;
 var map;
 var controls;
@@ -34,10 +34,11 @@ function map_init(zoomMulti)
 	epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
 	projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
 		  
-    var vectorLayer = new OpenLayers.Layer.Vector("Evènements");
+    var vectorLayer = new OpenLayers.Layer.Vector("Eléments");
     
-    for (i=1;i<=nbreEvenement;i++)
+    for (i=0;i<nbreEvenement;i++)
     {
+    	
     	feature = new OpenLayers.Feature.Vector(
 			new OpenLayers.Geometry.Point( listeMarkers[i]['longitude'], listeMarkers[i]['latitude'] ).transform(epsg4326, projectTo),
 			{description: listeMarkers[i]['description']} ,
@@ -54,7 +55,7 @@ function map_init(zoomMulti)
 	}
 	else
 	{
-		var lonLat = new OpenLayers.LonLat( listeMarkers[1]['longitude'], listeMarkers[1]['latitude'] ).transform(epsg4326, projectTo);
+		var lonLat = new OpenLayers.LonLat( listeMarkers[0]['longitude'], listeMarkers[0]['latitude'] ).transform(epsg4326, projectTo);
 	}
 
 	map.setCenter (lonLat, zoom);
@@ -70,9 +71,15 @@ function map_init(zoomMulti)
 	map.addControl(controls['selector']);
 	controls['selector'].activate();
 }
+function setMarkers(tabMarkers)
+{
+	nbreEvenement = tabMarkers.length ;
+	listeMarkers = tabMarkers;
+}
 
-
-function nouveauMarker(lon, lat, desc, marker)
+/**
+ Cette fonction passe bientôt à la poubelle  
+ function nouveauMarker(lon, lat, desc, marker)
 {
 	nbreEvenement++;
 	listeMarkers[nbreEvenement]['longitude'] = lon;
@@ -80,7 +87,7 @@ function nouveauMarker(lon, lat, desc, marker)
 	listeMarkers[nbreEvenement]['description'] = desc;		 	
 	listeMarkers[nbreEvenement]['marker'] = marker;
 }
-
+**/
 function createPopup(feature) 
 {
 	feature.popup = new OpenLayers.Popup.FramedCloud("pop",
@@ -100,3 +107,4 @@ function destroyPopup(feature) {
 	feature.popup.destroy();
 	feature.popup = null;
 }
+LoadMap();
