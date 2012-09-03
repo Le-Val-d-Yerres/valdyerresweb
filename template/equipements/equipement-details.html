@@ -1,21 +1,49 @@
+
 {% extends "include/main.html" %}
 	
 	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom_lieu }}{% endblock %}
-			
 
-{% block contenu %}
+{% block import%}
 
+	 <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+{% endblock %}
 {% load filtres %}
+{% block contenu %}
+ <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Le Val d'Yerres</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Accueil</a></li>
+              <li><a href="#about">A propos</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+	
+ <div class="container">
 
-	<h1><a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a></h1>
+
+
+	
 	
 	{% if equipement %}
-		{% if equipement.image %}
+		
+		<div class="row">
+		<div class="span5" itemscope itemtype="http://schema.org/Place">
+			<a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a>
+			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom_lieu }}</a></h1>
+			{% if equipement.image %}
 			<img alt="{{ equipement.nom_lieu }}" src="{{ equipement.image|thumbnail:'512x300x1' }}">
-		{% endif %}
-		<div itemscope itemtype="http://schema.org/Place">
-			<h2 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom_lieu }}</a></h2>
-			
+			{% endif %}
 			Type d'équipement : <a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.nom }}</a>
 			
 			{{ equipement.presentation|safe }}
@@ -23,20 +51,23 @@
 			{% if facilites %}
 				<ul>
 				    {% for facilite in facilites.facilites.all %}
-				    	<li></li><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}</li>
+				    	<li><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}</li>
 				    {% endfor %}
 			    </ul>
 		    {% endif %}
-		    
+		   </div>
+		   <div class="span4">
 		    <img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_vcard }}"/>
 		    <br \>
 		    <a href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Télécharger la Vcard de l'équipement</a>
+		    </div>
+		   </div>
 		    <hr />
 			
 			<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 				<p itemprop="addressLocality">Ville : {{ equipement.ville.nom }}</p>
 				<p>Adresse : {{ equipement.rue }}</p>
-				<p>code Postal : {{ equipement.ville.code_postal }}</p>
+				<p>Code Postal : {{ equipement.ville.code_postal }}</p>
 			</div>
 			
 			<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
@@ -55,20 +86,24 @@
 			{% endif %}
 			
 			<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
-			
 			<script>
-				 
-			</script>
-			<script>
-				function LoadMap() {
-					nouveauMarker({{ equipement.longitude|toFloatjs }}, {{ equipement.latitude|toFloatjs }}, '{{ equipement.nom_lieu }}', '{{ equipement.fonction.picto }}');
-					map_init(13);
-				  
-				}
+			function LoadMap() 
+			{
+					var tabEquipement = Array();
+					var myMarker = Object(); 
+				    myMarker['longitude'] ={{equipement.longitude|toFloatjs}}; 
+					myMarker['latitude'] ={{equipement.latitude|toFloatjs}}; 
+					myMarker['description'] = '{{equipement.nom_lieu}}';
+					myMarker['marker'] ='{{equipement.fonction.picto }}';
+					tabEquipement.push(myMarker);
+					setMarkers(tabEquipement);
+					map_init();
+			}
+				
 					
 			</script>
 		    
-		    <div id="map" style="width: 512px; height: 450px"></div>
+		    <div id="map_canvas" style="width: 512px; height: 450px"></div>
 		    
 		    {% if Evenements %}
 		    	<ul>
@@ -86,6 +121,7 @@
 {% endblock %}
 
 {% block jsload%}
+		<script src="/static/bootstrap/js/bootstrap.js"> </script>
 		<script src="/static/js/openstreetmap/OpenLayers.js"></script>
 		<script src="/static/js/openstreetmap/lib/OpenLayers/Lang/fr.js"></script>
 		<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>

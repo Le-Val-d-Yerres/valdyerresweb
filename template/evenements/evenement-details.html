@@ -13,7 +13,10 @@
 	{% load tz %}
 
 	{% block contenu %}
-
+	
+	
+	
+ <div class="container">
 	{% if evenement.image %}
 	<img alt="{{ evenement.nom }}" src="{{ evenement.image|thumbnail:'512x300x1' }}">
 	{% endif %}
@@ -100,11 +103,11 @@
 				function LoadMap() {
 					var tabEquipement = Array();
 					var myMarker = Object(); 
-				    		myMarker['longitude'] ={{evenement.lieu.longitude|toFloatjs}}  ; 
-							myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}}; 
-							my{{forloop.counter0}}Marker['description'] = '{{evenement.lieu.nom_lieu }} - {{evenement.lieu.ville.nom }}';
-							my{{forloop.counter0}}Marker['marker'] ='{{evenement.lieu|lieuMarker }}';
-							tabEquipement.push(myMarker);
+				    myMarker['longitude'] ={{evenement.lieu.longitude|toFloatjs}}  ; 
+					myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}}; 
+					myMarker['description'] = '{{evenement.lieu.nom_lieu }} - {{evenement.lieu.ville.nom }}';
+					myMarker['marker'] ='{{evenement.lieu|lieuMarker }}';
+					tabEquipement.push(myMarker);
 					setMarkers(tabEquipement);
 					map_init();
 				  
@@ -113,7 +116,7 @@
 				</script>
 			</div>
 
-			<div id="map" style="width: 512px; height: 450px"></div>
+			<div id="map_canvas" style="width: 512px; height: 450px"></div>
 
 			{% if tarifs %}
 			<ul>
@@ -125,6 +128,7 @@
 			</ul>
 			{% endif %}
 		</div>
+</div>
 		{% endblock %}
 		{% else %}
 		<p>
