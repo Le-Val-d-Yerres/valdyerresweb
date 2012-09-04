@@ -27,9 +27,9 @@ def dateCustom(debutUTC, finUTC):
     fin = finUTC.astimezone(TZone)
     delta = fin-debut
     if delta.days >= 1:
-        text = "Du "+jours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" "+mois[int(debut.strftime("%m"))-1]+" au "+jours[int(fin.strftime("%w"))]+" "+fin.strftime("%d")+" "+mois[int(fin.strftime("%m"))-1]
+        text = "du "+jours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" "+mois[int(debut.strftime("%m"))-1]+" au "+jours[int(fin.strftime("%w"))]+" "+fin.strftime("%d")+" "+mois[int(fin.strftime("%m"))-1]
     else:
-        text = "Le "+jours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" "+mois[int(debut.strftime("%m"))-1]+" "+debut.strftime("à %H:%M")
+        text = "le "+jours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" "+mois[int(debut.strftime("%m"))-1]+" "+debut.strftime("à %H:%M")
     return text
 
 @register.filter(is_safe=True)

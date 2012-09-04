@@ -6,6 +6,11 @@
 {% block import%}
 
 	 <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+	 <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
 {% endblock %}
 {% load filtres %}
 {% block contenu %}
@@ -38,44 +43,25 @@
 	{% if equipement %}
 		
 		<div class="row">
-		<div class="span5" itemscope itemtype="http://schema.org/Place">
+		<div class="span7" itemscope itemtype="http://schema.org/Place">
 			<a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a>
 			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom_lieu }}</a></h1>
+			Type d'équipement : <a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.nom }}</a>
 			{% if equipement.image %}
 			<img alt="{{ equipement.nom_lieu }}" src="{{ equipement.image|thumbnail:'512x300x1' }}">
 			{% endif %}
-			Type d'équipement : <a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.nom }}</a>
-			
 			{{ equipement.presentation|safe }}
-			
-			{% if facilites %}
-				<ul>
-				    {% for facilite in facilites.facilites.all %}
-				    	<li><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}</li>
-				    {% endfor %}
-			    </ul>
-		    {% endif %}
 		   </div>
 		   <div class="span4">
-		    <img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_vcard }}"/>
+		    
 		    <br \>
-		    <a href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Télécharger la Vcard de l'équipement</a>
-		    </div>
-		   </div>
-		    <hr />
-			
-			<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-				<p itemprop="addressLocality">Ville : {{ equipement.ville.nom }}</p>
-				<p>Adresse : {{ equipement.rue }}</p>
-				<p>Code Postal : {{ equipement.ville.code_postal }}</p>
-			</div>
-			
-			<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-				<p>Latitude : {{ equipement.latitude }} - Longitude : {{ equipement.longitude }}</p>
-			    <meta itemprop="latitude" content="{{ equipement.latitude }}" />
-			    <meta itemprop="longitude" content="{{ equipement.longitude }}" />
-			</div>
-			<p>Téléphone : {{ equipement.telephone }}</p>
+		   
+			<address>
+		    <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+				<strong>{{ equipement.nom_lieu }}</strong><br/>
+				<span>{{ equipement.rue }}</span><br/>
+				<span>{{ equipement.ville.code_postal }}</span> <span itemprop="addressLocality">{{ equipement.ville.nom }}</span><br/>
+				<span><abbr title="Téléphone">Tel</abbr>: {{ equipement.telephone }}</span><br/>
 			
 			{% if equipement.fax %}
 				<p>Fax : {{ equipement.fax }}</p>
@@ -84,8 +70,41 @@
 			{% if equipement. %}
 				<p>Mail : {{ equipement.mail }}</p>
 			{% endif %}
+			</div>
+			</address>
+			 <hr/>
+		    <a href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Télécharger la Vcard de l'équipement</a>
+		    <hr/>
+		    <p style="text-align: center;">La Vcard au format QR Code : <br/>
+		    	<img alt="QrCode : code QR de : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_vcard }}"/>
+		    </p>
+		    
+		   </div>
+		   </div>
+		    {% if Evenements %}
+		    <hr />
+		    <h2>Les prochains évènements:</h2>
+		    	<ul>
+		    		{% for each in Evenements %}
+		    			<li>{{ each.type.nom }} : <a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a>, {{ each.debut|dateCustom:each.fin }} </li>
+		    		{% endfor %}
+		    	</ul>
+		    {% endif %}
 			
-			<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
+			{% if facilites %}
+			<hr />
+		    <h2>Dans cet équipement:</h2>
+				<ul>
+				    {% for facilite in facilites.facilites.all %}
+				    	<li><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}</li>
+				    {% endfor %}
+			    </ul>
+		    {% endif %}
+		    <hr/>
+			<h2>Géolocalisation:</h2>
+			
+			
+			<div class="span7">
 			<script>
 			function LoadMap() 
 			{
@@ -99,19 +118,25 @@
 					setMarkers(tabEquipement);
 					map_init();
 			}
-				
+			
 					
 			</script>
 		    
 		    <div id="map_canvas" style="width: 512px; height: 450px"></div>
+		    </div>	
+		    <div class="span4" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+				<p>Latitude : {{ equipement.latitude }} <br/> 
+					Longitude : {{ equipement.longitude }}</p>
+			    <meta itemprop="latitude" content="{{ equipement.latitude }}" />
+			    <meta itemprop="longitude" content="{{ equipement.longitude }}" />
+			     <p style="text-align: center;">Les coordonnées au format QR Code : <br/>
+			    <img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
+			    </p>
+			</div>
+			
+			
 		    
-		    {% if Evenements %}
-		    	<ul>
-		    		{% for each in Evenements %}
-		    			<li>{{ each.type.nom }} : <a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a></li>
-		    		{% endfor %}
-		    	</ul>
-		    {% endif %}
+		    
 		      
 		</div>
 	{% else %}
