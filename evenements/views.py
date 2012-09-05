@@ -356,13 +356,16 @@ def GenerationQrCode(data):
 
 def EvenementDetailsHtml(request, slug, evenement_slug):
     try:
-        saison = Saison.objects.get(slug=slug)
+        saison = Saison.objects.select_related().select_subclasses().get(slug=slug)
         evenement = Evenement.objects.select_related().get(slug=evenement_slug)
         tarifs = Tarification.objects.filter(evenement_id=evenement.id)
         evenement_qr = GenerationQrCode(EvenementDetailsIcalendar(evenement))
         
         evenement.lieu = Lieu.objects.select_subclasses().get(id=evenement.lieu.id)
-
+        festival = None
+        if type(saison) == Festival:
+            festival = saison
+            saison = festival.saison_culture
 
         localisation_qr = GenerationQrCode("geo:"+str(evenement.lieu.latitude)+","+str(evenement.lieu.longitude))
 
@@ -374,7 +377,7 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
         #</trash>  
     except SaisonCulturelle.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'tarifs': tarifs, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr })
+    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'festival':festival , 'tarifs': tarifs, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr })
 
 
 

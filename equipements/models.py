@@ -55,4 +55,4 @@ class Facilites(models.Model):
             return resultat
 
     class Meta:
-        verbose_name_plural = "Equipement - Facilites"
+        verbose_name_plural = u"Facilités => Equipement"
