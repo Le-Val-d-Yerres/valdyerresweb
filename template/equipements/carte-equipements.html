@@ -25,7 +25,7 @@
 				    		my{{forloop.counter0}}Marker['longitude'] ={{equipement.longitude|toFloatjs}} ; 
 							my{{forloop.counter0}}Marker['latitude'] ={{equipement.latitude|toFloatjs}}; 	
 				    	{% if equipement.image %}
-							my{{forloop.counter0}}Marker['description'] = '<div style="float: left;"><img alt="{{ equipement.nom_lieu }}" src="{{ equipement.image|thumbnail:'100x100x0' }}"/></div><div style="height: 105px;"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}</div>'; 
+							my{{forloop.counter0}}Marker['description'] = '<div style="float: left;"><img alt="{{ equipement.nom_lieu }}" src="{{ equipement.image|resize:'100x100x0' }}"/></div><div style="height: 105px;"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}</div>'; 
 						{% else %}
 							my{{forloop.counter0}}Marker['description'] = '<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}'; 
 						{% endif %}
