@@ -1,18 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django import template
-from datetime import timedelta
-from time import strftime
 from evenements.models import Saison
-from aide.models import Aide
-import re
+import re , os.path , Image
 from pytz import timezone
-import pytz
 from django.conf import settings
-import os
-import os.path
-import re
-import Image
 
 register = template.Library()
 

@@ -31,8 +31,7 @@
 			<li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a></li>
 			{% endfor %}
 		</ul>
-		
-		<div id="map_canvas" style="width: 1000px; height: 600px"></div>
+		<div id="map_canvas" style="width:1000px; height:600px"></div>
 	    
 	{% else %}
 	    <p>Aucune Saison Culturelle trouvée.</p>

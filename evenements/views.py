@@ -347,8 +347,8 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
         evenement = Evenement.objects.select_related().get(slug=evenement_slug)
         tarifs = Tarification.objects.filter(evenement_id=evenement.id)
         evenement_qr = GenerationQrCode(EvenementDetailsIcalendar(evenement))
-        
         evenement.lieu = Lieu.objects.select_subclasses().get(id=evenement.lieu.id)
+        
         festival = None
         if type(saison) == Festival:
             festival = saison

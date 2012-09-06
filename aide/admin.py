@@ -6,7 +6,7 @@ from django.template import defaultfilters
 from aide.models import Aide
 
 class AideAdmin(admin.ModelAdmin):
-    list_display = ['nom', 'slug', 'contenu']
+    list_display = ['nom', 'slug']
     prepopulated_fields = {'slug': ('nom',)}
 
     class Media:
