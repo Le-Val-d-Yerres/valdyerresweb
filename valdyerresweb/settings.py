@@ -116,11 +116,13 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'valdyerresweb',              
     'grappelli.dashboard',
     'equipements',
     'localisations',
     'evenements',
     'horaires',
+    'aide',
     'grappelli',
     'filebrowser',
     'model_utils',

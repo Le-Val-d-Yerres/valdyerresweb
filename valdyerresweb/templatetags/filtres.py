@@ -4,6 +4,7 @@ from django import template
 from datetime import timedelta
 from time import strftime
 from evenements.models import Saison
+from aide.models import Aide
 import re
 from pytz import timezone
 import pytz
@@ -151,3 +152,8 @@ def lieuMarker(lieu):
     except:
         picto = settings.PICTO_LIEU
     return picto
+
+@register.filter(is_safe=True) 
+def aide(aideSlug):
+    aide = Aide.objects.get(slug=aideSlug)
+    return aide

@@ -1,11 +1,13 @@
 BEGIN:VCARD
-NAME:{{ equipement.nom_lieu }}
 VERSION:3.0
-ORG;CHARSET=utf-8:{{settings.NOM_ORGANISATION|safe  }}
+SOURCE:{% url equipements.views.EquipementVCF slug=equipement.slug %}
+NAME:{{ equipement.nom_lieu }}
+N:;;;;
 FN;LANGUAGE=fr;CHARSET=utf-8:{{ equipement.nom_lieu|safe }}
-URL:{{ settings.NOM_DOMAINE }}{% if equipement.presentation %}{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}{% endif %}
+ORG;CHARSET=utf-8:{{settings.NOM_ORGANISATION|safe  }}
+URL:{{settings.NOM_DOMAINE }}{% if equipement.presentation %}{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}{% endif %}
 EMAIL:{% if equipement.email %}{{ equipement.email }}{% else %}{{ settings.MAIL_ORGANISATION }}{% endif %}
-ADR;LANGUAGE=fr;CHARSET=utf-8:;;{{ equipement.rue }};{{ equipement.ville.nom }};;{{ equiepement.ville.code_postal }};
+ADR;LANGUAGE=fr;CHARSET=utf-8:;;{{ equipement.rue }};{{ equipement.ville.code_postal }};;{{ equipement.ville.nom }}; 
 {% if equipement.presentation %}TEL:{{ equipement.telephone }}
 GEO:{{ equipement.latitude }};{{ equipement.longitude }}{% endif %}
 END:VCARD

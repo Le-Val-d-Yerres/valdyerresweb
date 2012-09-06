@@ -7,15 +7,13 @@ import datetime
 from django.db.models import Q
 from django.template import Context,loader
 from evenements.customCalendar.calendrier import CAVYCalendar, entierAvecZero
-import qrcode
-import base64
-import StringIO
 import calendar
 from equipements.models import Equipement
-from pytz import tzinfo,timezone
+from pytz import timezone
 from valdyerresweb import settings
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
+from valdyerresweb.utils.functions import GenerationQrCode
 
 utcTZ = timezone("UTC")
 
@@ -341,18 +339,7 @@ def MultiEvenementsDetailsIcalendar(evenements):
     return myTemplate.render(myContext)
     
     
-def GenerationQrCode(data):
-    img_io = StringIO.StringIO()
-    qr = qrcode.QRCode(
-                          error_correction=qrcode.constants.ERROR_CORRECT_L,
-                          box_size=3,
-                          border=1,
-                          )
-    qr.add_data(data);
-    imgQr = qr.make_image()
-    imgQr.save(img_io,'PNG')
-    img_io.seek(0)
-    return base64.b64encode(img_io.getvalue())
+
 
 def EvenementDetailsHtml(request, slug, evenement_slug):
     try:

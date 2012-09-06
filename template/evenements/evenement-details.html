@@ -10,21 +10,29 @@
 
 <div class="container"style="margin-top: 60px;">
 	<div class="row-fluid">
-
-			<div  itemscope itemtype="http://schema.org/Event" class="span7">
-
+			<div class="span12">
+			<ul class="breadcrumb">
 				{% if festival %}
+					<li><a href="{% url evenements.views.AgendaNow %}">Agenda</a> <span class="divider">/</span></li>
+					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>
+					<li class="active"><a href="{%url evenements.views.SaisonDetailsHtml slug=festival.slug %}">{{ festival.nom }}</a><span class="divider">/</span></li>
+					<li class="active">{{ evenement.nom }}</li>
 				
-					 <a itemprop="url" href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> / <a href="{%url evenements.views.SaisonDetailsHtml slug=festival.slug %}">{{ festival.nom }}</a>
-	
-				<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=festival.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 
 				{% else %}
+					<li><a href="{% url evenements.views.AgendaNow %}">Agenda</a> <span class="divider">/</span></li>
+					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>
+					<li class="active">{{ evenement.nom }}</li>
+				{% endif %}
+			</ul>	
+			</div>	
+			<div  itemscope itemtype="http://schema.org/Event" class="span7">
 				
-					<a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a>
 				
+				{% if festival %}
+				<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=festival.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
+				{% else %}
 				<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
-
 				{% endif %}
 				<p>
 					Organisé par : {% for each in evenement.organisateur.all %}{{ each.nom }}<br/>{% endfor %}
@@ -67,24 +75,17 @@
 
 					</div>
 					</div>
-
-					</address>
+				</address>
 				<hr/>
-				
 		<p style="text-align: center;">
 		<a href="{% url evenements.views.EvenementDetailsICS slug=saison.slug evenement_slug=evenement.slug %}">Ajouter cet évènement à votre agenda <br/> (Format ICal)</a>
 		</p>
 		<hr class="hidden-phone" />
-		    <p class="hidden-phone" style="text-align: center;">
-		   
-		    	Ajouter cet evènement à votre agenda : <br/>
+		    <p class="hidden-phone" style="text-align: center;">   
+		    	Ajouter cet evènement à votre agenda : <br/>(Format QR Code) : <br/>
 					<img alt="QrCode : {{ evenement.nom }}" src="data:image/png;base64,{{ evenement_qr }}"/>
 					<br/>
 			</p>		
-		
-
-					
-					
 			</div>
 	
 	</div>
@@ -112,6 +113,23 @@
 			    Les coordonnées au format QR Code : <br/>
 			    <img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr }}"/>
 			    </p>
+			        <-- Button to trigger modal -->
+    <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+     
+    <-- Modal -->
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Modal header</h3>
+    </div>
+    <div class="modal-body">
+    <p>One fine body…</p>
+    </div>
+    <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Save changes</button>
+    </div>
+    </div>
 			<br/>
 		</div>
 		

@@ -8,18 +8,19 @@
  
 	
  <div class="container"style="margin-top: 60px;">
-
-
-
-	
-	
 	{% if equipement %}
 		
 		<div class="row-fluid">
+			<div class="span12">
+			<ul class="breadcrumb">
+				<li><a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a><span class="divider">/</span></li>
+				<li><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.pluriel }}</a><span class="divider">/</span></li>
+				<li class="active">{{ equipement.nom_lieu }}</li>
+			</ul>
+			</div>	
 		<div class="span7" itemscope itemtype="http://schema.org/Place">
-			<a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a>
-			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom_lieu }}</a></h1>
-			Type d'équipement : <a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.nom }}</a>
+			
+			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom_lieu }}</a></h1> 
 			{% if equipement.image %}
 			<img alt="{{ equipement.nom_lieu }}" src="{{ equipement.image|resize:'670x375x1' }}">
 			{% endif %}
@@ -46,12 +47,13 @@
 			</div>
 			</address>
 			<hr/>
-		    <a href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Télécharger la Vcard de l'équipement</a>
-		    
+			<p style="text-align: center;">
+		    	<a href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Ajouter cet équipement à vos contacts</a><br/>(Format Vcard)
+		   	</p>
 		    <hr class="hidden-phone" />
 		    <p class="hidden-phone" style="text-align: center;">
 		   
-		    	La Vcard au format QR Code : <br/>
+		    	Ajouter cet equipement à vos contacts <br/>(Format QR Code) : <br/>
 		    	<img alt="QrCode : code QR de : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_vcard }}"/>
 		    </p>
 		    
@@ -106,7 +108,7 @@
 			    <meta itemprop="longitude" content="{{ equipement.longitude }}" />
 			    <hr class="hidden-phone" />
 		    	<p class="hidden-phone" style="text-align: center;">
-			    Les coordonnées au format QR Code : <br/>
+			    Les coordonnées géographiques au format QR Code : <br/>
 			    <img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
 			    </p>
 			</div>
