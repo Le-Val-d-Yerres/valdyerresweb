@@ -6,7 +6,10 @@ register = template.Library()
 
 @register.filter(is_safe=True)
 def aide(aideslug):
-    aide = Aide.objects.get(slug = aideslug)
+    try:
+        aide = Aide.objects.get(slug = aideslug)
+    except:
+        return ""
     return renderModal(aide)
     
     

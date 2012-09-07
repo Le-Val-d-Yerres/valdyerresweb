@@ -19,6 +19,20 @@ utcTZ = timezone("UTC")
 
 ListeMois = ['janvier', u'février', 'mars', 'avril', 'mai', 'juin', 'juillet', u'août', 'septembre', 'octobre', 'novembre', u'décembre']
 ListeJours = ['dimanche','lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi']    
+
+
+        
+    
+
+def AgendaGlobal(request):
+    now = datetime.datetime.now()
+    evenements = Evenement.objects.select_related().filter(fin__gt = now).order_by('debut')
+    
+         
+        
+        
+    return render_to_response('evenements/agenda.html', {'evenements': evenements})
+    
     
 def AgendaMois(request, annee, mois):
     try:
@@ -64,7 +78,7 @@ def AgendaMois(request, annee, mois):
         
     except Saison.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/agenda.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv, 'now': now, 'mois': mois, 'annee': year, 'nbre_evenement': nbre_evenement})
+    return render_to_response('evenements/calendrier.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv, 'now': now, 'mois': mois, 'annee': year, 'nbre_evenement': nbre_evenement})
 
 def AgendaMoisICS(request, annee, mois):
     try:
@@ -211,7 +225,7 @@ def AgendaNow(request):
         now = "True"
     except Saison.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/agenda.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv, 'now': now, 'nbre_evenement': nbre_evenement})
+    return render_to_response('evenements/calendrier.html', {'calendrier': calendrier, 'annee_prec': annee_prec, 'mois_prec': mois_prec, 'annee_suiv': annee_suiv, 'mois_suiv': mois_suiv, 'now': now, 'nbre_evenement': nbre_evenement})
 
 def AgendaNowICS(request):
     try:

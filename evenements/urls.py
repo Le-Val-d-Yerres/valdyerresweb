@@ -3,7 +3,7 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('evenements.views',
-    url(r'^$', 'AgendaNow'),
+    url(r'^$', 'AgendaGlobal'),
     url(r'^mois.ics$', 'AgendaNowICS'),
     
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/$', 'AgendaMois', name="agenda-mois"),

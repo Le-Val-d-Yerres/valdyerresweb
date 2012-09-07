@@ -13,15 +13,12 @@
 	<div class="row-fluid">
 			<div class="span12">
 			<ul class="breadcrumb">
+					<li><a href="{% url evenements.views.AgendaGlobal %}">Agenda</a> <span class="divider">/</span></li>
 				{% if festival %}
-					<li><a href="{% url evenements.views.AgendaNow %}">Agenda</a> <span class="divider">/</span></li>
 					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>
 					<li class="active"><a href="{%url evenements.views.SaisonDetailsHtml slug=festival.slug %}">{{ festival.nom }}</a><span class="divider">/</span></li>
 					<li class="active">{{ evenement.nom }}</li>
-				
-
 				{% else %}
-					<li><a href="{% url evenements.views.AgendaNow %}">Agenda</a> <span class="divider">/</span></li>
 					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>
 					<li class="active">{{ evenement.nom }}</li>
 				{% endif %}
@@ -79,7 +76,8 @@
 				</address>
 				<hr/>
 		<p style="text-align: center;">
-		<a href="{% url evenements.views.EvenementDetailsICS slug=saison.slug evenement_slug=evenement.slug %}">Ajouter cet évènement à votre agenda <br/> (Format ICal)</a>
+		<a href="{% url evenements.views.EvenementDetailsICS slug=saison.slug evenement_slug=evenement.slug %}">Ajouter cet évènement à votre agenda </a> <br/> (Format ICal)
+		{{"ical"|aide}}
 		</p>
 		<hr class="hidden-phone" />
 		    <p class="hidden-phone" style="text-align: center;">   
