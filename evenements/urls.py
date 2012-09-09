@@ -9,6 +9,8 @@ urlpatterns = patterns('evenements.views',
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/$', 'AgendaMois', name="agenda-mois"),
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/mois.ics$', 'AgendaMoisICS'),
     
+    #url(r'^\/type\/(?<type_slug>[^\/]+)/$','ListType',name='list-type'),
+    
     url(r'^(?P<annee>\d{4})/$', 'AgendaAnnee', name='agenda-annee'),
     url(r'^(?P<annee>\d{4}).ics$', 'AgendaAnneeICS'),
     
@@ -16,5 +18,5 @@ urlpatterns = patterns('evenements.views',
     url(r'^(?P<slug>[^\/]+).ics$', 'SaisonDetailsICS'),
     
     url(r'^(?P<slug>[^\/]+)/(?P<evenement_slug>[^\/]+).html$', 'EvenementDetailsHtml', name="event-details"),
-    url(r'^(?P<slug>[^\/]+)/(?P<evenement_slug>[^\/]+).ics$', 'EvenementDetailsICS'),
+    url(r'^(?P<slug>[^\/]+)/(?P<evenement_slug>[^\/]+).ics$', 'EvenementDetailsICS', name ="event-details-ics"),
 )

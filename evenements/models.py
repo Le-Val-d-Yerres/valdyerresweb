@@ -39,7 +39,7 @@ class Festival(Saison):
 
 class TypeEvenement(models.Model):
     nom = models.CharField(max_length=255)
-    
+    slug = models.SlugField(unique=True)
     def __unicode__(self):
         return self.nom
 

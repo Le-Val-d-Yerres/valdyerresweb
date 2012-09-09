@@ -10,29 +10,37 @@
 
 	<div class="row-fluid">
 		<div class="span12">
-			    <div class="page-header">
-    				<h1>Les évènements à venir : </h1>
-    			</div>
-			
-			<div class="span6 offset3" >
-			<ul style="list-style-type: none;" >
-				{% for evenement in evenements %}
-				<li>
-					<div class="well">
-						
-						<div class="row-fluid">
-						{% if evenement.image %}<div class="span3"><img src="{{evenement.image|resize:'200x100x1'}}"></div><div class="span3">{%endif%} <h3>{{evenement.nom}}</h3></div>	{{evenement.description|resume:180|safe}}
-						</div>
-						<p style="text-align:right;">
-							<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
-						</p>
-					</div>
-				</li>
-				{% endfor %}
-			</ul>
-			</div>
+			<div class="page-header">
+				<h1>Les évènements à venir : </h1>
 
+			</div>
+			<div class="row-fluid">
+				<div class="span6">
+					<table class="table table-striped">
+						{% for evenement in evenements %}
+						<tr>
+							<td> {% if evenement.image %}<img class="img-polaroid" src="{{evenement.image|resize:'150x150x1'}}">{%endif%} </td>
+							<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
+							<p>
+								Type : {{evenement.type}}
+								<br/>
+								Date : {{ evenement.debut|dateCustom:evenement.fin }}
+							</p>
+							<p style="text-align:right;">
+								<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+							</p></td>
+
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+				<div class="span5">
+					<p>Parcourir les evènements :</p>
+					<h3>Par type :</h3>
+					    
+					
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-{% endblock %}
+	{% endblock %}

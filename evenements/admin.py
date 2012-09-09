@@ -34,7 +34,19 @@ class EvenementAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
 
-    
+class TypeEvenementAdmin(admin.ModelAdmin):
+    list_display = ['nom']
+    search_fields = ['nom']
+    def save_model(self, request, obj, form, change):
+        monslug = defaultfilters.slugify(obj.nom)
+        if obj.slug == "":
+            listevenement = Evenement.objects.filter(slug=monslug)
+            listsize = len(listevenement)
+            if listsize > 0:
+                monslug = monslug+'-'+str(listsize+1)
+            obj.slug = monslug
+        obj.save()
+        
 class OrganisateurAdmin(admin.ModelAdmin):
     list_display = ['nom', 'email', 'ville']
     fieldsets = [
@@ -115,7 +127,7 @@ class TarificationAdmin(admin.ModelAdmin):
 admin.site.register(Evenement, EvenementAdmin)
 admin.site.register(Organisateur, OrganisateurAdmin)
 admin.site.register(SaisonCulturelle, SaisonCulturelleAdmin)
-admin.site.register(TypeEvenement)
+admin.site.register(TypeEvenement,TypeEvenementAdmin)
 admin.site.register(Festival, FestivalAdmin)
 admin.site.register(Prix, PrixAdmin)
 admin.site.register(Tarification, TarificationAdmin)

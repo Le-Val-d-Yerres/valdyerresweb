@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django import template
 from aide.models import Aide
 from aide.views import renderModal

@@ -26,13 +26,19 @@ ListeJours = ['dimanche','lundi','mardi','mercredi', 'jeudi' , 'vendredi','samed
 
 def AgendaGlobal(request):
     now = datetime.datetime.now()
-    evenements = Evenement.objects.select_related().filter(fin__gt = now).order_by('debut')
+    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True).order_by('debut')
     
          
         
         
     return render_to_response('evenements/agenda.html', {'evenements': evenements})
     
+def ListType(request,slug_type):
+    now = now = datetime.datetime.now()
+    type = TypeEvenement.objects.filter(slug=slug_type)
+    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True).order_by('debut')
+    
+    return render_to_response('evenements/agenda.html', {'evenements': evenements})
     
 def AgendaMois(request, annee, mois):
     try:
