@@ -65,6 +65,10 @@ class Evenement(models.Model):
     def __unicode__(self):
         return self.nom
     
+    def monthdebut(self):
+        return int(self.debut.strftime("%m"))
+        
+    
 class Prix (models.Model):
     gratuit = models.BooleanField()
     nom = models.CharField(max_length=255)
