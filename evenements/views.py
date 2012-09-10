@@ -25,20 +25,32 @@ ListeJours = ['dimanche','lundi','mardi','mercredi', 'jeudi' , 'vendredi','samed
     
 
 def AgendaGlobal(request):
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(utcTZ)
     evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True).order_by('debut')
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
+    typesevenements.query.group_by = ["id"]
     
-         
-        
-        
-    return render_to_response('evenements/agenda.html', {'evenements': evenements})
+
+   
     
-def ListType(request,slug_type):
-    now = now = datetime.datetime.now()
-    type = TypeEvenement.objects.filter(slug=slug_type)
-    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True).order_by('debut')
+    return render_to_response('evenements/agenda.html', {'evenements': evenements,'typeslist':typesevenements, 'typeslug':"tous" })
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements})
+def ListType(request,type_slug):
+    now = datetime.datetime.now(utcTZ)
+    typeevenement = TypeEvenement.objects.get(slug=type_slug)
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
+    typesevenements.query.group_by = ["id"]
+    
+    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
+    
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
+
+def ListAllType(request):
+    now = datetime.datetime.now(utcTZ)
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
+    typesevenements.query.group_by = ["id"]
+
+    return render_to_response('evenements/agenda-list-type-orga-saison.html',{'typeslist':typesevenements})
     
 def AgendaMois(request, annee, mois):
     try:
