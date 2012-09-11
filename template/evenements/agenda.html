@@ -18,7 +18,7 @@
 				<div class="span6">
 					<ul class="nav nav-tabs">
 						<li class="active">
-							<a href="#">Tous</a>
+							<a href="#">Tous ({{evenements|length }})</a>
 						</li>
 						<li>
 							<a href="#">Cette semaine</a>
@@ -30,6 +30,29 @@
 							<a href="#">Ce mois</a>
 						</li>
 					</ul>
+					{% regroup evenements by monthdebut as eventlist %}
+					
+					{% for eventmonth in eventlist %}
+						
+						<table class="table  table-striped">
+						{% for evenement in eventmonth.list %}
+						<tr>
+							<td> {% if evenement.image %}<img class="img-polaroid" src="{{evenement.image|resize:'150x150x1'}}">{%endif%} </td>
+							<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
+							<p>
+								Type : {{evenement.type}}
+								<br/>
+								Date : {{ evenement.debut|dateCustom:evenement.fin }}
+							</p>
+							<p style="text-align:right;">
+								<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+							</p></td>
+
+						</tr>
+						{% endfor %}
+						</table>
+					{% endfor %}
+					
 					<table class="table  table-striped">
 						{% for evenement in evenements %}
 						<tr>
