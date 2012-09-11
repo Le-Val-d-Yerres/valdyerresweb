@@ -35,7 +35,7 @@ class GoogleEventLink(EventLink):
             linkurl += u"/"+datefin.strftime("%Y")+datefin.strftime("%m")+datefin.strftime("%d")+u"T"+datefin.strftime("%H")+datefin.strftime("%M")+u"00Z"
         linkurl += u"&sprop=website:"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
         linkurl += u"&sprop=name:"+settings.NOM_ORGANISATION
-        linkurl += u"&location="+evenement.lieu.nom_lieu+u","+evenement.lieu.rue+u","+evenement.lieu.ville.nom
+        linkurl += u"&location="+evenement.lieu.nom+u","+evenement.lieu.rue+u","+evenement.lieu.ville.nom
         linkurl += u"&details="+evenement.type.nom+" : "+resume(evenement.description, 150) +" "+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
         imgurl =  "/static/img/evenements/40x40/gmail-icon-40x40.png"
         return self.setLink(imgurl,linkurl)
@@ -52,7 +52,7 @@ class YahooEventLink(EventLink):
         linkurl += u"&TITLE="+evenement.nom
         linkurl += u"&ST="+datedebut.strftime("%Y")+datedebut.strftime("%m")+datedebut.strftime("%d")+u"T"+datedebut.strftime("%H")+datedebut.strftime("%M")+u"00Z"
         linkurl += u"&URL:"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
-        linkurl += u"&in_loc=="+evenement.lieu.nom_lieu+u","+evenement.lieu.rue+u","+evenement.lieu.ville.nom
+        linkurl += u"&in_loc=="+evenement.lieu.nom+u","+evenement.lieu.rue+u","+evenement.lieu.ville.nom
         linkurl += u"&DESC="+evenement.type.nom+" : "+resume(evenement.description, 150) +" "+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
         imgurl =  "/static/img/evenements/40x40/yahoo-icon-40x40.png"
         return self.setLink(imgurl,linkurl)

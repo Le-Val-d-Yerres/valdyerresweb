@@ -22,7 +22,7 @@ class Equipement(Lieu):
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     
     def __unicode__(self):
-        return self.nom_lieu
+        return self.nom
 
 class Facilite(models.Model):
     nom = models.CharField(max_length=255)

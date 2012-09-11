@@ -1,7 +1,7 @@
 
 {% extends "include/main.html" %}
 	
-	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom_lieu }}{% endblock %}
+	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }}{% endblock %}
 
 {% load filtres %}
 {% block contenu %}
@@ -22,15 +22,15 @@
 					<a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.pluriel }}</a><span class="divider">/</span>
 				</li>
 				<li class="active">
-					{{ equipement.nom_lieu }}
+					{{ equipement.nom }}
 				</li>
 			</ul>
 		</div>
 		<div class="span7" itemscope itemtype="http://schema.org/Place">
 
-			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom_lieu }}</a></h1>
+			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom }}</a></h1>
 			{% if equipement.image %}
-			<img alt="{{ equipement.nom_lieu }}" src="{{ equipement.image|resize:'670x375x1' }}">
+			<img alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
 			{% endif %}
 			{{ equipement.presentation|safe }}
 		</div>
@@ -40,7 +40,7 @@
 
 			<address>
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-					<strong>{{ equipement.nom_lieu }}</strong>
+					<strong>{{ equipement.nom }}</strong>
 					<br/>
 					<span>{{ equipement.rue }}</span>
 					<br/>
@@ -76,7 +76,7 @@
 				<br/>
 				(Format QR Code) :
 				<br/>
-				<img alt="QrCode : code QR de : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_vcard }}"/>
+				<img alt="QrCode : code QR de : {{ each.nom }}" src="data:image/png;base64,{{ qr_code_vcard }}"/>
 				{{"qr-code"|aide}}
 			</p>
 
@@ -138,7 +138,7 @@
 			<p class="hidden-phone" style="text-align: center;">
 				Les coordonnées géographiques au format QR Code :
 				<br/>
-				<img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
+				<img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
 			</p>
 		</div>
 
@@ -164,7 +164,7 @@
 					var myMarker = Object(); 
 				    myMarker['longitude'] ={{equipement.longitude|toFloatjs}}; 
 					myMarker['latitude'] ={{equipement.latitude|toFloatjs}}; 
-					myMarker['description'] = '{{equipement.nom_lieu}}';
+					myMarker['description'] = '{{equipement.nom}}';
 					myMarker['marker'] ='{{equipement.fonction.picto }}';
 					tabEquipement.push(myMarker);
 					setMarkers(tabEquipement);

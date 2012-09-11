@@ -4,17 +4,17 @@ from django.contrib import admin
 from django.template import defaultfilters
     
 class LieuAdmin(admin.ModelAdmin):
-    list_display = ['nom_lieu', 'ville']
+    list_display = ['nom', 'ville']
     fieldsets = [
-        (None, {'fields': ['nom_lieu' ]}),
+        (None, {'fields': ['nom' ]}),
         ('Adresse', {'fields': ['rue', 'ville']}),
         ('Coordonnées GPS', {'fields': ['latitude', 'longitude']}),
     ]
     list_filter = ['ville__nom']
-    search_fields = ['nom_lieu']
+    search_fields = ['nom']
     
     def save_model(self, request, obj, form, change):
-        monslug = defaultfilters.slugify(obj.nom_lieu)
+        monslug = defaultfilters.slugify(obj.nom)
         if obj.slug == "":
             listelieu = Lieu.objects.filter(slug=monslug)
             listsize = len(listelieu)

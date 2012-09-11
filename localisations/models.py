@@ -15,7 +15,7 @@ class Ville(models.Model):
         return self.nom
 
 class Lieu(models.Model):
-    nom_lieu = models.CharField(max_length=255, verbose_name="Nom")
+    nom = models.CharField(max_length=255, verbose_name="Nom")
     rue = models.CharField(max_length=255)
     ville = models.ForeignKey(Ville)
     latitude = models.FloatField()
@@ -28,4 +28,4 @@ class Lieu(models.Model):
         verbose_name_plural = "Lieux"
     
     def __unicode__(self):
-        return self.nom_lieu
+        return self.nom

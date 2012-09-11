@@ -65,9 +65,9 @@
 					<div itemprop="location" itemscope itemtype="http://schema.org/Place">
 					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 								{% if evenement.lieu.presentation %}
-								<strong><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}">{{ evenement.lieu.nom_lieu }}</a></strong><br/>
+								<strong><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}">{{ evenement.lieu.nom }}</a></strong><br/>
 								{% else %}
-								 <strong>{{ evenement.lieu.nom_lieu }}</strong><br/>
+								 <strong>{{ evenement.lieu.nom }}</strong><br/>
 								{% endif %}
 								<span itemprop="streetAddress" >{{ evenement.lieu.rue }}</span><br/>
 								<span>{{ evenement.lieu.ville.code_postal }}</span> <span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span><br/>
@@ -115,7 +115,7 @@
 			<hr class="hidden-phone" />
 		    	<p class="hidden-phone" style="text-align: center;">
 			    Les coordonnées GPS : <br/>(Format QR Code)<br/>
-			    <img alt="QrCode : {{ each.nom_lieu }}" src="data:image/png;base64,{{ localisation_qr }}"/>
+			    <img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ localisation_qr }}"/>
 			    
 			    {{"qr-code"|aide}}
 			    
@@ -160,7 +160,7 @@
 		var myMarker = Object();
 		myMarker['longitude'] ={{evenement.lieu.longitude|toFloatjs}}  ;
 		myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}};
-		myMarker['description'] = '{{evenement.lieu.nom_lieu }} - {{evenement.lieu.ville.nom }}';
+		myMarker['description'] = '{{evenement.lieu.nom }} - {{evenement.lieu.ville.nom }}';
 		myMarker['marker'] = '{{evenement.lieu|lieuMarker }}';
 		tabEquipement.push(myMarker);
 		setMarkers(tabEquipement);
