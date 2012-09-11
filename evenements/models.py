@@ -65,8 +65,8 @@ class Evenement(models.Model):
     def __unicode__(self):
         return self.nom
     
-    def monthdebut(self):
-        return int(self.debut.strftime("%m"))
+    def monthyeardebut(self):
+        return self.debut.strftime("%m")+"-"+self.debut.strftime("%Y")
         
     
 class Prix (models.Model):

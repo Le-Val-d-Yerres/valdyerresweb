@@ -66,7 +66,7 @@ STATIC_ROOT = SUPPROJECT_PATH+'/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = 'http://127.0.0.1:8080/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -202,6 +202,8 @@ DEBUG_TOOLBAR_PANELS = (
 PICTO_LIEU = 'uploads/picto/lieu.png'
 
 NOM_ORGANISATION = "Le Val d'Yerres"
+
+LOGO_ORGANISATION = "img/valdyerresweb/logo-val-d-yerres-carre.png"
 
 MAIL_ORGANISATION = "levaldyerres@levaldyerres.fr"
 

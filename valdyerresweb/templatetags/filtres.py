@@ -53,6 +53,11 @@ def resume(text, longeur):
 @register.filter(is_safe=True)
 def toFloatjs(num):
         return str(num).replace(',','.')
+
+@register.filter(is_safe=True)
+def grouperToString(monthYear):
+    month,year = monthYear.split('-')
+    return str(mois[int(month)-1]+" "+year).capitalize()
  
 @register.filter(is_safe=True)    
 def dateFormat(dateUTC):
@@ -67,20 +72,13 @@ def dateSEO(dateUTC):
     return date.strftime("%Y")+"-"+date.strftime("%m")+"-"+date.strftime("%d")+"T"+date.strftime("%H")+":"+date.strftime("%M")
 
 # trouvé sur http://united-coders.com/christian-harms/image-resizing-tips-every-coder-should-know/
+# un peu modifié aussi.D
 def resizeandcrop(img, box, fit):
     '''Downsample the image.
     @param img: Image -  an Image-object
     @param box: tuple(x, y) - the bounding box of the result image
     @param fix: boolean - crop the image to fill the box
-     apuça @param out: file-like-object - save the image into the output stream
     '''
-    #preresize image with factor 2, 4, 8 and fast algorithm
-    factor = 1
-    while img.size[0]/factor > 2*box[0] and img.size[1]*2/factor > 2*box[1]:
-        factor *=2
-    if factor > 1:
-        img.thumbnail((img.size[0]/factor, img.size[1]/factor), Image.NEAREST)
-
     #calculate the cropping box and get the cropped part
     if fit:
         x1 = y1 = 0
@@ -105,15 +103,19 @@ def resizeandcrop(img, box, fit):
 
 @register.filter(is_safe=True)   
 def resize(file, size='100x100x1'):
-    file.path = settings.MEDIA_ROOT+file.path
-    print file.path+'\n'
+    logo = False 
+    try:
+        path = settings.MEDIA_ROOT+file.path
+    except AttributeError:
+        path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
+        logo = True
     # defining the size
     x, y, ratio = [int(x) for x in size.split('x')]
     # defining the filename and the miniature filename
-    filehead, filetail = os.path.split(file.path)
+    filehead, filetail = os.path.split(path)
     basename, format = os.path.splitext(filetail)
     miniature = basename + '_' + size + format
-    filename = file.path
+    filename = path
     miniature_filename = os.path.join(filehead, miniature)
     miniature_url = filehead + '/' + miniature
     if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
@@ -130,7 +132,10 @@ def resize(file, size='100x100x1'):
             image.save(miniature_filename, image.format, quality=90, optimize=1)
         except:
             image.save(miniature_filename, image.format, quality=90)
-
+    
+    if logo is True:
+        return miniature_url.replace(settings.STATIC_ROOT,settings.STATIC_URL)
+            
     return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
 
 

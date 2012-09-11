@@ -45,12 +45,57 @@ def ListType(request,type_slug):
     
     return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
 
+def ListTypeWeek(request,type_slug):
+    now = datetime.datetime.now(utcTZ)
+    sunday = now + datetime.timedelta(days=(6-now.weekday()) )
+    if int(now.strftime('%w')) == 0:
+        sunday = now + datetime.timedelta(days=(6-now.weekday()-1), weeks=1 )
+    
+    print str(sunday)+"\n"
+    print str(now.weekday())
+        
+    typeevenement = TypeEvenement.objects.get(slug=type_slug)
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now, evenement__debut__lt = sunday ,evenement__publish = True).order_by('nom')
+    typesevenements.query.group_by = ["id"]
+    
+    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
+    
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
+
+def ListTypeWeekEnd(request,type_slug):
+    now = datetime.datetime.now(utcTZ)
+    typeevenement = TypeEvenement.objects.get(slug=type_slug)
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
+    typesevenements.query.group_by = ["id"]
+    
+    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
+    
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
+
+def ListTypeMonth(request,type_slug):
+    now = datetime.datetime.now(utcTZ)
+    typeevenement = TypeEvenement.objects.get(slug=type_slug)
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
+    typesevenements.query.group_by = ["id"]
+    
+    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
+    
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
+
+
+
+
 def ListAllType(request):
     now = datetime.datetime.now(utcTZ)
     typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
     typesevenements.query.group_by = ["id"]
 
     return render_to_response('evenements/agenda-list-type-orga-saison.html',{'typeslist':typesevenements})
+
+
+
+
+
     
 def AgendaMois(request, annee, mois):
     try:
@@ -149,7 +194,7 @@ def AgendaAnnee(request, annee):
         listeHtml.append('<li>'+ListeMois[mois]+'<ul>')
         
         if type(liste_evenements[0].lieu) == Equipement:
-            lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': liste_evenements[0].lieu.fonction.slug, 'equipement_slug': liste_evenements[0].lieu.slug})+'">'+liste_evenements[0].lieu.nom_lieu+'</a> - '
+            lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': liste_evenements[0].lieu.fonction.slug, 'equipement_slug': liste_evenements[0].lieu.slug})+'">'+liste_evenements[0].lieu.nom+'</a> - '
         else:
             lien = ''
         
@@ -166,7 +211,7 @@ def AgendaAnnee(request, annee):
                 listeHtml.append("</ul></li><li>"+ListeMois[mois]+"<ul>")
                 
             if type(each.lieu) == Equipement:
-                lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': each.lieu.fonction.slug, 'equipement_slug': each.lieu.slug})+'">'+each.lieu.nom_lieu+'</a> - '
+                lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': each.lieu.fonction.slug, 'equipement_slug': each.lieu.slug})+'">'+each.lieu.nom+'</a> - '
             else:
                 lien = ''
             
@@ -306,7 +351,7 @@ def SaisonDetailsHtml(request, slug):
         listeHtml.append('<li>'+ListeMois[mois]+' - '+debut.strftime("%Y")+'<ul>')
         
         if type(liste_evenements[0].lieu) == Equipement:
-            lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': liste_evenements[0].lieu.fonction.slug, 'equipement_slug': liste_evenements[0].lieu.slug})+'">'+liste_evenements[0].lieu.nom_lieu+'</a> - '
+            lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': liste_evenements[0].lieu.fonction.slug, 'equipement_slug': liste_evenements[0].lieu.slug})+'">'+liste_evenements[0].lieu.nom+'</a> - '
         else:
             lien = ''
             
@@ -323,7 +368,7 @@ def SaisonDetailsHtml(request, slug):
                 listeHtml.append("</ul></li><li>"+ListeMois[mois]+" - "+debut.strftime("%Y")+"<ul>")
                 
             if type(each.lieu) == Equipement:
-                lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': each.lieu.fonction.slug, 'equipement_slug': each.lieu.slug})+'">'+each.lieu.nom_lieu+'</a> - '
+                lien = '<a href="'+reverse('equipement-details', kwargs={'fonction_slug': each.lieu.fonction.slug, 'equipement_slug': each.lieu.slug})+'">'+each.lieu.nom+'</a> - '
             else:
                 lien = ''
             

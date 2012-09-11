@@ -16,12 +16,12 @@
 			</div>
 			<div class="row-fluid">
 				<div class="span6">
-					<ul class="nav nav-tabs">
+					<ul class="nav nav-tabs" style="margin-bottom:0px;">
 						<li class="active">
 							<a href="#">Tous ({{evenements|length }})</a>
 						</li>
 						<li>
-							<a href="#">Cette semaine</a>
+							<a href="{% url evenements.views.ListTypeWeek type_slug=typeslug  %}">Cette semaine</a>
 						</li>
 						<li>
 							<a href="#">Ce Week-End</a>
@@ -30,57 +30,50 @@
 							<a href="#">Ce mois</a>
 						</li>
 					</ul>
-					{% regroup evenements by monthdebut as eventlist %}
-					
-					{% for eventmonth in eventlist %}
-						
+					<div style="border-left:1px solid #ccc;border-right:1px solid #ccc;">
+						{% regroup evenements by monthyeardebut as eventlist %}
+
+						{% for eventmonth in eventlist %}
+						{% if not forloop.first %} <hr style="=margin-top: 0px;" />{% endif%}
+						<h3 style="text-align: center;margin-top: 0px;{% if forloop.first %}padding-top:15px;{% endif%} ">{{eventmonth.grouper|grouperToString}}</h3>
 						<table class="table  table-striped">
-						{% for evenement in eventmonth.list %}
-						<tr>
-							<td> {% if evenement.image %}<img class="img-polaroid" src="{{evenement.image|resize:'150x150x1'}}">{%endif%} </td>
-							<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
-							<p>
-								Type : {{evenement.type}}
-								<br/>
-								Date : {{ evenement.debut|dateCustom:evenement.fin }}
-							</p>
-							<p style="text-align:right;">
-								<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
-							</p></td>
+							{% for evenement in eventmonth.list %}
+							<tr>
+								<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
+								<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
+								<p>
+									Type : {{evenement.type}}
+									<br/>
+									Date : {{ evenement.debut|dateCustom:evenement.fin }}
+								</p>
+								<p style="text-align:right;">
+									<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+								</p></td>
 
-						</tr>
-						{% endfor %}
+							</tr>
+							{% endfor %}
 						</table>
-					{% endfor %}
-					
-					<table class="table  table-striped">
-						{% for evenement in evenements %}
-						<tr>
-							<td> {% if evenement.image %}<img class="img-polaroid" src="{{evenement.image|resize:'150x150x1'}}">{%endif%} </td>
-							<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
-							<p>
-								Type : {{evenement.type}}
-								<br/>
-								Date : {{ evenement.debut|dateCustom:evenement.fin }}
-							</p>
-							<p style="text-align:right;">
-								<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
-							</p></td>
-
-						</tr>
 						{% endfor %}
-					</table>
+					</div>
 				</div>
 				<div class="span4 offset1 well">
-					<p>Voir les evènements :</p>
+					<p>
+						Voir les evènements :
+					</p>
 					<ul class="nav nav-list">
-    					<li class="nav-header">Par type</li>
-    					{% for item in typeslist %}
-    					<li {% if typeslug == item.slug %}class="active"{%endif%} ><a href="{% url evenements.views.ListType type_slug=item.slug %}" >{{item.nom}}</a></li>
+						<li class="nav-header">
+							Par type
+						</li>
+						{% for item in typeslist %}
+						<li {% if typeslug == item.slug %}class="active"{%endif%} >
+							<a href="{% url evenements.views.ListType type_slug=item.slug %}" >{{item.nom}}</a>
+						</li>
 						{% endfor %}
 						<li class="divider"></li>
-						<li {% if typeslug == "tous" %}class="active"{%endif%} ><a href="{% url evenements.views.AgendaGlobal %}">Tous les évènements</a></li>
-    				</ul>
+						<li {% if typeslug == "tous" %}class="active"{%endif%} >
+							<a href="{% url evenements.views.AgendaGlobal %}">Tous les évènements</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
