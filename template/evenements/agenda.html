@@ -20,7 +20,7 @@
 						<li class="active">
 							<a href="#">Tous ({{evenements|length }})</a>
 						</li>
-						<li>
+						<li {% if typeslug == item.slug %}class="active"{%endif%} >
 							<a href="{% url evenements.views.ListTypeWeek type_slug=typeslug  %}">Cette semaine</a>
 						</li>
 						<li>

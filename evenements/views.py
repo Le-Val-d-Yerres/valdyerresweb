@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from evenements.models import *
 from localisations.models import Lieu
-import datetime
 from django.db.models import Q
 from django.template import Context,loader
 from evenements.customCalendar.calendrier import CAVYCalendar, entierAvecZero
@@ -14,6 +13,8 @@ from valdyerresweb import settings
 from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
 from valdyerresweb.utils.functions import GenerationQrCode
+import datetime
+
 
 utcTZ = timezone("UTC")
 
@@ -45,22 +46,34 @@ def ListType(request,type_slug):
     
     return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
 
-def ListTypeWeek(request,type_slug):
-    now = datetime.datetime.now(utcTZ)
-    sunday = now + datetime.timedelta(days=(6-now.weekday()) )
-    if int(now.strftime('%w')) == 0:
-        sunday = now + datetime.timedelta(days=(6-now.weekday()-1), weeks=1 )
+def ListTypePeriodOrga(request,type_slug = 'tous',period = 'tous', orga = 'tous'):
+    midnight = datetime.time(23, 59, 59)
+    debut = datetime.datetime.now(utcTZ)
+    if (type_slug == 'tous') and (period == 'tous') and (orga == 'tous'):
+        HttpResponseRedirect(AgendaGlobal)
     
-    print str(sunday)+"\n"
-    print str(now.weekday())
+    if period == "cette-semaine":
+        end = debut + datetime.timedelta(days=(6-debut.weekday()) )
+        if debut.weekday() == 0:
+            end = debut + datetime.timedelta(days=(6-debut.weekday()-1), weeks=1 )
+    
+    if period == "ce-week-end":
+        end = debut + datetime.timedelta(days=(6-debut.weekday()) )
+        if debut.weekday() == 0:
+            end = debut + datetime.timedelta(days=(6-debut.weekday()-1), weeks=1 )
+        
+    end = datetime.datetime.combine(end.date(),midnight)
+    end.replace(tzinfo=utcTZ)
+        
+   
         
     typeevenement = TypeEvenement.objects.get(slug=type_slug)
-    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now, evenement__debut__lt = sunday ,evenement__publish = True).order_by('nom')
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = debut ,evenement__publish = True).order_by('nom')
     typesevenements.query.group_by = ["id"]
     
-    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
+    evenements = Evenement.objects.select_related().filter(debut__lt = end , fin__gt = debut,publish = True,type = typeevenement.id).order_by('debut')
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug , 'period':period})
 
 def ListTypeWeekEnd(request,type_slug):
     now = datetime.datetime.now(utcTZ)
