@@ -17,17 +17,18 @@
 			<div class="row-fluid">
 				<div class="span6">
 					<ul class="nav nav-tabs" style="margin-bottom:0px;">
-						<li class="active">
-							<a href="#">Tous ({{evenements|length }})</a>
+						<li {% if period == "toutes" %}class="active"{%endif%}>
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period="toutes" %}">Tous </a>
 						</li>
-						<li {% if typeslug == item.slug %}class="active"{%endif%} >
-							<a href="{% url evenements.views.ListTypeWeek type_slug=typeslug  %}">Cette semaine</a>
+						<li {% if period == "cette-semaine" %}class="active"{%endif%} >
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period="cette-semaine" %}">Cette semaine</a>
 						</li>
-						<li>
-							<a href="#">Ce Week-End</a>
+						<li {% if period == "ce-week-end" %}class="active"{%endif%} >
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period="ce-week-end" %}">Ce week-end</a>
 						</li>
-						<li>
-							<a href="#">Ce mois</a>
+						<li {% if period == "ce-mois" %}class="active"{%endif%} >
+							
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period="ce-mois" %}">Ce mois</a>
 						</li>
 					</ul>
 					<div style="border-left:1px solid #ccc;border-right:1px solid #ccc;">
@@ -66,12 +67,12 @@
 						</li>
 						{% for item in typeslist %}
 						<li {% if typeslug == item.slug %}class="active"{%endif%} >
-							<a href="{% url evenements.views.ListType type_slug=item.slug %}" >{{item.nom}}</a>
+							<a href="{% url agenda-type-period-orga type_slug=item.slug period=period %}" >{{item.nom}}</a>
 						</li>
 						{% endfor %}
 						<li class="divider"></li>
 						<li {% if typeslug == "tous" %}class="active"{%endif%} >
-							<a href="{% url evenements.views.AgendaGlobal %}">Tous les évènements</a>
+							<a href="{% url agenda-type-period-orga type_slug="tous" period=period %}">Tout type</a>
 						</li>
 					</ul>
 				</div>

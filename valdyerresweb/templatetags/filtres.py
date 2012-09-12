@@ -72,7 +72,7 @@ def dateSEO(dateUTC):
     return date.strftime("%Y")+"-"+date.strftime("%m")+"-"+date.strftime("%d")+"T"+date.strftime("%H")+":"+date.strftime("%M")
 
 # trouvé sur http://united-coders.com/christian-harms/image-resizing-tips-every-coder-should-know/
-# un peu modifié aussi.D
+# un peu modifié aussi
 def resizeandcrop(img, box, fit):
     '''Downsample the image.
     @param img: Image -  an Image-object

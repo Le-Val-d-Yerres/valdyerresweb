@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response , redirect
 from evenements.models import *
 from localisations.models import Lieu
 from django.db.models import Q
@@ -43,37 +43,71 @@ def ListType(request,type_slug):
     typesevenements.query.group_by = ["id"]
     
     evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
+    type_slug = 'tous'
+    period = 'toutes'
+    orga_slug = 'tous'
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period})
 
-def ListTypePeriodOrga(request,type_slug = 'tous',period = 'tous', orga = 'tous'):
+def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous'):
     midnight = datetime.time(23, 59, 59)
-    debut = datetime.datetime.now(utcTZ)
-    if (type_slug == 'tous') and (period == 'tous') and (orga == 'tous'):
-        HttpResponseRedirect(AgendaGlobal)
+    startDate = datetime.datetime.now(utcTZ)
+    if (type_slug == 'tous') and (period == 'toutes') and (orga_slug == 'tous'):
+        return redirect('agenda-global')
     
     if period == "cette-semaine":
-        end = debut + datetime.timedelta(days=(6-debut.weekday()) )
-        if debut.weekday() == 0:
-            end = debut + datetime.timedelta(days=(6-debut.weekday()-1), weeks=1 )
+        endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
+        if startDate.weekday() == 0:
+            endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()-1), weeks=1 )
+        endDate = datetime.datetime.combine(endDate.date(),midnight)
+        endDate.replace(tzinfo=utcTZ)
     
     if period == "ce-week-end":
-        end = debut + datetime.timedelta(days=(6-debut.weekday()) )
-        if debut.weekday() == 0:
-            end = debut + datetime.timedelta(days=(6-debut.weekday()-1), weeks=1 )
+        startDate = startDate + datetime.timedelta(days=(4-startDate.weekday()) )
+        endafternoon = midnight = datetime.time(17, 30, 00)
+        startDate = datetime.datetime.combine(startDate.date(),endafternoon)
+        startDate = datetime.datetime.combine(startDate.date(),midnight)
+        endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
+        if startDate.weekday() == 0:
+            endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()-1), weeks=1 )
+        endDate = datetime.datetime.combine(endDate.date(),midnight)
+        endDate.replace(tzinfo=utcTZ)
+            
+    if period == "ce-mois":
+        endDate = datetime.datetime(startDate.year,startDate.month,calendar.monthrange(startDate.year, startDate.month)[1],0,0,0,tzinfo=utcTZ)
+        endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
+        if startDate.weekday() == 0:
+            endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()-1), weeks=1 )
+        endDate = datetime.datetime.combine(endDate.date(),midnight)
+        endDate.replace(tzinfo=utcTZ)
+    
+    
         
-    end = datetime.datetime.combine(end.date(),midnight)
-    end.replace(tzinfo=utcTZ)
-        
+    
+    
    
-        
-    typeevenement = TypeEvenement.objects.get(slug=type_slug)
-    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = debut ,evenement__publish = True).order_by('nom')
+    
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = startDate ,evenement__publish = True).order_by('nom')
     typesevenements.query.group_by = ["id"]
     
-    evenements = Evenement.objects.select_related().filter(debut__lt = end , fin__gt = debut,publish = True,type = typeevenement.id).order_by('debut')
+    organisateurs = Organisateur.objects.filter(evenement__fin__gt = startDate ,evenement__publish = True).order_by('nom')
+    organisateurs.query.group_by = ["id"]
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug , 'period':period})
+    evenements = Evenement.objects.select_related().filter(fin__gt = startDate ,publish = True).order_by('debut')
+    
+    if period !="toutes":
+        evenements =  evenements.filter(debut__lt = endDate )
+        print str(startDate)+"\n"
+        print str(endDate)+"\n"
+    
+    if type_slug != "tous":
+        typeevenement = TypeEvenement.objects.get(slug=type_slug)
+        evenements =  evenements.filter(type = typeevenement.id)
+    if orga_slug != "tous":
+        organisateur = Organisateur.objects.get(slug=orga_slug)    
+        evenements =  evenements.filter(organisateur = organisateur.id)
+    
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period})
 
 def ListTypeWeekEnd(request,type_slug):
     now = datetime.datetime.now(utcTZ)

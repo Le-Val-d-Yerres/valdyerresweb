@@ -3,14 +3,15 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('evenements.views',
-    url(r'^$', 'AgendaGlobal'),
+    url(r'^$', 'AgendaGlobal', name='agenda-global'),
     url(r'^mois.ics$', 'AgendaNowICS'),
     
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/$', 'AgendaMois', name="agenda-mois"),
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/mois.ics$', 'AgendaMoisICS'),
     
-    url(r'^type/(?P<type_slug>[^\/]+)/periode/$','ListType',name='list-type'),
-    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<periode>[^\/]+)/$','ListTypeWeek',name='list-type'),
+    url(r'^type/(?P<type_slug>[^\/]+)/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
+    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
+    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/orga/(?P<orga_slug>[^\/]+)/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
 
 
     url(r'^type/$','ListAllType',name='list-all-type'),

@@ -6,7 +6,10 @@ from model_utils.managers import InheritanceManager
 
 class Organisateur(models.Model):
     nom = models.CharField(max_length=255)
-    email = models.EmailField("Mail (facultatif)", max_length=254, blank=True)
+    slug = models.SlugField(max_length=255, unique=True)
+    description = models.TextField()
+    logo = FileBrowseField("Image", max_length=255, directory="evenements", extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, null=True)
+    email = models.EmailField("Mail (facultatif)", max_length=255, blank=True)
     telephone = models.CharField(max_length=25)
     fax = models.CharField("Fax (facultatif)", max_length=25, blank=True)
     rue = models.CharField(max_length=255)
@@ -50,7 +53,7 @@ class Evenement(models.Model):
     debut = models.DateTimeField("Date de début")
     fin = models.DateTimeField("date de fin (facultatif)")
     organisateur = models.ManyToManyField(Organisateur)
-    image = FileBrowseField("Image", max_length=200, directory="evenements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
+    image = FileBrowseField("Image", max_length=255, directory="evenements", extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, null=True)
     url = models.URLField("Eventuellement un lien: ", blank=True)
     cadre_evenement = models.ForeignKey(Saison)
     type = models.ForeignKey(TypeEvenement)
