@@ -14,7 +14,6 @@ urlpatterns = patterns('evenements.views',
     url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/orga/(?P<orga_slug>[^\/]+)/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
 
 
-    url(r'^type/$','ListAllType',name='list-all-type'),
     
     url(r'^(?P<annee>\d{4})/$', 'AgendaAnnee', name='agenda-annee'),
     url(r'^(?P<annee>\d{4}).ics$', 'AgendaAnneeICS'),

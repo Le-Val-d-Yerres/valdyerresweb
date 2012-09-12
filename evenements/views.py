@@ -17,37 +17,35 @@ import datetime
 
 
 utcTZ = timezone("UTC")
+myTimezone = timezone(settings.TIME_ZONE)
 
 ListeMois = ['janvier', u'février', 'mars', 'avril', 'mai', 'juin', 'juillet', u'août', 'septembre', 'octobre', 'novembre', u'décembre']
 ListeJours = ['dimanche','lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi']    
+
+#compatibilité datetime
+WeekDay = ['lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi','dimanche']    
+
 
 
         
     
 
-def AgendaGlobal(request):
+def AgendaGlobal(request, type_slug = 'tous',period = 'toutes', orga_slug = 'tous'):
     now = datetime.datetime.now(utcTZ)
     evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True).order_by('debut')
     typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
     typesevenements.query.group_by = ["id"]
     
-
-   
-    
-    return render_to_response('evenements/agenda.html', {'evenements': evenements,'typeslist':typesevenements, 'typeslug':"tous" })
-    
-def ListType(request,type_slug):
-    now = datetime.datetime.now(utcTZ)
-    typeevenement = TypeEvenement.objects.get(slug=type_slug)
-    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
-    typesevenements.query.group_by = ["id"]
-    
-    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
+    organisateurs = Organisateur.objects.filter(evenement__fin__gt = datetime.datetime.now(utcTZ) ,evenement__publish = True).order_by('nom')
+    organisateurs.query.group_by = ["id"]
+     
     type_slug = 'tous'
     period = 'toutes'
     orga_slug = 'tous'
+
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period})
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period})
+    
 
 def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous'):
     midnight = datetime.time(23, 59, 59)
@@ -74,23 +72,16 @@ def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug =
         endDate.replace(tzinfo=utcTZ)
             
     if period == "ce-mois":
-        endDate = datetime.datetime(startDate.year,startDate.month,calendar.monthrange(startDate.year, startDate.month)[1],0,0,0,tzinfo=utcTZ)
-        endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
-        if startDate.weekday() == 0:
-            endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()-1), weeks=1 )
+        endDate = datetime.datetime(startDate.year,startDate.month,calendar.monthrange(startDate.year, startDate.month)[1],0,0,0,tzinfo=myTimezone)
         endDate = datetime.datetime.combine(endDate.date(),midnight)
-        endDate.replace(tzinfo=utcTZ)
-    
-    
-        
-    
+
     
    
     
-    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = startDate ,evenement__publish = True).order_by('nom')
+    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = datetime.datetime.now(utcTZ) ,evenement__publish = True).order_by('nom')
     typesevenements.query.group_by = ["id"]
     
-    organisateurs = Organisateur.objects.filter(evenement__fin__gt = startDate ,evenement__publish = True).order_by('nom')
+    organisateurs = Organisateur.objects.filter(evenement__fin__gt = datetime.datetime.now(utcTZ) ,evenement__publish = True).order_by('nom')
     organisateurs.query.group_by = ["id"]
     
     evenements = Evenement.objects.select_related().filter(fin__gt = startDate ,publish = True).order_by('debut')
@@ -107,39 +98,19 @@ def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug =
         organisateur = Organisateur.objects.get(slug=orga_slug)    
         evenements =  evenements.filter(organisateur = organisateur.id)
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period})
-
-def ListTypeWeekEnd(request,type_slug):
-    now = datetime.datetime.now(utcTZ)
-    typeevenement = TypeEvenement.objects.get(slug=type_slug)
-    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
-    typesevenements.query.group_by = ["id"]
+    flash = None    
+    if len(evenements) == 0:
+        flash = u"Il n'y a pas d'évènement à venir : <ul>"
+        if type_slug != "tous":
+            flash += u"<li>De type "+typeevenement.nom+".</li>"
+        if period != u"toutes":
+            flash += u"<li>Pour la période comprise entre le "+ WeekDay[startDate.weekday()] + u" "+ str(startDate.day) +u" "+ListeMois[startDate.month-1]+" "
+            flash += u"et le "+ WeekDay[endDate.weekday()]+ u" "+ str(endDate.day) +u" "+ListeMois[endDate.month-1]+".</li>"
+        if orga_slug != u"tous":
+            flash += u"<li>Organisé par "+ organisateur.nom+".</li>"
+        flash += u"<ul>" 
     
-    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
-    
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
-
-def ListTypeMonth(request,type_slug):
-    now = datetime.datetime.now(utcTZ)
-    typeevenement = TypeEvenement.objects.get(slug=type_slug)
-    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
-    typesevenements.query.group_by = ["id"]
-    
-    evenements = Evenement.objects.select_related().filter(fin__gt = now,publish = True,type = typeevenement.id).order_by('debut')
-    
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements , 'typeslug':type_slug})
-
-
-
-
-def ListAllType(request):
-    now = datetime.datetime.now(utcTZ)
-    typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = now,evenement__publish = True).order_by('nom')
-    typesevenements.query.group_by = ["id"]
-
-    return render_to_response('evenements/agenda-list-type-orga-saison.html',{'typeslist':typesevenements})
-
-
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period , 'flash':flash})
 
 
 

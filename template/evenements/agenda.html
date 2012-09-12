@@ -18,20 +18,27 @@
 				<div class="span6">
 					<ul class="nav nav-tabs" style="margin-bottom:0px;">
 						<li {% if period == "toutes" %}class="active"{%endif%}>
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period="toutes" %}">Tous </a>
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period="toutes" orga_slug=orgaslug %}">Toutes périodes </a>
 						</li>
 						<li {% if period == "cette-semaine" %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period="cette-semaine" %}">Cette semaine</a>
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period="cette-semaine" orga_slug=orgaslug %}">Cette semaine</a>
 						</li>
 						<li {% if period == "ce-week-end" %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period="ce-week-end" %}">Ce week-end</a>
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period="ce-week-end" orga_slug=orgaslug %}">Ce week-end</a>
 						</li>
 						<li {% if period == "ce-mois" %}class="active"{%endif%} >
 							
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period="ce-mois" %}">Ce mois</a>
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period="ce-mois" orga_slug=orgaslug %}">Ce mois</a>
 						</li>
 					</ul>
-					<div style="border-left:1px solid #ccc;border-right:1px solid #ccc;">
+					<div style="border-left:1px solid #ccc;border-right:1px solid #ccc;border-bottom:1px solid #ccc;">
+						{% if flash %}
+						    <div class="alert alert-error">
+						    	<p>
+						    		{{flash|safe}}
+						    	</p>
+						    </div>
+						{% endif%}
 						{% regroup evenements by monthyeardebut as eventlist %}
 
 						{% for eventmonth in eventlist %}
@@ -67,12 +74,25 @@
 						</li>
 						{% for item in typeslist %}
 						<li {% if typeslug == item.slug %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug=item.slug period=period %}" >{{item.nom}}</a>
+							<a href="{% url agenda-type-period-orga type_slug=item.slug period=period  orga_slug=orgaslug %}" >{{item.nom}}</a>
 						</li>
 						{% endfor %}
 						<li class="divider"></li>
 						<li {% if typeslug == "tous" %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug="tous" period=period %}">Tout type</a>
+							<a href="{% url agenda-type-period-orga type_slug="tous" period=period orga_slug=orgaslug %}">Tous types d'évènements</a>
+						</li>
+						<li class="divider"></li>
+						<li class="nav-header">
+							Par Organisateur :
+						</li>
+						{% for item in orgalist %}
+						<li {% if orgaslug == item.slug %}class="active"{%endif%} >
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period=period orga_slug=item.slug %}" >{{item.nom}}</a>
+						</li>
+						{% endfor %}
+						<li class="divider"></li>
+						<li {% if orgaslug == "tous" %}class="active"{%endif%} >
+							<a href="{% url agenda-type-period-orga type_slug=typeslug period=period orga_slug="tous" %}">Tous les organisateurs</a>
 						</li>
 					</ul>
 				</div>
