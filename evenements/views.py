@@ -42,6 +42,7 @@ def AgendaGlobal(request, type_slug = 'tous',period = 'toutes', orga_slug = 'tou
     type_slug = 'tous'
     period = 'toutes'
     orga_slug = 'tous'
+    
 
     
     return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period})
@@ -91,10 +92,10 @@ def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug =
         print str(startDate)+"\n"
         print str(endDate)+"\n"
     
-    if type_slug != "tous":
+    if type_slug != "tous" :
         typeevenement = TypeEvenement.objects.get(slug=type_slug)
         evenements =  evenements.filter(type = typeevenement.id)
-    if orga_slug != "tous":
+    if orga_slug != "tous" :
         organisateur = Organisateur.objects.get(slug=orga_slug)    
         evenements =  evenements.filter(organisateur = organisateur.id)
     
