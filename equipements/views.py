@@ -27,7 +27,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         
         facilites = Facilites.objects.filter(equipement_id=equipement.id)
         
-        evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id).filter(publish=1).order_by('-haut_page').order_by('debut')
+        evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id).filter(publish=1).order_by('debut')
         
         qr_code_vcard = GenerationQrCode(EquipementVcard(equipement))
         #<trash>

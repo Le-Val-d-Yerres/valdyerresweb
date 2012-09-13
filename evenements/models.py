@@ -7,8 +7,10 @@ from model_utils.managers import InheritanceManager
 class Organisateur(models.Model):
     nom = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
+    meta_description = models.CharField(max_length=200)
     description = models.TextField()
     logo = FileBrowseField("Image", max_length=255, directory="evenements", extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, null=True)
+    url = models.URLField("Site de cet organisateur:  (facultatif) ", blank=True)
     email = models.EmailField("Mail (facultatif)", max_length=255, blank=True)
     telephone = models.CharField(max_length=25)
     fax = models.CharField("Fax (facultatif)", max_length=25, blank=True)

@@ -1,9 +1,9 @@
 BEGIN:VCARD
 VERSION:3.0
 SOURCE:{% url equipements.views.EquipementVCF slug=equipement.slug %}
-NAME:{{ equipement.nom_lieu }}
+NAME:{{ equipement.nom }}
 N:;;;;
-FN;LANGUAGE=fr;CHARSET=utf-8:{{ equipement.nom_lieu|safe }}
+FN;LANGUAGE=fr;CHARSET=utf-8:{{ equipement.nom|safe }}
 ORG;CHARSET=utf-8:{{settings.NOM_ORGANISATION|safe  }}
 URL:{{settings.NOM_DOMAINE }}{% if equipement.presentation %}{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}{% endif %}
 EMAIL:{% if equipement.email %}{{ equipement.email }}{% else %}{{ settings.MAIL_ORGANISATION }}{% endif %}

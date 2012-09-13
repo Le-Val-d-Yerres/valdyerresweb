@@ -50,11 +50,27 @@ class TypeEvenementAdmin(admin.ModelAdmin):
 class OrganisateurAdmin(admin.ModelAdmin):
     list_display = ['nom', 'email', 'ville']
     fieldsets = [
-        (None, {'fields': ['nom' ]}),
-        ('Coordonnées', {'fields': ['email', 'telephone', 'fax', 'rue', 'ville']}),
+        (None, {'fields': ['nom','logo','meta_description','description' ]}),
+        ('Coordonnées', {'fields': ['url','email', 'telephone', 'fax', 'rue', 'ville']}),
     ]
     list_filter = ['ville__nom']
     search_fields = ['nom']
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
+    
+    def save_model(self, request, obj, form, change):
+        monslug = defaultfilters.slugify(obj.nom)
+        if obj.slug == "":
+            listevenement = Evenement.objects.filter(slug=monslug)
+            listsize = len(listevenement)
+            if listsize > 0:
+                monslug = monslug+'-'+str(listsize+1)
+            obj.slug = monslug
+        obj.save()
     
 class FestivalAdmin(admin.ModelAdmin):
     list_display = ['nom', 'saison_culture', 'debut', 'fin']

@@ -14,6 +14,7 @@
 	<div  class="row-fluid">
 			<div class="span12">
 			<ul class="breadcrumb">
+					<li><a href="/">Accueil</a></li> <span class="divider">/</span></li>
 					<li><a href="{% url evenements.views.AgendaGlobal %}">Agenda</a> <span class="divider">/</span></li>
 				{% if festival %}
 					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>
@@ -25,7 +26,7 @@
 				{% endif %}
 			</ul>	
 			</div>	
-			<div  class="span7">
+			<div class="span7">
 				
 				
 				{% if festival %}
@@ -44,7 +45,7 @@
 
 				<p>
 					Date : {{ evenement.debut|dateCustom:evenement.fin }}<br/>
-					Type : {{evenement.type}}
+					Type : <a href="{% url agenda-type-period-orga type_slug=evenement.type.slug period="toutes"  orga_slug="tous" %}" >{{evenement.type}}</a>
 				</p>
 				
 

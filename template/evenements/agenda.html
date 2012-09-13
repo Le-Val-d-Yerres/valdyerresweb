@@ -1,6 +1,6 @@
 {% extends "include/main.html" %}
 
-{% block meta-description %}Liste des évènements de la {{ saison.nom }}{% endblock %}
+{% block meta-description %}Agenda des spectacles et évènements organisé par le Val d'Yerres et ses partenaires {% endblock %}
 
 {% block contenu %}
 
@@ -9,6 +9,12 @@
 <div class="container" style="margin-top:60px;">
 
 	<div class="row-fluid">
+		<div class="span12">
+			<ul class="breadcrumb">
+					<li><a href="/">Accueil</a></li> <span class="divider">/</span></li>
+					<li class="active">Agenda<li>
+			</ul>
+		</div>
 		<div class="span12">
 			<div class="page-header">
 				<h1>Les évènements à venir : </h1>
@@ -50,9 +56,11 @@
 								<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
 								<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
 								<p>
-									Type : {{evenement.type}}
+									Type : {{evenement.type}}.
 									<br/>
-									Date : {{ evenement.debut|dateCustom:evenement.fin }}
+									Date : {{ evenement.debut|dateCustom:evenement.fin }} .
+									<br/>
+									Lieu : {{evenement.lieu.nom}}, {{evenement.lieu.ville.nom}}. 
 								</p>
 								<p style="text-align:right;">
 									<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
