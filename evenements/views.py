@@ -122,7 +122,7 @@ def OrganisateurDetailsHtml(request,slug):
 
 def OrganisateurVCF(request, slug):
     try:
-        organisateur = Lieu.objects.select_related().select_subclasses().get(slug=slug)
+        organisateur = Organisateur.objects.select_related().get(slug=slug)
         
         myText = OrganisateurVcard(organisateur)
     except Lieu.DoesNotExist:

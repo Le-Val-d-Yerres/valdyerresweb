@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+SOURCE:{% url evenements.views.OrganisateurVCF slug=organisateur.slug %}
+NAME:{{ organisateur.nom }}
+N:;;;;
+FN;LANGUAGE=fr;CHARSET=utf-8:{{ organisateur.nom|safe }}
+ORG;CHARSET=utf-8:{{settings.NOM_ORGANISATION|safe  }}
+URL:{{settings.NOM_DOMAINE }}{% url evenements.views.OrganisateurDetailsHtml  %}
+EMAIL:{% if equipement.email %}{{ equipement.email }}{% else %}{{ settings.MAIL_ORGANISATION }}{% endif %}
+ADR;LANGUAGE=fr;CHARSET=utf-8:;;{{ equipement.rue }};{{ equipement.ville.code_postal }};;{{ equipement.ville.nom }}; 
+{% if equipement.presentation %}TEL:{{ equipement.telephone }}
+GEO:{{ equipement.latitude }};{{ equipement.longitude }}{% endif %}
+END:VCARD
