@@ -6,6 +6,9 @@ urlpatterns = patterns('evenements.views',
     url(r'^$', 'AgendaGlobal', name='agenda-global'),
     url(r'^mois.ics$', 'AgendaNowICS'),
     
+    url(r'^organisateur/(?P<organisateur_slug>[^\/]+).html$', 'OrganisateurDetailsHtml', name='organisateur_html'),
+    url(r'^organisateur/(?P<organisateur_slug>[^\/]+).vcf$','OrganisateurVCF',  name='organisateur_vcf'),
+    
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/$', 'AgendaMois', name="agenda-mois"),
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/mois.ics$', 'AgendaMoisICS'),
     

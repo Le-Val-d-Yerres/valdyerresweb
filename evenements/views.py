@@ -111,18 +111,18 @@ def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug =
     
     return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period , 'flash':flash})
 
-def OrganisateurDetailsHtml(request,slug):
+def OrganisateurDetailsHtml(request,organisateur_slug):
     try:
-        organisateur = Organisateur.select_related().objects.get(slug=slug)
-         
-    except SaisonCulturelle.DoesNotExist:
+        organisateur = Organisateur.objects.get(slug=organisateur_slug)
+        organisateur_qr = GenerationQrCode(OrganisateurVcard(organisateur))
+    except OrganisateurDetailsHtml.DoesNotExist:
         raise Http404
     
-    return render_to_response('evenements/organisateur-details.html', {'orga': organisateur})
+    return render_to_response('evenements/organisateur-details.html', {'organisateur': organisateur , 'organisateur_qr':organisateur_qr })
 
-def OrganisateurVCF(request, slug):
+def OrganisateurVCF(request, organisateur_slug):
     try:
-        organisateur = Organisateur.objects.select_related().get(slug=slug)
+        organisateur = Organisateur.objects.get(slug=organisateur_slug)
         
         myText = OrganisateurVcard(organisateur)
     except Lieu.DoesNotExist:
@@ -130,7 +130,7 @@ def OrganisateurVCF(request, slug):
     return HttpResponse(myText,content_type="text/vcard")
 
 def OrganisateurVcard(organisateur):
-    myTemplate = loader.get_template('evenement/organisateur.vcf.html')
+    myTemplate = loader.get_template('evenements/organisateur.vcf.html')
     myContext = Context({"organisateur": organisateur, "settings": settings})
     return myTemplate.render(myContext)
 

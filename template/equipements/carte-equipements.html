@@ -32,7 +32,7 @@
 							my{{forloop.counter0}}Marker['marker'] ='{{each.picto}}';
 							tabEquipement.push(my{{forloop.counter0}}Marker);
 							</script>
-				        <li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom_lieu }}</a></li>
+				        <li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></li>
 				    {% endfor %}
 			    </ul>
 		    </li>

@@ -35,7 +35,7 @@
 				<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 				{% endif %}
 				<p>
-					Organisé par : {% for each in evenement.organisateur.all %}{{ each.nom }}<br/>{% endfor %}
+					Organisé par : <ul> {% for each in evenement.organisateur.all %}<li><a href="{% url evenements.views.OrganisateurDetailsHtml organisateur_slug=each.slug%}"> {{ each.nom }}</a> </li>{% endfor %}</ul>
 				</p>
 				{% if evenement.image %}
 				<img class="img-polaroid" alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
