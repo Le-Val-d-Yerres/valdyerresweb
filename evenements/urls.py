@@ -12,9 +12,9 @@ urlpatterns = patterns('evenements.views',
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/$', 'AgendaMois', name="agenda-mois"),
     url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/mois.ics$', 'AgendaMoisICS'),
     
-    url(r'^type/(?P<type_slug>[^\/]+)/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
-    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
-    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/orga/(?P<orga_slug>[^\/]+)/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
+    url(r'^type/(?P<type_slug>[^\/]+)/$','AgendaListTypePeriodOrga',name='agenda-type-period-orga'),
+    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/$','AgendaListTypePeriodOrga',name='agenda-type-period-orga'),
+    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/orga/(?P<orga_slug>[^\/]+)/$','AgendaListTypePeriodOrga',name='agenda-type-period-orga'),
  #   TODO : Le OR est a creuser pour un meilleur polymorphisme sur cette vue :
  #   url(r'^(type/(?P<type_slug>[^\/]+))|(periode/(?P<period>[^\/]+))|(orga/(?P<orga_slug>[^\/]+))/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
 

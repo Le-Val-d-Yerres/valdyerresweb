@@ -72,7 +72,7 @@
 								{% endif %}
 								<span itemprop="streetAddress" >{{ evenement.lieu.rue }}</span><br/>
 								<span>{{ evenement.lieu.ville.code_postal }}</span> <span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span><br/>
-								<span><abbr title="Téléphone">Tel</abbr>: {{ evenement.lieu.telephone }}</span><br/>
+								{% if evenement.lieu.telephone %}<span><abbr title="Téléphone">Tel</abbr>: {{ evenement.lieu.telephone }}</span><br/>{% endif %}
 
 					</div>
 					</div>

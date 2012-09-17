@@ -12,7 +12,7 @@ class EventLink(object):
         raise NotImplementedError('Exception : EventAdder is supposed to be an interface')
     def setLink(self,imgurl,linkurl):
         return "<a href=\""+linkurl+"\"><img src=\""+imgurl+"\">"+self.text+"</a>"
-
+    
         
 class OutlookEventLink(EventLink):
     def getLink(self,evenement):
@@ -76,3 +76,7 @@ def getLinkList(evenement):
     eventAddLinkList.append(myOutlookEventLink.getLink(evenement))
     eventAddLinkList.append(myIcalEventLink.getLink(evenement))
     return eventAddLinkList
+
+
+
+# téléchargement d'évènements 

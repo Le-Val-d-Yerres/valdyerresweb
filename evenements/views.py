@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response , redirect
+from django.shortcuts import render_to_response , redirect , get_object_or_404
 from evenements.models import *
 from localisations.models import Lieu
 from django.db.models import Q
@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from model_utils.managers import InheritanceManager
 from valdyerresweb.utils.functions import GenerationQrCode
 import datetime
+from _pyio import StringIO
 
 
 utcTZ = timezone("UTC")
@@ -46,7 +47,7 @@ def AgendaGlobal(request, type_slug = 'tous',period = 'toutes', orga_slug = 'tou
     return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period})
     
 
-def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous'):
+def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous', format='html' ):
     midnight = datetime.time(23, 59, 59)
     startDate = datetime.datetime.now(utcTZ)
     if (type_slug == 'tous') and (period == 'toutes') and (orga_slug == 'tous'):
@@ -73,9 +74,6 @@ def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug =
     if period == "ce-mois":
         endDate = datetime.datetime(startDate.year,startDate.month,calendar.monthrange(startDate.year, startDate.month)[1],0,0,0,tzinfo=myTimezone)
         endDate = datetime.datetime.combine(endDate.date(),midnight)
-
-    
-   
     
     typesevenements = TypeEvenement.objects.filter(evenement__fin__gt = datetime.datetime.now(utcTZ) ,evenement__publish = True).order_by('nom')
     typesevenements.query.group_by = ["id"]
@@ -96,7 +94,8 @@ def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug =
     if orga_slug != "tous" :
         organisateur = Organisateur.objects.get(slug=orga_slug)    
         evenements =  evenements.filter(organisateur = organisateur.id)
-    
+    if format != 'html':
+        return evenements
     flash = None    
     if len(evenements) == 0:
         flash = u"Il n'y a pas d'évènement à venir : <ul>"
@@ -110,6 +109,12 @@ def ListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug =
         flash += u"<ul>" 
     
     return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period , 'flash':flash})
+
+
+def ExportAgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous', format='html' ):
+    file = StringIO()
+    
+    return file
 
 def OrganisateurDetailsHtml(request,organisateur_slug):
     try:
@@ -134,7 +139,31 @@ def OrganisateurVcard(organisateur):
     myContext = Context({"organisateur": organisateur, "settings": settings})
     return myTemplate.render(myContext)
 
-def SaisonDetailsHtml(request, slug):
+def SaisonDetailsHtml(request,slug):
+    saison = get_object_or_404(Saison.objects.select_related().select_subclasses() , slug = slug)
+    festival = None
+     
+    if type(saison) == Festival:
+        evenements = Evenement.objects.select_related().filter(fin__gt=datetime.datetime.now(utcTZ)).filter(publish=1).filter(cadre_evenement_id=saison.id)
+        evenementspasses =  Evenement.objects.select_related().filter(fin__lt=datetime.datetime.now(utcTZ)).filter(publish=1).filter(cadre_evenement_id=saison.id)
+        festival = saison
+        saison = festival.saison_culture
+    else:
+        Qevenements = Evenement.objects.select_related().filter(fin__gt=datetime.datetime.now(utcTZ)).filter(publish=1)
+        QevenementsPast = Evenement.objects.select_related().filter(fin__lt=datetime.datetime.now(utcTZ)).filter(publish=1)
+        festivals = Festival.objects.select_related().filter(saison_culture_id=saison.id)
+            
+        filtre = Q(cadre_evenement_id=saison.id)
+        for each in festivals:
+            filtre.add(Q(cadre_evenement_id=each.id), 'OR')
+                
+        evenements = Qevenements.order_by('debut').filter(filtre)
+        evenementspasses = QevenementsPast.order_by('debut').filter(filtre)
+
+        
+    return render_to_response('evenements/agenda-saison.html', {'saison' : saison ,'evenements':evenements , 'evenementspasses':evenementspasses ,'festival':festival })
+    
+def SaisonDetailsHtmlOld(request, slug):
     try:
         saison = Saison.objects.select_related().select_subclasses().get(slug=slug)
 

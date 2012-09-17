@@ -1,0 +1,137 @@
+{% extends "include/main.html" %}
+
+{% block meta-description %}Liste des évènements de la {{ saison.nom }}{% endblock %}
+
+{% block contenu %}
+
+{% load filtres %}
+{% load tz %}
+<div class="container" style="margin-top:60px;">
+
+	<div class="row-fluid">
+		<div class="span12">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">Accueil</a>
+					<span class="divider">/</span>
+				</li>
+				<li >
+					<a href="{% url evenements.views.AgendaGlobal %}">Agenda</a>
+					<span class="divider">/</span>
+				<li>
+				{% if festival %}
+					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>
+					<li class="active">{{ festival.nom }}<span class="divider">/</span></li>
+					<li class="active">{{ evenement.nom }}</li>
+				{% else %}
+					<li class="active">{{ saison.nom }}<span class="divider">/</span></li>
+
+				{% endif %}
+			</ul>
+		</div>
+		<div class="span12">
+			<div class="page-header">
+				{% if festival %}
+					<h1><a href="{% url evenements.views.SaisonDetailsHtml slug=festival.slug %}">{{ festival.nom }}</a></h1>
+					
+				{% else %}
+					<h1><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a></h1>
+
+				{% endif %}
+				
+
+			</div>
+			<div class="row-fluid">
+			<div class="span7">
+				{% if festival %}
+					{{ festival.description|safe }}
+					
+				{% else %}
+					{{ saison.description|safe }}
+
+				{% endif %}
+			</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span6">
+					<h2>Les évènements à venir : </h2>
+					<div style="border:1px solid #ccc;">
+						{% if flash %}
+						<div class="alert alert-error">
+							<p>
+								{{flash|safe}}
+							</p>
+						</div>
+						{% endif%}
+						{% regroup evenements by monthyeardebut as eventlist %}
+
+						{% for eventmonth in eventlist %}
+						{% if not forloop.first %}
+						<hr style="=margin-top: 0px;" />
+						{% endif%} <h3 style="text-align: center;margin-top: 0px;{% if forloop.first %}padding-top:15px;{% endif%} ">{{eventmonth.grouper|grouperToString}}</h3>
+						<table class="table  table-striped">
+							{% for evenement in eventmonth.list %}
+							<tr>
+								<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
+								<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
+								<p>
+									Type : {{evenement.type}}.
+									<br/>
+									Date : {{ evenement.debut|dateCustom:evenement.fin }} .
+									<br/>
+									Lieu : {{evenement.lieu.nom}}, {{evenement.lieu.ville.nom}}.
+								</p>
+								<p style="text-align:right;">
+									<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+								</p></td>
+
+							</tr>
+							{% endfor %}
+						</table>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span6">
+					<h2>Les évènements passés: </h2>
+					<div style="border:1px solid #ccc;">
+						{% if flash %}
+						<div class="alert alert-error">
+							<p>
+								{{flash|safe}}
+							</p>
+						</div>
+						{% endif%}
+						{% regroup evenementspasses by monthyeardebut as eventlist %}
+
+						{% for eventmonth in eventlist %}
+						{% if not forloop.first %}
+						<hr style="=margin-top: 0px;" />
+						{% endif%} <h3 style="text-align: center;margin-top: 0px;{% if forloop.first %}padding-top:15px;{% endif%} ">{{eventmonth.grouper|grouperToString}}</h3>
+						<table class="table  table-striped">
+							{% for evenement in eventmonth.list %}
+							<tr>
+								<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
+								<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
+								<p>
+									Type : {{evenement.type}}.
+									<br/>
+									Date : {{ evenement.debut|dateCustom:evenement.fin }} .
+									<br/>
+									Lieu : {{evenement.lieu.nom}}, {{evenement.lieu.ville.nom}}.
+								</p>
+								<p style="text-align:right;">
+									<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+								</p></td>
+
+							</tr>
+							{% endfor %}
+						</table>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endblock %}
