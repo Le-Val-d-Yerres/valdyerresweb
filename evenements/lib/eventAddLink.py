@@ -9,7 +9,7 @@ class EventLink(object):
     text =u" Ajouter à votre agenda"
     
     def getLink(self,evenement):
-        raise NotImplementedError('Exception : EventAdder is supposed to be an interface')
+        raise NotImplementedError('Exception : EventLink is supposed to be an interface')
     def setLink(self,imgurl,linkurl):
         return "<a href=\""+linkurl+"\"><img src=\""+imgurl+"\">"+self.text+"</a>"
     
@@ -76,7 +76,3 @@ def getLinkList(evenement):
     eventAddLinkList.append(myOutlookEventLink.getLink(evenement))
     eventAddLinkList.append(myIcalEventLink.getLink(evenement))
     return eventAddLinkList
-
-
-
-# téléchargement d'évènements 

@@ -8,9 +8,9 @@ from django.conf import settings
 
 register = template.Library()
 
-jours = ['dimanche','lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi']
-mois = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre' ,'décembre']
-mois_courts = ['jan', 'fév', 'mars', 'avril', 'mai', 'juin', 'juil', 'août', 'sept', 'oct', 'nov' ,'déc']
+jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
+mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre', u'octobre', u'novembre' ,u'décembre']
+mois_courts = [u'jan', u'fév', u'mars', u'avril', u'mai', u'juin', u'juil', u'août', u'sept', u'oct', u'nov' ,u'déc']
     
     
 @register.filter(is_safe=True)
@@ -20,9 +20,9 @@ def dateCustom(debutUTC, finUTC):
     fin = finUTC.astimezone(TZone)
     delta = fin-debut
     if delta.days >= 1:
-        text = "du "+jours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" "+mois[int(debut.strftime("%m"))-1]+" au "+jours[int(fin.strftime("%w"))]+" "+fin.strftime("%d")+" "+mois[int(fin.strftime("%m"))-1]
+        text = u"du "+jours[int(debut.strftime("%w"))]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+u" au "+jours[int(fin.strftime(u"%w"))]+u" "+fin.strftime(u"%d")+u" "+mois[int(fin.strftime(u"%m"))-1]
     else:
-        text = "le "+jours[int(debut.strftime("%w"))]+" "+debut.strftime("%d")+" "+mois[int(debut.strftime("%m"))-1]+" "+debut.strftime("à %H:%M")
+        text = u"le "+jours[int(debut.strftime(u"%w"))]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+u" à "+debut.strftime(u"%H:%M")
     return text
 
 @register.filter(is_safe=True)
@@ -57,7 +57,8 @@ def toFloatjs(num):
 @register.filter(is_safe=True)
 def grouperToString(monthYear):
     month,year = monthYear.split('-')
-    return str(mois[int(month)-1]+" "+year).capitalize()
+    text = mois[int(month)-1]+u" "+str(year)
+    return text.capitalize()
  
 @register.filter(is_safe=True)    
 def dateFormat(dateUTC):
