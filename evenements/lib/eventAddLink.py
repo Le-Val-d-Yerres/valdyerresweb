@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from pytz import timezone
 from django.conf import settings
 from valdyerresweb.templatetags.filtres import resume
+from valdyerresweb.utils.functions import deserializeKwargs
 
 class EventLink(object):
     text =u" Ajouter à votre agenda"
@@ -76,3 +77,24 @@ def getLinkList(evenement):
     eventAddLinkList.append(myOutlookEventLink.getLink(evenement))
     eventAddLinkList.append(myIcalEventLink.getLink(evenement))
     return eventAddLinkList
+
+
+class EventsLink(object):
+    text =u"Télécharger au format"
+    
+    def getLink(self,evenement):
+        raise NotImplementedError('Exception : EventLink is supposed to be an interface')
+    def setLink(self,imgurl,linkurl):
+        return "<a href=\""+linkurl+"\"><img src=\""+imgurl+"\">"+self.text+"</a>"
+    
+class ExcelLink(EventsLink):
+    def getLink(self,base64pickledkwargs):
+        mykwargs = deserializeKwargs(base64pickledkwargs)
+        typeslug = mykwargs['type_slug']
+        period   = mykwargs['period']
+        orgaslug = mykwargs['orga_slug']
+        self.text += u"Excel"
+        linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'xsl'})
+        imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
+        return self.setLink(imgurl,linkurl)
+        

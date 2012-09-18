@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import qrcode , base64, StringIO
+import qrcode , base64, StringIO, pickle
 
 def GenerationQrCode(data):
     img_io = StringIO.StringIO()
@@ -14,3 +14,17 @@ def GenerationQrCode(data):
     imgQr.save(img_io,'PNG')
     img_io.seek(0)
     return base64.b64encode(img_io.getvalue())
+
+def serializeKwargs(kwargs):
+    kwargsIO = StringIO.StringIO()
+    pickle.dump(kwargs,kwargsIO)
+    kwargsIO.seek(0)
+    return base64.b64encode(kwargsIO.read())
+
+def deserializeKwargs(base64pickledkwargs):
+    pickledkwargs = base64.b64decode(base64pickledkwargs)
+    return pickle.loads(pickledkwargs)
+
+
+    
+

@@ -11,7 +11,7 @@ from equipements.models import Equipement
 from pytz import timezone
 from valdyerresweb import settings
 from django.core.urlresolvers import reverse
-from valdyerresweb.utils.functions import GenerationQrCode
+from valdyerresweb.utils.functions import GenerationQrCode,serializeKwargs
 import valdyerresweb.templatetags.filtres as filtres
 import datetime
 from StringIO import StringIO
@@ -52,6 +52,11 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
     startDate = datetime.datetime.now(utcTZ)
     #if (type_slug == 'tous') and (period == 'toutes') and (orga_slug == 'tous'):
     #    return redirect('agenda-global')
+    kwargs = {}
+    kwargs['type_slug']=type_slug
+    kwargs['period']=period
+    kwargs['orga_slug']=orga_slug
+    
     
     if period == "cette-semaine":
         endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
@@ -108,10 +113,10 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
             flash += u"<li>Organisé par "+ organisateur.nom+".</li>"
         flash += u"<ul>" 
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period , 'flash':flash})
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period , 'flash':flash,'kwargs':serializeKwargs(kwargs)})
 
 
-def ExportAgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous', format = 'xsl' ):
+def ExportAgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous', extension = 'xsl' ):
     evenements = AgendaListTypePeriodOrga(request, type_slug, period, orga_slug,True)
     myfile = StringIO()
     
