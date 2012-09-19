@@ -2,6 +2,7 @@
 
 from django import template
 from evenements.models import Saison
+from aide.models import  Aide
 import re , os.path , Image
 from pytz import timezone
 from django.conf import settings
@@ -103,10 +104,10 @@ def resizeandcrop(img, box, fit):
 #resize
 
 @register.filter(is_safe=True)   
-def resize(file, size='100x100x1'):
+def resize(myfile, size='100x100x1'):
     logo = False 
     try:
-        path = settings.MEDIA_ROOT+file.path
+        path = settings.MEDIA_ROOT+myfile.path
     except AttributeError:
         path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
         logo = True

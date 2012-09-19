@@ -38,7 +38,7 @@
 					Organisé par : <ul> {% for each in evenement.organisateur.all %}<li><a href="{% url evenements.views.OrganisateurDetailsHtml organisateur_slug=each.slug%}"> {{ each.nom }}</a> </li>{% endfor %}</ul>
 				</p>
 				{% if evenement.image %}
-				<img class="img-polaroid" alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
+				<img class="img-polaroid-fix" alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
 				{% endif %}
 				<meta itemprop="startDate" content="{{ evenement.debut|dateSEO }}">
 				<meta itemprop="endDate" content="{{ evenement.fin|dateSEO }}">

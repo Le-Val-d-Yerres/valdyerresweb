@@ -4,7 +4,13 @@ from django.core.urlresolvers import reverse
 from pytz import timezone
 from django.conf import settings
 from valdyerresweb.templatetags.filtres import resume
-from valdyerresweb.utils.functions import deserializeKwargs
+import xlwt,csv
+import valdyerresweb.templatetags.filtres as filtres
+from StringIO import StringIO
+from django.http import HttpResponse
+from django.template import Context,loader
+
+
 
 class EventLink(object):
     text =u" Ajouter à votre agenda"
@@ -88,13 +94,120 @@ class EventsLink(object):
         return "<a href=\""+linkurl+"\"><img src=\""+imgurl+"\">"+self.text+"</a>"
     
 class ExcelLink(EventsLink):
-    def getLink(self,base64pickledkwargs):
-        mykwargs = deserializeKwargs(base64pickledkwargs)
-        typeslug = mykwargs['type_slug']
-        period   = mykwargs['period']
-        orgaslug = mykwargs['orga_slug']
-        self.text += u"Excel"
-        linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'xsl'})
+    def getLink(self,dictargs):
+
+        typeslug = dictargs['type_slug']
+        period   = dictargs['period']
+        orgaslug = dictargs['orga_slug']
+        self.text += u" Excel"
+        linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'xls'})
+        imgurl = "/static/img/evenements/40x40/excel-icon-40x40.png"
+        return self.setLink(imgurl,linkurl)
+
+class CSVLink(EventsLink):
+    def getLink(self, dictargs):
+       
+        typeslug = dictargs['type_slug']
+        period   = dictargs['period']
+        orgaslug = dictargs['orga_slug']
+        self.text += u" CSV"
+        linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'csv'})
+        imgurl = "/static/img/evenements/40x40/csv-icon-40x40.png"
+        return self.setLink(imgurl,linkurl)
+    
+class ICSLink(EventsLink):
+    def getLink(self, dictargs):
+       
+        typeslug = dictargs['type_slug']
+        period   = dictargs['period']
+        orgaslug = dictargs['orga_slug']
+        self.text += u" Ical"
+        linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'ics'})
         imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
         return self.setLink(imgurl,linkurl)
+
+    
+def getEventsLinkList(dictargs):
+    eventsLinkList = list()
+    myExcelLink = ExcelLink()
+    myCSVLink = CSVLink()
+    myICSLink =ICSLink()
+    eventsLinkList.append(myExcelLink.getLink(dictargs))
+    eventsLinkList.append(myCSVLink.getLink(dictargs))
+    eventsLinkList.append(myICSLink.getLink(dictargs))
+    return eventsLinkList
+    
+
+def GenerateExcelFile(evenements):
+    myfile = StringIO()
+    file_type = 'application/ms-excel'
+    file_name = 'agenda.xls'
+    
+    wbk = xlwt.Workbook(encoding="UTF-8")
+
+    sheet = wbk.add_sheet(u'agenda')
+    line = 0
+    mystyle = list()
+    mystyle.append(xlwt.easyxf('pattern: pattern solid, fore_colour white'))
+    mystyle.append(xlwt.easyxf('pattern: pattern solid, fore_colour blue')) 
+    
+    col_width = 256 * 40
+    for i in range(5):
+        sheet.col(i).width = col_width
+     
+    for each in evenements:
+        sheet.write(line, 0, each.lieu.ville.nom,mystyle[line%2])
+        sheet.write(line, 1, each.nom,mystyle[line%2])
+        sheet.write(line, 2, filtres.dateCustom(each.debut,each.fin),mystyle[line%2])
+        sheet.write(line ,3, each.lieu.nom+" "+each.lieu.rue,mystyle[line%2])
+        orgacelltxt = ""
+        for orga in each.organisateur.all():
+            orgacelltxt += orga.nom+" "
         
+        sheet.write(line ,4, orgacelltxt,mystyle[line%2])
+        url = reverse('event-details', kwargs={'slug': each.cadre_evenement.slug , 'evenement_slug': each.slug})
+        url = settings.NOM_DOMAINE+url
+        sheet.write(line ,5,url,mystyle[line%2])
+        line = line +1
+    wbk.save(myfile) 
+    myfile.seek(0)     
+    response = HttpResponse(myfile.read(), content_type=file_type)
+    response['Content-Disposition'] = 'attachment; filename='+file_name
+    response['Content-Length'] = myfile.tell()
+    return response
+    
+def GenerateCSVFile(evenements):
+    myfile = StringIO()
+    file_type = 'application/csv'
+    file_name = 'agenda.csv'
+    mycsv = csv.writer(myfile, delimiter=';', quotechar='"')
+    
+    for each in evenements:
+        ville = each.lieu.ville.nom
+        nom = each.nom
+        date = filtres.dateCustom(each.debut,each.fin)
+        adresse = each.lieu.nom+" "+each.lieu.rue
+        orgacelltxt = ""
+        for orga in each.organisateur.all():
+            orgacelltxt += orga.nom+" " 
+        url = reverse('event-details', kwargs={'slug': each.cadre_evenement.slug , 'evenement_slug': each.slug})
+        url = settings.NOM_DOMAINE+url
+        mycsv.writerow([ville.encode('UTF-8'),nom.encode('UTF-8'),date.encode('UTF-8'),adresse.encode('UTF-8'),orgacelltxt.encode('UTF-8'),url.encode('UTF-8')])
+    
+    myfile.seek(0)     
+    response = HttpResponse(myfile.read(), content_type=file_type)
+    response['Content-Disposition'] = 'attachment; filename='+file_name
+    response['Content-Length'] = myfile.tell()
+    return response
+
+def GenerateICSFile(evenements):
+    file_type = 'text/calendar'
+    file_name = 'agenda.ics'
+    myTemplate = loader.get_template('evenements/multi-evenement-details.ics.html')
+    myContext = Context({"liste_evenement": evenements, "settings": settings})
+    text = myTemplate.render(myContext)
+    response = HttpResponse(text, content_type=file_type)
+    response['Content-Disposition'] = 'attachment; filename='+file_name
+    return response
+    
+    

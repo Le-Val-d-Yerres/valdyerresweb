@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import template
-from evenements.lib.eventAddLink import getLinkList
+from evenements.lib.eventAddLink import getLinkList, getEventsLinkList
 register = template.Library()
 
 @register.filter(is_safe=True)
@@ -13,12 +13,12 @@ def calendaraddlinklist(evenement):
     return text
         
 @register.filter(is_safe=True)
-def calendarexportlinklist(kwargs):
+def calendarexportlinklist(dictargs):
     text = u"<ul style=\"list-style:none;\" >\n"
-    for line in getExportLinkList(kwargs):
+    for line in getEventsLinkList(dictargs):
         text += u"<li>"+line+"</li>\n"
     text += u"</ul>\n"
     return text
         
-    
+
     

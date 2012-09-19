@@ -2,19 +2,18 @@
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response , redirect , get_object_or_404
 from evenements.models import *
-from localisations.models import Lieu
 from django.db.models import Q
 from django.template import Context,loader
 from evenements.customCalendar.calendrier import CAVYCalendar, entierAvecZero
-import calendar, xlwt
+import calendar
 from equipements.models import Equipement
 from pytz import timezone
 from valdyerresweb import settings
 from django.core.urlresolvers import reverse
-from valdyerresweb.utils.functions import GenerationQrCode,serializeKwargs
-import valdyerresweb.templatetags.filtres as filtres
+from valdyerresweb.utils.functions import GenerationQrCode
+from evenements.lib.eventAddLink import GenerateExcelFile, GenerateCSVFile,\
+    GenerateICSFile
 import datetime
-from StringIO import StringIO
 
 
 utcTZ = timezone("UTC")
@@ -43,19 +42,23 @@ def AgendaGlobal(request, type_slug = 'tous',period = 'toutes', orga_slug = 'tou
     type_slug = 'tous'
     period = 'toutes'
     orga_slug = 'tous'
+    dictargs = {}
+    dictargs['type_slug']=type_slug
+    dictargs['period']=period
+    dictargs['orga_slug']=orga_slug
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period})
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period,'dictargs':dictargs})
     
 
 def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous', export=False ):
     midnight = datetime.time(23, 59, 59)
     startDate = datetime.datetime.now(utcTZ)
-    #if (type_slug == 'tous') and (period == 'toutes') and (orga_slug == 'tous'):
-    #    return redirect('agenda-global')
-    kwargs = {}
-    kwargs['type_slug']=type_slug
-    kwargs['period']=period
-    kwargs['orga_slug']=orga_slug
+    if (type_slug == 'tous') and (period == 'toutes') and (orga_slug == 'tous') and (export == False):
+        return redirect('agenda-global')
+    dictargs = {}
+    dictargs['type_slug']=type_slug
+    dictargs['period']=period
+    dictargs['orga_slug']=orga_slug
     
     
     if period == "cette-semaine":
@@ -113,45 +116,19 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
             flash += u"<li>Organisé par "+ organisateur.nom+".</li>"
         flash += u"<ul>" 
     
-    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period , 'flash':flash,'kwargs':serializeKwargs(kwargs)})
+    return render_to_response('evenements/agenda.html', {'evenements': evenements, 'typeslist':typesevenements ,'orgalist':organisateurs ,'typeslug':type_slug , 'orgaslug':orga_slug  , 'period':period , 'flash':flash,'dictargs':dictargs})
 
 
-def ExportAgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous', extension = 'xsl' ):
+def ExportAgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_slug = 'tous', extension = 'meuh' ):
     evenements = AgendaListTypePeriodOrga(request, type_slug, period, orga_slug,True)
-    myfile = StringIO()
-    
-    file_type = 'application/ms-excel'
-    file_name = 'agenda.xls'
-    
-    wbk = xlwt.Workbook(encoding="UTF-8")
-
-    sheet = wbk.add_sheet(u'agenda')
-    line = 0
-    mystyle = list()
-    mystyle.append(xlwt.easyxf('pattern: pattern solid, fore_colour white'))
-    mystyle.append(xlwt.easyxf('pattern: pattern solid, fore_colour blue')) 
-    
-    col_width = 256 * 40
-    for i in range(5):
-        sheet.col(i).width = col_width
-     
-    for each in evenements:
-        sheet.write(line, 0, each.lieu.ville.nom,mystyle[line%2])
-        sheet.write(line, 1, each.nom,mystyle[line%2])
-        sheet.write(line, 2, filtres.dateCustom(each.debut,each.fin),mystyle[line%2])
-        sheet.write(line ,3, each.lieu.nom+" "+each.lieu.rue,mystyle[line%2])
-        lastcell = ""
-        for orga in each.organisateur.all():
-            lastcell += orga.nom+" "
-        
-        sheet.write(line ,4, lastcell,mystyle[line%2])
-        line = line +1
-    wbk.save(myfile) 
-    myfile.seek(0)     
-    response = HttpResponse(myfile.read(), content_type=file_type)
-    response['Content-Disposition'] = 'attachment; filename='+file_name
-    response['Content-Length'] = myfile.tell()
-
+    if extension == 'xls':
+        response = GenerateExcelFile(evenements)
+    elif extension == 'csv':
+        response = GenerateCSVFile(evenements)
+    elif extension == 'ics':
+        response = GenerateICSFile(evenements)
+    else:
+        raise Http404
     return response
 
 def OrganisateurDetailsHtml(request,organisateur_slug):

@@ -15,15 +15,15 @@ def GenerationQrCode(data):
     img_io.seek(0)
     return base64.b64encode(img_io.getvalue())
 
-def serializeKwargs(kwargs):
-    kwargsIO = StringIO.StringIO()
-    pickle.dump(kwargs,kwargsIO)
-    kwargsIO.seek(0)
-    return base64.b64encode(kwargsIO.read())
+def serialize(item):
+    itemIO = StringIO.StringIO()
+    pickle.dump(item,itemIO)
+    itemIO.seek(0)
+    return base64.b64encode(itemIO.read())
 
-def deserializeKwargs(base64pickledkwargs):
-    pickledkwargs = base64.b64decode(base64pickledkwargs)
-    return pickle.loads(pickledkwargs)
+def deserialize(base64pickleditem):
+    pickleditem = base64.b64decode(base64pickleditem)
+    return pickle.loads(pickleditem)
 
 
     
