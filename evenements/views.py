@@ -174,10 +174,42 @@ def SaisonDetailsHtml(request,slug):
                 
         evenements = Qevenements.order_by('debut').filter(filtre)
         evenementspasses = QevenementsPast.order_by('debut').filter(filtre)
+        
+
 
         
     return render_to_response('evenements/agenda-saison.html', {'saison' : saison ,'evenements':evenements , 'evenementspasses':evenementspasses ,'festival':festival })
-    
+
+def SaisonDetailsHtmlExport(request,slug,extension):
+    saison = get_object_or_404(Saison.objects.select_related().select_subclasses() , slug = slug)
+    festival = None
+     
+    if type(saison) == Festival:
+        evenements = Evenement.objects.select_related().filter(publish=1).filter(cadre_evenement_id=saison.id)
+       
+        festival = saison
+        saison = festival.saison_culture
+    else:
+        Qevenements = Evenement.objects.select_related().filter(publish=1)
+        festivals = Festival.objects.select_related().filter(saison_culture_id=saison.id)
+            
+        filtre = Q(cadre_evenement_id=saison.id)
+        for each in festivals:
+            filtre.add(Q(cadre_evenement_id=each.id), 'OR')
+                
+        evenements = Qevenements.order_by('debut').filter(filtre)
+        
+    if extension == 'xls':
+        response = GenerateExcelFile(evenements)
+    elif extension == 'csv':
+        response = GenerateCSVFile(evenements)
+    elif extension == 'ics':
+        response = GenerateICSFile(evenements)
+    else:
+        raise Http404
+    return response
+
+ 
 def SaisonDetailsHtmlOld(request, slug):
     try:
         saison = Saison.objects.select_related().select_subclasses().get(slug=slug)

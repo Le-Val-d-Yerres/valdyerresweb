@@ -17,14 +17,15 @@ urlpatterns = patterns('evenements.views',
     url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/orga/(?P<orga_slug>[^\/]+)/$','AgendaListTypePeriodOrga',name='agenda-type-period-orga'),
  #   TODO : Le OR est a creuser pour un meilleur polymorphisme sur cette vue :
  #   url(r'^(type/(?P<type_slug>[^\/]+))|(periode/(?P<period>[^\/]+))|(orga/(?P<orga_slug>[^\/]+))/$','ListTypePeriodOrga',name='agenda-type-period-orga'),
-    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/orga/(?P<orga_slug>[^\/]+)/agenda.(?P<extension>[^\/]+)$','ExportAgendaListTypePeriodOrga',name='export-agenda-type-period-orga'),
+    url(r'^type/(?P<type_slug>[^\/]+)/periode/(?P<period>[^\/]+)/orga/(?P<orga_slug>[^\/]+)/export.(?P<extension>[^\/]+)$','ExportAgendaListTypePeriodOrga',name='export-agenda-type-period-orga'),
 
 
     
     url(r'^(?P<annee>\d{4})/$', 'AgendaAnnee', name='agenda-annee'),
     url(r'^(?P<annee>\d{4}).ics$', 'AgendaAnneeICS'),
     
-    url(r'^(?P<slug>[^\/]+)/$', 'SaisonDetailsHtml'),
+    url(r'^(?P<slug>[^\/]+)/$', 'SaisonDetailsHtml', name='saison-details'),
+    url(r'^(?P<slug>[^\/]+)/export.(?P<extension>[^\/]+)$', 'SaisonDetailsHtmlExport', name='saison-details-export'),
     url(r'^(?P<slug>[^\/]+).ics$', 'SaisonDetailsICS'),
     
     url(r'^(?P<slug>[^\/]+)/(?P<evenement_slug>[^\/]+).html$', 'EvenementDetailsHtml', name="event-details"),

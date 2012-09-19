@@ -1,11 +1,16 @@
 {% extends "include/main.html" %}
 
+{% load filtres %}
+{% load aidetag %}
+{% load eventFilters %}
+{% load tz %}
+
+
 {% block meta-description %}Liste des évènements de la {{ saison.nom }}{% endblock %}
 
 {% block contenu %}
 
-{% load filtres %}
-{% load tz %}
+
 <div class="container" style="margin-top:60px;">
 
 	<div class="row-fluid">
@@ -42,7 +47,7 @@
 
 			</div>
 			<div class="row-fluid">
-			<div class="span7">
+			<div class="span6">
 				{% if festival %}
 					{{ festival.description|safe }}
 					
@@ -51,6 +56,13 @@
 
 				{% endif %}
 			</div>
+			<div class="span4 offset1">
+					<p style="text-align: center;">
+						{{saison.slug|saisonexportlinklist|safe}}
+		
+						{{"ical"|aide}}
+					</p>
+				</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span6">
@@ -135,3 +147,8 @@
 		</div>
 	</div>
 	{% endblock %}
+{% block jsload%}
+
+<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+{% endblock%}

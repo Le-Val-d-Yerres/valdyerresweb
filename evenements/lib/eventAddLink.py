@@ -136,12 +136,59 @@ def getEventsLinkList(dictargs):
     eventsLinkList.append(myCSVLink.getLink(dictargs))
     eventsLinkList.append(myICSLink.getLink(dictargs))
     return eventsLinkList
+
+
+
+class EventsSaisonLink(object):
+    text =u"Télécharger au format"
+    
+    def getLink(self,evenement):
+        raise NotImplementedError('Exception : EventLink is supposed to be an interface')
+    def setLink(self,imgurl,linkurl):
+        return "<a href=\""+linkurl+"\"><img src=\""+imgurl+"\">"+self.text+"</a>"
+
+
+class ExcelSaisonLink(EventsLink):
+    def getLink(self,saisonslug):
+
+        self.text += u" Excel"
+        linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'xls'})
+        imgurl = "/static/img/evenements/40x40/excel-icon-40x40.png"
+        return self.setLink(imgurl,linkurl)
+
+class CSVSaisonLink(EventsLink):
+    def getLink(self,saisonslug):
+
+        self.text += u" CSV"
+        linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'csv'})
+        imgurl = "/static/img/evenements/40x40/csv-icon-40x40.png"
+        return self.setLink(imgurl,linkurl)
+    
+class ICSSaisonLink(EventsLink):
+    def getLink(self,saisonslug):
+       
+        self.text += u" Ical"
+        linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'ics'})
+        imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
+        return self.setLink(imgurl,linkurl)
+
+
+def getSaisonLinkList(saisonslug):
+    SaisonLinkList = list()
+    myExcelSaisonLink = ExcelSaisonLink()
+    myCSVSaisonLink = CSVSaisonLink()
+    myICSSaisonLink =ICSSaisonLink()
+    SaisonLinkList.append(myExcelSaisonLink.getLink(saisonslug))
+    SaisonLinkList.append(myCSVSaisonLink.getLink(saisonslug))
+    SaisonLinkList.append(myICSSaisonLink.getLink(saisonslug))
+    return SaisonLinkList
+
     
 
 def GenerateExcelFile(evenements):
     myfile = StringIO()
     file_type = 'application/ms-excel'
-    file_name = 'agenda.xls'
+    file_name = 'export.xls'
     
     wbk = xlwt.Workbook(encoding="UTF-8")
 
@@ -152,7 +199,7 @@ def GenerateExcelFile(evenements):
     mystyle.append(xlwt.easyxf('pattern: pattern solid, fore_colour blue')) 
     
     col_width = 256 * 40
-    for i in range(5):
+    for i in range(6):
         sheet.col(i).width = col_width
      
     for each in evenements:
@@ -179,7 +226,7 @@ def GenerateExcelFile(evenements):
 def GenerateCSVFile(evenements):
     myfile = StringIO()
     file_type = 'application/csv'
-    file_name = 'agenda.csv'
+    file_name = 'export.csv'
     mycsv = csv.writer(myfile, delimiter=';', quotechar='"')
     
     for each in evenements:
@@ -202,7 +249,7 @@ def GenerateCSVFile(evenements):
 
 def GenerateICSFile(evenements):
     file_type = 'text/calendar'
-    file_name = 'agenda.ics'
+    file_name = 'export.ics'
     myTemplate = loader.get_template('evenements/multi-evenement-details.ics.html')
     myContext = Context({"liste_evenement": evenements, "settings": settings})
     text = myTemplate.render(myContext)
