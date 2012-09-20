@@ -5,7 +5,7 @@ from evenements.models import *
 from django.db.models import Q
 from django.template import Context,loader
 from evenements.customCalendar.calendrier import CAVYCalendar, entierAvecZero
-import calendar
+import calendar,datetime
 from equipements.models import Equipement
 from pytz import timezone
 from valdyerresweb import settings
@@ -13,7 +13,8 @@ from django.core.urlresolvers import reverse
 from valdyerresweb.utils.functions import GenerationQrCode
 from evenements.lib.eventAddLink import GenerateExcelFile, GenerateCSVFile,\
     GenerateICSFile
-import datetime
+from django.views.decorators.cache import cache_page
+
 
 
 utcTZ = timezone("UTC")
@@ -534,8 +535,6 @@ def MultiEvenementsDetailsIcalendar(evenements):
     return myTemplate.render(myContext)
     
     
-
-
 def EvenementDetailsHtml(request, slug, evenement_slug):
     try:
         saison = Saison.objects.select_related().select_subclasses().get(slug=slug)

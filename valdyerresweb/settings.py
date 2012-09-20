@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'evenements',
     'horaires',
     'aide',
+    'menu',
     'grappelli',
     'filebrowser',
     'model_utils',

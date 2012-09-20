@@ -2,6 +2,7 @@
 
 from django import template
 from evenements.models import Saison
+from menu.models import MenuItem
 from aide.models import  Aide
 import re , os.path , Image
 from pytz import timezone
