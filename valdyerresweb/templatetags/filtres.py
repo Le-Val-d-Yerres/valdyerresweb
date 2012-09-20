@@ -157,3 +157,11 @@ def lieuMarker(lieu):
 def aide(aideSlug):
     aide = Aide.objects.get(slug=aideSlug)
     return aide
+
+
+@register.filter()
+def generateMenu():
+    topItems = MenuItem.objects.all().filter(parent=None).order_by('index')
+    
+    
+    
