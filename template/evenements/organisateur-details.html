@@ -1,12 +1,14 @@
 {% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
 
 {% if saison %}
 {% block meta-description %}{{ organisateur.meta_description }}{% endblock %}
 
-{% load filtres %}
-{% load aidetag %}
-{% load eventFilters %}
-{% load tz %}
 
 {% block contenu %}
 

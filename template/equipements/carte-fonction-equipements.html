@@ -1,10 +1,14 @@
 {% extends "include/main.html" %}
-
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
 	{% block meta-description %}Liste des {{ fonction.nom }} du Val d'Yerres{% endblock %}
 		
 {% block contenu %}
 
-{% load filtres %}
 
 	{% if equipements %}
 	

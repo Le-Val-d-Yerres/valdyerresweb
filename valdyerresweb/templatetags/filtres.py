@@ -161,7 +161,14 @@ def aide(aideSlug):
 
 @register.filter()
 def generateMenu():
-    topItems = MenuItem.objects.all().filter(parent=None).order_by('index')
+    menu=''
+    return menu
+        
+        
+        
+
+    
+    
     
     
     

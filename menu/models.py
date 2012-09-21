@@ -8,3 +8,6 @@ class MenuItem(models.Model):
     description = models.TextField()
     index  = models.IntegerField()
     parent = models.ForeignKey('self', null= True,blank=True)
+    
+    def __unicode__(self):
+        return self.nom

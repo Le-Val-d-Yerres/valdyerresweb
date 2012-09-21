@@ -1,14 +1,17 @@
-
 {% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
 	
 	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }}{% endblock %}
 
-{% load filtres %}
-{% block contenu %}
-{% load aidetag %}
 
- 
-	
+
+{% block contenu %}	
+{% getmenu %}
 <div class="container" style="margin-top:60px;">
 	{% if equipement %}
 
