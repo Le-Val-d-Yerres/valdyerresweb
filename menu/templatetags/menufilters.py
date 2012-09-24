@@ -3,6 +3,6 @@ from menu.views import TopMenu
 
 register = template.Library()
 
-@register.tag(name="getmenu")
+@register.simple_tag()
 def getmenu():
-    return "meuh"
+    return TopMenu()

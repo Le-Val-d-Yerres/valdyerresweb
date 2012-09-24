@@ -11,8 +11,7 @@ from pytz import timezone
 from valdyerresweb import settings
 from django.core.urlresolvers import reverse
 from valdyerresweb.utils.functions import GenerationQrCode
-from evenements.lib.eventAddLink import GenerateExcelFile, GenerateCSVFile,\
-    GenerateICSFile
+from evenements.lib.eventAddLink import GenerateExcelFile, GenerateCSVFile, GenerateICSFile
 from django.views.decorators.cache import cache_page
 
 
