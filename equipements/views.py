@@ -14,12 +14,10 @@ import datetime
 utcTZ = timezone("UTC")
 
 def CarteEquipements(request):
-    try:
-        equipements = Equipement.objects.select_related().all()
-        fonction = EquipementFonction.objects.all()
-    except Equipement.DoesNotExist:
-        raise Http404
-    return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'fonction': fonction, 'mediaDir': settings.MEDIA_DIR_NAME})
+      
+    equipements = Equipement.objects.select_related().all().order_by('nom')
+
+    return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'mediaDir': settings.MEDIA_DIR_NAME})
 
 
 

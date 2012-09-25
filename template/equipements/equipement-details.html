@@ -8,7 +8,7 @@
 	
 	{% block menu %}{% getmenu %}{% endblock %}
 	
-	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }}{% endblock %}
+	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }} {{equipement.ville.nom }}{% endblock %}
 	
 
 
@@ -29,7 +29,7 @@
 					<a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.pluriel }}</a><span class="divider">/</span>
 				</li>
 				<li class="active">
-					{{ equipement.nom }}
+					{{ equipement.nom}} , {{equipement.ville.nom }}
 				</li>
 			</ul>
 		</div>

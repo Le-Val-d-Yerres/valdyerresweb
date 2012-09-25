@@ -17,7 +17,7 @@ class Equipement(Lieu):
     email = models.EmailField("Mail (facultatif)", max_length=254, blank=True)
     telephone = models.CharField(max_length=25)
     fax = models.CharField("Fax (facultatif)", max_length=25, blank=True, null=True)
-    presentation = models.TextField()
+    presentation = models.TextField(blank=True)
     meta_description = models.CharField(max_length=200)
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     
