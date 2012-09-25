@@ -6,8 +6,10 @@
 {% load aidefilters%}
 {% load tz %}
 {% if saison %}
+
 {% block meta-description %}{{ evenement.meta_description }}{% endblock %}
 
+{% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
 

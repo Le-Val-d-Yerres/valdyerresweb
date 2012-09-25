@@ -91,22 +91,6 @@
 
 	</div>
 
-	{% if Evenements %}
-	<div class="row-fluid">
-		<div class="span7">
-			<hr/>
-			<h2>Les prochains évènements:</h2>
-			<ul>
-				{% for each in Evenements %}
-				<li>
-					{{ each.type.nom }} : &laquo;<a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a>&raquo; , {{ each.debut|dateCustom:each.fin }}
-				</li>
-				{% endfor %}
-			</ul>
-
-		</div>
-	</div>
-	{% endif %}
 
 	{% if facilites %}
 	<div class="row-fluid">
@@ -150,6 +134,22 @@
 		</div>
 
 	</div>
+	{% if evenements %}
+	<div class="row-fluid">
+		<div class="span7">
+			<hr/>
+			<h2>Les prochains évènements:</h2>
+			<ul>
+				{% for each in evenements %}
+				<li>
+					{{ each.type.nom }} : &laquo;<a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a>&raquo; , {{ each.debut|dateCustom:each.fin }}
+				</li>
+				{% endfor %}
+			</ul>
+
+		</div>
+	</div>
+	{% endif %}
 
 </div>
 

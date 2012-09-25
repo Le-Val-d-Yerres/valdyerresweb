@@ -19,8 +19,13 @@ def getChilds(items , subitems, menutxt ="" , sub = False):
                 menutxt = menutxt.replace("#item-link"+str(item.id), "")
                 menutxt += "</li>"
                 continue
-            menutxt = menutxt = menutxt.replace("#caret-"+str(item.id), "<b class=\"caret\"></b>")
-            menutxt = menutxt.replace("#item-"+str(item.id), "class=\"dropdown\"")
+            if sub :
+                menutxt = menutxt.replace("#caret-"+str(item.id), "")
+                menutxt = menutxt.replace("#item-"+str(item.id), "class=\"dropdown-submenu\"")  
+            else:
+                menutxt = menutxt.replace("#caret-"+str(item.id), "<b class=\"caret\"></b>")
+                menutxt = menutxt.replace("#item-"+str(item.id), "class=\"dropdown\"")
+                
             menutxt = menutxt.replace("#item-link"+str(item.id), "id=\"drop"+str(item.id)+"\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\"")
             menutxt += getChilds(sublist, subitems, menutxt , sub = True)
             menutxt += "</li>"
@@ -34,27 +39,12 @@ def getChilds(items , subitems, menutxt ="" , sub = False):
 
 def TopMenu():
     
-    toplistItems = [item for item in MenuItem.objects.all().filter(parent__isnull = True).order_by('index')]
-    
-    flatSubItems = [item for item in MenuItem.objects.all().filter(parent__isnull =  False).order_by('index')]
+    items = MenuItem.objects.all().select_related('parent').order_by('index')
+    toplistItems = [item for item in items if item.parent == None]
+    flatSubItems = [item for item in items if item.parent != None]
     subitems = defaultdict(list)
     for each in flatSubItems: 
-        subitems[each.parent.id].append(each)
-#    for topItem in toplistItems:
-#        menu += "<li>"+topItem.nom+"</li>\n"
-#        try :
-#            sublist = subitems[topItem.id]
-#            if len(sublist) == 0:
-#                continue
-#            menu += "<ul>\n"
-#            for item in sublist:
-#                menu += "<li>"+item.nom+"</li>\n"
-#            menu += "</ul>\n"
-#        except:
-#            pass
-    
- 
-
+        subitems[each.parent.id].append(each)   
         
     return getChilds(toplistItems, subitems)
         
