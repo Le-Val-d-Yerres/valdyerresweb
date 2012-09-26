@@ -113,7 +113,7 @@
 			<hr/>
 			<h2>Géolocalisation:</h2>
 
-			<div id="map_canvas" style="width: 450px;height: 450px;"></div>
+			<div id="map_canvas" style="text-align:center;margin-left:auto;margin-right:auto;"></div>
 
 		</div>
 		<div class="span4" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
@@ -140,10 +140,17 @@
 			<hr/>
 			<h2>Les prochains évènements:</h2>
 			<ul>
-				{% for each in evenements %}
-				<li>
-					{{ each.type.nom }} : &laquo;<a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a>&raquo; , {{ each.debut|dateCustom:each.fin }}
-				</li>
+				{% regroup evenements by monthyeardebut as eventlist %}
+				
+				{% for eventmonth in eventlist %}
+					<li>{{eventmonth.grouper|grouperToString}}</li>
+					<ul>
+					{% for each in eventmonth.list %}
+					<li>
+						{{ each.type.nom }} : &laquo;<a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a>&raquo; , {{ each.debut|dateCustom:each.fin }}
+					</li>
+				{% endfor %}
+					</ul>
 				{% endfor %}
 			</ul>
 
@@ -180,8 +187,8 @@
 			
 			$(window).resize(function () {
     			var h =$('#map_canvas').parent().width();
-    			$('#map_canvas').css('height', (h));
-    			$('#map_canvas').css('width', (h));
+    			$('#map_canvas').css('height', (h*2/3));
+    			$('#map_canvas').css('width', (h*2/3));
 				}).resize();		
 		</script>
 		

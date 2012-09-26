@@ -64,6 +64,7 @@ class Evenement(models.Model):
     haut_page = models.BooleanField("Haut de page")
     slug = models.SlugField(max_length=255, unique=True)
     
+    
     def Organisateurs(self):
         return "\n;\n".join([s.nom for s in self.organisateur.all()])
         

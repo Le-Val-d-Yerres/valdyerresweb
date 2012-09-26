@@ -536,8 +536,8 @@ def MultiEvenementsDetailsIcalendar(evenements):
     
 def EvenementDetailsHtml(request, slug, evenement_slug):
     try:
+        evenement = Evenement.objects.select_related().prefetch_related('organisateur').get(slug=evenement_slug)
         saison = Saison.objects.select_related().select_subclasses().get(slug=slug)
-        evenement = Evenement.objects.select_related().get(slug=evenement_slug)
         tarifs = Tarification.objects.filter(evenement_id=evenement.id)
         evenement_qr = GenerationQrCode(EvenementDetailsIcalendar(evenement))
         evenement.lieu = Lieu.objects.select_subclasses().get(id=evenement.lieu.id)
