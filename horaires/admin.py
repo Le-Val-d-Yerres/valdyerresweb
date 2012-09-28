@@ -18,6 +18,10 @@ class HorairesAdmin(admin.ModelAdmin):
                   { 'fields' : ('mardi_matin_debut','mardi_matin_fin','mardi_am_debut','mardi_am_fin','mardi_journee_continue')
                    }),
                  )
+    class Media:
+        js = (
+            'admin/js/admin/horaires_admin.js',
+        )
 
 
 admin.site.register(Horaires, HorairesAdmin)
