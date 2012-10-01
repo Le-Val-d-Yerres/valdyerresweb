@@ -1,36 +1,44 @@
-django.jQuery(document).ready(function($) {
 
-	var myForm = document.getElementById("horaires_form");
+var $ = django.jQuery;
 
-	myForm.lundi_journee_continue.onclick = function(argument) {
-		if (myForm.id_lundi_matin_fin.disabled == true) {
-			myForm.id_lundi_matin_fin.disabled = false;
-			myForm.id_lundi_matin_fin.nextSibling.disabled = false;
+
+
+function toggleStatus(arg) {
+		alert(arg);
+		day = $(arg).attr('id').split('_')[1];
+	
+			
+		if ($('#id_'+day+'_matin_fin').is(':disabled')) {
+			$('#id_'+day+'_matin_fin').attr('disabled',false);
+			$('#id_'+day+'_matin_fin').next().attr('disabled',false);
 		} else {
-			myForm.id_lundi_matin_fin.disabled = true;
-			myForm.id_lundi_matin_fin.nextSibling.disabled = true;
-			/**$('#id_lundi_matin_fin').hide();**/
-			myForm.id_lundi_matin_fin.value = '';
+			$('#id_'+day+'_matin_fin').attr('disabled',true);
+			$('#id_'+day+'_matin_fin').next().attr('disabled',true);
 		}
-
-		if (myForm.id_lundi_am_debut.disabled == true) {
-			myForm.id_lundi_am_debut.disabled = false;
-			myForm.id_lundi_am_debut.nextSibling.disabled = false;
+		
+		if ( ! $('#id_'+day+'_matin_fin').is(':disabled')) {
+			$('#id_'+day+'_am_debut').attr('disabled',false);
+			$('#id_'+day+'_am_debut').next().attr('disabled',false);
 		} else {
-			myForm.id_lundi_am_debut.disabled = true;
-			myForm.id_lundi_am_debut.nextSibling.disabled = true;
-			myForm.id_lundi_am_debut.value = '';
+			$('#id_'+day+'_am_debut').attr('disabled',true);
+			$('#id_'+day+'_am_debut').next().attr('disabled',true);
 		}
-
-	}
-
-
+			
+}
 
 
+$(document).ready(function() {
+	var days = ['lundi','mardi']
+
+	
+	for (var i=0; i < days.length; i++) {
+		
+		$('#id_'+days[i]+'_journee_continue').bind('click',toggleStatus($(this)));
+	  
+	};
+	
 
 
 
-
-
-
-}); 
+	
+});
