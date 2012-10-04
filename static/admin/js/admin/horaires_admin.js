@@ -12,17 +12,23 @@ $(document).ready(function() {
 			if ($('#id_' + day + '_matin_fin').is(':disabled')) {
 				$('#id_' + day + '_matin_fin').attr('disabled', false);
 				$('#id_' + day + '_matin_fin').next().attr('disabled', false);
+				$('#id_' + day + '_matin_fin').next().css('background-position',' 0 -1691px');
 			} else {
 				$('#id_' + day + '_matin_fin').attr('disabled', true);
 				$('#id_' + day + '_matin_fin').next().attr('disabled', true);
+				$('#id_' + day + '_matin_fin').next().css('background-position',' 0 -1734px');
+				$('#id_' + day + '_matin_fin').val('');
 			}
 
 			if (! $('#id_' + day + '_matin_fin').is(':disabled')) {
 				$('#id_' + day + '_am_debut').attr('disabled', false);
 				$('#id_' + day + '_am_debut').next().attr('disabled', false);
+				$('#id_' + day + '_am_debut').next().css('background-position',' 0 -1691px');
 			} else {
 				$('#id_' + day + '_am_debut').attr('disabled', true);
 				$('#id_' + day + '_am_debut').next().attr('disabled', true);
+				$('#id_' + day + '_am_debut').next().css('background-position',' 0 -1734px');
+				$('#id_' + day + '_am_debut').val('');
 			}
 
 		});
