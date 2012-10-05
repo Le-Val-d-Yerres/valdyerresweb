@@ -1,15 +1,22 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from equipements.models import Equipement
-
+import datetime
 
 # Create your models here.
 
-class Horaires(models.Model):
+class Periode(models.Model):
     nom = models.CharField(max_length=255, verbose_name=u"Nom de la période")
+    date_debut = models.DateField(u"Début de la période", default=datetime.date.today)
+    date_fin = models.DateField(u"Fin de la période", default=datetime.date.today)
+    
+    class Meta:
+        verbose_name_plural = "Periodes"
+
+class Horaires(models.Model):
+    nom = models.CharField(max_length=255, verbose_name=u"Description")
     equipement = models.ForeignKey(Equipement)
-    date_debut = models.DateField(u"Début de la période")
-    date_fin = models.DateField(u"Fin de la période")
+    periodes = models.ManyToManyField(Periode)
     
     lundi_matin_debut = models.TimeField(u"Ouverture matin",blank=True)
     lundi_matin_fin = models.TimeField(u"Fermeture matin",blank=True)
@@ -71,11 +78,4 @@ class Horaires(models.Model):
     class Meta:
         verbose_name_plural = "Horaires"
 
-class Vacances(models.Model):
-    nom = models.CharField(max_length=255, verbose_name=u"Nom de la période")
-    date_debut = models.DateField(u"Début de la période")
-    date_fin = models.DateField(u"Fin de la période")
-    
-class HorairesVacances(Horaires):
-    vacances = models.ManyToManyField(Vacances)
     
