@@ -1,7 +1,8 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response , redirect , get_object_or_404
 from equipements.models import *
 from evenements.models import Evenement
+from horaires.models import Horaires, Periode
 from datetime import datetime
 from django.db.models import Q
 from django.conf import settings
@@ -15,7 +16,7 @@ utcTZ = timezone("UTC")
 
 def CarteEquipements(request):
       
-    equipements = Equipement.objects.select_related().all().order_by('nom')
+    equipements = Equipement.objects.select_related().all().order_by('fonction__nom','nom')
 
     return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'mediaDir': settings.MEDIA_DIR_NAME})
 
@@ -24,8 +25,8 @@ def CarteEquipements(request):
 def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     try:
         now = datetime.datetime.now(utcTZ)
-
-        equipement = Equipement.objects.select_related().get(slug=equipement_slug)
+        equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
+  
         
         qr_code_geo = GenerationQrCode("geo:"+str(equipement.latitude)+","+str(equipement.longitude))
         
@@ -40,6 +41,15 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         except:
             facilites = None
         #</trash>
+        
+        horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id)
+        
+        periodes = Periode.objects.filter(date__fin__gt = datetime.date.today())
+        
+        print periodes
+        
+        print horaires
+        
         
     except Equipement.DoesNotExist:
         raise Http404

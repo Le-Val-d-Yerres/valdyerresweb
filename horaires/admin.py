@@ -4,7 +4,7 @@ from django.contrib import admin
 
 
 class HorairesAdmin(admin.ModelAdmin):
-    
+    list_display = ['nom', 'equipement', 'List_Periods']
     fieldsets= (
                 ("Infos", 
                     { 'fields' : ('nom','equipement','periodes', )
