@@ -42,13 +42,31 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
             facilites = None
         #</trash>
         
-        horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id)
+        today = datetime.date.today()
+        horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id).order_by('nom')
+        horaires = [item for item in horaires ]
+        periodes = Periode.objects.filter(date_debut__lt= today , date_fin__gt = today).order_by('date_debut')
+        periodesall = Periode.objects.filter(date_fin__gt = today).order_by('date_debut')
+        periode_active = periodes[len(periodes)-1]
+
+        list_horaires_en_cours = list()
+        list_autres_horaires = list()
+        for horaire in horaires:
+            for periode in horaire.periodes.all():
+                if periode.id == periode_active.id:
+                    list_horaires_en_cours.append(horaire)
+                    
+        for periode in periodesall:
+            for horaire in horaires:
+                
         
-        periodes = Periode.objects.filter(date__fin__gt = datetime.date.today())
         
-        print periodes
         
-        print horaires
+        
+        for item in list_horaires_en_cours:
+            print item.nom
+        
+        
         
         
     except Equipement.DoesNotExist:

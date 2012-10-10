@@ -24,7 +24,18 @@ class Periode(models.Model):
         if self.date_debut <= periode.date_debut and periode.date_fin <= self.date_fin:
             return True
         return False
-    
+
+class Jour():
+    def __init__(self,heure_matin_debut =None,heure_matin_fin = None, heure_am_debut=None,heure_am_fin=None,matin_ferme=False,am_ferme=False,journee_continue=False,jourNom="",jourInt=None):
+        self.heure_matin_debut = heure_matin_debut
+        self.heure_matin_fin = heure_matin_fin
+        self.heure_am_debut = heure_am_debut
+        self.heure_am_fin = heure_am_fin
+        self.matin_ferme = matin_ferme
+        self.am_ferme = am_ferme
+        self.journee_continue = journee_continue
+        self.jourNom = jourNom
+        self.jourInt = int(jourInt)
 
 class Horaires(models.Model):
     nom = models.CharField(max_length=255, verbose_name=u"Description")
@@ -103,4 +114,83 @@ class Horaires(models.Model):
                 txt+=", "
             i=i+1
         return txt
+    
+    def GetDay(self, day):
+        monJour = Jour()
+        monJour.jourInt = int(day)
+        
+        if day == 0:
+            monJour.jourNom = "dimanche"
+            monJour.heure_matin_debut = self.dimanche_matin_debut
+            monJour.heure_matin_fin = self.dimanche_matin_fin
+            monJour.heure_am_debut = self.dimanche_am_debut
+            monJour.heure_am_fin = self.dimanche_am_fin
+            monJour.matin_ferme = self.dimanche_matin_ferme
+            monJour.am_ferme = self.dimanche_am_ferme
+            monJour.journee_continue = self.dimanche_journee_continue
+        
+        if day == 1:
+            monJour.jourNom = "lundi"
+            monJour.heure_matin_debut = self.lundi_matin_debut
+            monJour.heure_matin_fin = self.lundi_matin_fin
+            monJour.heure_am_debut = self.lundi_am_debut
+            monJour.heure_am_fin = self.lundi_am_fin
+            monJour.matin_ferme = self.lundi_matin_ferme
+            monJour.am_ferme = self.lundi_am_ferme
+            monJour.journee_continue = self.lundi_journee_continue
+        
+        if day == 2:
+            monJour.jourNom = "mardi"
+            monJour.heure_matin_debut = self.mardi_matin_debut
+            monJour.heure_matin_fin = self.mardi_matin_fin
+            monJour.heure_am_debut = self.mardi_am_debut
+            monJour.heure_am_fin = self.mardi_am_fin
+            monJour.matin_ferme = self.mardi_matin_ferme
+            monJour.am_ferme = self.mardi_am_ferme
+            monJour.journee_continue = self.mardi_journee_continue
+            
+        if day == 3:
+            monJour.jourNom = "mercredi"
+            monJour.heure_matin_debut = self.mercredi_matin_debut
+            monJour.heure_matin_fin = self.mercredi_matin_fin
+            monJour.heure_am_debut = self.mercredi_am_debut
+            monJour.heure_am_fin = self.mercredi_am_fin
+            monJour.matin_ferme = self.mercredi_matin_ferme
+            monJour.am_ferme = self.mercredi_am_ferme
+            monJour.journee_continue = self.mercredi_journee_continue
+            
+        if day == 4:
+            monJour.jourNom = "jeudi"
+            monJour.heure_matin_debut = self.jeudi_matin_debut
+            monJour.heure_matin_fin = self.jeudi_matin_fin
+            monJour.heure_am_debut = self.jeudi_am_debut
+            monJour.heure_am_fin = self.jeudi_am_fin
+            monJour.matin_ferme = self.jeudi_matin_ferme
+            monJour.am_ferme = self.jeudi_am_ferme
+            monJour.journee_continue = self.jeudi_journee_continue
+            
+        if day == 5:
+            monJour.jourNom = "vendredi"
+            monJour.heure_matin_debut = self.vendredi_matin_debut
+            monJour.heure_matin_fin = self.vendredi_matin_fin
+            monJour.heure_am_debut = self.vendredi_am_debut
+            monJour.heure_am_fin = self.vendredi_am_fin
+            monJour.matin_ferme = self.vendredi_matin_ferme
+            monJour.am_ferme = self.vendredi_am_ferme
+            monJour.journee_continue = self.vendredi_journee_continue
+        
+        if day == 6:
+            monJour.jourNom = "samedi"
+            monJour.heure_matin_debut = self.samedi_matin_debut
+            monJour.heure_matin_fin = self.samedi_matin_fin
+            monJour.heure_am_debut = self.samedi_am_debut
+            monJour.heure_am_fin = self.samedi_am_fin
+            monJour.matin_ferme = self.samedi_matin_ferme
+            monJour.am_ferme = self.samedi_am_ferme
+            monJour.journee_continue = self.samedi_journee_continue
+        
+        return monJour
+        
+        
+        
     
