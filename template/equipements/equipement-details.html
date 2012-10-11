@@ -23,7 +23,7 @@
 					<a href="/">Accueil</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'yerres</a><span class="divider">/</span>
+					<a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
 				</li>
 				<li>
 					<a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.pluriel }}</a><span class="divider">/</span>
@@ -107,6 +107,19 @@
 	</div>
 
 	{% endif %}
+	
+	{% if horaires %}
+	<div class="row-fluid">
+		<div class="span7">
+			<hr/>
+			<h2>Horaires:</h2>
+			<ul>
+				
+			</ul>
+		</div>
+	</div>
+	{%endif%}
+	
 	<div class="row-fluid">
 
 		<div class="span7">

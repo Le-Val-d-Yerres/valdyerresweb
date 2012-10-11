@@ -46,32 +46,38 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id).order_by('nom')
         horaires = [item for item in horaires ]
         periodes = Periode.objects.filter(date_debut__lt= today , date_fin__gt = today).order_by('date_debut')
-        periodesall = Periode.objects.filter(date_fin__gt = today).order_by('date_debut')
+        autres_periodes = Periode.objects.filter(date_fin__gt = today).order_by('date_debut')
         periode_active = periodes[len(periodes)-1]
 
-        list_horaires_en_cours = list()
-        list_autres_horaires = list()
-        for horaire in horaires:
-            for periode in horaire.periodes.all():
-                if periode.id == periode_active.id:
-                    list_horaires_en_cours.append(horaire)
-                    
-        for periode in periodesall:
-            for horaire in horaires:
-                
-        
-        
-        
-        
-        for item in list_horaires_en_cours:
-            print item.nom
+#        list_horaires_en_cours = list()
+#        list_autres_horaires = list()
+#        for horaire in horaires:
+#            for periode in horaire.periodes.all():
+#                if periode.id == periode_active.id:
+#                    list_horaires_en_cours.append(horaire)
+#                else:
+#                    for autre_periode in periodesall:
+#                        if autre_periode.id == periode.id:
+#                            list_autres_horaires.append(horaire)
+#                    
+#    #  for periode in periodesall:
+#    #     for horaire in horaires:
+#                
+#        
+#        
+#        
+#        
+#        for item in list_horaires_en_cours:
+#            print 'now :'+item.nom
+#        for item in list_autres_horaires:
+#            print item.nom
         
         
         
         
     except Equipement.DoesNotExist:
         raise Http404
-    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements})
+    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements,'periode_active': periode_active,'horaires':horaires,'autres_periodes':autres_periodes})
 
 def FonctionDetailsHtml(request, fonction_slug):
     try:
