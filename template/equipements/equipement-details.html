@@ -4,6 +4,7 @@
 {% load eventfilters %}
 {% load menufilters %}
 {% load aidefilters%}
+{% load hoursfilters%}
 {% load tz %}
 	
 	{% block menu %}{% getmenu %}{% endblock %}
@@ -114,7 +115,14 @@
 			<hr/>
 			<h2>Horaires:</h2>
 			<ul>
+				<li>Aujourd'hui :</li>
+				<ul>
+				{% for horaire in horaires %}
 				
+					<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</li>
+				
+				{%endfor%}
+				</ul>
 			</ul>
 		</div>
 	</div>

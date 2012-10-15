@@ -26,7 +26,7 @@ class Periode(models.Model):
         return False
 
 class Jour():
-    def __init__(self,heure_matin_debut =None,heure_matin_fin = None, heure_am_debut=None,heure_am_fin=None,matin_ferme=False,am_ferme=False,journee_continue=False,jourNom="",jourInt=None):
+    def __init__(self,heure_matin_debut =None,heure_matin_fin = None, heure_am_debut=None,heure_am_fin=None,matin_ferme=False,am_ferme=False,journee_continue=False,jourNom="",jourInt=42):
         self.heure_matin_debut = heure_matin_debut
         self.heure_matin_fin = heure_matin_fin
         self.heure_am_debut = heure_am_debut
@@ -119,7 +119,7 @@ class Horaires(models.Model):
         monJour = Jour()
         monJour.jourInt = int(day)
         
-        if day == 0:
+        if day == 7:
             monJour.jourNom = "dimanche"
             monJour.heure_matin_debut = self.dimanche_matin_debut
             monJour.heure_matin_fin = self.dimanche_matin_fin
