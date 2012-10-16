@@ -115,7 +115,7 @@
 			<hr/>
 			<h2>Horaires:</h2>
 			<ul>
-				<li>Aujourd'hui :</li>
+				<li>Aujourd'hui : {%nom_jour_aujourdhui%}, {{periode_active.nom|lower}} </li>
 				<ul>
 				{% for horaire in horaires %}
 				
@@ -123,6 +123,21 @@
 				
 				{%endfor%}
 				</ul>
+				
+				<li>Demain : {%nom_jour_demain%}, {{periode_active_demain.nom|lower}} </li>
+				<ul>
+				{% for horaire_demain in horaires_demain %}
+				
+					<li>{{horaire_demain.nom}} : {{horaire_demain|horaires_demain}}</li>
+				
+				{%endfor%}
+				</ul>
+			</ul>
+			<h3>Horaires par périodes :</h3>
+			<ul>
+			{% for periode in autres_periodes %}
+				<li>{{periode.nom}}</li>
+			{% endfor %}
 			</ul>
 		</div>
 	</div>
