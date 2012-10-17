@@ -133,12 +133,9 @@
 				{%endfor%}
 				</ul>
 			</ul>
-			<h3>Horaires par périodes :</h3>
-			<ul>
-			{% for periode in autres_periodes %}
-				<li>{{periode.nom}}</li>
-			{% endfor %}
-			</ul>
+			<p>
+				<a href="{% url equipements.views.EquipementHoraires equipement_slug=equipement.slug%}">Voir tous les horaires et toutes les périodes</a>
+			</p>
 		</div>
 	</div>
 	{%endif%}

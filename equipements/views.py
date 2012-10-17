@@ -74,16 +74,17 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 def EquipementHoraires(request, equipement_slug):
     equipement = get_object_or_404(Equipement , slug=equipement_slug)
     today = datetime.date.today()
-    periodes = Periode.objects.filter(date_debut__lt=today , date_fin__gt=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+    periodes = Periode.objects.filter(date_fin__gt=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
     periodes.query.group_by = ['periode_id']
     horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id)
     for periode in periodes:
         horaires.filter(periodes__id = periode.id)
     
-    print horaires
+    if len(horaires) == 0:
+        raise Http404
     
     
-    return render_to_response('equipements/equipement-horaires.html', {'equipement':equipement})
+    return render_to_response('equipements/equipement-horaires.html', {'equipement':equipement,'horaires':horaires, 'periodes':periodes})
 
 def FonctionDetailsHtml(request, fonction_slug):
     try:
