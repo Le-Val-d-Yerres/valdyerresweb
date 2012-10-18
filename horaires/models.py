@@ -88,7 +88,7 @@ class Horaires(models.Model):
     samedi_matin_ferme = models.BooleanField(u"Fermé le matin")
     samedi_am_debut = models.TimeField(u"Ouverture après-midi",blank=True,null=True)
     samedi_am_fin = models.TimeField(u"Fermeture après-midi",blank=True,null=True)
-    samedi_am_ferme = models.BooleanField(u"Fermé le matin")
+    samedi_am_ferme = models.BooleanField(u"Fermé l'après-midi")
     samedi_journee_continue = models.BooleanField(u"Journée Continue")
     
     dimanche_matin_debut = models.TimeField(u"Ouverture matin",blank=True,null=True)
@@ -96,7 +96,7 @@ class Horaires(models.Model):
     dimanche_matin_ferme = models.BooleanField(u"Fermé le matin")
     dimanche_am_debut = models.TimeField(u"Ouverture après-midi",blank=True,null=True)
     dimanche_am_fin = models.TimeField(u"Fermeture après-midi",blank=True,null=True)
-    dimanche_am_ferme = models.BooleanField(u"Fermé le matin")
+    dimanche_am_ferme = models.BooleanField(u"Fermé l'après-midi")
     dimanche_journee_continue = models.BooleanField(u"Journée Continue")
     
     class Meta:

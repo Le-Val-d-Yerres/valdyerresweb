@@ -72,11 +72,11 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 
 
 def EquipementHoraires(request, equipement_slug):
-    equipement = get_object_or_404(Equipement , slug=equipement_slug)
+    equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
     today = datetime.date.today()
     periodes = Periode.objects.filter(date_fin__gt=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
     periodes.query.group_by = ['periode_id']
-    horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id)
+    horaires = Horaires.objects.prefetch_related('periodes').select_related().filter(equipement=equipement.id)
     for periode in periodes:
         horaires.filter(periodes__id = periode.id)
     

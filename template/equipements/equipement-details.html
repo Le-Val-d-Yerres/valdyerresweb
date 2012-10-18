@@ -115,20 +115,20 @@
 			<hr/>
 			<h2>Horaires:</h2>
 			<ul>
-				<li>Aujourd'hui : {%nom_jour_aujourdhui%}, {{periode_active.nom|lower}} </li>
+				<li>Aujourd'hui : <b>{%nom_jour_aujourdhui%}</b>. Période applicable : {{periode_active.nom|lower}}.</li>
 				<ul>
 				{% for horaire in horaires %}
 				
-					<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</li>
+					<li>{{horaire.nom}} : <b>{{horaire|horaires_aujourdhui}}</b></li>
 				
 				{%endfor%}
 				</ul>
 				
-				<li>Demain : {%nom_jour_demain%}, {{periode_active_demain.nom|lower}} </li>
+				<li>Demain : <b>{%nom_jour_demain%}</b>. Période applicable : {{periode_active_demain.nom|lower}}.</li>
 				<ul>
 				{% for horaire_demain in horaires_demain %}
 				
-					<li>{{horaire_demain.nom}} : {{horaire_demain|horaires_demain}}</li>
+					<li>{{horaire_demain.nom}} : <b>{{horaire_demain|horaires_demain}}</b></li>
 				
 				{%endfor%}
 				</ul>

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from django import template
 register = template.Library()
 import datetime
@@ -51,7 +50,6 @@ def horaires_demain(horaires):
 @register.simple_tag()
 def nom_jour_aujourdhui():
     today = datetime.datetime.today()
-    
     return WeekDay[today.weekday()]
 
 
@@ -62,7 +60,7 @@ def nom_jour_demain():
 
 @register.filter(is_safe=True)
 def dates_periode(debut, fin):
-    text = u"du "+WeekDay[int(debut.strftime("%w"))]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+" "+debut.strftime(u"%Y") + " au "+WeekDay[int(fin.strftime(u"%w"))]+u" "+fin.strftime(u"%d")+u" "+mois[int(fin.strftime(u"%m"))-1]+" "+fin.strftime(u"%Y")
+    text = u"du "+WeekDay[debut.weekday()]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+" "+debut.strftime(u"%Y") + " au "+WeekDay[fin.weekday()]+u" "+fin.strftime(u"%d")+u" "+mois[int(fin.strftime(u"%m"))-1]+" "+fin.strftime(u"%Y")
     return text
 
 
