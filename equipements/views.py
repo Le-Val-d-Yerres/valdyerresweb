@@ -46,7 +46,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         
     today = datetime.date.today()
     horaires = None
-    periodes = Periode.objects.filter(date_debut__lt=today , date_fin__gt=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+    periodes = Periode.objects.filter(date_debut__lte=today , date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
     periodes.query.group_by = ['periode_id']
     if len(periodes) >= 1:
         periode_active = periodes[len(periodes) - 1]
@@ -56,7 +56,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     horaires_demain = None
-    periodes_demain = Periode.objects.filter(date_debut__lt=tomorrow , date_fin__gt=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+    periodes_demain = Periode.objects.filter(date_debut__lte=tomorrow , date_fin__gte=tomorrow).filter(horaires__equipement=equipement.id).order_by('date_debut')
     periodes_demain.query.group_by = ['periode_id']
     if len(periodes_demain) >= 1:
         periode_active_demain = periodes[len(periodes) - 1]
@@ -65,16 +65,32 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         periode_active_demain = None
         
         
-    autres_periodes = Periode.objects.filter(date_fin__gt=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+    autres_periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
     autres_periodes.query.group_by = ['periode_id']
+    
+    horaires_plus_7 = list()
+    
+    for index in range(1,8):
+        day = datetime.date.today() + datetime.timedelta(days=index)
+        horaires_jour = None
+        periodes_jour = Periode.objects.filter(date_debut__lte=day , date_fin__gte=day).filter(horaires__equipement=equipement.id).order_by('date_debut')
+        periodes_jour.query.group_by = ['periode_id']
+        if len(periodes_jour) >= 1:
+            periode_active_jour = periodes_jour[len(periodes) - 1]
+            horaires_jour = Horaires.objects.filter(equipement=equipement.id).filter(periodes__id=periode_active_jour.id)
+            horaires_plus_7.append(horaires_jour)
+        else:
+            periode_active_jour = None
+         
+    
         
-    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain })
+    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7 })
 
 
 def EquipementHoraires(request, equipement_slug):
     equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
     today = datetime.date.today()
-    periodes = Periode.objects.filter(date_fin__gt=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+    periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
     periodes.query.group_by = ['periode_id']
     horaires = Horaires.objects.prefetch_related('periodes').select_related().filter(equipement=equipement.id)
     for periode in periodes:

@@ -6,7 +6,8 @@ import datetime
 mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre', u'octobre', u'novembre' ,u'décembre']
 WeekDay = ['lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi','dimanche']    
 
-#une journée en général 
+#une journée en général
+@register.filter(is_safe=True) 
 def horaires_journee(numjour,horaires):
     txthours = ""
     myday = horaires.GetDay(numjour)
@@ -30,6 +31,12 @@ def horaires_journee(numjour,horaires):
 def horaires_jour(day,horaires):
     return horaires_journee(day.isoweekday(), horaires)  
 
+
+@register.filter(is_safe=True)
+def horaire_journee_timedelta(delta,horaires):
+    day = datetime.date.today() + datetime.timedelta(days=delta)
+    return horaires_jour(day, horaires)
+
 @register.filter(is_safe=True)
 def horaires_semaine(horaires):
     txthoraires = ""
@@ -49,14 +56,19 @@ def horaires_demain(horaires):
 
 @register.simple_tag()
 def nom_jour_aujourdhui():
-    today = datetime.datetime.today()
-    return WeekDay[today.weekday()]
+    day = datetime.datetime.today()
+    return WeekDay[day.weekday()] +" "+day.strftime(u"%d")+u" "+mois[int(day.strftime(u"%m"))-1]
 
 
 @register.simple_tag()
 def nom_jour_demain():
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     return WeekDay[tomorrow.weekday()]
+
+@register.filter(is_safe=True)
+def nom_jour_index(index):
+    day = datetime.date.today() + datetime.timedelta(days=index)
+    return WeekDay[day.weekday()] +" "+day.strftime(u"%d")+u" "+mois[int(day.strftime(u"%m"))-1]
 
 @register.filter(is_safe=True)
 def dates_periode(debut, fin):

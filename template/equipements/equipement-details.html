@@ -63,9 +63,9 @@
 					</p>
 					{% endif %}
 
-					{% if equipement. %}
+					{% if equipement.email %}
 					<p>
-						Mail : {{ equipement.mail }}
+						Courriel : <a href="mailto:{{ equipement.email }}">{{ equipement.email }}</a>
 					</p>
 					{% endif %}
 				</div>
@@ -115,7 +115,7 @@
 			<hr/>
 			<h2>Horaires:</h2>
 			<ul>
-				<li>Aujourd'hui : <b>{%nom_jour_aujourdhui%}</b>. Période applicable : {{periode_active.nom|lower}}.</li>
+				<li>Aujourd'hui : <b>{%nom_jour_aujourdhui%}</b>. </li>
 				<ul>
 				{% for horaire in horaires %}
 				
@@ -123,16 +123,21 @@
 				
 				{%endfor%}
 				</ul>
-				
-				<li>Demain : <b>{%nom_jour_demain%}</b>. Période applicable : {{periode_active_demain.nom|lower}}.</li>
-				<ul>
-				{% for horaire_demain in horaires_demain %}
-				
-					<li>{{horaire_demain.nom}} : <b>{{horaire_demain|horaires_demain}}</b></li>
-				
-				{%endfor%}
-				</ul>
 			</ul>
+			<h3>Les 7 prochains jours : </h3>
+			<ul>
+				{% for horaires in horaires_plus_7 %}
+					<li><b>{{forloop.counter|nom_jour_index}}</b> :</li>
+					<ul>
+					{% for horaire in horaires %}
+					<li>{{horaire.nom}} : <b>{{forloop.parentloop.counter|horaire_journee_timedelta:horaire}}</b></li>
+					{% endfor %}
+					</ul>
+				{% endfor %}
+				
+				
+			</ul>
+			<br/>
 			<p>
 				<a href="{% url equipements.views.EquipementHoraires equipement_slug=equipement.slug%}">Voir tous les horaires et toutes les périodes</a>
 			</p>
@@ -144,7 +149,7 @@
 
 		<div class="span7">
 			<hr/>
-			<h2>Géolocalisation:</h2>
+			<h2>Géolocalisation: <br/><small>{{equipement.rue}}, {{equipement.ville.code_postal}} {{equipement.ville.nom}}</small></h2>
 
 			<div id="map_canvas" style="text-align:center;margin-left:auto;margin-right:auto;"></div>
 
