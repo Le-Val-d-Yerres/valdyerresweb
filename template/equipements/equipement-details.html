@@ -38,7 +38,7 @@
 
 			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom }}</a></h1>
 			{% if equipement.image %}
-			<img alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
+			<img class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
 			{% endif %}
 			{{ equipement.presentation|safe }}
 		</div>

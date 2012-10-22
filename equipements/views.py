@@ -76,7 +76,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         periodes_jour = Periode.objects.filter(date_debut__lte=day , date_fin__gte=day).filter(horaires__equipement=equipement.id).order_by('date_debut')
         periodes_jour.query.group_by = ['periode_id']
         if len(periodes_jour) >= 1:
-            periode_active_jour = periodes_jour[len(periodes) - 1]
+            periode_active_jour = periodes_jour[len(periodes_jour) - 1]
             horaires_jour = Horaires.objects.filter(equipement=equipement.id).filter(periodes__id=periode_active_jour.id)
             horaires_plus_7.append(horaires_jour)
         else:
