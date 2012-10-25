@@ -12,7 +12,7 @@ def horaires_journee(numjour,horaires):
     txthours = ""
     myday = horaires.GetDay(numjour)
     if myday.matin_ferme and myday.am_ferme:
-        return myday.jourNom+": fermé toute la journée"
+        return "fermé toute la journée"
     
     if myday.journee_continue:
         return "journée continue de "+myday.heure_matin_debut.strftime("%H:%M")+" à "+myday.heure_am_fin.strftime("%H:%M")+"."

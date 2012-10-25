@@ -4,6 +4,7 @@
 {% load eventfilters %}
 {% load menufilters %}
 {% load aidefilters%}
+{% load hoursfilters%}
 {% load tz %}
 	
 	{% block menu %}{% getmenu %}{% endblock %}
@@ -29,14 +30,32 @@
 				</li>
 			</ul>
 		</div>
-		<div class="span7">
+		<div class="span12">
 		<h1><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=fonction.slug %}">{{ fonction.pluriel }}</a></h1>
 		
 		
 	    <ul>
+	    	<table class="table table-striped">
 			{% for equipement in equipements %}
-			<li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a> à {{equipement.ville.nom}}</li>
+			<tr>
+				<td><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'250x140x0' }}"/></td>
+				<td><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td> <td> {{equipement.ville.nom}} </td>
+				<td>
+				{% for horaires in listhoraires %}
+					{% for horaire in horaires %}
+					
+						{% if horaire.equipement.id == equipement.id %}
+							<ul>
+							<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</br></li>
+							</ul>
+						{% endif %}
+					
+					{%endfor%}
+				{% endfor %}
+				</td>
+			</tr>
 			{% endfor %}
+			</table>
 		</ul>
 		</div>
 </div>

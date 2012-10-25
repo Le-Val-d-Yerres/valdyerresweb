@@ -16,7 +16,7 @@ utcTZ = timezone("UTC")
 
 def CarteEquipements(request):
       
-    equipements = Equipement.objects.select_related().all().order_by('fonction__nom', 'nom')
+    equipements = Equipement.objects.select_related().all().order_by('fonction__nom', 'ville__nom')
 
     return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'mediaDir': settings.MEDIA_DIR_NAME})
 
@@ -105,10 +105,23 @@ def EquipementHoraires(request, equipement_slug):
 def FonctionDetailsHtml(request, fonction_slug):
     try:
         fonction = EquipementFonction.objects.get(slug=fonction_slug)
-        equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id)
+        equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
+            
+        today = datetime.date.today()
+        listhoraires = list()
+        
+        for equipement in equipements:
+            periodes = Periode.objects.filter(date_debut__lte=today , date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+            if len(periodes) >= 1:
+                periodes.query.group_by = ['periode_id']
+                periode_active = periodes[len(periodes) - 1]
+                horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(periodes__id=periode_active.id)
+                listhoraires.append(horaires)
+            
+        
     except Equipement.DoesNotExist:
         raise Http404
-    return render_to_response('equipements/carte-fonction-equipements.html', {'equipements': equipements, 'fonction': fonction})
+    return render_to_response('equipements/carte-fonction-equipements.html', {'equipements': equipements, 'fonction': fonction, 'listhoraires': listhoraires})
 
 def EquipementVCF(request, slug):
     try:
