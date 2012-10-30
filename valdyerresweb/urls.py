@@ -20,5 +20,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^agenda/', include('evenements.urls')),
     url(r'^equipements/', include('equipements.urls')),
+    url(r'^$', include('editorial.urls')),
     url(r'^debug/', include('debug_toolbar.urls')),
 )
