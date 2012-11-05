@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from menu.models import MenuItem
 from django.contrib import admin
 from django.template import defaultfilters

@@ -1,16 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from filebrowser.fields import FileBrowseField
 # Create your models here.
 
 
-class Categorie(models.Model):
-    nom = models.CharField(max_length=255, verbose_name="Nom")
-    slug = models.SlugField()
-    index  = models.IntegerField()
-    parent = models.ForeignKey('self', null= True,blank=True)
-    
-    def __unicode__(self):
-        return self.nom
 
 class PageBase(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
@@ -20,7 +14,7 @@ class PageBase(models.Model):
     publie = models.BooleanField()
 
 class PageStatique(PageBase):
-    categorie = models.ForeignKey(Categorie)
+    index = models.IntegerField()
     
 class Actualite(PageBase):
     logo = FileBrowseField("Logo de l'article (facultatif)", max_length=200, directory="equipements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)

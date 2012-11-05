@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.conf.urls import patterns, include, url
 
 from filebrowser.sites import site
@@ -21,5 +23,6 @@ urlpatterns = patterns('',
     url(r'^agenda/', include('evenements.urls')),
     url(r'^equipements/', include('equipements.urls')),
     url(r'^$', include('editorial.urls')),
+    url(r'^services/', include('services.urls')),
     url(r'^debug/', include('debug_toolbar.urls')),
 )
