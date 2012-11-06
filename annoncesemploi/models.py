@@ -24,7 +24,11 @@ class Annonce(models.Model):
     lieu_travail = models.TextField(verbose_name = "Lieu de travail:")
     def __unicode__(self):
         return self.nom
+    
+
 # Classe d'interconnexion avec l'export XLS du logiciel
-# Utilisé par les maisons de l'enploi
+# utilisé par les maisons de l'emploi
 class ImportGIDEM(models.Model):
-    import = FileBrowseField("importsgidem", max_length=200, directory="documents", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
+    fichier_xls = FileBrowseField("Document", max_length=200, directory="importsgidem", extensions=[".xls"])
+    date_import = models.DateTimeField()
+    
