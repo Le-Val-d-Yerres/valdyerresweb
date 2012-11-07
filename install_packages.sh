@@ -3,4 +3,4 @@ ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib
 ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib
 ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib
 
-apt-get install python-qt4 python-qt4-dbg  python-gdbm-dbg python-tk-dbg
+apt-get install python-qt4 python-qt4-dbg  python-gdbm-dbg python-tk-dbg ghostscript
