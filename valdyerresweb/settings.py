@@ -199,7 +199,9 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.logger.LoggingPanel',
 )
 
-# Variables perso
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
+# Variables custom
 
 PICTO_LIEU = 'uploads/picto/lieu.png'
 

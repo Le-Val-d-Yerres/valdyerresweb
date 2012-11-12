@@ -3,7 +3,6 @@
 from django.db import models
 from filebrowser.fields import FileBrowseField
 from services.models import Service
-import xlrd
 
 
 
@@ -33,23 +32,6 @@ class ImportGIDEM(models.Model):
     fichier_xls = FileBrowseField("Document", max_length=200, directory="importsgidem", extensions=[".xls"])
     date_import = models.DateTimeField()
     
-    def parseimport(self,filename):
-        workbook = xlrd.open_workbook(filename)
-        worksheet = workbook.sheet_by_index(0)
-        annonce = Annonce()
-        for row in range(1,worksheet.nrows):
-            annonce.intitule = worksheet.cell(row,2).value.lower().capitalize()
-            annonce.type_de_poste = worksheet.cell(row,7).value
-            annonce.secteur_activite = worksheet.cell(row,4).value
-            annonce.niveau_formation = worksheet.cell(row,10).value
-            annonce.experience_requise = worksheet.cell(row,9).value
-            annonce.description_du_poste = worksheet.cell(row,8).value
-            annonce.nom_employeur = worksheet.cell(row,5).value
-            annonce.contact = worksheet.cell(row,6).value
-            annonce.nbpostes = worksheet.cell(row,11).value
-            annonce.deplacement = worksheet.cell(row,15).value
-            annonce.lieu_travail = worksheet.cell(row,12).value
-            annonce.salaire_indicatif = worksheet.cell(row,14).value
-            
+    
         
         

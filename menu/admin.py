@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.template import defaultfilters
 
 class MenuItemAdmin(admin.ModelAdmin):
-    list_display = ['nom','chemin','description','index','parent']
+    list_display = ['nom','chemin','index','parent']
     
     class Media:
         js = [
