@@ -15,13 +15,14 @@ class Service(models.Model):
     
     
 class PageStatiqueService(models.Model):
+    service = models.ForeignKey(Service)
     titre = models.CharField(max_length=255, verbose_name="Titre")
     slug = models.SlugField()
     meta_description = models.CharField(max_length=200)
     contenu = models.TextField()
     publie = models.BooleanField(verbose_name="Publié")
     index = models.IntegerField(verbose_name="Ordre apparition dans la liste")
-    service = models.ForeignKey(Service)
+    
 
     
 class DocumentAttache(models.Model):
