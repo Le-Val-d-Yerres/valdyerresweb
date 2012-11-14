@@ -98,11 +98,8 @@ def resizeandcrop(img, box, fit):
 
     #Resize the image with best quality algorithm ANTI-ALIAS
     img.thumbnail(box, Image.ANTIALIAS)
-
-    #save it into a file-like object
-    #img.save(out, "JPEG", quality=90)
     return img
-#resize
+
 
 @register.filter(is_safe=True)   
 def resize(myfile, size='100x100x1'):
@@ -123,14 +120,10 @@ def resize(myfile, size='100x100x1'):
     miniature_url = filehead + '/' + miniature
     if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
         os.unlink(miniature_filename)
-    # if the image wasn't already resized, resize it
+
     if not os.path.exists(miniature_filename):
         image = resizeandcrop(Image.open(filename), (x,y), True)
-        
-#        if ratio == 0:
-#            image = image.resize([x, y], Image.ANTIALIAS)
-#        else:
-#            image.thumbnail([x, y], Image.ANTIALIAS)        
+          
         try:
             image.save(miniature_filename, image.format, quality=90, optimize=1)
         except:

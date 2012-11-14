@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
 from django.template import defaultfilters
 from services.models import Service,PageStatiqueService,DocumentAttache
