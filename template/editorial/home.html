@@ -1,0 +1,22 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
+
+
+{% block meta-description %}{{ evenement.meta_description }}{% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+
+<div  class="row-fluid">
+			<div class="span12">
+				TODO : Home page 
+			</div>
+</div>
+
+{% endblock%}

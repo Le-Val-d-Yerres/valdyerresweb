@@ -10,7 +10,7 @@ class PageBase(models.Model):
     meta_description = models.CharField(max_length=200)
     contenu = models.TextField()
     publie = models.BooleanField(verbose_name="Publié")
-    date_mise_a_jour = models.DateTimeField
+    date_mise_a_jour = models.DateTimeField()
     
 class PageStatique(PageBase):
     date_creation = models.DateTimeField()
@@ -33,11 +33,11 @@ class Magazine(models.Model):
     slug = models.SlugField()
     date_parution = models.DateField()
     document = FileBrowseField("Document", max_length=200, directory="magazines", extensions=[".pdf"])
-    image = models.ImageField()
+    image = models.ImageField(upload_to="magazines",blank=True)
      
 class RapportActivite(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
     slug = models.SlugField()
     date_parution = models.DateField()
     document = FileBrowseField("Document", max_length=200, directory="rapports", extensions=[".pdf"])
-    image = models.ImageField()
+    image = models.ImageField(upload_to="rapports")

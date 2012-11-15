@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from annoncesemploi.models import Annonce ,ImportGIDEM
 from django.contrib import admin
 from django.template import defaultfilters
@@ -8,10 +10,10 @@ import xlrd
 class AnnonceAdmin(admin.ModelAdmin):
     list_display = [ 'intitule', 'service', 'publie']
     search_fields = ['intitule']
-    list_filter = ['publié']
+    list_filter = ['publie']
     
     fieldsets = [('Service et publication', {'fields': ['service', 'publie']}),
-                 ('Contenu', {'fields': ['intitule','description', 'formation','experience_requise','nom_employeur','lieu_travail','contact']}),
+                 ('Contenu', {'fields': ['intitule','description_du_poste', 'niveau_formation','experience_requise','nom_employeur','lieu_travail','contact']}),
                  ('Contenu additionnel GIDEM', {'fields': ['type_de_poste','secteur_activite','salaire_indicatif','nb_postes','deplacement']}),
                  ]
     
@@ -31,7 +33,7 @@ class AnnonceAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
     
-class ImportGIDEMAdmin():
+class ImportGIDEMAdmin(admin.ModelAdmin):
     list_display = ['id','date_import']
     search_fields = ['date_import']
     list_filter = ['date_import']

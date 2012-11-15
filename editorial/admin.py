@@ -56,8 +56,10 @@ class AdminMagazine(admin.ModelAdmin):
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
-        outpoutejpg = settings.MEDIA_ROOT+obj.date_parution.strftime('%y%m%d-val-d-yerres-magazine.jpg')     
+        outpoutejpg = settings.MEDIA_ROOT+'upload/magazines/'+obj.date_parution.strftime('%y%m%d-val-d-yerres-magazine.jpg')     
         fichierpdf = settings.MEDIA_ROOT+obj.document.path
+        print fichierpdf+'\n'
+        print outpoutejpg+'\n'
         args = ["-dSAFER",
                 "-dBATCH",
                 "-dNOPAUSE",
@@ -74,7 +76,7 @@ class AdminMagazine(admin.ModelAdmin):
         obj.save()
     
 class AdminRapportActivite(admin.ModelAdmin):
-    list_display = [['titre','date_parution','document']]
+    list_display = ['titre','date_parution','document']
     prepopulated_fields = {'slug':('titre',),}
     
     def save_model(self, request, obj, form, change):
@@ -100,3 +102,10 @@ class AdminRapportActivite(admin.ModelAdmin):
         ghostscript.Ghostscript(*args)
         obj.image = outpoutejpg
         obj.save()
+        
+        
+        
+admin.site.register(Actualite, AdminActualite)     
+admin.site.register(PageStatique, AdminPageStatique)
+admin.site.register(Magazine, AdminMagazine)
+admin.site.register(RapportActivite, AdminRapportActivite)

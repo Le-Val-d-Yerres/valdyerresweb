@@ -7,11 +7,24 @@ from services.models import Service,PageStatiqueService,DocumentAttache
 
 class AdminService(admin.ModelAdmin):
     list_display = ['nom', 'index', 'parent']
+    prepopulated_fields = {'slug':('nom',),}
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
       
 class DocumentAttacheInline(admin.TabularInline):
     model = DocumentAttache
-    extra = 5
-    max_num = 15  
+    extra = 1
+    
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
 
 class AdminPageStatiqueService(admin.ModelAdmin):
     list_display=['titre','service','index','publie']
