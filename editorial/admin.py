@@ -56,10 +56,11 @@ class AdminMagazine(admin.ModelAdmin):
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
-        outpoutejpg = settings.MEDIA_ROOT+'upload/magazines/'+obj.date_parution.strftime('%y%m%d-val-d-yerres-magazine.jpg')     
+        
+        outpoutejpg = settings.MEDIA_ROOT+'uploads/magazines/'+obj.date_parution.strftime('%y%m%d-val-d-yerres-magazine.jpg')     
         fichierpdf = settings.MEDIA_ROOT+obj.document.path
-        print fichierpdf+'\n'
-        print outpoutejpg+'\n'
+        print fichierpdf+'\r'
+        print outpoutejpg+'\r'
         args = ["-dSAFER",
                 "-dBATCH",
                 "-dNOPAUSE",
@@ -72,7 +73,8 @@ class AdminMagazine(admin.ModelAdmin):
                 fichierpdf ]
 
         ghostscript.Ghostscript(*args)
-        obj.image = outpoutejpg
+        obj.image = outpoutejpg.replace(settings.MEDIA_ROOT,"")
+        
         obj.save()
     
 class AdminRapportActivite(admin.ModelAdmin):
