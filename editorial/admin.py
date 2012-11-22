@@ -4,6 +4,7 @@ from editorial.models import Actualite,DocumentAttache,Magazine,PageStatique,Rap
 from django.contrib import admin
 from django.template import defaultfilters
 from valdyerresweb import settings
+from valdyerresweb.utils.functions import pdftojpg
 import ghostscript
 
 class DocumentAttacheInline(admin.TabularInline):
@@ -57,23 +58,7 @@ class AdminMagazine(admin.ModelAdmin):
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
         
-        outpoutejpg = settings.MEDIA_ROOT+'uploads/magazines/'+obj.date_parution.strftime('%y%m%d-val-d-yerres-magazine.jpg')     
-        fichierpdf = settings.MEDIA_ROOT+obj.document.path
-        print fichierpdf+'\r'
-        print outpoutejpg+'\r'
-        args = ["-dSAFER",
-                "-dBATCH",
-                "-dNOPAUSE",
-                "-sDEVICE=jpeg",
-                "-r300",
-                "-dJPEGQ=90",
-                "-dFirstPage=1",
-                "-dLastPage=1",
-                "-sOutputFile="+outpoutejpg,
-                fichierpdf ]
-
-        ghostscript.Ghostscript(*args)
-        obj.image = outpoutejpg.replace(settings.MEDIA_ROOT,"")
+        obj.image = pdftojpg(settings.MEDIA_ROOT+obj.document.path).replace(settings.MEDIA_ROOT,"")
         
         obj.save()
     
@@ -88,21 +73,7 @@ class AdminRapportActivite(admin.ModelAdmin):
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
-        fichierpdf = settings.MEDIA_ROOT+obj.document.path
-        outpoutejpg = settings.MEDIA_ROOT+obj.date_parution.strftime('%y%m%d-rapport-activite.jpg')
-        args = ["-dSAFER",
-                "-dBATCH",
-                "-dNOPAUSE",
-                "-sDEVICE=jpeg",
-                "-r300",
-                "-dJPEGQ=90",
-                "-dFirstPage=1",
-                "-dLastPage=1",
-                "-sOutputFile="+outpoutejpg,
-                fichierpdf ]
-
-        ghostscript.Ghostscript(*args)
-        obj.image = outpoutejpg
+        obj.image = pdftojpg(settings.MEDIA_ROOT+obj.document.path).replace(settings.MEDIA_ROOT,"")
         obj.save()
         
         

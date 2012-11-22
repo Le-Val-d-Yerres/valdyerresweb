@@ -1,0 +1,51 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
+
+
+{% block meta-description %}{% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+
+
+
+<div class="container"style="margin-top: 60px;">
+<div  class="row-fluid">
+			<div class="span12">
+			<ul class="breadcrumb">
+					<li><a href="/">Accueil</a></li> <span class="divider">/</span></li>
+					<li class="active">Le Magazine du Val d'Yerres<li>
+			</ul>
+			</div>
+			<div class="span12">
+				<h1>Le magazine du Val d'Yerres:</h1>
+				<table class="table  table-striped">
+							{% for magazine in magazines %}
+							<tr>
+								<td><img class="img-polaroid" src="{{magazine.image|resize:'125x166x1'}}"></td>
+								<td><a href="#"><strong>{{magazine.titre}}</strong></a>
+								<p>
+									<a href="magazine.document">Téléchargez</a> 
+								</p>
+								</td>
+
+							</tr>
+							{% endfor %}
+						</table>
+			</div>
+</div>
+</div>
+
+{% endblock%}
+
+{% block jsload%}
+
+<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+{% endblock%}

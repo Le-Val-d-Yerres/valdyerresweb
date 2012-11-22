@@ -34,10 +34,13 @@ class Magazine(models.Model):
     date_parution = models.DateField()
     document = FileBrowseField("Document", max_length=200, directory="magazines", extensions=[".pdf"])
     image = models.ImageField(upload_to="magazines",blank=True)
+    publie = models.BooleanField(verbose_name="Publié")
+
      
 class RapportActivite(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
     slug = models.SlugField()
     date_parution = models.DateField()
     document = FileBrowseField("Document", max_length=200, directory="rapports", extensions=[".pdf"])
-    image = models.ImageField(upload_to="rapports")
+    image = models.ImageField(upload_to="rapports") 
+    publie = models.BooleanField(verbose_name="Publié")

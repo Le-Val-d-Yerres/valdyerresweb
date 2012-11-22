@@ -105,7 +105,8 @@ def resizeandcrop(img, box, fit):
 def resize(myfile, size='100x100x1'):
     logo = False 
     try:
-        path = settings.MEDIA_ROOT+myfile.path
+        path = myfile.path.replace(settings.MEDIA_ROOT,"") #TODO: trouver pkoi Image et Filebrowsefield renvoient des chemins différents
+        path = settings.MEDIA_ROOT+path
     except AttributeError:
         path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
         logo = True
