@@ -15,9 +15,6 @@ class PageBase(models.Model):
 class PageStatique(PageBase):
     date_creation = models.DateTimeField()
     
-
-
-    
 class Actualite(PageBase):
     logo = FileBrowseField("Logo de l'article (facultatif)", max_length=200, directory="editorial", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     date_publication = models.DateTimeField()

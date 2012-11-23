@@ -26,17 +26,21 @@
 			<div class="span12">
 				<h1>Le magazine du Val d'Yerres:</h1>
 				<table class="table  table-striped">
+							
 							{% for magazine in magazines %}
-							<tr>
-								<td><img class="img-polaroid" src="{{magazine.image|resize:'125x166x1'}}"></td>
-								<td><a href="#"><strong>{{magazine.titre}}</strong></a>
+						
+								<div class="span2"><img class="img-polaroid" src="{{magazine.image|resize:'125x166x1'}}"></div>
+								<div class="span3 last">{{magazine.date_parution|moisannee}}
+									<br/>Dossier : <strong>{{magazine.titre}}</a></strong>
 								<p>
-									<a href="magazine.document">Téléchargez</a> 
+									<a href="{{magazine.document}}">Téléchargez ({{magazine.document.filesize|filesizeformat}})</a> 
 								</p>
-								</td>
+								</div>
+								<hr/>
 
-							</tr>
+				
 							{% endfor %}
+							
 						</table>
 			</div>
 </div>

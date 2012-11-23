@@ -61,6 +61,15 @@ def grouperToString(monthYear):
     month,year = monthYear.split('-')
     text = mois[int(month)-1]+u" "+str(year)
     return text.capitalize()
+
+@register.filter(is_safe=True)
+def moisannee(date):
+    month = date.month
+    year = date.year
+    
+    text = mois[int(month)-1]+u" "+str(year)
+    return text.capitalize()
+
  
 @register.filter(is_safe=True)    
 def dateFormat(dateUTC):
