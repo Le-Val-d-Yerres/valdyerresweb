@@ -6,7 +6,7 @@ from filebrowser.fields import FileBrowseField
 
 class PageBase(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255)
     meta_description = models.CharField(max_length=200)
     contenu = models.TextField()
     publie = models.BooleanField(verbose_name="Publié")
@@ -27,17 +27,17 @@ class DocumentAttache(models.Model):
     
 class Magazine(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255)
     date_parution = models.DateField()
-    document = FileBrowseField("Document", max_length=200, directory="magazines", extensions=[".pdf"])
+    document = FileBrowseField("Document PDF", max_length=200, directory="magazines", extensions=[".pdf"])
     image = models.ImageField(upload_to="magazines",blank=True)
     publie = models.BooleanField(verbose_name="Publié")
 
      
 class RapportActivite(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255)
     date_parution = models.DateField()
-    document = FileBrowseField("Document", max_length=200, directory="rapports", extensions=[".pdf"])
+    document = FileBrowseField("Document PDF", max_length=200, directory="rapports", extensions=[".pdf"])
     image = models.ImageField(upload_to="rapports") 
     publie = models.BooleanField(verbose_name="Publié")

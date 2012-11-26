@@ -8,7 +8,7 @@ urlpatterns = patterns('editorial.views',
     url(r'^actualite/(?P<actualite_slug>[^\/]+).html$', 'ActuDetail', name="actu-detail"),
     url(r'^page/(?P<page_slug>[^\/]+).html$', 'PageDetail' , name="page-detail"),
     url(r'^magazines/$', 'Magazines' , name="magazines"),
-   
+    url(r'^magazines/(?P<page>\d+)$', 'Magazines' , name="magazines"),
     
 )
     

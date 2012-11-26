@@ -2,6 +2,7 @@
 
 import qrcode , base64, StringIO, pickle
 from django.conf import settings
+import os
 import ghostscript
 
 def GenerationQrCode(data):
@@ -29,7 +30,10 @@ def deserialize(base64pickleditem):
 
 
 def pdftojpg(pdfFilePath):
-    outpoutejpg = pdfFilePath.replace(".pdf",".jpg")     
+    outpoutejpg = pdfFilePath.replace(".pdf",".jpg")
+    head,tail = os.path.split(outpoutejpg)
+    head = head+"/img/"
+    outpoutejpg = os.path.join(head,tail)
     args = ["-dSAFER",
     "-dBATCH",
     "-dNOPAUSE",

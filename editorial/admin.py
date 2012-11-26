@@ -48,8 +48,8 @@ class AdminPageStatique(admin.ModelAdmin):
 
 class AdminMagazine(admin.ModelAdmin):
     list_display = ['titre','date_parution','document']
-    prepopulated_fields = {'slug':('titre',),}
-    
+    #prepopulated_fields = {'slug':('titre',),}
+    fields = ('titre','date_parution','document','publie')
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.titre)
         if obj.slug == "":
@@ -64,8 +64,8 @@ class AdminMagazine(admin.ModelAdmin):
     
 class AdminRapportActivite(admin.ModelAdmin):
     list_display = ['titre','date_parution','document']
-    prepopulated_fields = {'slug':('titre',),}
-    
+    #prepopulated_fields = {'slug':('titre',),}
+    fields = ('titre','date_parution','document','publie')
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.titre)
         if obj.slug == "":
