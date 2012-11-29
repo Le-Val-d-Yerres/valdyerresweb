@@ -5,7 +5,7 @@ sys.path.append(PATH_PROJECT)
 
 backlog = 2048
 bind = "127.0.0.1:8000"
-pidfile = "/var/run/gunicorn/hsdjango.pid"
+pidfile = "/var/run/gunicorn/valdyerresweb.pid"
 daemon = True
 debug = False
 workers = 3
