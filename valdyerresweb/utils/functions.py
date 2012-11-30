@@ -4,6 +4,8 @@ import qrcode , base64, StringIO, pickle
 from django.conf import settings
 import os
 import ghostscript
+from subprocess import call
+
 
 def GenerationQrCode(data):
     img_io = StringIO.StringIO()
@@ -30,22 +32,24 @@ def deserialize(base64pickleditem):
 
 
 def pdftojpg(pdfFilePath):
-    outpoutejpg = pdfFilePath.replace(".pdf",".jpg")
-    head,tail = os.path.split(outpoutejpg)
+    outpoutepng = pdfFilePath.replace(".pdf",".png")
+    head,tail = os.path.split(outpoutepng)
     head = head+"/img/"
-    outpoutejpg = os.path.join(head,tail)
-    args = ["-dSAFER",
-    "-dBATCH",
-    "-dNOPAUSE",
-    "-sDEVICE=jpeg",
-    "-r300",
-    "-dJPEGQ=90",
-    "-dFirstPage=1",
-    "-dLastPage=1",
-    "-sOutputFile="+outpoutejpg,
-    pdfFilePath ]
-    ghostscript.Ghostscript(*args)
-    return outpoutejpg
+    outpoutepng = os.path.join(head,tail)
+    call(["pdftoppm",pdfFilePath,"-png","-singlefile",outpoutepng.replace(".png","")])
+    
+#    args = ["-dSAFER",
+#    "-dBATCH",
+#    "-dNOPAUSE",
+#    "-sDEVICE=jpeg",
+#    "-r300",
+#    "-dJPEGQ=90",
+#    "-dFirstPage=1",
+#    "-dLastPage=1",
+#    "-sOutputFile="+outpoutejpg,
+#    pdfFilePath ]
+#    ghostscript.Ghostscript(*args)
+    return outpoutepng
 
     
 
