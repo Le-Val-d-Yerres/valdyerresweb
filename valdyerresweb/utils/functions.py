@@ -36,7 +36,9 @@ def pdftojpg(pdfFilePath):
     head,tail = os.path.split(outpoutepng)
     head = head+"/img/"
     outpoutepng = os.path.join(head,tail)
-    call(["pdftoppm",pdfFilePath,"-png","-singlefile",outpoutepng.replace(".png","")])
+    commande = "pdftoppm -png -l 1 "+pdfFilePath+" "+outpoutepng.replace(".png","")
+    os.system(commande)
+    #call(["pdftoppm","-png","-l 1", pdfFilePath ,outpoutepng.replace(".png","")])
     
 #    args = ["-dSAFER",
 #    "-dBATCH",
@@ -49,6 +51,8 @@ def pdftojpg(pdfFilePath):
 #    "-sOutputFile="+outpoutejpg,
 #    pdfFilePath ]
 #    ghostscript.Ghostscript(*args)
+    tmpoutpoute = outpoutepng.replace(".png","-01.png")
+    os.rename(tmpoutpoute, outpoutepng)
     return outpoutepng
 
     
