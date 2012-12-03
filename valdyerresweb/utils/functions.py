@@ -3,8 +3,8 @@
 import qrcode , base64, StringIO, pickle
 from django.conf import settings
 import os
-import ghostscript
-from subprocess import call
+
+
 
 
 def GenerationQrCode(data):
@@ -38,19 +38,6 @@ def pdftojpg(pdfFilePath):
     outpoutepng = os.path.join(head,tail)
     commande = "pdftoppm -png -l 1 "+pdfFilePath+" "+outpoutepng.replace(".png","")
     os.system(commande)
-    #call(["pdftoppm","-png","-l 1", pdfFilePath ,outpoutepng.replace(".png","")])
-    
-#    args = ["-dSAFER",
-#    "-dBATCH",
-#    "-dNOPAUSE",
-#    "-sDEVICE=jpeg",
-#    "-r300",
-#    "-dJPEGQ=90",
-#    "-dFirstPage=1",
-#    "-dLastPage=1",
-#    "-sOutputFile="+outpoutejpg,
-#    pdfFilePath ]
-#    ghostscript.Ghostscript(*args)
     tmpoutpoute = outpoutepng.replace(".png","-01.png")
     os.rename(tmpoutpoute, outpoutepng)
     return outpoutepng

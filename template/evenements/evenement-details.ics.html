@@ -1,7 +1,9 @@
-{% load tz %}{% load filtres %}BEGIN:VEVENT
+{% load tz %}{% load filtres %}BEGIN:VCALENDAR
+BEGIN:VEVENT
 SUMMARY:{{ evenement.nom|safe }}
 DTSTART:{{ evenement.debut|dateFormat }}
 {% if evenement.debut != evenement.fin %}DTEND:{{ evenement.fin|dateFormat }}
 {% endif %}LOCATION:{{ settings.NOM_DOMAINE }}{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}
 DESCRIPTION:{{ evenement.type|safe }}
 END:VEVENT
+END:VCALENDAR

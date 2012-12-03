@@ -60,13 +60,16 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
     dictargs['period']=period
     dictargs['orga_slug']=orga_slug
     
+    print period
     
     if period == "cette-semaine":
+        print 'hello\n'
         endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
-        if startDate.weekday() == 0:
+        if startDate.weekday() == 6:
             endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()-1), weeks=1 )
         endDate = datetime.datetime.combine(endDate.date(),midnight)
         endDate.replace(tzinfo=utcTZ)
+        print startDate + datetime.timedelta(days=(6-startDate.weekday()) )
     
     if period == "ce-week-end":
         startDate = startDate + datetime.timedelta(days=(4-startDate.weekday()) )
@@ -74,7 +77,7 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
         startDate = datetime.datetime.combine(startDate.date(),endafternoon)
         startDate = datetime.datetime.combine(startDate.date(),midnight)
         endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
-        if startDate.weekday() == 0:
+        if startDate.weekday() == 6:
             endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()-1), weeks=1 )
         endDate = datetime.datetime.combine(endDate.date(),midnight)
         endDate.replace(tzinfo=utcTZ)
@@ -93,8 +96,6 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
     evenements.prefetch_related('organisateur')
     if period !="toutes":
         evenements =  evenements.filter(debut__lt = endDate )
-        print str(startDate)+"\n"
-        print str(endDate)+"\n"
     
     if type_slug != "tous" :
         typeevenement = TypeEvenement.objects.get(slug=type_slug)
