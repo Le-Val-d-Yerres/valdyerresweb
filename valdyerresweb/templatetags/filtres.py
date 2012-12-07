@@ -7,7 +7,7 @@ from aide.models import  Aide
 import re , os.path , Image
 from pytz import timezone
 from django.conf import settings
-
+from PIL import Image, ImageOps
 register = template.Library()
 
 jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
@@ -106,7 +106,8 @@ def resizeandcrop(img, box, fit):
         img = img.crop((x1,y1,x2,y2))
 
     #Resize the image with best quality algorithm ANTI-ALIAS
-    img.thumbnail(box, Image.ANTIALIAS)
+    #img.thumbnail(box, Image.ANTIALIAS)
+    img = ImageOps.fit(img, box, Image.ANTIALIAS)
     return img
 
 
@@ -133,6 +134,7 @@ def resize(myfile, size='100x100x1'):
 
     if not os.path.exists(miniature_filename):
         image = resizeandcrop(Image.open(filename), (x,y), True)
+        image = ImageOps.fit(image, (x,y), Image.ANTIALIAS)
           
         try:
             image.save(miniature_filename, image.format, quality=90, optimize=1)

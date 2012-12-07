@@ -41,14 +41,21 @@
 					Organisé par : <ul> {% for each in evenement.organisateur.all %}<li><a href="{% url evenements.views.OrganisateurDetailsHtml organisateur_slug=each.slug%}"> {{ each.nom }}</a> </li>{% endfor %}</ul>
 				</p>
 				{% if evenement.image %}
-				<img class="img-polaroid-fix" alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
+					{% if evenement.image.width >= evenement.image.height %}
+					<img class="img-polaroid-fix" alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
+					{% endif %}
+					{% if evenement.image.height > evenement.image.width %}
+					<img class="img-polaroid-fix" style="float:left;margin-right:5px;"  alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'300x400x1' }}">
+					{% endif %}
 				{% endif %}
 				<meta itemprop="startDate" content="{{ evenement.debut|dateSEO }}">
 				<meta itemprop="endDate" content="{{ evenement.fin|dateSEO }}">
 
 				<p>
 					Date : {{ evenement.debut|dateCustom:evenement.fin }}<br/>
+					Durée : {{evenement.debut|duree:evenement.fin}} <br/>
 					Type : <a href="{% url agenda-type-period-orga type_slug=evenement.type.slug period="toutes"  orga_slug="tous" %}" >{{evenement.type}}</a>
+					
 				</p>
 				
 
@@ -164,7 +171,15 @@
 		var myMarker = Object();
 		myMarker['longitude'] ={{evenement.lieu.longitude|toFloatjs}}  ;
 		myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}};
-		myMarker['description'] = '{{evenement.lieu.nom }} - {{evenement.lieu.ville.nom }}';
+		
+		{% if evenement.lieu.image %}
+							myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{  evenement.lieu.nom }}" src="{{  evenement.lieu.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">{{  evenement.lieu.nom }}</a><br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}</p></div></div>'; 
+		{% else %}
+							myMarker['description'] = '{{  evenement.lieu.nom }}<br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}'; 
+		{% endif %}
+		
+		
+		
 		myMarker['marker'] = '{{evenement.lieu|lieuMarker }}';
 		tabEquipement.push(myMarker);
 		setMarkers(tabEquipement);
