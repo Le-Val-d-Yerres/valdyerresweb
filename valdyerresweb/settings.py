@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'accounts',
     'grappelli',
     'filebrowser',
+    'cinemas',
     'model_utils',
     'django.contrib.auth',
     'django.contrib.contenttypes',
