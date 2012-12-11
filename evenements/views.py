@@ -73,14 +73,15 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
     
     if period == "ce-week-end":
         startDate = startDate + datetime.timedelta(days=(4-startDate.weekday()) )
-        endafternoon = midnight = datetime.time(17, 30, 00)
+        endafternoon = datetime.time(17, 30, 00)
         startDate = datetime.datetime.combine(startDate.date(),endafternoon)
-        startDate = datetime.datetime.combine(startDate.date(),midnight)
+        
         endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
         if startDate.weekday() == 6:
             endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()-1), weeks=1 )
         endDate = datetime.datetime.combine(endDate.date(),midnight)
         endDate.replace(tzinfo=utcTZ)
+        
             
     if period == "ce-mois":
         endDate = datetime.datetime(startDate.year,startDate.month,calendar.monthrange(startDate.year, startDate.month)[1],0,0,0,tzinfo=myTimezone)
