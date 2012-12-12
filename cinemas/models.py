@@ -21,7 +21,7 @@ class Film(models.Model):
     id_allocine_film = models.CharField(max_length=255, verbose_name="Identifiant Allociné du Film")
     duree = models.IntegerField(verbose_name="Durée du film")
     url_allocine_image = models.URLField(verbose_name="URL affiche du film sur allociné")
-    image = models.ImageField(upload_to="cinema", verbose_name="Affiche du film")
+    image = models.ImageField(upload_to="cinema", verbose_name="Affiche du film", blank=True, null=True)
     
     def __unicode__(self):
         return self.titre

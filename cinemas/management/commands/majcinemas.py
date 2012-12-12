@@ -13,6 +13,7 @@ from django.template import defaultfilters
 import os
 
 myTimezone = timezone(settings.TIME_ZONE)
+utcTZ = timezone("UTC")
 #patch à la noix : http://stackoverflow.com/questions/6788398/how-to-save-progressive-jpeg-using-python-pil-1-1-7
 ImageFile.MAXBLOCK = 2**20
 
@@ -35,25 +36,32 @@ class Command(NoArgsCommand):
             
             hash_cine = hashlib.sha1()
             hash_cine.update(data)
-            
-            print cinema.hash_maj + " : "+hash_cine.hexdigest()
-            
+             
             if hash_cine.hexdigest() == cinema.hash_maj:
                 continue
-            else:
-                cinema.hash_maj = hash_cine.hexdigest()
-                cinema.save()
+            
+
+            seances_to_delete = Seance.objects.select_related().filter(cinema__id = cinema.id)
+            films_to_delete = Film.objects.filter(seance__cinema__id = cinema.id)
+            films_to_delete.query.group_by = ["id"]
             
             
-            Film.objects.all().delete()
-            Seance.objects.all().delete()
-                
+            
+            
+            for movie in films_to_delete:
+                try:
+                    filepath = settings.MEDIA_ROOT+movie.image.name
+                    os.remove(filepath)
+                except Exception,e:
+                    print e
+                movie.delete()
+            
+            seances_to_delete.delete()
             tree = etree.fromstring(data)
             tree = etree.ElementTree(tree)
             movies = tree.findall("//{http://www.allocine.net/v6/ns/}movieShowtimes")
            
             for movie in movies:
-                
                 mynsmap = {}
                 mynsmap['bob'] = movie.nsmap[None]
                 monfilm = Film()
@@ -67,10 +75,23 @@ class Command(NoArgsCommand):
                     title  = movie.xpath("./bob:onShow/bob:movie/bob:title",namespaces = mynsmap)
                     urlimage = movie.xpath("./bob:onShow/bob:movie/bob:poster",namespaces = mynsmap)
                     duration = movie.xpath("./bob:onShow/bob:movie/bob:runtime",namespaces = mynsmap)
-                    print duration[0].text
                     monfilm.titre = title[0].text
                     monfilm.url_allocine_image = urlimage[0].attrib['href']
                     monfilm.duree = int(duration[0].text)
+                    monfilm.save()
+                    time.sleep(1)
+                    response = requests.get(monfilm.url_allocine_image)
+                    webimage = Image.open(StringIO(response.content))
+                    film_id = str(monfilm.id)
+                    filename = defaultfilters.slugify(monfilm.titre)+"-"+film_id+".jpg"
+                    directory= settings.MEDIA_ROOT+'cinemas/'
+                    absfilename = os.path.join(directory,filename)
+                    try:
+                        webimage.save(absfilename, webimage.format, quality=90, optimize=1, progressive=True)
+                    except:
+                        webimage.save(absfilename, webimage.format, quality=90)
+                    relfilename = 'cinemas/'+filename 
+                    monfilm.image = relfilename
                     monfilm.save()
 
 
@@ -94,32 +115,17 @@ class Command(NoArgsCommand):
                         else:
                             maseance.version_vo = False
                         
+                        
                         maseance.date_debut = datetime.strptime(thedate+" "+thetime.text,"%Y-%m-%d %H:%M")
-                        maseance.date_debut.replace(tzinfo=myTimezone)
+                        maseance.date_debut = myTimezone.localize(maseance.date_debut)
                         delta = timedelta(seconds = monfilm.duree)
-                        maseance.date_fin = maseance.date_debut + delta
-                        maseance.date_fin.replace(tzinfo=myTimezone)
+                        maseance.date_fin =  maseance.date_debut + delta 
                         maseance.film = monfilm
                         maseance.cinema = cinema
                         maseance.save()
                     
-        # download des affiches
-        films = Film.objects.all()
-        for film in films:
-            time.sleep(1)
-            response = requests.get(film.url_allocine_image)
-            webimage = Image.open(StringIO(response.content))
-            film_id = str(film.id)
-            filename = defaultfilters.slugify(film.titre)+-+film_id+".jpg"
-            directory= settings.MEDIA_ROOT+'/cinemas/'
-            filename = os.path.join(directory,filename)
-            try:
-                webimage.save(filename, webimage.format, quality=90, optimize=1, progressive=True)
-            except:
-                webimage.save(filename, webimage.format, quality=90)
-            film.image = filename.replace(settings.MEDIA_ROOT,"")
-            film.save()
-            
+            cinema.hash_maj = hash_cine.hexdigest()
+            cinema.save()
             
                 
                 

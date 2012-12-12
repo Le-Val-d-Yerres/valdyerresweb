@@ -1,0 +1,50 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
+
+{% block meta-description %}Agenda des spectacles et évènements organisé par le Val d'Yerres et ses partenaires {% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+
+<div class="row-fluid">
+		<div class="span12">
+			<ul class="breadcrumb">
+					<li><a href="/">Accueil</a></li> <span class="divider">/</span></li>
+					<li class="active">Les Cinemas<li>
+			</ul>
+		</div>
+		<div class="span12">
+			<div class="page-header">
+				<h1>Les séances à venir : </h1>
+				
+			</div>
+			<div class="row-fluid">
+				<div class="span6">
+				{% regroup seances by film as eventlist %}
+				<ul>
+				{% for film in eventlist%}
+				<li>{{film.grouper.titre}}</li>
+					<ul>
+					{%for seance in film.list%}
+						<li>{{seance.date_debut}}</li>
+					{%endfor%}
+					</ul>
+				{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block jsload%}
+<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+{% endblock%}
