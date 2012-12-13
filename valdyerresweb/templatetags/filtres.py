@@ -8,6 +8,7 @@ import re , os.path , Image
 from pytz import timezone
 from django.conf import settings
 from PIL import Image, ImageOps
+import datetime
 register = template.Library()
 
 jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
@@ -17,15 +18,27 @@ mois_courts = [u'jan', u'fév', u'mars', u'avril', u'mai', u'juin', u'juil', u'a
     
 @register.filter(is_safe=True)
 def dateCustom(debutUTC, finUTC):
+    
     TZone = timezone(settings.TIME_ZONE)
     debut = debutUTC.astimezone(TZone)
     fin = finUTC.astimezone(TZone)
+    now = datetime.datetime.now(TZone)
     delta = fin-debut
     if delta.days >= 1:
         text = u"du "+jours[int(debut.strftime("%w"))]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+u" au "+jours[int(fin.strftime(u"%w"))]+u" "+fin.strftime(u"%d")+u" "+mois[int(fin.strftime(u"%m"))-1]
     else:
-        text = u"le "+jours[int(debut.strftime(u"%w"))]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+u" à "+debut.strftime(u"%H:%M")
+        deltanow = debut.date()-now.date()
+        if deltanow.days == 0:
+            text = u"aujourd'hui à "+debut.strftime(u"%H:%M")
+        elif  deltanow.days == 1:
+            text = u"demain à "+debut.strftime(u"%H:%M")
+        else :    
+            text = u"le "+jours[int(debut.strftime(u"%w"))]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+u" à "+debut.strftime(u"%H:%M")
     return text
+
+
+
+
 
 @register.filter(is_safe=True)
 def festivalInfo(evenement_id, champ):
@@ -83,32 +96,7 @@ def dateSEO(dateUTC):
     date = dateUTC.astimezone(TZone)
     return date.strftime("%Y")+"-"+date.strftime("%m")+"-"+date.strftime("%d")+"T"+date.strftime("%H")+":"+date.strftime("%M")
 
-# trouvé sur http://united-coders.com/christian-harms/image-resizing-tips-every-coder-should-know/
-# un peu modifié aussi
-def resizeandcrop(img, box, fit):
-    '''Downsample the image.
-    @param img: Image -  an Image-object
-    @param box: tuple(x, y) - the bounding box of the result image
-    @param fix: boolean - crop the image to fill the box
-    '''
-    #calculate the cropping box and get the cropped part
-    if fit:
-        x1 = y1 = 0
-        x2, y2 = img.size
-        wRatio = 1.0 * x2/box[0]
-        hRatio = 1.0 * y2/box[1]
-        if hRatio > wRatio:
-            y1 = int(y2/2-box[1]*wRatio/2)
-            y2 = int(y2/2+box[1]*wRatio/2)
-        else:
-            x1 = int(x2/2-box[0]*hRatio/2)
-            x2 = int(x2/2+box[0]*hRatio/2)
-        img = img.crop((x1,y1,x2,y2))
-
-    #Resize the image with best quality algorithm ANTI-ALIAS
-    #img.thumbnail(box, Image.ANTIALIAS)
-    img = ImageOps.fit(img, box, Image.ANTIALIAS)
-    return img
+#
 
 
 @register.filter(is_safe=True)   
@@ -133,8 +121,8 @@ def resize(myfile, size='100x100x1'):
         os.unlink(miniature_filename)
 
     if not os.path.exists(miniature_filename):
-        image = resizeandcrop(Image.open(filename), (x,y), True)
-        image = ImageOps.fit(image, (x,y), Image.ANTIALIAS)
+       
+        image = ImageOps.fit(Image.open(filename), (x,y), Image.ANTIALIAS)
           
         try:
             image.save(miniature_filename, image.format, quality=90, optimize=1)

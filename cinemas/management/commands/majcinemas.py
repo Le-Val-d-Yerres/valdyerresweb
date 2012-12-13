@@ -10,7 +10,7 @@ from valdyerresweb import settings
 from PIL import Image, ImageFile
 from StringIO import StringIO
 from django.template import defaultfilters
-import os
+import os, glob
 
 myTimezone = timezone(settings.TIME_ZONE)
 utcTZ = timezone("UTC")
@@ -51,7 +51,9 @@ class Command(NoArgsCommand):
             for movie in films_to_delete:
                 try:
                     filepath = settings.MEDIA_ROOT+movie.image.name
-                    os.remove(filepath)
+                    filepath = filepath.replace(".jpg","*")
+                    for filename in glob.glob(filepath):
+                        os.remove(filename)
                 except Exception,e:
                     print e
                 movie.delete()
@@ -78,12 +80,13 @@ class Command(NoArgsCommand):
                     monfilm.titre = title[0].text
                     monfilm.url_allocine_image = urlimage[0].attrib['href']
                     monfilm.duree = int(duration[0].text)
+                    monfilm.slug = defaultfilters.slugify(monfilm.titre)
                     monfilm.save()
                     time.sleep(1)
                     response = requests.get(monfilm.url_allocine_image)
                     webimage = Image.open(StringIO(response.content))
                     film_id = str(monfilm.id)
-                    filename = defaultfilters.slugify(monfilm.titre)+"-"+film_id+".jpg"
+                    filename = monfilm.slug+"-"+film_id+".jpg"
                     directory= settings.MEDIA_ROOT+'cinemas/'
                     absfilename = os.path.join(directory,filename)
                     try:

@@ -22,7 +22,7 @@ class Film(models.Model):
     duree = models.IntegerField(verbose_name="Durée du film")
     url_allocine_image = models.URLField(verbose_name="URL affiche du film sur allociné")
     image = models.ImageField(upload_to="cinema", verbose_name="Affiche du film", blank=True, null=True)
-    
+    slug = models.SlugField()
     def __unicode__(self):
         return self.titre
     

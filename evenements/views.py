@@ -60,8 +60,6 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
     dictargs['period']=period
     dictargs['orga_slug']=orga_slug
     
-    print period
-    
     if period == "cette-semaine":
         print 'hello\n'
         endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
