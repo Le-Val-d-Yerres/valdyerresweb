@@ -2,9 +2,14 @@
 
 from django import template
 from evenements.lib.eventAddLink import getLinkList, getEventsLinkList, getSaisonLinkList
+from pytz import timezone
+from django.conf import settings
+import datetime
 register = template.Library()
 
-
+jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
+mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre', u'octobre', u'novembre' ,u'décembre']
+mois_courts = [u'jan', u'fév', u'mars', u'avril', u'mai', u'juin', u'juil', u'août', u'sept', u'oct', u'nov' ,u'déc']
 
 @register.filter(is_safe=True)
 def dureesec(secondes):
@@ -21,7 +26,26 @@ def dureesec(secondes):
         if jours > 1:
             txttemps += "jours"
     if heures > 0 :
-        txttemps+=" "+str(heures)+"H"
+        txttemps+=str(heures)+"H"
     if minutes > 0 :    
-        txttemps+= " "+str(minutes)+"min"
+        txttemps+=str(minutes)+"min"
     return txttemps
+
+@register.filter(is_safe=True)
+def queljour(thedate):  
+    TZone = timezone(settings.TIME_ZONE)
+    now = datetime.datetime.now(TZone)
+    deltanow = thedate-now.date()
+    if deltanow.days == 0:
+        text = u"<strong>Aujourd'hui</strong>"
+    elif deltanow.days == 1:
+        text = u"demain"
+    else :    
+        text = jours[int(thedate.strftime(u"%w"))]+u" "+thedate.strftime(u"%d")+u" "+mois[int(thedate.strftime(u"%m"))-1]
+    return text
+
+@register.filter(is_safe=True)
+def quelleheure(thedate):   
+    TZone = timezone(settings.TIME_ZONE)
+    thedate = thedate.astimezone(TZone)
+    return thedate.strftime(u"%H:%M")

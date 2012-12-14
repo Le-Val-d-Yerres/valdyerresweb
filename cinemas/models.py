@@ -35,3 +35,4 @@ class Seance(models.Model):
     format = models.CharField(max_length=255, verbose_name="Format ( facultatif )", blank=True, null=True)
     version_lang = models.CharField(max_length=255, verbose_name="Langue")
     version_vo = models.BooleanField(verbose_name="Version originale")
+    

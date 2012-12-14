@@ -3,7 +3,6 @@
 {% load aidefilters %}
 {% load cinemafilters %}
 {% load menufilters %}
-{% load aidefilters%}
 {% load tz %}
 
 {% block meta-description %}Agenda des spectacles et évènements organisé par le Val d'Yerres et ses partenaires {% endblock %}
@@ -11,7 +10,9 @@
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
-<div class="container" style="margin-top:60px;">
+
+{% regroup seances by film as eventlist %}	
+<div class="container" >
 <div class="row-fluid">
 		<div class="span12">
 			<ul class="breadcrumb">
@@ -26,29 +27,52 @@
 					<small>
 						
 					{{seances|length}} séance{{ seances|pluralize }} à <strong>5€</strong> pour les habitants du Val d'Yerres.
+		
 					
-					
-					
+				
 					
 				 </small> </h1>
 			</div>
 			<div class="row-fluid">
+				<div class="span4">
+					<div class = "well">
+					<ul class="nav nav-list">
+					<li class="nav-header">Le{{eventlist|pluralize}} film{{eventlist|pluralize}}</li>
+					
+					{% for film in eventlist%}
+					<li><a href="#{{film.grouper.slug}}">{{film.grouper.titre}} :</a></li>
+					
+							Prochaine séance : «{{film.list.0.cinema.nom}}»,<br/>
+							{{film.list.0.date_debut.date|queljour|safe}} à {{film.list.0.date_debut|quelleheure}}<br/>
+							
+							
+					
+					{% endfor%}
+					</ul>
+					</div>
+				</div>
 				<div class="span8">
-				{% regroup seances by film as eventlist %}
+				
 				<table class="table  table-striped">
 				{% for film in eventlist%}
-				<tr>
-					<td><img class="img-polaroid" src="{{film.grouper.image|resize:'240x320x1'}}"></td>
-				<td><h3 id="{{film.grouper.slug}}">{{film.grouper.titre}}</h3>Durée : {{film.grouper.duree|dureesec}}.<br/>
+				<tr id="{{film.grouper.slug}}">
+					<td class="hidden-phone"><img class="img-polaroid" src="{{film.grouper.image|resize:'240x320x1'}}"></td>
+				<td><h3 >{{film.grouper.titre}}</h3>Durée : {{film.grouper.duree|dureesec}}.<br/>
 					<a href = "http://www.allocine.fr/film/fichefilm_gen_cfilm={{film.grouper.id_allocine_film}}.html">Fiche du film sur allocine.fr</a>.<br/>
 					{% regroup film.list by cinema as cinemalist %}
 					{% for cinema in cinemalist %}
 					<hr/>
 					<h4>Au cinéma «{{cinema.grouper.nom}}» à {{cinema.grouper.ville.nom}} :</h4>
 					<ul>
-						{%for seance in cinema.list%}
-						<li>{{seance.date_debut|dateCustom:seance.date_fin|safe|capfirst}} {%if seance.format %} ({{seance.format}}) {%endif%}{%if seance.version_vo %} {%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%} {%endif%}</li>
-						{%endfor%}
+						{%regroup cinema.list by date_debut.date as seances%}
+							{%for jour in seances%}
+							<li>
+								{{jour.grouper|queljour|safe}} à
+								{% for seance in jour.list%}
+							 		{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}{% if not forloop.last%},{%else %}.{%endif%}						 		
+								{%endfor%}
+							</li>
+							{%endfor%}
 					
 					</ul>
 					{% endfor %}

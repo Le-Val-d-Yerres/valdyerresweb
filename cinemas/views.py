@@ -12,7 +12,5 @@ myTimezone = timezone(settings.TIME_ZONE)
 
 def Seances(request):
     now = datetime.now(myTimezone)
-    print now
     seances = Seance.objects.select_related().filter(date_debut__gt = now).order_by('film__titre','cinema__nom','date_debut')
-    seancespardates = Seance.objects.select_related().filter(date_debut__gt = now).order_by('date_debut')
-    return render_to_response('cinemas/seances.html', {'seances' : seances,'seancespardates':seancespardates})
+    return render_to_response('cinemas/seances.html', {'seances' : seances})
