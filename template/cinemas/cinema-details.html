@@ -1,7 +1,7 @@
 {% extends "include/main.html" %}
 {% load filtres %}
 {% load aidefilters %}
-{% load eventfilters %}
+{% load cinemasfilters %}
 {% load menufilters %}
 {% load aidefilters%}
 {% load hoursfilters%}
@@ -15,7 +15,7 @@
 
 {% block contenu %}	
 <div class="container" style="margin-top:60px;">
-	{% if cinema %}
+
 
 	<div class="row-fluid">
 		<div class="span12">
@@ -24,7 +24,7 @@
 					<a href="/">Accueil</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url equipements.views.CarteEquipements %}">Les cinémas du Val d'Yerres</a><span class="divider">/</span>
+					<a href="{% url cinemas.views.Seances %}">Les cinémas du Val d'Yerres</a><span class="divider">/</span>
 				</li>
 				<li class="active">
 					{{ cinema.nom}} , {{cinema.ville.nom }}
@@ -33,12 +33,16 @@
 		</div>
 		<div class="span7" itemscope itemtype="http://schema.org/Place">
 
-			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom }}</a></h1>
+			<h1 itemprop="name"><a href="{% url cinemas.views.CinemaLieu cinema_slug=cinema.slug %}">{{ cinema.nom }}</a></h1>
 			{% if cinema.image %}
-			<img class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
+			<img class="img-polaroid-fix"  alt="{{ cinema.nom }}" src="{{ cinema.image|resize:'670x375x1' }}">
 			{% endif %}
 			
+			{% if seances|length > 0 %}
+			<hr/>
+			<h2>Les séances à venir :</h2>
 			{% regroup seances by film as eventlist %}
+			
 				<table class="table  table-striped">
 				{% for film in eventlist%}
 				<tr>
@@ -48,7 +52,6 @@
 					{% regroup film.list by cinema as cinemalist %}
 					{% for cinema in cinemalist %}
 					<hr/>
-					Au cinéma «{{cinema.grouper.nom}}» à {{cinema.grouper.ville.nom}}:
 					<ul>
 						{%for seance in cinema.list%}
 						<li>{{seance.date_debut|dateCustom:seance.date_fin|safe}} {%if seance.format %} ({{seance.format}}) {%endif%}{%if seance.version_vo %} {%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%} {%endif%}</li>
@@ -57,7 +60,22 @@
 					</ul>
 					
 				</td>
+				</tr>
+				{% endfor %}
+				</table>
 			
+			
+			{% else %}
+			<hr/>
+			<div class="alert  alert-error">
+				<p>Désolé.<br/>
+				Les séances ne nous ont pas encore été communiquées.</p>
+			</div>
+			
+			{% endif%}
+				
+				
+				
 		</div>
 		<div class="span4">
 
@@ -73,7 +91,12 @@
 					<br/>
 					<span><abbr title="Téléphone">Tel</abbr>: {{ cinema.telephone }}</span>
 					<br/>
-
+					{% if cinema.url %}
+					<p>
+						Site : <a href="{{cinema.url}}">{{cinema.url}}</a>
+					</p>
+					{% endif %}
+					
 					{% if cinema.fax %}
 					<p>
 						Fax : {{ equipement.fax }}
@@ -89,7 +112,7 @@
 			</address>
 			<hr/>
 			<p style="text-align: center;">
-				<a href="{% url equipements.views.EquipementVCF slug=cinema.slug %}">Ajouter cet équipement à vos contacts</a>
+				<a href="{% url cinemas.views.CinemaVCF cinema_slug=cinema.slug %}">Ajouter cet équipement à vos contacts</a>
 				<br/>
 				(Format Vcard)
 				{{"vcard"|aide}}
@@ -115,7 +138,7 @@
 
 		<div class="span7">
 			<hr/>
-			<h2>Géolocalisation: <br/><small>{{equipement.rue}}, {{equipement.ville.code_postal}} {{equipement.ville.nom}}</small></h2>
+			<h2>Géolocalisation: <br/><small>{{cinema.rue}}, {{cinema.ville.code_postal}} {{cinema.ville.nom}}</small></h2>
 
 			<div id="map_canvas" style="text-align:center;margin-left:auto;margin-right:auto;"></div>
 
@@ -123,9 +146,9 @@
 		<div class="span4" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
 			<hr/>
 			<p>
-				Latitude : {{ equipement.latitude }}
+				Latitude : {{ cinema.latitude }}
 				<br/>
-				Longitude : {{ equipement.longitude }}
+				Longitude : {{ cinema.longitude }}
 			</p>
 			<meta itemprop="latitude" content="{{ equipement.latitude }}" />
 			<meta itemprop="longitude" content="{{ equipement.longitude }}" />
@@ -133,18 +156,12 @@
 			<p class="hidden-phone" style="text-align: center;">
 				Les coordonnées géographiques au format QR Code :
 				<br/>
-				<img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
+				<img alt="QrCode : {{ cinema.nom }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
 			</p>
 		</div>
 
 	</div>
 </div>
-
-{% else %}
-<p>
-	Erreur interne.
-</p>
-{% endif %}
 </div>
 {% endblock %}
 
@@ -156,10 +173,10 @@
 			{
 					var tabEquipement = Array();
 					var myMarker = Object(); 
-				    myMarker['longitude'] ={{equipement.longitude|toFloatjs}}; 
-					myMarker['latitude'] ={{equipement.latitude|toFloatjs}}; 
-					myMarker['description'] = '{{equipement.nom}}';
-					myMarker['marker'] ='{{equipement.fonction.picto }}';
+				    myMarker['longitude'] ={{cinema.longitude|toFloatjs}}; 
+					myMarker['latitude'] ={{cinema.latitude|toFloatjs}}; 
+					myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ cinema.nom }}" src="{{  cinema.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url cinemas.views.CinemaLieu cinema_slug=cinema.slug %}">{{ cinema.nom }}</a><br  \>{{  cinema.rue }}<br  \>{{  cinema.ville.code_postal }}<br  \>{{  cinema.ville.nom }}</p></div></div>';
+					myMarker['marker'] = '{{cinema|lieuMarker }}';
 					tabEquipement.push(myMarker);
 					setMarkers(tabEquipement);
 					map_init();

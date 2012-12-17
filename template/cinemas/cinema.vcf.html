@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+SOURCE:{{settings.NOM_DOMAINE}}{% url cinemas.views.CinemaVCF cinema_slug=cinema.slug %}
+NAME:{{ cinema.nom }}
+N:;;;;
+FN;LANGUAGE=fr;CHARSET=utf-8:{{ cinema.nom|safe }}
+ORG;CHARSET=utf-8:{{settings.NOM_ORGANISATION|safe  }} : les cinémas
+URL:{{cinema.url}}
+{% if cinema.email %}EMAIL:{{ cinema.email }}{% endif %}
+ADR;LANGUAGE=fr;CHARSET=utf-8:;;{{ cinema.rue|safe }};{{ cinema.ville.code_postal|safe  }};;{{ cinema.ville.nom|safe  }}; 
+TEL:{{ cinema.telephone }}
+GEO:{{ cinema.latitude }};{{ cinema.longitude }}
+END:VCARD
