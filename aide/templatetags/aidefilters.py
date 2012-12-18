@@ -5,13 +5,14 @@ from aide.models import Aide
 from aide.views import renderModal
 
 register = template.Library()
-
+cache={}
 @register.filter(is_safe=True)
 def aide(aideslug):
     try:
-        aide = Aide.objects.get(slug = aideslug)
+        aide = cache[aideslug]
     except:
-        return ""
+        aide = Aide.objects.get(slug = aideslug)
+        cache[aideslug] = aide
     return renderModal(aide)
     
     

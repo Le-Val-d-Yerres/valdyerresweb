@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import template
-from evenements.lib.eventAddLink import getLinkList, getEventsLinkList, getSaisonLinkList
+from cinemas.lib.eventAddlink import getLinkList
 from pytz import timezone
 from django.conf import settings
 import datetime
@@ -49,3 +49,11 @@ def quelleheure(thedate):
     TZone = timezone(settings.TIME_ZONE)
     thedate = thedate.astimezone(TZone)
     return thedate.strftime(u"%H:%M")
+
+@register.filter(is_safe=True)
+def seanceaddlinklist(seance):
+    text = u"<ul style=\"list-style:none;\" >\n"
+    for line in getLinkList(seance):
+        text += u"<li>"+line+"</li>\n"
+    text += u"</ul>\n"
+    return text
