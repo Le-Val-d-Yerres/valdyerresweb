@@ -1,0 +1,173 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load cinemasfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load hoursfilters%}
+{% load tz %}
+	
+	{% block menu %}{% getmenu %}{% endblock %}
+	
+	{% block meta-description %}Liste des {{ fonction.nom }} du Val d'Yerres{% endblock %}
+	
+
+
+{% block contenu %}	
+<div class="container" style="margin-top:60px;">
+	
+<div class="row-fluid">
+		<div class="span12">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">Accueil</a><span class="divider">/</span>
+				</li>
+				<li class="active">
+					{{datepage|queljour|safe}} dans le Val d'Yerres
+				</li>
+			</ul>
+		</div>
+		
+		<div class="span12 hidden-phone">
+		<h1>{{datepage|queljour|safe}} dans le Val d'Yerres</h1>
+		
+		
+	    
+	    	<table class="table table-striped" align="center">
+	    		<thead>
+    				<tr>
+      					<th></th>
+      					<th>Nom</th>
+      					<th>Ville</th>
+      					{% if listhoraires|length != 0 %}
+      					<th>Aujourd'hui, {%nom_jour_aujourdhui%}.</th>
+      					{% endif %}
+      					<th></th>
+    				</tr>
+  				</thead>
+			
+			
+			{% if seances|length > 0 %}
+			<hr/>
+			<h2>Les séances à venir :</h2>
+			
+			{% regroup seances by cinema as screening %}
+			{{screening}}
+			{% regroup screening.list by film as eventlist %}
+			{{eventlist}}
+				<table class="table  table-striped">
+				{% for film in eventlist%}
+				<tr>
+					<td><img class="img-polaroid" src="{{film.grouper.image|resize:'240x320x1'}}"></td>
+				<td><h3>{{film.grouper.titre}}</h3>Durée : {{film.grouper.duree|dureesec}}.<br/>
+					<a href = "http://www.allocine.fr/film/fichefilm_gen_cfilm={{film.grouper.id_allocine_film}}.html">Fiche du film sur allocine.fr</a>.<br/>
+					{% regroup film.list by cinema as cinemalist %}
+					{% for cinema in cinemalist %}
+					<hr/>
+					<ul>
+						{%regroup cinema.list by date_debut.date as seances%}
+							{%for jour in seances%}
+							<li>
+								{{jour.grouper|queljour|safe}} à
+								{% for seance in jour.list%}
+							 		<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}					 		
+								{%endfor%}
+							</li>
+							{%endfor%}
+					
+					</ul>
+					{% endfor %}
+					</ul>
+					
+				</td>
+				</tr>
+				{% endfor %}
+				</table>
+			
+			
+			{% else %}
+			<hr/>
+			<div class="alert  alert-error">
+				<p>Désolé.<br/>
+				Les séances ne nous ont pas encore été communiquées.</p>
+			</div>
+			
+			{% endif%}
+			
+			
+			{% for equipement in equipements %}
+			<tr>
+				 
+				<td><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
+				<td><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td> <td> {{equipement.ville.nom}} </td>
+				{% if listhoraires|length != 0 %}
+				<td>
+				{% for horaires in listhoraires %}
+					{% for horaire in horaires %}
+					
+						{% if horaire.equipement.id == equipement.id %}
+							<ul>
+							<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</br></li>
+							</ul>
+						{% endif %}
+					
+					{%endfor%}
+				{% endfor %}
+				</td>
+				{% endif %}
+				<td><a class="btn  btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
+			</tr>
+			{% endfor %}
+			</table>
+		
+		</div>
+		<div class="span12 visible-phone">
+			<h1>{{datepage|queljour|safe}} dans le Val d'Yerres</h1>
+			{% for equipement in equipements %}
+			<p>
+			<ul>
+				 
+				
+				<li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a> à {{equipement.ville.nom}}</li> 
+				{% if listhoraires|length != 0 %}
+				Horaires: aujourd'hui, {%nom_jour_aujourdhui%} :
+				<ul>
+					
+				{% for horaires in listhoraires %}
+					{% for horaire in horaires %}
+					
+						{% if horaire.equipement.id == equipement.id %}
+							
+							<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</li>
+							
+						{% endif %}
+					
+					{%endfor%}
+				{% endfor %}
+				</ul>
+				{% endif %}
+				
+				<div style="text-align: right;"><a class="btn btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></div>
+				
+			</ul>
+			</p>
+			<hr/>
+			{% endfor %}
+		</div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<div id="map_canvas" style="width:980px; height:800px"></div>
+	</div>
+</div>
+</div>
+	
+{% endblock %}
+
+
+
+
+{% block jsload%}
+	<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.js"> </script>
+{% endblock %}
