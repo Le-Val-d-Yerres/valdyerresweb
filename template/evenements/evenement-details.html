@@ -66,13 +66,21 @@
 						{{ evenement.description|safe }}
 					</div>
 				
-				{% if evenement.url != "" %}
+				
+				{% if evenement.url_reservation != "" %}
+				<div class="reservation" style="text-align:right;">
+				<p>
+					<a class="btn btn-info " href="{{ evenement.url_reservation }}" rel="tooltip" data-original-title="Réservation en suivant ce lien : {{ evenement.url_reservation}}" data-placement="top">Réservation</a>
+				</p>
+				</div>
+				{% elif evenement.url != "" %}
 				<div class="plusinfos" style="text-align:right;">
 				<p>
 					<a class="btn btn-info " href="{{ evenement.url }}" rel="tooltip" data-original-title="Plus d'infos en suivant ce lien : {{ evenement.url}}" data-placement="top">+ d'infos</a>
 				</p>
 				</div>
 				{% endif %}
+				
 				
 				
 			</div>

@@ -8,7 +8,7 @@ class EvenementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
     fieldsets = [
         ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
-        ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url']}),
+        ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url', 'url_reservation']}),
         ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
         ('Options de publication', {'fields': ['publish', 'haut_page']}),
     ]
