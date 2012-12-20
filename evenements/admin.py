@@ -37,15 +37,8 @@ class EvenementAdmin(admin.ModelAdmin):
 class TypeEvenementAdmin(admin.ModelAdmin):
     list_display = ['nom']
     search_fields = ['nom']
-    def save_model(self, request, obj, form, change):
-        monslug = defaultfilters.slugify(obj.nom)
-        if obj.slug == "":
-            listevenement = Evenement.objects.filter(slug=monslug)
-            listsize = len(listevenement)
-            if listsize > 0:
-                monslug = monslug+'-'+str(listsize+1)
-            obj.slug = monslug
-        obj.save()
+    prepopulated_fields = {'slug':('slug',),}
+    
         
 class OrganisateurAdmin(admin.ModelAdmin):
     list_display = ['nom', 'email', 'ville']

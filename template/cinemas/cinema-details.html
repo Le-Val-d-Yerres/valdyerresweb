@@ -53,9 +53,17 @@
 					{% for cinema in cinemalist %}
 					<hr/>
 					<ul>
-						{%for seance in cinema.list%}
-						<li><a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|dateCustom:seance.date_fin|safe}}</a> {%if seance.format %} ({{seance.format}}) {%endif%}{%if seance.version_vo %} {%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%} {%endif%}</li>
-						{%endfor%}
+						{%regroup cinema.list by date_debut.date as seances%}
+							{%for jour in seances%}
+							<li>
+								{{jour.grouper|queljour|safe}} à
+								{% for seance in jour.list%}
+							 		<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}					 		
+								{%endfor%}
+							</li>
+							{%endfor%}
+					
+					</ul>
 					{% endfor %}
 					</ul>
 					
@@ -152,11 +160,17 @@
 			</p>
 			<meta itemprop="latitude" content="{{ equipement.latitude }}" />
 			<meta itemprop="longitude" content="{{ equipement.longitude }}" />
-			<hr class="hidden-phone" />
+			<hr/>
 			<p class="hidden-phone" style="text-align: center;">
 				Les coordonnées géographiques au format QR Code :
 				<br/>
 				<img alt="QrCode : {{ cinema.nom }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
+			</p>
+			<p>	
+				<ul>
+				<li><a href="http://www.openstreetmap.org/index.html?mlat={{cinema.latitude|toFloatjs}}&mlon={{cinema.longitude|toFloatjs}}&zoom=18"> Voir l'emplacement sur OpenstreetMap</a></li>
+				<li><a href="http://maps.google.com/?q={{cinema.latitude|toFloatjs}},{{cinema.longitude|toFloatjs}}&z=19"> Voir l'emplacement sur Google Maps</a></li>
+				</ul>
 			</p>
 		</div>
 
@@ -186,7 +200,24 @@
     			var h =$('#map_canvas').parent().width();
     			$('#map_canvas').css('height', (h*2/3));
     			$('#map_canvas').css('width', (h*2/3));
-				}).resize();		
+				}).resize();
+		$(document).ready(function() {
+	
+		// Support for AJAX loaded modal window.
+		// Focuses on first input textbox after it loads the window.
+		$('[data-toggle="modal"]').click(function(e) {
+			e.preventDefault();
+			var url = $(this).attr('href');
+			if (url.indexOf('#') == 0) {
+				$(url).modal('open');
+			} else {
+			$.get(url, function(data) {
+				$('<div class="modal hide">' + data + '</div>').modal();
+			}).success(function() { $('input:text:visible:first').focus(); });
+			}
+			});
+	
+		});		
 		</script>
 		
 		<script src="/static/js/openstreetmap/OpenLayers.js"></script>

@@ -163,11 +163,17 @@
 			</p>
 			<meta itemprop="latitude" content="{{ equipement.latitude }}" />
 			<meta itemprop="longitude" content="{{ equipement.longitude }}" />
-			<hr class="hidden-phone" />
+			<hr/>
 			<p class="hidden-phone" style="text-align: center;">
 				Les coordonnées géographiques au format QR Code :
 				<br/>
 				<img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
+			</p>
+			<p>	
+				<ul>
+				<li><a href="http://www.openstreetmap.org/index.html?mlat={{equipement.latitude|toFloatjs}}&mlon={{equipement.longitude|toFloatjs}}&zoom=18"> Voir l'emplacement sur OpenstreetMap</a></li>
+				<li><a href="http://maps.google.com/?q={{equipement.latitude|toFloatjs}},{{equipement.longitude|toFloatjs}}&z=19"> Voir l'emplacement sur Google Maps</a></li>
+				</ul>
 			</p>
 		</div>
 

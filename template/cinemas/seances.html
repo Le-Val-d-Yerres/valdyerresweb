@@ -61,7 +61,7 @@
 							<li>
 								{{jour.grouper|queljour|safe}} à
 								{% for seance in jour.list%}
-							 		<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}						 		
+							 		<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}					 		
 								{%endfor%}
 							</li>
 							{%endfor%}

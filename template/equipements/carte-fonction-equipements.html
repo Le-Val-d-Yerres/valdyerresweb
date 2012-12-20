@@ -43,7 +43,7 @@
       					<th>Nom</th>
       					<th>Ville</th>
       					{% if listhoraires|length != 0 %}
-      					<th>Horaires: aujourd'hui, {%nom_jour_aujourdhui%}.</th>
+      					<th>Aujourd'hui, {%nom_jour_aujourdhui%}.</th>
       					{% endif %}
       					<th></th>
     				</tr>
@@ -68,7 +68,7 @@
 				{% endfor %}
 				</td>
 				{% endif %}
-				<td><a class="btn" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
+				<td><a class="btn  btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
 			</tr>
 			{% endfor %}
 			</table>
@@ -77,6 +77,7 @@
 		<div class="span12 visible-phone">
 			<h1><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=fonction.slug %}">{{ fonction.pluriel }}</a></h1>
 			{% for equipement in equipements %}
+			<p>
 			<ul>
 				 
 				
@@ -98,8 +99,12 @@
 				{% endfor %}
 				</ul>
 				{% endif %}
-				<td><a class="btn" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
+				
+				<div style="text-align: right;"><a class="btn btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></div>
+				
 			</ul>
+			</p>
+			<hr/>
 			{% endfor %}
 		</div>
 </div>
@@ -142,9 +147,9 @@
 			
 			$(window).resize(function () {
     			var h =$('#map_canvas').parent().width();
-    			$('#map_canvas').css('height', (h*(2/3)));
+    			$('#map_canvas').css('height', (h*2/3));
     			$('#map_canvas').css('width', (h));
-				}).resize();		
+				}).resize();				
 		</script>
 		
 		<script src="/static/js/openstreetmap/OpenLayers.js"></script>

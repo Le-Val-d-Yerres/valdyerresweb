@@ -44,7 +44,6 @@ class GoogleEventLink(EventLink):
         linkurl += u"&sprop=name:"+settings.NOM_ORGANISATION
         linkurl += u"&location="+seance.cinema.nom+u","+seance.cinema.rue+u","+seance.cinema.ville.nom
         linkurl += u"&details=Projection du film : "+seance.film.titre
-        print linkurl
         imgurl =  "/static/img/evenements/40x40/gmail-icon-40x40.png"
         
         return self.setLink(imgurl,linkurl)

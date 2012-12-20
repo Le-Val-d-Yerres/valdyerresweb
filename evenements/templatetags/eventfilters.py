@@ -34,17 +34,16 @@ def saisonexportlinklist(saisonslug):
 def duree(debut,fin):
     delta = fin - debut
     txttemps = ""
-    jours = delta.seconds/(3600*24)
-    secondes = delta.seconds - (jours * 3600 * 24)
+    secondes = delta.seconds - (delta.days * 3600 * 24)
     heures = secondes/3600
     secondes = secondes - (heures*3600)
     minutes = secondes/60
-    if jours > 0:
+    if delta.days > 0:
         txttemps = str(delta.days)
-        if jours == 1:
-            txttemps += "jour"
-        if jours > 1:
-            txttemps += "jours"
+        if delta.days == 1:
+            txttemps += " jour"
+        if delta.days > 1:
+            txttemps += " jours"
     if heures > 0 :
         txttemps+=" "+str(heures)+"H"
     if minutes > 0 :    

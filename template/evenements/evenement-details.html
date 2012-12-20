@@ -69,7 +69,7 @@
 				{% if evenement.url != "" %}
 				<div class="plusinfos" style="text-align:right;">
 				<p>
-					<a class="btn btn-info " href="{{ evenement.url }}" rel="tooltip" data-original-title="Plus d'infos en suivant ce lien :<br/> {{ evenement.url}}" data-placement="top">+ d'infos</a>
+					<a class="btn btn-info " href="{{ evenement.url }}" rel="tooltip" data-original-title="Plus d'infos en suivant ce lien : {{ evenement.url}}" data-placement="top">+ d'infos</a>
 				</p>
 				</div>
 				{% endif %}
@@ -129,7 +129,7 @@
 				Latitude : {{ evenement.lieu.latitude }} <br/> 
 				Longitude : {{ evenement.lieu.longitude }}
 			</p>
-			<hr class="hidden-phone" />
+			<hr/>
 		    	<p class="hidden-phone" style="text-align: center;">
 			    Les coordonnées GPS : <br/>(Format QR Code)<br/>
 			    <img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ localisation_qr }}"/>
@@ -137,6 +137,12 @@
 			    {{"qr-code"|aide}}
 			    
 			    </p>
+			    <p>	
+				<ul>
+				<li><a href="http://www.openstreetmap.org/index.html?mlat={{evenement.lieu.latitude|toFloatjs}}&mlon={{evenement.lieu.longitude|toFloatjs}}&zoom=18"> Voir l'emplacement sur OpenstreetMap</a></li>
+				<li><a href="http://maps.google.com/?q={{evenement.lieu.latitude|toFloatjs}},{{evenement.lieu.longitude|toFloatjs}}&z=19"> Voir l'emplacement sur Google Maps</a></li>
+				</ul>
+			</p>
 			<br/>
 		</div>
 		
