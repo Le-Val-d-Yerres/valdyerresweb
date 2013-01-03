@@ -25,6 +25,7 @@
 			<div class="page-header">
 				<h1>Les séances à venir dans les cinémas du Val d'Yerres : <br/></h1>
 			</div>
+			{% if seances|length > 0 %}
 			<div class="row-fluid">
 				<div class="span4">
 					<div class = "well">
@@ -76,6 +77,15 @@
 				</table>
 			</div>
 		</div>
+		{% else %}
+		<div class="row-fluid">
+				<div class="span12">
+			<div class="alert  alert-error">
+				<p>Désolé.<br/>
+				Les séances ne nous ont pas encore été communiquées.</p>
+			</div>
+		</div>	
+			{% endif%}
 	</div>
 </div>
 </div>
