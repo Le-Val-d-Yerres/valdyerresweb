@@ -28,7 +28,7 @@
 			</ul>
 		</div>
 		
-		<div class="span12 hidden-phone">
+		<div class="span12">
 		<h1>{{datepage|queljour|safe}} dans le Val d'Yerres</h1>
 		
 		
@@ -40,9 +40,8 @@
     				<tr>
       					<th>Lieu</th>
       					<th>Ville</th>
-      					{% if listhoraires|length != 0 %}
-      					<th>Aujourd'hui, {%nom_jour_aujourdhui%}.</th>
-      					{% endif %}
+      					<th>{{datepage|queljour|safe}}.</th>
+      					
       					<th></th>
     				</tr>
   				</thead>
@@ -83,6 +82,32 @@
 			
 			{% endif%}
 			
+			{% if evenements|length > 0 %}
+			<h2>Les événements :</h2>
+			<table class="table table-striped" align="center">
+				<thead>
+    				<tr>
+      					<th>Lieu</th>
+      					<th>Ville</th>
+      					
+      					<th>{{datepage|queljour|safe}}.</th>
+      			
+      					<th></th>
+    				</tr>
+  				</thead>
+			{% for evenement in evenements %}
+				
+				<tr>
+					<td> {{evenement.lieu.nom}} </td>
+					<td>{{evenement.lieu.ville.nom}}</td>
+					<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }} </td>
+					<td><td><a class="btn  btn-primary" href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a></td></td>
+				</tr>
+				
+			{% endfor %}
+			</table>
+			{% endif %}
+			
 			
 			{% for equipement in equipements %}
 			<tr>
@@ -110,45 +135,11 @@
 			</table>
 		
 		</div>
-		<div class="span12 visible-phone">
-			<h1>{{datepage|queljour|safe}} dans le Val d'Yerres</h1>
-			{% for equipement in equipements %}
-			<p>
-			<ul>
-				 
-				
-				<li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a> à {{equipement.ville.nom}}</li> 
-				{% if listhoraires|length != 0 %}
-				Horaires: aujourd'hui, {%nom_jour_aujourdhui%} :
-				<ul>
-					
-				{% for horaires in listhoraires %}
-					{% for horaire in horaires %}
-					
-						{% if horaire.equipement.id == equipement.id %}
-							
-							<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</li>
-							
-						{% endif %}
-					
-					{%endfor%}
-				{% endfor %}
-				</ul>
-				{% endif %}
-				
-				<div style="text-align: right;"><a class="btn btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></div>
-				
-			</ul>
-			</p>
-			<hr/>
-			{% endfor %}
-		</div>
+		
 </div>
-<div class="row-fluid">
-	<div class="span12">
-		<div id="map_canvas" style="width:980px; height:800px"></div>
-	</div>
-</div>
+
+
+
 </div>
 	
 {% endblock %}
@@ -161,8 +152,7 @@
 	<script src="/static/bootstrap/js/bootstrap.js"> </script>
 	<script>
 	
-	$(document).ready(function() {
-	
+$(document).ready(function() {
 // Support for AJAX loaded modal window.
 // Focuses on first input textbox after it loads the window.
 $('[data-toggle="modal"]').click(function(e) {

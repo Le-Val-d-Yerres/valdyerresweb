@@ -39,8 +39,8 @@ def queljour(thedate):
     if deltanow.days == 0:
         text = u"<strong>Aujourd'hui</strong>"
     elif deltanow.days == 1:
-        text = u"demain"
-    else :    
+        text = u"Demain"
+    else :
         text = jours[int(thedate.strftime(u"%w"))]+u" "+thedate.strftime(u"%d")+u" "+mois[int(thedate.strftime(u"%m"))-1]
     return text
 
