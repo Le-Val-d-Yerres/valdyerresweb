@@ -9,6 +9,6 @@ urlpatterns = patterns('editorial.views',
     url(r'^page/(?P<page_slug>[^\/]+).html$', 'PageDetail' , name="page-detail"),
     url(r'^magazines/$', 'Magazines' , name="magazines"),
     url(r'^magazines/(?P<page>[^\/]+)$', 'Magazines' , name="magazines"),
-    url(r'^ephemeride/(?P<jour>[^\/]+).html$', 'Ephemeride' , name="magazines"),
+    url(r'^ephemeride/(?P<jour>[^\/]+).html$', 'Ephemeride' , name="ephemeride"),
     
 )

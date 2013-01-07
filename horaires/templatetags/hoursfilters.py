@@ -8,19 +8,20 @@ WeekDay = ['lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi','dimanche']
 
 #une journée en général
 @register.filter(is_safe=True) 
-def horaires_journee(numjour,horaires):
+def horaires_journee(numjour,horaire):
     txthours = ""
-    myday = horaires.GetDay(numjour)
+    numjour= int(numjour)
+    myday = horaire.GetDay(numjour)
     if myday.matin_ferme and myday.am_ferme:
         return "fermé toute la journée"
     
     if myday.journee_continue:
         return "journée continue de "+myday.heure_matin_debut.strftime("%H:%M")+" à "+myday.heure_am_fin.strftime("%H:%M")+"."
-    
     if myday.matin_ferme:
         txthours += "fermé la matinée, "
     else:
         txthours += "matin de "+myday.heure_matin_debut.strftime("%H:%M")+" à "+myday.heure_matin_fin.strftime("%H:%M")+", "
+        
     if myday.am_ferme:
         txthours += "fermé l'après-midi"
     else:
@@ -28,31 +29,31 @@ def horaires_journee(numjour,horaires):
     return txthours+"."
 
 #un jour précis
-def horaires_jour(day,horaires):
-    return horaires_journee(day.isoweekday(), horaires)  
+def horaires_jour(day,horaire):
+    return horaires_journee(day.isoweekday(), horaire)  
 
 
 @register.filter(is_safe=True)
-def horaire_journee_timedelta(delta,horaires):
+def horaire_journee_timedelta(delta,horaire):
     day = datetime.date.today() + datetime.timedelta(days=delta)
-    return horaires_jour(day, horaires)
+    return horaires_jour(day, horaire)
 
 @register.filter(is_safe=True)
-def horaires_semaine(horaires):
+def horaires_semaine(horaire):
     txthoraires = ""
     for day in range(1,8):
-        txthoraires += "<li>"+WeekDay[day-1].capitalize()+" : "+horaires_journee(day, horaires)+"</li>"
+        txthoraires += "<li>"+WeekDay[day-1].capitalize()+" : "+horaires_journee(day, horaire)+"</li>"
     return txthoraires
 
 @register.filter(is_safe=True)
-def horaires_aujourdhui(horaires):
+def horaires_aujourdhui(horaire):
     today = datetime.datetime.today()
-    return horaires_jour(today,horaires)
+    return horaires_jour(today,horaire)
 
 @register.filter(is_safe=True)
-def horaires_demain(horaires):
+def horaires_demain(horaire):
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-    return horaires_jour(tomorrow,horaires)
+    return horaires_jour(tomorrow,horaire)
 
 @register.simple_tag()
 def nom_jour_aujourdhui():

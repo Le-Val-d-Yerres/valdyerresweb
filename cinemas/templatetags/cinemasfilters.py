@@ -7,7 +7,7 @@ from django.conf import settings
 import datetime
 register = template.Library()
 
-jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
+jours = ['lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi',u'dimanche',]
 mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre', u'octobre', u'novembre' ,u'décembre']
 mois_courts = [u'jan', u'fév', u'mars', u'avril', u'mai', u'juin', u'juil', u'août', u'sept', u'oct', u'nov' ,u'déc']
 
@@ -41,7 +41,8 @@ def queljour(thedate):
     elif deltanow.days == 1:
         text = u"Demain"
     else :
-        text = jours[int(thedate.strftime(u"%w"))]+u" "+thedate.strftime(u"%d")+u" "+mois[int(thedate.strftime(u"%m"))-1]
+        text = jours[thedate.weekday()]+u" "+thedate.strftime(u"%d")+u" "+mois[int(thedate.strftime(u"%m"))-1]
+        text = text.capitalize()
     return text
 
 @register.filter(is_safe=True)

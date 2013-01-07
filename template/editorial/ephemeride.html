@@ -38,6 +38,7 @@
 	    	<table class="table table-striped" align="center">
 	    		<thead>
     				<tr>
+    					<th></th>
       					<th>Lieu</th>
       					<th>Ville</th>
       					<th>{{datepage|queljour|safe}}.</th>
@@ -48,8 +49,8 @@
 			{% regroup seances by cinema as screenings %}
 				{% for item in screenings%}
 					<tr>
-					
-					<td>{{item.grouper.nom}}:</td>
+					<td><img class="img-polaroid" src="{{item.grouper.image|resize:'100x100x1'}}"></td>
+					<td><a href="{% url cinemas.views.CinemaLieu cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></td>
 					<td>{{item.grouper.ville.nom}}</td>
 					<td>
 					{% regroup item.list by film as thefilm %}
@@ -74,7 +75,6 @@
 			
 
 			{% else %}
-			<hr/>
 			<div class="alert  alert-error">
 				<p>Désolé.<br/>
 				Les séances ne nous ont pas encore été communiquées.</p>
@@ -83,10 +83,12 @@
 			{% endif%}
 			
 			{% if evenements|length > 0 %}
+			<hr/>
 			<h2>Les événements :</h2>
 			<table class="table table-striped" align="center">
 				<thead>
     				<tr>
+    					<th></th>
       					<th>Lieu</th>
       					<th>Ville</th>
       					
@@ -98,6 +100,7 @@
 			{% for evenement in evenements %}
 				
 				<tr>
+					<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
 					<td> {{evenement.lieu.nom}} </td>
 					<td>{{evenement.lieu.ville.nom}}</td>
 					<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }} </td>
@@ -107,32 +110,51 @@
 			{% endfor %}
 			</table>
 			{% endif %}
-			
-			
-			{% for equipement in equipements %}
-			<tr>
+			<hr/>
+			<h2>Horaires des équipements :</h2>
+			{%regroup equipements by fonction as fonctions%}
+		
+			{% for fonction in fonctions %}
+				<h3>{{fonction.grouper.pluriel}} :</h3>
+				<table class="table table-striped" align="center">
+	    		<thead>
+    				<tr>
+      					<th></th>
+      					<th>Nom</th>
+      					<th>Ville</th>
+      					{% if listhoraires|length != 0 %}
+      					<th>{{datepage|queljour|safe}}</th>
+      					{% endif %}
+      					<th></th>
+    				</tr>
+  				</thead>
+				{% for equipement in fonction.list %}
+				<tr>
 				 
 				<td><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
 				<td><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td> <td> {{equipement.ville.nom}} </td>
-				{% if listhoraires|length != 0 %}
+				
 				<td>
 				{% for horaires in listhoraires %}
 					{% for horaire in horaires %}
 					
 						{% if horaire.equipement.id == equipement.id %}
 							<ul>
-							<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</br></li>
+							<li>{{horaire.nom}} : {{num_jour|horaires_journee:horaire}}</br></li>
+							
 							</ul>
 						{% endif %}
 					
 					{%endfor%}
 				{% endfor %}
 				</td>
-				{% endif %}
+				
 				<td><a class="btn  btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
 			</tr>
-			{% endfor %}
-			</table>
+				{%endfor%}
+				</table>
+			
+			{% endfor %} 
 		
 		</div>
 		
