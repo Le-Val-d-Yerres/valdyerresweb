@@ -6,17 +6,15 @@
 {% load aidefilters%}
 {% load hoursfilters%}
 {% load tz %}
-	
-	{% block menu %}{% getmenu %}{% endblock %}
-	
-	{% block meta-description %}Liste des {{ fonction.nom }} du Val d'Yerres{% endblock %}
-	
 
+{% block menu %}{% getmenu %}{% endblock %}
 
-{% block contenu %}	
+{% block meta-description %}Liste des {{ fonction.nom }} du Val d'Yerres{% endblock %}
+
+{% block contenu %}
 <div class="container" style="margin-top:60px;">
-	
-<div class="row-fluid">
+
+	<div class="row-fluid">
 		<div class="span12">
 			<ul class="breadcrumb">
 				<li>
@@ -27,78 +25,87 @@
 				</li>
 			</ul>
 		</div>
-		
+
 		<div class="span12">
-		<h1>{{datepage|queljour|safe}} dans le Val d'Yerres</h1>
-		
-		
-	    	<hr/>
+			<ul class="pager">
+				{% if precedent %}
+				<li class="previous">
+					<a href="{{precedent}}.html">&larr; {{precedent_date|queljour|safe}}</a>
+				</li>
+				{% endif %}
+				{% if suivant %}
+				<li class="next">
+					<a href="{{suivant}}.html">{{suivant_date|queljour|safe}} &rarr;</a>
+				</li>
+				{% endif %}
+			</ul>
+			<h1>{{datepage|queljour|safe}} dans le Val d'Yerres</h1>
+
+			<hr/>
 			<h2>Les séances de cinéma:</h2>
 			{% if seances|length > 0 %}
-	    	<table class="table table-striped" align="center">
-	    		<thead>
-    				<tr>
-    					<th></th>
-      					<th>Lieu</th>
-      					<th>Ville</th>
-      					<th>{{datepage|queljour|safe}}.</th>
-      					
-      					<th></th>
-    				</tr>
-  				</thead>
-			{% regroup seances by cinema as screenings %}
-				{% for item in screenings%}
+			<table class="table table-striped" align="center">
+				<thead>
 					<tr>
+						<th></th>
+						<th>Lieu</th>
+						<th>Ville</th>
+						<th>{{datepage|queljour|safe}}.</th>
+
+						<th></th>
+					</tr>
+				</thead>
+				{% regroup seances by cinema as screenings %}
+				{% for item in screenings%}
+				<tr>
 					<td><img class="img-polaroid" src="{{item.grouper.image|resize:'100x100x1'}}"></td>
 					<td><a href="{% url cinemas.views.CinemaLieu cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></td>
 					<td>{{item.grouper.ville.nom}}</td>
-					<td>
-					{% regroup item.list by film as thefilm %}
-					
+					<td> {% regroup item.list by film as thefilm %}
 					<ul>
-					{% for seances in thefilm %}
+						{% for seances in thefilm %}
 						<li>
-						{{seances.grouper}}:
-						
-						{% for seance in seances.list %}
+							{{seances.grouper}}:
+
+							{% for seance in seances.list %}
 							<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
-						{% endfor%}
-						</li>	
-						
-						
-					{% endfor %}
-					</ul>
-					</td>
-					</tr>
+							{% endfor%}
+						</li>
+
+						{% endfor %}
+					</ul></td>
+				</tr>
 				{% endfor %}
 			</table>
-			
 
 			{% else %}
 			<div class="alert  alert-error">
-				<p>Désolé.<br/>
-				Les séances ne nous ont pas encore été communiquées.</p>
+				<p>
+					Désolé.
+					<br/>
+					Les séances ne nous ont pas encore été communiquées.
+				</p>
 			</div>
-			
+
 			{% endif%}
-			
+
 			{% if evenements|length > 0 %}
 			<hr/>
 			<h2>Les événements :</h2>
 			<table class="table table-striped" align="center">
 				<thead>
-    				<tr>
-    					<th></th>
-      					<th>Lieu</th>
-      					<th>Ville</th>
-      					
-      					<th>{{datepage|queljour|safe}}.</th>
-      			
-      					<th></th>
-    				</tr>
-  				</thead>
-			{% for evenement in evenements %}
-				
+					<tr>
+						<th></th>
+						<th>Lieu</th>
+						<th>Ville</th>
+
+						<th>{{datepage|queljour|safe}}.</th>
+
+						<th></th>
+					</tr>
+				</thead>
+				{% for evenement in evenements %}
+
 				<tr>
 					<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
 					<td> {{evenement.lieu.nom}} </td>
@@ -106,90 +113,96 @@
 					<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }} </td>
 					<td><td><a class="btn  btn-primary" href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a></td></td>
 				</tr>
-				
-			{% endfor %}
+
+				{% endfor %}
 			</table>
 			{% endif %}
 			<hr/>
 			<h2>Horaires des équipements :</h2>
 			{%regroup equipements by fonction as fonctions%}
-		
+
 			{% for fonction in fonctions %}
-				<h3>{{fonction.grouper.pluriel}} :</h3>
-				<table class="table table-striped" align="center">
-	    		<thead>
-    				<tr>
-      					<th></th>
-      					<th>Nom</th>
-      					<th>Ville</th>
-      					{% if listhoraires|length != 0 %}
-      					<th>{{datepage|queljour|safe}}</th>
-      					{% endif %}
-      					<th></th>
-    				</tr>
-  				</thead>
+			<h3>{{fonction.grouper.pluriel}} :</h3>
+			<table class="table table-striped" align="center">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Nom</th>
+						<th>Ville</th>
+						{% if listhoraires|length != 0 %}
+						<th>{{datepage|queljour|safe}}</th>
+						{% endif %}
+						<th></th>
+					</tr>
+				</thead>
 				{% for equipement in fonction.list %}
 				<tr>
-				 
-				<td><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
-				<td><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td> <td> {{equipement.ville.nom}} </td>
-				
-				<td>
-				{% for horaires in listhoraires %}
+
+					<td><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
+					<td><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td><td> {{equipement.ville.nom}} </td>
+
+					<td> {% for horaires in listhoraires %}
 					{% for horaire in horaires %}
-					
-						{% if horaire.equipement.id == equipement.id %}
-							<ul>
-							<li>{{horaire.nom}} : {{num_jour|horaires_journee:horaire}}</br></li>
-							
-							</ul>
-						{% endif %}
-					
+
+					{% if horaire.equipement.id == equipement.id %}
+					<ul>
+						<li>
+							{{horaire.nom}} : {{num_jour|horaires_journee:horaire}}</br>
+						</li>
+
+					</ul> {% endif %}
+
 					{%endfor%}
-				{% endfor %}
-				</td>
-				
-				<td><a class="btn  btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
-			</tr>
+					{% endfor %} </td>
+
+					<td><a class="btn  btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
+				</tr>
 				{%endfor%}
-				</table>
-			
-			{% endfor %} 
-		
+			</table>
+
+			{% endfor %}
+			<ul class="pager">
+				{% if precedent %}
+				<li class="previous">
+					<a href="{{precedent}}.html">&larr; {{precedent_date|queljour|safe}}</a>
+				</li>
+				{% endif %}
+				{% if suivant %}
+				<li class="next">
+					<a href="{{suivant}}.html">{{suivant_date|queljour|safe}} &rarr;</a>
+				</li>
+				{% endif %}
+			</ul>
 		</div>
-		
-</div>
 
-
+	</div>
 
 </div>
-	
+
 {% endblock %}
 
-
-
-
 {% block jsload%}
-	<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
-	<script src="/static/bootstrap/js/bootstrap.js"> </script>
-	<script>
-	
-$(document).ready(function() {
-// Support for AJAX loaded modal window.
-// Focuses on first input textbox after it loads the window.
-$('[data-toggle="modal"]').click(function(e) {
-	e.preventDefault();
-	var url = $(this).attr('href');
-	if (url.indexOf('#') == 0) {
-		$(url).modal('open');
-	} else {
-		$.get(url, function(data) {
-			$('<div class="modal hide">' + data + '</div>').modal();
-		}).success(function() { $('input:text:visible:first').focus(); });
-	}
-});
-	
-});
-	
+<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+<script>
+	$(document).ready(function() {
+		// Support for AJAX loaded modal window.
+		// Focuses on first input textbox after it loads the window.
+		$('[data-toggle="modal"]').click(function(e) {
+			e.preventDefault();
+			var url = $(this).attr('href');
+			if (url.indexOf('#') == 0) {
+				$(url).modal('open');
+			} else {
+				$.get(url, function(data) {
+					$('<div class="modal hide">' + data + '</div>').modal();
+				}).success(function() {
+					$('input:text:visible:first').focus();
+				});
+			}
+		});
+
+	});
+
 </script>
 {% endblock %}
