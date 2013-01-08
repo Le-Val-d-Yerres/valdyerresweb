@@ -538,9 +538,9 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
     try:
         evenement = Evenement.objects.select_related().prefetch_related('organisateur').get(slug=evenement_slug)
         saison = Saison.objects.select_related().select_subclasses().get(slug=slug)
-        tarifs = Tarification.objects.filter(evenement_id=evenement.id)
         evenement_qr = GenerationQrCode(EvenementDetailsIcalendar(evenement))
         evenement.lieu = Lieu.objects.select_subclasses().get(id=evenement.lieu.id)
+        
         
         festival = None
         if type(saison) == Festival:
@@ -549,15 +549,17 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
 
         localisation_qr = GenerationQrCode("geo:"+str(evenement.lieu.latitude)+","+str(evenement.lieu.longitude))
 
-        #<trash>
-        try:
-            tarifs = tarifs[0]
-        except:
-            tarifs = None
-        #</trash>  
+        #calcul événement passé
+        a_venir = False
+        maintenant = datetime.datetime.utcnow()
+        maintenant = maintenant.replace(tzinfo=utcTZ)
+        if evenement.fin > maintenant:
+            a_venir = True
+        
+        print a_venir
     except SaisonCulturelle.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'festival':festival , 'tarifs': tarifs, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr })
+    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'festival':festival , 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr, 'a_venir':a_venir })
 
 
 

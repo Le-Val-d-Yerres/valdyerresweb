@@ -20,6 +20,8 @@
 			<ul class="breadcrumb">
 				<li>
 					<a href="/">Accueil</a>
+				</li>
+				<li>
 					<span class="divider">/</span>
 				</li>
 				<li >
@@ -28,10 +30,10 @@
 				<li>
 				{% if festival %}
 					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>
-					<li class="active">{{ festival.nom }}<span class="divider">/</span></li>
+					<li class="active">{{ festival.nom }}</li><li><span class="divider">/</span></li>
 					<li class="active">{{ evenement.nom }}</li>
 				{% else %}
-					<li class="active">{{ saison.nom }}<span class="divider">/</span></li>
+					<li class="active">{{ saison.nom }}</li>
 
 				{% endif %}
 			</ul>

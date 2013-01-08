@@ -17,8 +17,8 @@
 	<div  class="row-fluid">
 			<div class="span12">
 			<ul class="breadcrumb">
-					<li><a href="/">Accueil</a></li> <span class="divider">/</span></li>
-					<li><a href="{% url evenements.views.AgendaGlobal %}">Agenda</a> <span class="divider">/</span></li>
+					<li><a href="/">Accueil</a></li><li><span class="divider">/</span></li>
+					<li><a href="{% url evenements.views.AgendaGlobal %}">Agenda</a></li> <li><span class="divider">/</span></li>
 				{% if festival %}
 					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>
 					<li class="active"><a href="{%url evenements.views.SaisonDetailsHtml slug=festival.slug %}">{{ festival.nom }}</a><span class="divider">/</span></li>
@@ -30,7 +30,10 @@
 			</ul>	
 			</div>	
 			<div class="span7">
-				
+				{% if not a_venir %}
+		
+				evenement passé
+				{% endif %}
 				
 				{% if festival %}
 				<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=festival.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
@@ -66,8 +69,8 @@
 						{{ evenement.description|safe }}
 					</div>
 				
-				
-				{% if evenement.url_reservation != "" and  evenement.url_reservation != None %}
+				{% if a_venir %}
+					{% if evenement.url_reservation != "" and  evenement.url_reservation != None %}
 					
 					<div class="reservation" style="text-align:right;">
 					<p>
@@ -75,7 +78,7 @@
 					</p>
 					</div>
 					
-				{% elif evenement.url != "" and evenement.url != None %}
+					{% elif evenement.url != "" and evenement.url != None %}
 					
 					<div class="plusinfos" style="text-align:right;">
 					<p>
@@ -83,6 +86,7 @@
 					</p>
 					</div>
 					
+					{% endif %}
 				{% endif %}
 				
 				
