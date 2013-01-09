@@ -31,8 +31,9 @@
 			</div>	
 			<div class="span7">
 				{% if not a_venir %}
-		
-				evenement passé
+				    <div class="alert alert-error">
+						<strong>Cet événement est terminé.</strong><br/>Pour les événements à venir consultez <a href="{% url evenements.views.AgendaGlobal %}">l'agenda</a>.
+    				</div>
 				{% endif %}
 				
 				{% if festival %}
@@ -110,6 +111,7 @@
 					</div>
 				</address>
 				<hr/>
+		{% if a_venir %}
 		<p style="text-align: center;">
 		{{evenement|calendaraddlinklist|safe}}
 		
@@ -122,6 +124,7 @@
 					<br/>
 					{{"qr-code"|aide}}
 			</p>
+		{% endif %}
 		</div>
 	
 	</div>

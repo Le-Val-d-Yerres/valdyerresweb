@@ -23,6 +23,9 @@ class PageStatiqueService(models.Model):
     publie = models.BooleanField(verbose_name="Publié")
     index = models.IntegerField(verbose_name="Ordre apparition dans la liste")
     
+    def __unicode__(self):
+        return self.titre
+    
 
     
 class DocumentAttache(models.Model):
