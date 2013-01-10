@@ -100,7 +100,7 @@
 			<h2>Dans cet équipement:</h2>
 			<ul>
 				{% for facilite in facilites.facilites.all %}
-				<li><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}
+				<li style="margin-top:5px;list-style: none;"><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}
 				</li>
 				{% endfor %}
 			</ul>

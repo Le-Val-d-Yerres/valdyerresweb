@@ -12,7 +12,7 @@ for (var j = 0; j <= 20; j++)
 }
 
 
-// Corrdonnées GPS du centre de l'agglo (gare RER de Brunoy)
+// Corrdonnées GPS du centre géographique de l'agglo (gare RER de Brunoy)
 var aggloGPS = [];
 aggloGPS['longitude'] = 2.50706;
 aggloGPS['latitude'] = 48.698867;
@@ -42,7 +42,7 @@ function map_init(zoomMulti)
     	feature = new OpenLayers.Feature.Vector(
 			new OpenLayers.Geometry.Point( listeMarkers[i]['longitude'], listeMarkers[i]['latitude'] ).transform(epsg4326, projectTo),
 			{description: listeMarkers[i]['description']} ,
-			{externalGraphic: '/media/'+listeMarkers[i]['marker'], graphicHeight: 40, graphicWidth: 40, graphicXOffset:-12, graphicYOffset:-25  }
+			{externalGraphic: '/media/'+listeMarkers[i]['marker'], graphicHeight: 69, graphicWidth: 46, graphicXOffset:-23, graphicYOffset:-65  }
 		);
 	
     	vectorLayer.addFeatures(feature);

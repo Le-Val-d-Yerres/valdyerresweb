@@ -13,6 +13,7 @@ class Cinema(Lieu):
     url = models.URLField(blank=True, null=True, verbose_name="Site web")
     hash_maj = models.CharField(max_length=42)
     
+    
     def __unicode__(self):
         return self.nom
     
