@@ -133,7 +133,15 @@ def ExportAgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes',
 
 def OrganisateurDetailsHtml(request,organisateur_slug):
     try:
-        organisateur = Organisateur.objects.get(slug=organisateur_slug)
+        organisateur = Organisateur.objects.select_related().get(slug=organisateur_slug)
+        print organisateur.orga_service
+        
+        if organisateur.orga_service != None:
+            return redirect('/services/'+organisateur.orga_service.slug)
+        elif organisateur.orga_equipement != None:
+            return redirect(organisateur.orga_equipement.get_absolute_url())
+        
+        
         organisateur_qr = GenerationQrCode(OrganisateurVcard(organisateur))
     except OrganisateurDetailsHtml.DoesNotExist:
         raise Http404

@@ -6,7 +6,7 @@
 {% load aidefilters%}
 {% load tz %}
 
-{% block meta-description %}{% endblock %}
+{% block meta-description %}Les rapports d'activité du Val d'Yerres{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
@@ -20,31 +20,31 @@
 				<li>
 					<a href="/">Accueil</a>
 				</li>
-				<span class="divider">/</span>
+				<li><span class="divider">/</span></li>
 				<li class="active">
-					Le Magazine du Val d'Yerres
+					Les rapports d'activité du Val d'Yerres
 				<li>
 			</ul>
 		</div>
 
 		<div class="span12">
 
-			<h1><a href="{% url editorial.views.Magazines  %}">Le magazine du Val d'Yerres:</a></h1>
+			<h1><a href="{% url editorial.views.Rapports  %}">Les rapports d'activité du Val d'Yerres:</a></h1>
 			<div class="span11">
 				<hr/>
 				<br/>
-				{% for magazine in magazines %}
+				{% for rapport in rapports %}
 				<div class="row">
-					<div class="offset1 span3"><img class="img-polaroid" src="{{magazine.image|resize:'225x300x1'}}">
+					<div class="offset1 span3"><img class="img-polaroid" src="{{rapport.image|resize:'225x300x1'}}">
 					</div>
 					<div class="span5">
 
-						<h2>{{magazine.date_parution|moisannee}}</h2>
+						<h2>{{rapport.date_parution|moisannee}}</h2>
 						<p>
-							Dossier : <strong>{{magazine.titre}}</strong>
+							Dossier : <strong>{{rapport.titre}}</strong>
 							<br/>
 
-							Téléchargez : <a href="{{magazine.document.url}}">Le magazine du Val d'Yerres ({{magazine.date_parution|moisannee|lower}}) au format PDF ({{magazine.document.filesize|filesizeformat}})</a>
+							Téléchargez : <a href="{{rapport.document.url}}">Le rapport du Val d'Yerres ({{rapport.date_parution|moisannee|lower}}) au format PDF ({{rapport.document.filesize|filesizeformat}})</a>
 						</p>
 					</div>
 				</div>
@@ -58,37 +58,37 @@
 		<div class="span12">
 			<div class="pagination pagination-large pagination-centered">
 				<ul>
-					{% if magazines.has_previous %}
-					<li><a href="?page={{ magazines.previous_page_number }}">« précédent</a></li>
+					{% if rapports.has_previous %}
+					<li><a href="?page={{ rapports.previous_page_number }}">« précédent</a></li>
 					{% endif %}
 					
-					{%if magazines.paginator.num_pages > 10 %}
-					{%if magazines.number > 1%}
-						<li class="enabled"><a href="{% url editorial.views.Magazines  %}?page=1">1</a></li>
+					{%if rapports.paginator.num_pages > 10 %}
+					{%if rapports.number > 1%}
+						<li class="enabled"><a href="{% url editorial.views.rapports  %}?page=1">1</a></li>
 						<li class="disabled"><a href=".">...</a></li>
 					{%endif%}
-					<li class="disabled"><a href="{% url editorial.views.Magazines  %}?page={{magazines.number}}">{{magazines.number}}</a></li>
-					{%if magazines.number < magazines.paginator.num_pages%}
+					<li class="disabled"><a href="{% url editorial.views.rapports  %}?page={{rapports.number}}">{{rapports.number}}</a></li>
+					{%if rapports.number < rapports.paginator.num_pages%}
 						<li class="disabled"><a href=".">...</a></li>
-					<li class="enabled"><a href="{% url editorial.views.Magazines  %}?page={{magazines.paginator.num_pages}}">{{magazines.paginator.num_pages}}</a></li>
+					<li class="enabled"><a href="{% url editorial.views.rapports  %}?page={{rapports.paginator.num_pages}}">{{rapports.paginator.num_pages}}</a></li>
 					{%endif%}
 					
 					{% else %}
 					
-					{% for page in magazines.paginator.page_range %}
+					{% for page in rapports.paginator.page_range %}
 					
-					{% if magazines.number == page %}
+					{% if rapports.number == page %}
 					<li class="disabled"><a href=".">{{page}}</a></li>
 					{% else %}
-					<li class="enabled"><a href="{% url editorial.views.Magazines  %}?page={{page}}">{{page}}</a></li>
+					<li class="enabled"><a href="{% url editorial.views.rapports  %}?page={{page}}">{{page}}</a></li>
 					{% endif %}
 
 					{%endfor%}
 					
 					{%endif%}
 					
-					{% if magazines.has_next %}
-					<li><a href="?page={{ magazines.next_page_number }}">suivant »</a></li>
+					{% if rapports.has_next %}
+					<li><a href="?page={{ rapports.next_page_number }}">suivant »</a></li>
 					{% endif %}
 					
 				

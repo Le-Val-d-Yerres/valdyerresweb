@@ -2,7 +2,7 @@
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response , redirect , get_object_or_404
-from editorial.models import Magazine
+from editorial.models import Magazine,RapportActivite
 from cinemas.models import Seance
 from evenements.models import Evenement
 from equipements.models import Equipement
@@ -56,6 +56,28 @@ def Magazines(request):
 
     return render_to_response('editorial/magazines.html',{'magazines' : magazines})
 
+
+def Rapports(request):
+    
+    rapports_list = RapportActivite.objects.filter(publie=True).order_by('-date_parution')
+    paginator = Paginator(rapports_list,5)
+    page = request.GET.get('page')
+    
+    try:
+        if page == None:
+            rapports = paginator.page(1)
+        elif page =="":
+            return redirect('rapports')
+        elif int(page) == 1:
+            return redirect('rapports')
+        else:
+            rapports = paginator.page(page)
+    except PageNotAnInteger:
+        raise Http404
+    except EmptyPage:
+        raise Http404
+
+    return render_to_response('editorial/rapports.html',{'rapports' : rapports})
 
 
 def Ephemeride(request,jour):

@@ -3,6 +3,9 @@ from django.db import models
 from filebrowser.fields import FileBrowseField
 from localisations.models import Ville, Lieu
 from model_utils.managers import InheritanceManager
+from services.models import Service
+from equipements.models import Equipement
+from localisations.models import Ville
 
 class Organisateur(models.Model):
     nom = models.CharField(max_length=255)
@@ -16,6 +19,13 @@ class Organisateur(models.Model):
     fax = models.CharField("Fax (facultatif)", max_length=25, blank=True)
     rue = models.CharField(max_length=255)
     ville = models.ForeignKey(Ville)
+    
+#    Un choix de design pas très beau, mais fonctionellement les équipements, services, communes de la 
+#    communauté d'agglo peuvent organiser des evènements ainsi que d'autres entités exterieures alors ...
+
+    orga_service = models.ForeignKey(Service,blank=True,null=True)
+    orga_equipement = models.ForeignKey(Equipement,blank=True,null=True)
+    orga_ville = models.ForeignKey(Ville,blank=True,null=True,  related_name='orga_orga_ville' )
     
     def __unicode__(self):
         return self.nom

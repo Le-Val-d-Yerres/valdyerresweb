@@ -9,6 +9,7 @@ class Service(models.Model):
     index  = models.IntegerField()
     parent = models.ForeignKey('self', null= True,blank=True)
     description = models.TextField(null= True,blank=True)
+    publie = models.BooleanField(verbose_name="Publié")
     
     def __unicode__(self):
         return self.nom

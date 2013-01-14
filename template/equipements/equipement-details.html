@@ -144,6 +144,29 @@
 		</div>
 	</div>
 	{%endif%}
+	{% if evenements %}
+	<div class="row-fluid">
+		<div class="span7">
+			<hr/>
+			<h2>Les prochains évènements:</h2>
+			<ul>
+				{% regroup evenements by monthyeardebut as eventlist %}
+				
+				{% for eventmonth in eventlist %}
+					<li>{{eventmonth.grouper|grouperToString}}</li>
+					<ul>
+					{% for each in eventmonth.list %}
+					<li>
+						{{ each.type.nom }} : &laquo;<a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a>&raquo; , {{ each.debut|dateCustom:each.fin }}
+					</li>
+				{% endfor %}
+					</ul>
+				{% endfor %}
+			</ul>
+
+		</div>
+	</div>
+	{% endif %}
 	
 	<div class="row-fluid">
 
@@ -178,29 +201,7 @@
 		</div>
 
 	</div>
-	{% if evenements %}
-	<div class="row-fluid">
-		<div class="span7">
-			<hr/>
-			<h2>Les prochains évènements:</h2>
-			<ul>
-				{% regroup evenements by monthyeardebut as eventlist %}
-				
-				{% for eventmonth in eventlist %}
-					<li>{{eventmonth.grouper|grouperToString}}</li>
-					<ul>
-					{% for each in eventmonth.list %}
-					<li>
-						{{ each.type.nom }} : &laquo;<a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a>&raquo; , {{ each.debut|dateCustom:each.fin }}
-					</li>
-				{% endfor %}
-					</ul>
-				{% endfor %}
-			</ul>
-
-		</div>
-	</div>
-	{% endif %}
+	
 
 </div>
 

@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response , redirect , get_object_or_404
 from equipements.models import *
-from evenements.models import Evenement
+from evenements.models import Evenement, Organisateur
 from horaires.models import Horaires, Periode
 from datetime import datetime
 from django.db.models import Q
@@ -26,17 +26,18 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 
     now = datetime.datetime.now(utcTZ)
     equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
-    if fonction_slug != equipement.fonction.slug:
-        raise Http404 
+     
     
-    
-    qr_code_geo = GenerationQrCode("geo:" + str(equipement.latitude) + "," + str(equipement.longitude))
         
     facilites = Facilites.objects.filter(equipement_id=equipement.id)
+    evenements = None
+    try:
+        organisateur = Organisateur.objects.get(orga_equipement = equipement.id)
+        evenements = Evenement.objects.select_related().filter(Q(organisateur = organisateur.id) | Q(lieu_id=equipement.id) , fin__gt=now , publish=True).order_by('debut')
+    except Organisateur.DoesNotExist:
+        evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id , fin__gt=now , publish=True).order_by('debut')
         
-    evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id , fin__gt=now , publish=1).order_by('debut')
-        
-    qr_code_vcard = GenerationQrCode(EquipementVcard(equipement))
+    
     #<trash>
     try:
         facilites = facilites[0]
@@ -82,7 +83,8 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         else:
             periode_active_jour = None
          
-    
+    qr_code_geo = GenerationQrCode("geo:" + str(equipement.latitude) + "," + str(equipement.longitude))
+    qr_code_vcard = GenerationQrCode(EquipementVcard(equipement))
         
     return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7 })
 

@@ -2,6 +2,8 @@
 from django.db import models
 from filebrowser.fields import FileBrowseField
 from localisations.models import Lieu
+from django.core.urlresolvers import reverse
+from django.db.models import permalink
 
 class EquipementFonction(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Fonction")
@@ -23,7 +25,11 @@ class Equipement(Lieu):
     
     def __unicode__(self):
         return self.nom
-
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('equipement-details',(),{'equipement_slug':self.slug,'fonction_slug':self.fonction.slug})
+    
 class Facilite(models.Model):
     nom = models.CharField(max_length=255)
     description = models.TextField()

@@ -45,6 +45,7 @@ class OrganisateurAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['nom','logo','meta_description','description' ]}),
         ('Coordonnées', {'fields': ['url','email', 'telephone', 'fax', 'rue', 'ville']}),
+        ('Entitées liées',{'fields':['orga_service','orga_equipement','orga_ville']})
     ]
     list_filter = ['ville__nom']
     search_fields = ['nom']
