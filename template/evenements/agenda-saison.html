@@ -68,9 +68,12 @@
 					</p>
 				</div>
 			</div>
+			{% if evenements %}
 			<div class="row-fluid">
 				<div class="span6">
+					
 					<h2>Les évènements à venir : </h2>
+					
 					<div style="border:1px solid #ccc;">
 						{% if flash %}
 						<div class="alert alert-error">
@@ -107,7 +110,10 @@
 						{% endfor %}
 					</div>
 				</div>
+				
 			</div>
+			{% endif%}
+			{% if evenementspasses %}
 			<div class="row-fluid">
 				<div class="span6">
 					<h2>Les évènements passés: </h2>
@@ -148,6 +154,7 @@
 					</div>
 				</div>
 			</div>
+			{% endif%}
 		</div>
 	</div>
 	{% endblock %}

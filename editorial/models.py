@@ -16,14 +16,14 @@ class PageStatique(PageBase):
     date_creation = models.DateTimeField()
     
 class Actualite(PageBase):
-    logo = FileBrowseField("Logo de l'article (facultatif)", max_length=200, directory="editorial", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
+    image = FileBrowseField("Image principale de l'article (facultatif)", max_length=200, directory="editorial", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     date_publication = models.DateTimeField()
     page_accueil = models.BooleanField()
     
 class DocumentAttache(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom") 
     document = FileBrowseField("Document", max_length=200, directory="editorial", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
-    reference = models.ForeignKey(PageStatique)
+    reference = models.ForeignKey(PageBase)
     
 class Magazine(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")

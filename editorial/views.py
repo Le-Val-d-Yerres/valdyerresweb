@@ -2,7 +2,7 @@
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response , redirect , get_object_or_404
-from editorial.models import Magazine,RapportActivite
+from editorial.models import Magazine,RapportActivite,Actualite, DocumentAttache
 from cinemas.models import Seance
 from evenements.models import Evenement
 from equipements.models import Equipement
@@ -25,9 +25,10 @@ def ActuLists(request):
     contenu = u'Home Page à faire'
     return render_to_response('editorial/home.html', {'contenu' : contenu})
 
-def ActuDetail(request):
-    contenu = u'Home Page à faire'
-    return render_to_response('editorial/home.html', {'contenu' : contenu})
+def ActuDetail(request,actualite_slug):
+    page = get_object_or_404(Actualite.objects.filter(publie=True),slug=actualite_slug)
+    documentattache = DocumentAttache.objects.filter(reference = page.id)
+    return render_to_response('editorial/actualite.html', {'page' : page, 'documentattache': documentattache})
 
 
 def PageDetail(request):

@@ -5,7 +5,8 @@ from django.contrib import admin
 from django.template import defaultfilters
 from valdyerresweb import settings
 from valdyerresweb.utils.functions import pdftojpg
-import ghostscript
+import datetime
+
 
 class DocumentAttacheInline(admin.TabularInline):
     model = DocumentAttache
@@ -16,9 +17,21 @@ class DocumentAttacheInline(admin.TabularInline):
 class AdminActualite(admin.ModelAdmin):
     list_display = ['titre','date_publication','publie']
     prepopulated_fields = {'slug':('titre',),}
+    fieldsets = [
+        ('Page', {'fields': ['titre', 'slug', 'meta_description', 'contenu', 'image','publie']}),
+        ('Date et Lieu', {'fields': ['date_publication']}),
+        
+        
+    ]
     inlines = [
         DocumentAttacheInline,
     ]
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
     
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.intitule)
@@ -27,6 +40,7 @@ class AdminActualite(admin.ModelAdmin):
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
+        obj.date_mise_a_jour=datetime.datetime.utcnow()
         obj.save()
 
 class AdminPageStatique(admin.ModelAdmin):
