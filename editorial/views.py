@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render_to_response , redirect , get_object_or_404
-from editorial.models import Magazine,RapportActivite,Actualite, DocumentAttache
+from django.shortcuts import render_to_response , redirect , get_object_or_404,\
+    get_list_or_404
+from editorial.models import Magazine,RapportActivite,Actualite, DocumentAttache, PageBase
 from cinemas.models import Seance
 from evenements.models import Evenement
 from equipements.models import Equipement
@@ -18,12 +19,30 @@ utcTZ = timezone("UTC")
 
 
 def Home(request):
-    contenu = u'Home Page à faire'
-    return render_to_response('editorial/home.html', {'contenu' : contenu})
+    carroussel = PageBase.objects.filter(publie=True,carroussel=True).order_by('index_carroussel')
+    return render_to_response('editorial/home.html', {'carroussel' : carroussel})
 
-def ActuLists(request):
-    contenu = u'Home Page à faire'
-    return render_to_response('editorial/home.html', {'contenu' : contenu})
+def ActuList(request):
+    pages = get_list_or_404(Actualite.objects.order_by('-date_publication'))
+    
+    paginator = Paginator(pages,5)
+    page = request.GET.get('page')
+    
+    try:
+        if page == None:
+            pages = paginator.page(1)
+        elif page =="":
+            return redirect('actu-list')
+        elif int(page) == 1:
+            return redirect('actu-list')
+        else:
+            pages = paginator.page(pages)
+    except PageNotAnInteger:
+        raise Http404
+    except EmptyPage:
+        raise Http404
+    
+    return render_to_response('editorial/actualite-list.html', {'pages' : pages})
 
 def ActuDetail(request,actualite_slug):
     page = get_object_or_404(Actualite.objects.filter(publie=True),slug=actualite_slug)

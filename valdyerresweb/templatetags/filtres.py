@@ -37,7 +37,13 @@ def dateCustom(debutUTC, finUTC):
     return text
 
 
-
+@register.filter(is_safe=True)
+def dateSimple(mydate):
+    
+    TZone = timezone(settings.TIME_ZONE)
+    thedate = mydate.astimezone(TZone)
+    text = jours[int(thedate.strftime(u"%w"))]+u" "+thedate.strftime(u"%d")+u" "+mois[int(thedate.strftime(u"%m"))-1]+" "+thedate.strftime(u"%Y")+u" à "+thedate.strftime(u"%H:%M")
+    return text
 
 
 @register.filter(is_safe=True)
@@ -115,6 +121,9 @@ def resize(myfile, size='100x100x1'):
     basename, format = os.path.splitext(filetail)
     miniature = basename + '_' + size + format
     filename = path
+    filehead = os.path.join(filehead,'mini')
+    if not os.path.exists(filehead):
+        os.makedirs(filehead)
     miniature_filename = os.path.join(filehead, miniature)
     miniature_url = filehead + '/' + miniature
     if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):

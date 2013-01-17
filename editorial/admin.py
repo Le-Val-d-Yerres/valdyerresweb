@@ -15,12 +15,16 @@ class DocumentAttacheInline(admin.TabularInline):
 
 
 class AdminActualite(admin.ModelAdmin):
-    list_display = ['titre','date_publication','publie']
+    list_display = ['titre','date_publication','publie','carroussel']
     prepopulated_fields = {'slug':('titre',),}
     fieldsets = [
         ('Page', {'fields': ['titre', 'slug', 'meta_description', 'contenu', 'image','publie']}),
         ('Date et Lieu', {'fields': ['date_publication']}),
-        
+        ('Carrousel et accueil', {
+                       
+                       'fields': ['carroussel','index_carroussel','page_accueil'],
+                       'classes':['collapse']
+                       }),
         
     ]
     inlines = [
@@ -34,8 +38,8 @@ class AdminActualite(admin.ModelAdmin):
         ]
     
     def save_model(self, request, obj, form, change):
-        monslug = defaultfilters.slugify(obj.intitule)
-        if obj.slug == "":
+        monslug = defaultfilters.slugify(obj.titre)
+        if obj.id == None:
             listsize = Actualite.objects.filter(slug=monslug).count()
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
@@ -43,23 +47,45 @@ class AdminActualite(admin.ModelAdmin):
         obj.date_mise_a_jour=datetime.datetime.utcnow()
         obj.save()
 
+
+
 class AdminPageStatique(admin.ModelAdmin):
-    list_display = ['titre','date_creation','publie']
+    list_display = ['titre','date_creation','publie', 'carroussel']
     prepopulated_fields = {'slug':('titre',),}
+    fieldsets = [
+        ('Page', {'fields': ['titre', 'slug', 'meta_description', 'contenu', 'image','publie']}),
+        ('Carrousel', {
+                       
+                       'fields': ['carroussel','index_carroussel'],
+                       'classes':['collapse']
+                       }),
+        
+    ]
+    
     inlines = [
         DocumentAttacheInline,
     ]
     
+    class Media:
+        js = [
+            'js/tinymce/tiny_mce.js',
+            'js/tinymce/tinymce_setup.js',
+            'filebrowser/js/TinyMCEAdmin.js',
+        ]
+    
     def save_model(self, request, obj, form, change):
         monslug = defaultfilters.slugify(obj.titre)
-        if obj.slug == "":
-            listsize = PageStatique.objects.filter(slug=monslug).count()
+        print 
+        if obj.id == None:
+            listsize = Actualite.objects.filter(slug=monslug).count()
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
+            obj.date_creation = datetime.datetime.utcnow()
+        obj.date_mise_a_jour=datetime.datetime.utcnow()
         obj.save()
 
-
+    
 class AdminMagazine(admin.ModelAdmin):
     list_display = ['titre','date_parution','document']
     #prepopulated_fields = {'slug':('titre',),}

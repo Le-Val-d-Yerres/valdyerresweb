@@ -1,6 +1,11 @@
 {% extends "include/main.html" %}
-
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
 {% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
+
 	
 	{% block menu %}{% getmenu %}{% endblock %}
 	
@@ -16,7 +21,7 @@
 					
 				</li>
 				<li><span class="divider">/</span></li>
-				<li><a href="#">Actualité</a></li>
+				<li><a href="{% url editorial.views.ActuList %}">Actualités</a></li>
 				<li><span class="divider">/</span></li>
 				<li class="active">
 					{{page.titre}}
@@ -39,6 +44,7 @@
 					</div>
 					{% endif %}
 				{% endif %}
+			<p><small>Publié le {{page.date_publication|dateSimple}}.</small></p>
 			{{page.contenu|safe}}
 			<hr/>
 		
@@ -61,7 +67,7 @@
 	</div>
 
 </div>
-</div>
+
 {% endblock %}
 
 	{% block jsload%}
