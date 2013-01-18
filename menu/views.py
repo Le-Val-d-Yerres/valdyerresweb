@@ -8,9 +8,9 @@ def getChilds(items , subitems, menutxt ="" , sub = False):
     if sub:
         menutxt = "<ul class=\"dropdown-menu\" aria-labelledby=\"drop1\" role=\"menu\">\n"
     else :
-        menutxt = "<ul class=\"nav\">\n"
+        menutxt = "<ul role=menubar  class=\"nav\">\n"
     for item in items:
-        menutxt += "<li #item-"+str(item.id)+" ><a #item-link"+str(item.id)+" href=\""+item.chemin+"\">"+item.nom+"#caret-"+str(item.id)+" </a>\n"
+        menutxt += "<li role=menuitem #item-"+str(item.id)+" ><a #item-link"+str(item.id)+" href=\""+item.chemin+"\">"+item.nom+"#caret-"+str(item.id)+" </a>\n"
         try:
             sublist = subitems[item.id]
             if len(sublist) ==0:

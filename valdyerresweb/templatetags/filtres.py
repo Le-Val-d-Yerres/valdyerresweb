@@ -134,7 +134,7 @@ def resize(myfile, size='100x100x1'):
         image = ImageOps.fit(Image.open(filename), (x,y), Image.ANTIALIAS)
           
         try:
-            image.save(miniature_filename, image.format, quality=90, optimize=1)
+            image.save(miniature_filename, image.format, quality=90, optimize=True, progressive=True)
         except:
             image.save(miniature_filename, image.format, quality=90)
     
