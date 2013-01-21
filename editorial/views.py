@@ -3,7 +3,7 @@ from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response , redirect , get_object_or_404,\
     get_list_or_404
-from editorial.models import Magazine,RapportActivite,Actualite, DocumentAttache, PageBase
+from editorial.models import Magazine,RapportActivite,Actualite, DocumentAttache, PageBase, PageStatique
 from cinemas.models import Seance
 from evenements.models import Evenement
 from equipements.models import Equipement
@@ -19,7 +19,7 @@ utcTZ = timezone("UTC")
 
 
 def Home(request):
-    carroussel = PageBase.objects.filter(publie=True,carroussel=True).order_by('index_carroussel')
+    carroussel = PageBase.objects.filter(publie=True,carroussel=True).select_subclasses().order_by('index_carroussel')
     return render_to_response('editorial/home.html', {'carroussel' : carroussel})
 
 def ActuList(request):
@@ -50,9 +50,10 @@ def ActuDetail(request,actualite_slug):
     return render_to_response('editorial/actualite.html', {'page' : page, 'documentattache': documentattache})
 
 
-def PageDetail(request):
-    contenu = u'Home Page à faire'
-    return render_to_response('editorial/home.html', {'contenu' : contenu})
+def PageDetail(request, page_slug):
+    page = get_object_or_404(PageStatique.objects.filter(publie=True),slug=page_slug)
+    documentattache = DocumentAttache.objects.filter(reference = page.id)
+    return render_to_response('editorial/page-statique.html', {'page' : page, 'documentattache': documentattache})
 
 def Magazines(request):
     
