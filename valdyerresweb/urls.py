@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^equipements/', include('equipements.urls')),
     url(r'^cinemas/', include('cinemas.urls')),
     url(r'^services/', include('services.urls')),
+    url(r'^annoncesemploi/', include('annoncesemploi.urls')),
     url(r'^debug/', include('debug_toolbar.urls')),
     url(r'', include('editorial.urls')),
 )

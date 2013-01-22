@@ -8,7 +8,7 @@ from services.models import Service
 
 class Annonce(models.Model):
     service = models.ForeignKey(Service,null=True)
-    publie = models.BooleanField(verbose_name = "Publié:")
+    publie = models.BooleanField(verbose_name = "publication")
     intitule = models.CharField(max_length=255, verbose_name="Intitulé:")
     slug = models.SlugField()
     type_de_poste = models.CharField(max_length=255, verbose_name = "Type de Poste:")
@@ -22,14 +22,15 @@ class Annonce(models.Model):
     deplacement = models.TextField(verbose_name = "Déplacement:")
     lieu_travail = models.TextField(verbose_name = "Lieu de travail:")
     salaire_indicatif = models.CharField(max_length=255, verbose_name = "Salaire indicatif:")
+    
     def __unicode__(self):
-        return self.nom
+        return self.intitule
     
 
 # Classe d'interconnexion avec l'export XLS du logiciel
 # utilisé par les maisons de l'emploi
 class ImportGIDEM(models.Model):
-    fichier_xls = FileBrowseField("Document", max_length=200, directory="importsgidem", extensions=[".xls"])
+    fichier_xls = models.FileField(upload_to="annoncesemploi/importsgidem/%Y/%m/%d")
     date_import = models.DateTimeField()
     
     

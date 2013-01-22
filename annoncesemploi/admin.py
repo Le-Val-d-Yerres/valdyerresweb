@@ -4,7 +4,10 @@ from annoncesemploi.models import Annonce ,ImportGIDEM
 from django.contrib import admin
 from django.template import defaultfilters
 from accounts.models import UserProfile
+from services.models import Service
+from valdyerresweb import settings
 import xlrd
+import datetime , os
 
 
 class AnnonceAdmin(admin.ModelAdmin):
@@ -40,16 +43,22 @@ class ImportGIDEMAdmin(admin.ModelAdmin):
     fieldsets = [('Import GIDEM', {'fields': ['fichier_xls']}),]
     
     def save_model(self, request, obj, form, change):
+        obj.date_import = datetime.datetime.utcnow()
+        obj.save()
         user_profile = request.user.get_profile()
         id_service = user_profile.service.id
         to_delete = Annonce.objects.filter(service=id_service)
+        
         to_delete.delete()
-        workbook = xlrd.open_workbook(obj.filename)
+        workbook = xlrd.open_workbook(os.path.join(settings.MEDIA_ROOT,obj.fichier_xls.name))
         worksheet = workbook.sheet_by_index(0)
-        annonce = Annonce()
+        
+        myservice = Service.objects.get(id=id_service)
+        print id_service
         
         for row in range(1,worksheet.nrows):
-            annonce.service = id_service
+            annonce = Annonce()
+            annonce.service = myservice
             annonce.intitule = worksheet.cell(row,2).value.lower().capitalize()
             annonce.slug =  defaultfilters.slugify(annonce.intitule+"-"+str(obj.id))
             annonce.type_de_poste = worksheet.cell(row,7).value
@@ -63,6 +72,7 @@ class ImportGIDEMAdmin(admin.ModelAdmin):
             annonce.deplacement = worksheet.cell(row,15).value
             annonce.lieu_travail = worksheet.cell(row,12).value
             annonce.salaire_indicatif = worksheet.cell(row,14).value
+            annonce.publie = True
             annonce.save()
             
         

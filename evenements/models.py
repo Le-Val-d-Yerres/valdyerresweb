@@ -28,8 +28,15 @@ class Organisateur(models.Model):
     orga_ville = models.ForeignKey(Ville,blank=True,null=True,  related_name='orga_orga_ville' )
     
     def __unicode__(self):
-        return self.nom
-
+        return self.nom + " / "+ self.ville.nom
+    
+    class Meta:
+        verbose_name_plural = "Organisateurs"
+        ordering = ['ville__nom']
+        
+        
+        
+        
 class Saison(models.Model):
     nom = models.CharField(max_length=255)
     debut = models.DateTimeField("Date de début")
