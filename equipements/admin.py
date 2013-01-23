@@ -70,10 +70,20 @@ class FaciliteAdmin(admin.ModelAdmin):
 class FacilitesAdmin(admin.ModelAdmin):
     list_display = ['Equipement', 'Facilites']
     search_fields = ['Equipement']
-    
     filter_horizontal = ("facilites",)
     
+
+class TarifCategorieAdmin(admin.ModelAdmin):
+    list_display = ['equipement_fonction','nom']
+    prepopulated_fields = {'slug':('nom',),}
+    
+    
+class TarifAdmin(admin.ModelAdmin):
+    list_display = ['designation','categorie', 'index']
+
 admin.site.register(Equipement, EquipementAdmin)
 admin.site.register(EquipementFonction, EquipementFonctionAdmin)
 admin.site.register(Facilites, FacilitesAdmin)
 admin.site.register(Facilite, FaciliteAdmin)
+admin.site.register(TarifCategorie, TarifCategorieAdmin)
+admin.site.register(Tarif, TarifAdmin)

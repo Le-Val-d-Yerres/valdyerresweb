@@ -54,13 +54,14 @@ class ImportGIDEMAdmin(admin.ModelAdmin):
         worksheet = workbook.sheet_by_index(0)
         
         myservice = Service.objects.get(id=id_service)
-        print id_service
+        
+        loop = 1
         
         for row in range(1,worksheet.nrows):
             annonce = Annonce()
             annonce.service = myservice
             annonce.intitule = worksheet.cell(row,2).value.lower().capitalize()
-            annonce.slug =  defaultfilters.slugify(annonce.intitule+"-"+str(obj.id))
+            annonce.slug =  defaultfilters.slugify(annonce.intitule+"-"+str(loop))
             annonce.type_de_poste = worksheet.cell(row,7).value
             annonce.secteur_activite = worksheet.cell(row,4).value
             annonce.niveau_formation = worksheet.cell(row,10).value
@@ -70,10 +71,18 @@ class ImportGIDEMAdmin(admin.ModelAdmin):
             annonce.contact = worksheet.cell(row,6).value
             annonce.nbpostes = worksheet.cell(row,11).value
             annonce.deplacement = worksheet.cell(row,15).value
-            annonce.lieu_travail = worksheet.cell(row,12).value
+            annonce.lieu_travail = worksheet.cell(row,12).value 
             annonce.salaire_indicatif = worksheet.cell(row,14).value
+            try :
+                annonce.salaire_indicatif = float(annonce.salaire_indicatif)
+            except:
+                annonce.salaire_indicatif = ""
+            
+            if annonce.salaire_indicatif == 0.0:
+                annonce.salaire_indicatif = ""
             annonce.publie = True
             annonce.save()
+            loop = loop+1
             
         
         

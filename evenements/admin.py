@@ -37,7 +37,7 @@ class EvenementAdmin(admin.ModelAdmin):
 class TypeEvenementAdmin(admin.ModelAdmin):
     list_display = ['nom']
     search_fields = ['nom']
-    prepopulated_fields = {'slug':('slug',),}
+    prepopulated_fields = {'slug':('nom',),}
     
         
 class OrganisateurAdmin(admin.ModelAdmin):

@@ -1,7 +1,8 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response , redirect , get_object_or_404
-from equipements.models import *
+from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites
 from evenements.models import Evenement, Organisateur
+from localisations.models import Lieu
 from horaires.models import Horaires, Periode
 from datetime import datetime
 from django.db.models import Q
@@ -25,9 +26,10 @@ def CarteEquipements(request):
 def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 
     now = datetime.datetime.now(utcTZ)
-    equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
+    equipement = get_object_or_404(Equipement.objects.select_related(), slug=equipement_slug)
      
-    
+    tarif_categorie_principale = TarifCategorie.objects.select_related().filter(equipement_fonction = equipement.fonction,index=0 ) 
+    tarifs_principaux = Tarif.objects.select_related().filter(categorie= tarif_categorie_principale )
         
     facilites = Facilites.objects.filter(equipement_id=equipement.id)
     evenements = None

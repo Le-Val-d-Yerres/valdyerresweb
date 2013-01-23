@@ -62,3 +62,32 @@ class Facilites(models.Model):
 
     class Meta:
         verbose_name_plural = u"Facilités => Equipement"
+        
+class TarifCategorie(models.Model):
+    nom = models.CharField(max_length=255,verbose_name="Catégorie de tarif")
+    slug = models.SlugField(max_length=255,unique=True)
+    index = models.IntegerField("Ordre d'apparition (0 = le plus important et tarif de base affiché pour l'équipement)")
+    equipement_fonction = models.ForeignKey(EquipementFonction, verbose_name="Catégorie d'équipement concernée")
+    
+    def __unicode__(self):
+        return self.nom
+    
+    class Meta:
+        verbose_name_plural = "Catégorie des tarifs"
+        ordering = ['index','equipement_fonction__nom']
+        
+class Tarif(models.Model):
+    designation = models.CharField(max_length=255,verbose_name="Désignation : (ex: \"Entrée Adulte \")")
+    info_additionelle = models.CharField(max_length=255,verbose_name="Infos additionelles : (facultatif)", blank = True , null = True)
+    index = models.IntegerField("Ordre d'apparition (0 = en haut de liste)")
+    categorie = models.ForeignKey(TarifCategorie)
+    prix_residents = models.FloatField("Tarif résidents ( 0 = gratuit  )")
+    prix_non_residents = models.FloatField("Tarif non résidents ( 0 = gratuit  )")
+    
+    def __unicode__(self):
+        return self.designation
+    
+    class Meta:
+        verbose_name_plural = "Tarifs"
+        ordering = ['categorie__index','index']
+    

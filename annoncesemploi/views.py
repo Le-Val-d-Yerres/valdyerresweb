@@ -14,12 +14,12 @@ utcTZ = timezone("UTC")
 
 def AnnoncesList(request):
     
-    annonces = [item for item in Annonce.objects.filter(publie=True).order_by('service')]
+    annonces =  Annonce.objects.filter(publie=True).order_by('service')
     
     paginator = Paginator(annonces,5)
     
     page = request.GET.get('page')
-    pages=""
+
     
     try:
         if page == None:
@@ -29,7 +29,7 @@ def AnnoncesList(request):
         elif int(page) == 1:
             return redirect('annonces-list')
         else:
-            pages = paginator.page(pages)
+            pages = paginator.page(page)
     except PageNotAnInteger:
         raise Http404
     except EmptyPage:
@@ -39,5 +39,5 @@ def AnnoncesList(request):
 
 
 def AnnonceDetail(request,annonce_slug):
-    annonce = get_object_or_404(Annonce.objects.select_related().get(slug = annonce_slug))
+    annonce = get_object_or_404(Annonce.objects.select_related(),slug = annonce_slug, publie=True)
     return render_to_response('annoncesemploi/annonce.html', {'annonce':annonce})
