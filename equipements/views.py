@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import render_to_response , redirect , get_object_or_404
+from django.shortcuts import render_to_response , redirect , get_object_or_404, get_list_or_404
 from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites
 from evenements.models import Evenement, Organisateur
 from localisations.models import Lieu
@@ -88,7 +88,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     qr_code_geo = GenerationQrCode("geo:" + str(equipement.latitude) + "," + str(equipement.longitude))
     qr_code_vcard = GenerationQrCode(EquipementVcard(equipement))
         
-    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7 })
+    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7, 'tarifs_principaux':tarifs_principaux })
 
 
 def EquipementHoraires(request, equipement_slug):
@@ -105,6 +105,13 @@ def EquipementHoraires(request, equipement_slug):
     
     
     return render_to_response('equipements/equipement-horaires.html', {'equipement':equipement,'horaires':horaires, 'periodes':periodes})
+
+
+def EquipementFonctionTarifs(request, equipement_fonction_slug):
+    tarifs = Tarif.objects.select_related().filter(categorie__equipement_fonction__slug = equipement_fonction_slug)
+    return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs})
+    
+
 
 def FonctionDetailsHtml(request, fonction_slug):
     try:

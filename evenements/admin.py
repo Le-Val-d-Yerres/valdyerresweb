@@ -10,7 +10,7 @@ class EvenementAdmin(admin.ModelAdmin):
         ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
         ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url', 'url_reservation']}),
         ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
-        ('Options de publication', {'fields': ['publish', 'haut_page']}),
+        ('Option de publication', {'fields': ['publish']}),
     ]
     search_fields = ['nom']
     list_filter = ['publish']

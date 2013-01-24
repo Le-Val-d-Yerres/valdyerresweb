@@ -54,7 +54,7 @@
 					<a href = "http://www.allocine.fr/film/fichefilm_gen_cfilm={{film.grouper.id_allocine_film}}.html">Fiche du film sur allocine.fr</a>.<br/>
 					{% regroup film.list by cinema as cinemalist %}
 					{% for cinema in cinemalist %}
-					<hr/>
+					
 					<h4>Au cinéma <a href="{% url cinemas.views.CinemaLieu cinema_slug=cinema.grouper.slug %}">«{{cinema.grouper.nom}}»</a> à {{cinema.grouper.ville.nom}} :</h4>
 					<ul>
 						{%regroup cinema.list by date_debut.date as seances%}

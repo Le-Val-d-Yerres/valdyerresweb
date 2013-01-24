@@ -9,12 +9,23 @@ from pytz import timezone
 from django.conf import settings
 from PIL import Image, ImageOps
 import datetime
+
 register = template.Library()
 
 jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
 mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre', u'octobre', u'novembre' ,u'décembre']
 mois_courts = [u'jan', u'fév', u'mars', u'avril', u'mai', u'juin', u'juil', u'août', u'sept', u'oct', u'nov' ,u'déc']
     
+
+@register.filter(is_safe=True)
+def monnaie(nombre):
+    if nombre == 0.0:
+        return "Gratuit"
+    else:
+        nombre = "{:10.2f}".format(nombre)
+        nombre = str(nombre)+" €"
+        nombre = nombre.replace(".", ",") 
+        return nombre
     
 @register.filter(is_safe=True)
 def dateCustom(debutUTC, finUTC):
@@ -114,11 +125,16 @@ def resize(myfile, size='100x100x1'):
     except AttributeError:
         path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
         logo = True
-    # defining the size
+
     x, y, ratio = [int(x) for x in size.split('x')]
-    # defining the filename and the miniature filename
+
+
     filehead, filetail = os.path.split(path)
     basename, format = os.path.splitext(filetail)
+    
+    if format == ".png":
+        format = ".jpg"
+        
     miniature = basename + '_' + size + format
     filename = path
     filehead = os.path.join(filehead,'mini')
