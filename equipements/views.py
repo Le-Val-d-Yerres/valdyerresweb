@@ -10,6 +10,8 @@ from django.conf import settings
 from pytz import timezone
 from django.template import Context, loader
 from valdyerresweb.utils.functions import GenerationQrCode
+from django.views.decorators.cache import cache_control, cache_page
+
 import datetime
 
 
@@ -22,7 +24,8 @@ def CarteEquipements(request):
     return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'mediaDir': settings.MEDIA_DIR_NAME})
 
 
-
+@cache_control(must_revalidate=True, max_age=3600)
+@cache_page(3600)
 def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 
     now = datetime.datetime.now(utcTZ)
@@ -90,7 +93,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         
     return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7, 'tarifs_principaux':tarifs_principaux })
 
-
+@cache_control(must_revalidate=True, max_age=3600)
 def EquipementHoraires(request, equipement_slug):
     equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
     today = datetime.date.today()
@@ -112,7 +115,8 @@ def EquipementFonctionTarifs(request, equipement_fonction_slug):
     return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs})
     
 
-
+@cache_control(must_revalidate=True, max_age=3600)
+@cache_page(3600)
 def FonctionDetailsHtml(request, fonction_slug):
     try:
         fonction = EquipementFonction.objects.get(slug=fonction_slug)

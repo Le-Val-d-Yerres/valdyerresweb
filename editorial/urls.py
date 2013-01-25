@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
+from django.views.decorators.cache import cache_page
 
 urlpatterns = patterns('editorial.views',
     url(r'^$', 'Home', name="home"),
@@ -11,6 +12,6 @@ urlpatterns = patterns('editorial.views',
     url(r'^magazines/(?P<page>[^\/]+)$', 'Magazines' , name="magazines"),
     url(r'^rapports/$', 'Rapports' , name="rapports"),
     url(r'^rapports/(?P<page>[^\/]+)$', 'Rapports' , name="rapports"),
-    url(r'^ephemeride/(?P<jour>[^\/]+).html$', 'Ephemeride' , name="ephemeride"),
+    url(r'^ephemeride/(?P<jour>[^\/]+).html$', 'Ephemeride', name="ephemeride"),
     
 )

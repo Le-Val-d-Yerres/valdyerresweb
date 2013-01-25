@@ -12,6 +12,7 @@ from pytz import timezone, tzinfo
 from datetime import date
 from valdyerresweb import settings
 import datetime
+from django.views.decorators.cache import cache_control, cache_page
 
 
 myTZ = timezone(settings.TIME_ZONE)
@@ -100,7 +101,8 @@ def Rapports(request):
 
     return render_to_response('editorial/rapports.html',{'rapports' : rapports})
 
-
+@cache_control(must_revalidate=True, max_age=3600)
+@cache_page(3600)
 def Ephemeride(request,jour):
     jourdate = jour.split('-')
     datepage = date.today()
@@ -126,6 +128,7 @@ def Ephemeride(request,jour):
     else:
         raise Http404
         
+    
     
     startdate = datetime.datetime.combine(datepage,datetime.time(00, 00, 01))
     enddate = datetime.datetime.combine(datepage,datetime.time(23, 59, 59))

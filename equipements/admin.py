@@ -3,6 +3,8 @@ from equipements.models import *
 from django.contrib import admin
 from django.template import defaultfilters
 from localisations.models import Lieu
+from valdyerresweb.utils import functions
+from django.core.urlresolvers import reverse
 
 class EquipementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'fonction', 'ville']
@@ -23,6 +25,8 @@ class EquipementAdmin(admin.ModelAdmin):
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
         obj.save()
+        path = reverse('equipements.views.EquipementsDetailsHtml', kwargs={'fonction_slug':obj.fonction.slug,'equipement_slug':obj.slug})
+        functions.expire_page(path)
     
     class Media:
         js = [

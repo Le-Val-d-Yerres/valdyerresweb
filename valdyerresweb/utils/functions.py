@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
-
+import os
 import qrcode , base64, StringIO, pickle
 from django.conf import settings
-import os
+from django.core.cache import cache
+from django.http import HttpRequest
+from django.utils.cache import get_cache_key
+
 
 
 
@@ -44,3 +47,10 @@ def pdftojpg(pdfFilePath):
 
     
 
+# beau snippet source : http://djangosnippets.org/snippets/936/
+def expire_page(path):
+    request = HttpRequest()
+    request.path = path
+    key = get_cache_key(request)
+    if cache.has_key(key):   
+        cache.delete(key)
