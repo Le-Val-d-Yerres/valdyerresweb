@@ -6,6 +6,18 @@
 {% load aidefilters%}
 {% load tz %}
 
+
+
+
+{% block title %} 
+{% if festival %}
+{{ saison.nom }}, {{ festival.nom }}
+{% else %}
+{{ saison.nom }}
+
+{% endif %}
+{% endblock %}
+
 {% block meta-description %}Liste des évènements de la {{ saison.nom }}{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}

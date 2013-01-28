@@ -7,6 +7,8 @@
 {% load tz %}
 {% if saison %}
 
+{% block title %} {{ evenement.nom}} {% endblock %}
+
 {% block meta-description %}{{ evenement.meta_description }}{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
@@ -17,7 +19,8 @@
 	<div  class="row-fluid">
 			<div class="span12">
 			<ul class="breadcrumb">
-					<li><a href="/">Accueil</a></li><li><span class="divider">/</span></li>
+					<li><a href="/">Accueil</a></li>
+					<li><span class="divider">/</span></li>
 					<li><a href="{% url evenements.views.AgendaGlobal %}">Agenda</a></li> <li><span class="divider">/</span></li>
 				{% if festival %}
 					<li><a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a> <span class="divider">/</span></li>

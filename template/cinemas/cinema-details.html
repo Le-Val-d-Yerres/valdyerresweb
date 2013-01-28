@@ -190,7 +190,7 @@
 				    myMarker['longitude'] ={{cinema.longitude|toFloatjs}}; 
 					myMarker['latitude'] ={{cinema.latitude|toFloatjs}}; 
 					myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ cinema.nom }}" src="{{  cinema.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url cinemas.views.CinemaLieu cinema_slug=cinema.slug %}">{{ cinema.nom }}</a><br  \>{{  cinema.rue }}<br  \>{{  cinema.ville.code_postal }}<br  \>{{  cinema.ville.nom }}</p></div></div>';
-					myMarker['marker'] = '';
+					myMarker['marker'] = 'uploads/picto/equipements/cinema.png';
 					tabEquipement.push(myMarker);
 					setMarkers(tabEquipement);
 					map_init();

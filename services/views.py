@@ -6,7 +6,7 @@ from services.models import Service,PageStatiqueService,DocumentAttache
 
 def Services(request):
     
-    services = get_list_or_404(Service)
+    services = get_list_or_404(Service, publie = True)
     return render_to_response('services/services.html',{'services':services})
 
 

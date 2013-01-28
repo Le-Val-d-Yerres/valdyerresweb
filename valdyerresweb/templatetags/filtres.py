@@ -22,7 +22,7 @@ def monnaie(nombre):
     if nombre == 0.0:
         return "Gratuit"
     else:
-        nombre = "{:10.2f}".format(nombre)
+        nombre = "{0:10.2f}".format(nombre)
         nombre = str(nombre)+" €"
         nombre = nombre.replace(".", ",") 
         return nombre
@@ -142,6 +142,7 @@ def resize(myfile, size='100x100x1'):
         os.makedirs(filehead)
     miniature_filename = os.path.join(filehead, miniature)
     miniature_url = filehead + '/' + miniature
+    
     if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
         os.unlink(miniature_filename)
 

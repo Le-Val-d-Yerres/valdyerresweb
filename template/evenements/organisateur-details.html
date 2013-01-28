@@ -6,7 +6,10 @@
 {% load aidefilters%}
 {% load tz %}
 
-{% if saison %}
+
+{% block title %}{{organisateur.nom}}{% endblock %}
+
+
 {% block meta-description %}{{ organisateur.meta_description }}{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
@@ -17,7 +20,8 @@
 	<div  class="row-fluid">
 			<div class="span12">
 			<ul class="breadcrumb">
-					<li><a href="/">Accueil</a></li> <span class="divider">/</span></li>
+					<li><a href="/">Accueil</a></li> 
+					<li><span class="divider">/</span></li>
 					<li><a href="{% url evenements.views.AgendaGlobal %}">Agenda</a> <span class="divider">/</span></li>
 					<li><a href="">Organisateurs</a> <span class="divider">/</span></li>
 					<li class="active">{{ organisateur.nom }}</li> 
@@ -82,11 +86,7 @@
 </div>
 
 {% endblock %}
-{% else %}
-<p>
-	Erreur interne.
-</p>
-{% endif %}
+
 
 {% block jsload%}
 

@@ -36,9 +36,9 @@
 					
 						<h2><a href="{% url annoncesemploi.views.AnnonceDetail annonce_slug=page.slug   %}">{{page.intitule}}</a></h2>
 						<p>Publié par : {{page.service.nom}}</p>
-						<p>
+					
 							{{page.description_du_poste|resume:400|safe}}
-						</p>
+						
 						<p style="text-align: right;" ><a class = "btn btn-primary" href="{% url annoncesemploi.views.AnnonceDetail annonce_slug=page.slug   %}">+ d'infos</a></p>
 					
 				</div>
