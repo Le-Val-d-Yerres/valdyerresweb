@@ -8,7 +8,7 @@ from datetime import timedelta
 
 @register.filter(is_safe=True)
 def calendaraddlinklist(evenement):
-    text = u"<ul style=\"list-style:none;\" >\n"
+    text = u"<ul class=\"linklist\" >\n"
     for line in getLinkList(evenement):
         text += u"<li>"+line+"</li>\n"
     text += u"</ul>\n"
@@ -16,7 +16,7 @@ def calendaraddlinklist(evenement):
         
 @register.filter(is_safe=True)
 def calendarexportlinklist(dictargs):
-    text = u"<ul style=\"list-style:none;\" >\n"
+    text = u"<ul class=\"linklist\" >\n"
     for line in getEventsLinkList(dictargs):
         text += u"<li>"+line+"</li>\n"
     text += u"</ul>\n"
@@ -24,7 +24,7 @@ def calendarexportlinklist(dictargs):
 
 @register.filter(is_safe=True)
 def saisonexportlinklist(saisonslug):
-    text = u"<ul style=\"list-style:none;\" >\n"
+    text = u"<ul class=\"linklist\" >\n"
     for line in getSaisonLinkList(saisonslug):
         text += u"<li>"+line+"</li>\n"
     text += u"</ul>\n"

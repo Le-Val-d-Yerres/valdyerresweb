@@ -196,7 +196,7 @@ def GenerateExcelFile(evenements):
     line = 0
     mystyle = list()
     mystyle.append(xlwt.easyxf('pattern: pattern solid, fore_colour white'))
-    mystyle.append(xlwt.easyxf('pattern: pattern solid, fore_colour blue')) 
+    mystyle.append(xlwt.easyxf('pattern: pattern solid, fore_colour white')) 
     
     col_width = 256 * 40
     for i in range(6):
@@ -232,7 +232,7 @@ def GenerateCSVFile(evenements):
     for each in evenements:
         ville = each.lieu.ville.nom
         nom = each.nom
-        date = filtres.dateCustom(each.debut,each.fin)
+        date = each.debut.strftime("%Y-%m-%d %H:%M:%S") +"|"+ each.fin.strftime("%Y-%m-%d %H:%M:%S")
         adresse = each.lieu.nom+" "+each.lieu.rue
         orgacelltxt = ""
         for orga in each.organisateur.all():

@@ -6,7 +6,7 @@
 {% load aidefilters%}
 {% load tz %}
 
-	
+	{% block title %}{{page.titre}}{% endblock %}
 	{% block menu %}{% getmenu %}{% endblock %}
 	
 	{% block meta-description %}{{page.meta_description}}{% endblock %}
