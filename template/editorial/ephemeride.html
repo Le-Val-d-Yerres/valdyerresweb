@@ -58,7 +58,7 @@
 				{% regroup seances by cinema as screenings %}
 				{% for item in screenings%}
 				<tr>
-					<td><img class="img-polaroid" src="{{item.grouper.image|resize:'100x100x1'}}"></td>
+					<td><img class="img-circle" src="{{item.grouper.image|resize:'100x100x1'}}"></td>
 					<td><a href="{% url cinemas.views.CinemaLieu cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></td>
 					<td>{{item.grouper.ville.nom}}</td>
 					<td> {% regroup item.list by film as thefilm %}
@@ -107,7 +107,7 @@
 				{% for evenement in evenements %}
 
 				<tr>
-					<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
+					<td><img class="img-circle" src="{{evenement.image|resize:'100x100x1'}}"></td>
 					<td> {{evenement.lieu.nom}} </td>
 					<td>{{evenement.lieu.ville.nom}}</td>
 					<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }} </td>
@@ -138,7 +138,7 @@
 				{% for equipement in fonction.list %}
 				<tr>
 
-					<td><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
+					<td><img class="img-circle" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
 					<td><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td><td> {{equipement.ville.nom}} </td>
 
 					<td> {% for horaires in listhoraires %}
