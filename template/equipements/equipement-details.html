@@ -46,7 +46,9 @@
 		<div class="span4">
 
 			<br/>
-
+			{% if equipement.fonction.logo %}
+			<img src="{{equipement.fonction.logo.url}}" style="float:left;" />
+			{% endif %}
 			<address>
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 					<strong>{{ equipement.nom }}</strong>
@@ -73,9 +75,8 @@
 			</address>
 			<hr/>
 			<p style="text-align: center;">
-				<a href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Ajouter cet équipement à vos contacts</a>
+				<a class="btn btn-primary" href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Ajouter cet équipement à vos contacts <b>(Vcard)</b></a>
 				<br/>
-				(Format Vcard)
 				{{"vcard"|aide}}
 			</p>
 			<hr class="hidden-phone" />
@@ -126,18 +127,30 @@
 				</ul>
 			</ul>
 			<h3>Les 7 prochains jours : </h3>
-			<ul>
+			<table class="table table-striped" align="center">
+	    		<thead>
+    				<tr>
+      					<th>Jour</th>
+      					<th>Horaire</th>
+      					    				</tr>
+  				</thead>
+			
 				{% for horaires in horaires_plus_7 %}
-					<li><b>{{forloop.counter|nom_jour_index}}</b> :</li>
-					<ul>
+					<tr>
+					<td><b>{{forloop.counter|nom_jour_index}}</b> :</td>
+					<td>
+						<ul>
 					{% for horaire in horaires %}
 					<li>{{horaire.nom}} : <b>{{forloop.parentloop.counter|horaire_journee_timedelta:horaire}}</b></li>
 					{% endfor %}
-					</ul>
+						</ul>
+					</td>
+					</tr>
 				{% endfor %}
+			</table>
 				
 				
-			</ul>
+			
 			<br/>
 			<p>
 				<a href="{% url equipements.views.EquipementHoraires equipement_slug=equipement.slug%}">Voir tous les horaires et toutes les périodes</a>

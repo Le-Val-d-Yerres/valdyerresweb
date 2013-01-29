@@ -8,7 +8,8 @@ from django.db.models import permalink
 class EquipementFonction(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Fonction")
     pluriel = models.CharField(max_length=255, verbose_name="Nom de la fonction au pluriel")
-    picto = FileBrowseField("Pictogramme", max_length=200, directory="picto/equipements", extensions=[".png"])
+    logo = FileBrowseField("Logo", max_length=200, directory="picto/equipements", extensions=[".png"] ,blank=True, null=True)
+    picto = FileBrowseField("Pictogramme pour geolocalisation", max_length=200, directory="picto/equipements", extensions=[".png"])
     slug = models.SlugField(max_length=255,unique=True)
 
     def __unicode__(self):

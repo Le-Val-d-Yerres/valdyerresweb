@@ -88,7 +88,7 @@
 		<div class="span4">
 
 			<br/>
-
+			<img style="float:left;" src="/static/img/cinemas/cinema.png"/>
 			<address>
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 					<strong>{{ cinema.nom }}</strong>
@@ -120,9 +120,9 @@
 			</address>
 			<hr/>
 			<p style="text-align: center;">
-				<a href="{% url cinemas.views.CinemaVCF cinema_slug=cinema.slug %}">Ajouter cet équipement à vos contacts</a>
+				<a class="btn btn-primary" href="{% url cinemas.views.CinemaVCF cinema_slug=cinema.slug %}">Ajouter ce cinéma à vos contacts <b>(Vcard)</b></a>
 				<br/>
-				(Format Vcard)
+				
 				{{"vcard"|aide}}
 			</p>
 			<hr class="hidden-phone" />

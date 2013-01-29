@@ -42,7 +42,7 @@ function map_init(zoomMulti)
     	feature = new OpenLayers.Feature.Vector(
 			new OpenLayers.Geometry.Point( listeMarkers[i]['longitude'], listeMarkers[i]['latitude'] ).transform(epsg4326, projectTo),
 			{description: listeMarkers[i]['description']} ,
-			{externalGraphic: '/media/'+listeMarkers[i]['marker'], graphicHeight: 69, graphicWidth: 46, graphicXOffset:-23, graphicYOffset:-65  }
+			{externalGraphic: '/media/'+listeMarkers[i]['marker'], graphicHeight: 74, graphicWidth: 51, graphicXOffset:-23, graphicYOffset:-65  }
 		);
 	
     	vectorLayer.addFeatures(feature);
