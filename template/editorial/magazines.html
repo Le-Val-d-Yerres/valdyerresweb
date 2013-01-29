@@ -30,11 +30,11 @@
 		<div class="span12">
 
 			<h1><a href="{% url editorial.views.Magazines  %}">Le magazine du Val d'Yerres:</a></h1>
-			<div class="span11 bkgd-white">
+			<div class="span11">
 				<hr/>
 				<br/>
 				{% for magazine in magazines %}
-				<div class="row">
+				<div class="row  bkgd-white">
 					<div class="offset1 span3"><img class="img-polaroid" src="{{magazine.image|resize:'225x300x1'}}">
 					</div>
 					<div class="span5">
