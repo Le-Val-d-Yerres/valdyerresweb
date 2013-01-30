@@ -34,6 +34,15 @@
 					</div>
 					{% endfor %}
 					</div>
+					    <div class="pagination pagination-caroussel">
+    						<ul>
+    							
+    							<li class="active"><a href="#">1</a></li>
+    							<li><a href="#">2</a></li>
+    							<li><a onclick="$('#thecarousel').carousel(2);" href="#">3</a></li>
+    							
+    						</ul>
+   						 </div>
 					 <a class="carousel-control left" href="#thecarousel" data-slide="prev">&lsaquo;</a>
 					 <a class="carousel-control right" href="#thecarousel" data-slide="next">&rsaquo;</a>
 	</div>
@@ -54,6 +63,11 @@
 $(document).ready(function() {
 	
 	$('#thecarousel').carousel();
+	$('#thecarousel').bind('slide', function (e) {
+		var item = $(this).find('.item.active')
+		var index = item.index
+		alert(index);
+		});
 });
 </script>
 {% endblock%}
