@@ -7,7 +7,7 @@ from aide.models import  Aide
 import re , os.path , Image
 from pytz import timezone
 from django.conf import settings
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps , ImageFilter ,ImageChops
 import datetime
 
 register = template.Library()
@@ -115,6 +115,35 @@ def dateSEO(dateUTC):
 
 #
 
+def resizeandcrop(img, box, fit):
+    '''Downsample the image.
+    @param img: Image -  an Image-object
+    @param box: tuple(x, y) - the bounding box of the result image
+    @param fix: boolean - crop the image to fill the box
+    @param out: file-like-object - save the image into the output stream
+    '''
+    
+
+    #calculate the cropping box and get the cropped part
+    if fit:
+        x1 = y1 = 0
+        x2, y2 = img.size
+        wRatio = 1.0 * x2/box[0]
+        hRatio = 1.0 * y2/box[1]
+        if hRatio > wRatio:
+            y1 = int(y2/2-box[1]*wRatio/2)
+            y2 = int(y2/2+box[1]*wRatio/2)
+        else:
+            x1 = int(x2/2-box[0]*hRatio/2)
+            x2 = int(x2/2+box[0]*hRatio/2)
+        img = img.crop((x1,y1,x2,y2))
+
+    #Resize the image with best quality algorithm ANTI-ALIAS
+    img.thumbnail(box, Image.ANTIALIAS)
+
+    #save it into a file-like object
+    return img
+#resize
 
 @register.filter(is_safe=True)   
 def resize(myfile, size='100x100x1'):
@@ -161,6 +190,60 @@ def resize(myfile, size='100x100x1'):
     return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
 
 
+
+@register.filter(is_safe=True)   
+def expand(myfile, size='100x100x1'):
+    logo = False 
+    try:
+        path = myfile.path.replace(settings.MEDIA_ROOT,"") #TODO: trouver pkoi Image et Filebrowsefield renvoient des chemins différents
+        path = settings.MEDIA_ROOT+path
+    except AttributeError:
+        path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
+        logo = True
+
+    x, y, ratio = [int(x) for x in size.split('x')]
+
+
+    filehead, filetail = os.path.split(path)
+    basename, format = os.path.splitext(filetail)
+    
+    if format == ".png":
+        format = ".jpg"
+        
+    miniature = basename + '_' + size + format
+    filename = path
+    filehead = os.path.join(filehead,'mini')
+    if not os.path.exists(filehead):
+        os.makedirs(filehead)
+    miniature_filename = os.path.join(filehead, miniature)
+    miniature_url = filehead + '/' + miniature
+    
+    if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
+        os.unlink(miniature_filename)
+
+    if not os.path.exists(miniature_filename):
+       
+        image = Image.open(filename)
+        for i in range(0,15):
+            image = image.filter(ImageFilter.BLUR)
+            
+        x2, y2 = image.size
+        x3 = (x2*2)/100
+        
+        image = image.crop((x3,0,x2-x3,y2))  
+        image = ImageOps.fit(image, (x,y), Image.ANTIALIAS)
+        #image = ImageChops.offset(image, x,y)
+        #image = resizeandcrop(image, (x,y), True)
+       
+        try:
+            image.save(miniature_filename, image.format, quality=90, optimize=True, progressive=True)
+        except:
+            image.save(miniature_filename, image.format, quality=90)
+    
+    if logo is True:
+        return miniature_url.replace(settings.STATIC_ROOT,settings.STATIC_URL)
+            
+    return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
 
 
 # evenements

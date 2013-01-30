@@ -41,3 +41,39 @@ thead{
 	font-size: 1.5em;
 	font-weight: normal;
 }
+
+
+.carouselbkgd {
+    left: 0;
+    min-width: 100%;
+}
+
+.carousel-caption-large {
+    background: none repeat scroll 0 0 rgba(230, 230, 230, 0.80);
+    bottom: 10%;
+    left: 15%;
+    padding: 15px;
+    position: absolute;
+    right: 20%;
+    border-radius: 5px;
+    display: block;
+   
+}
+.carousel-caption-large img {
+	float:left;
+}
+.carousel-caption-large h2 {
+	text-shadow: 0.1em 0.1em 0.2em white;
+}
+.carousel-caption-large p {
+	color: black;
+}
+
+.carousel-control{
+	border: 1px solid grey;
+	border-radius: 0px;
+	top:50%;
+}
+.row-fluid{
+	background-color: white;
+}

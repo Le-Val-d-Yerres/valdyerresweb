@@ -12,24 +12,35 @@
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
-<div class="container" style="margin-top: 60px;">
-<div  class="row-fluid">
-			<div class=" offset2 span8">
-				<div id="thecarousel" class="carousel slide">
+<div id="thecarousel" class="carousel slide">
 					<div class="carousel-inner">
 					{% for item in carroussel %}
 					<div class="item {%if forloop.first %}active{%endif%}" >
-						<img alt="Illustration : {{item.titre}}" src={{item.image|resize:'770x400x1'}}>
-						 <div class="carousel-caption">
-						 	<h4><a href="{{item.get_absolute_url}}">{{item.titre}}</a></h4>
+						<img class="carouselbkgd" alt="Fond flou : {{item.titre}}" src={{item.image|expand:'1500x500x1'}}>
+						 <div class="carousel-caption-large visible-desktop ">
+						 	
+						 	<img class="img-polaroid-fix visible-desktop" alt="Illustration : {{item.titre}}" src={{item.image|resize:'200x150x1'}}>
+						 	<h2><a href="{{item.get_absolute_url}}">{{item.titre}}</a></h2>
         					<p>{{item.contenu|resume:250|safe}}</p>
+        					<br/>
+        					<br/>
+        					<p><a style="float: right" class ="btn btn-primary"href="{{item.get_absolute_url}}">+ d'infos</a></p>
+      					</div>
+      					<div class="carousel-caption visible-phone visible-tablet ">
+						 	
+        					<p><strong><a href="{{item.get_absolute_url}}"></strong>{{item.titre}}</a><br/>{{item.contenu|resume:250|safe}}<br/><a href="{{item.get_absolute_url}}">Lire la suite</a></p>
+        					
       					</div>
 					</div>
 					{% endfor %}
 					</div>
 					 <a class="carousel-control left" href="#thecarousel" data-slide="prev">&lsaquo;</a>
 					 <a class="carousel-control right" href="#thecarousel" data-slide="next">&rsaquo;</a>
-				</div>
+	</div>
+<div class="container" style="margin-top: 60px;">
+<div  class="row-fluid">
+			<div class=" offset2 span8">
+				
 			</div>
 </div>
 </div>
