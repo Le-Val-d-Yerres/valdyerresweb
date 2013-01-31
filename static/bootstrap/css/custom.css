@@ -23,10 +23,7 @@ border-radius: 5px;
 .linklist {
 	list-style: none;
 }
-.linklist li,img {
-	margin: 5px;
-	
-}
+
 
 .bkgd-white{
 	background: white;
@@ -86,7 +83,7 @@ thead{
 .pagination-caroussel
 {
 	position:absolute;
-	bottom:-31px;
+	bottom:-35px;
 	left:45%;
 }
 .pagination-caroussel ul > .disabled{
