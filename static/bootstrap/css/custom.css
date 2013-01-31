@@ -17,13 +17,17 @@ border-radius: 5px;
 .navbar .brand {
     max-height: 30px;
     overflow: visible;
-    padding-top: 0px;
+    padding-top: 4px;
     padding-bottom: 0px;
 }
 .linklist {
 	list-style: none;
 }
 
+.linklist  img {
+	margin: 5px;
+	
+}
 
 .bkgd-white{
 	background: white;
