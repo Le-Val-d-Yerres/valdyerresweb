@@ -32,14 +32,22 @@
 		<div class="span12">
 			<h1><a href="">Les annonces emploi du Val d'Yerres</a></h1>
 			
-
+			{% if message %}
+			<div class="alert alert-error">
+						    	<p>
+						    		{{message|safe}}
+						    	</p>
+						    </div>
+			
+			
+			{% else %}
 			<div class="span7">
 				{% for page in pages %}
 				<div class="row bkgd-white">
 
 					<h2><a href="{% url annoncesemploi.views.AnnonceDetail annonce_slug=page.slug   %}">{{page.intitule}}</a></h2>
 					<p>
-						Publié par : {{page.service.nom}}
+						Proposé par : <a href="{{page.service.get_absolute_url}}">{{page.service.nom}}</a>
 					</p>
 
 					{{page.description_du_poste|resume:400|safe}}
@@ -55,6 +63,7 @@
 				{% endfor %}
 
 			</div>
+			
 		</div>
 		<div class="span12">
 			<div class="pagination pagination-large pagination-centered">
@@ -114,7 +123,7 @@
 			</div>
 
 		</div>
-
+		{% endif %}
 	</div>
 
 </div>

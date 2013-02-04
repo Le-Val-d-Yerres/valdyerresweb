@@ -259,24 +259,25 @@
     $btn.button('toggle')
   })
 
-}(window.jQuery);/* ==========================================================
- * bootstrap-carousel.js v2.2.2
- * http://twitter.github.com/bootstrap/javascript.html#carousel
- * ==========================================================
- * Copyright 2012 Twitter, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ========================================================== */
+}(window.jQuery);
+/* ==========================================================
+* bootstrap-carousel.js v2.2.2
+* http://twitter.github.com/bootstrap/javascript.html#carousel
+* ==========================================================
+* Copyright 2012 Twitter, Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+* ========================================================== */
 
 
 !function ($) {
@@ -285,7 +286,7 @@
 
 
  /* CAROUSEL CLASS DEFINITION
-  * ========================= */
+* ========================= */
 
   var Carousel = function (element, options) {
     this.$element = $(element)
@@ -352,7 +353,7 @@
         , $next = next || $active[type]()
         , isCycling = this.interval
         , direction = type == 'next' ? 'left' : 'right'
-        , fallback  = type == 'next' ? 'first' : 'last'
+        , fallback = type == 'next' ? 'first' : 'last'
         , that = this
         , e
 
@@ -399,7 +400,7 @@
 
 
  /* CAROUSEL PLUGIN DEFINITION
-  * ========================== */
+* ========================== */
 
   var old = $.fn.carousel
 
@@ -425,7 +426,7 @@
 
 
  /* CAROUSEL NO CONFLICT
-  * ==================== */
+* ==================== */
 
   $.fn.carousel.noConflict = function () {
     $.fn.carousel = old
@@ -433,7 +434,7 @@
   }
 
  /* CAROUSEL DATA-API
-  * ================= */
+* ================= */
 
   $(document).on('click.carousel.data-api', '[data-slide]', function (e) {
     var $this = $(this), href
@@ -443,7 +444,9 @@
     e.preventDefault()
   })
 
-}(window.jQuery);/* =============================================================
+}(window.jQuery);
+
+/* =============================================================
  * bootstrap-collapse.js v2.2.2
  * http://twitter.github.com/bootstrap/javascript.html#collapse
  * =============================================================

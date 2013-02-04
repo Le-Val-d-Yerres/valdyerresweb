@@ -75,7 +75,24 @@ thead{
 	border-radius: 0px;
 	top:50%;
 }
-
+.carousel-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height:70%;
+  padding: 50px;
+  background: #333333;
+  background: rgba(0, 0, 0, 0.75);
+}
+@media (max-width: 480px) {
+	.carousel-caption {
+    position: static;
+  }
+  .carousel-inner  > .item img{
+  	display: none;
+  }
+}
 
 .row{
 	

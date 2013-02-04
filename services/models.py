@@ -2,6 +2,7 @@
 
 from django.db import models
 from filebrowser.fields import FileBrowseField
+from django.db.models import permalink
 
 class Service(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom")
@@ -14,6 +15,9 @@ class Service(models.Model):
     def __unicode__(self):
         return self.nom
     
+    @permalink
+    def get_absolute_url(self):
+        return ('service-detail',(),{'service_slug':self.slug})
     
 class PageStatiqueService(models.Model):
     service = models.ForeignKey(Service)

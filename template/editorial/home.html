@@ -6,17 +6,17 @@
 {% load aidefilters%}
 {% load tz %}
 
-{% block title %}{% endblock %}
+{% block title %}Communauté d'Agglomération du Val d'Yerres {% endblock %}
 
-{% block meta-description %}{% endblock %}
+{% block meta-description %}Le site de la Communauté d'Agglomération du Val d'Yerres dans le département de l'Essonne{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
-<div id="thecarousel" class="carousel slide">
+<div id="myCarousel" class="carousel slide">
 	<div class="carousel-inner">
 		{% for item in carroussel %}
-		<div data-paginator="paginator-{{forloop.counter0}}" class="item {%if forloop.first %}active{%endif%}" >
+		<div class="item {%if forloop.first %}active{%endif%}" >
 			<img class="carouselbkgd" alt="Fond flou : {{item.titre}}" src={{item.image|expand:'1500x500x1'}}>
 			<div class="carousel-caption-large visible-desktop ">
 
@@ -46,18 +46,18 @@
 		{% endfor %}
 	</div>
 	<div id="paginators" class="pagination pagination-caroussel">
-		<ul>
+		<ul class ="carousel-links">
 			{% for item in carroussel %}
 
 			<li id="paginator-{{forloop.counter0}}" class='paginator {%if forloop.first %}active{%endif%}'>
-				<a href="#">{{forloop.counter}}</a>
+				<a  href="#">{{forloop.counter}}</a>
 			</li>
 
 			{% endfor %}
 		</ul>
 	</div>
-	<a class="carousel-control left" href="#thecarousel" data-slide="prev">&lsaquo;</a>
-	<a class="carousel-control right" href="#thecarousel" data-slide="next">&rsaquo;</a>
+	<a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
+	<a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
 </div>
 
 {% endblock%}
@@ -67,19 +67,33 @@
 <script src="/static/bootstrap/js/bootstrap.js"></script>
 <script>
 	$(document).ready(function() {
+		
+		 var myCarousel = $('.carousel');
+		 myCarousel.carousel({interval: 5000,pause: false});
+		
+		$('.carousel').bind('slid', function(e) {
 
-		$('#thecarousel').carousel({
-			interval : 4000
-		});
-		$('#thecarousel').bind('slid', function(e) {
-
-			index = $('#thecarousel .active').index('#thecarousel .item');
+			index = $('.carousel .active').index('.carousel .item');
 			$('#paginators .active').removeClass('active');
 			$('#paginator-' + index).addClass('active');
 		});
+
 		$('.paginator').bind('click', function(e) {
-			$('#thecarousel').carousel($(this).index());
+			myCarousel.carousel($(this).index());
+
 		});
+		
+		$('.carousel-control').bind('click', function(e) {
+			if ($(this).attr('data-slide') == 'prev')
+			{
+				myCarousel.carousel('prev');
+			}
+			else
+			{
+				myCarousel.carousel('next');
+			}
+		});
+		
 	}); 
 </script>
 {% endblock%}
