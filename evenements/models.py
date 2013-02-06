@@ -70,9 +70,9 @@ class Evenement(models.Model):
     meta_description = models.CharField(max_length=200)
     description = models.TextField()
     debut = models.DateTimeField("Date de début")
-    fin = models.DateTimeField("date de fin (facultatif)")
+    fin = models.DateTimeField("Date de fin")
     organisateur = models.ManyToManyField(Organisateur)
-    image = FileBrowseField("Image", max_length=255, directory="evenements", extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, null=True)
+    image = FileBrowseField("Image", max_length=255, directory="evenements", extensions=[".jpg", ".png", ".gif", ".jpeg",".pdf"], blank=True, null=True)
     url = models.URLField("Un lien vers plus d'infos: (facultatif)", blank=True , null = True)
     url_reservation = models.URLField("Un lien vers la page de reservation: (facultatif, annule le lien vers plus d'infos) ", blank=True, null=True) 
     cadre_evenement = models.ForeignKey(Saison)
@@ -93,56 +93,16 @@ class Evenement(models.Model):
         return self.debut.strftime("%m")+"-"+self.debut.strftime("%Y")
         
     
-class Prix (models.Model):
-    gratuit = models.BooleanField()
-    nom = models.CharField(max_length=255)
-    prix = models.FloatField("Prix (facultatif)", blank=True)
-    
-    def __unicode__(self):
-        if self.gratuit:
-            resultat = self.nom+" - Gratuit"
-        else:
-            resultat = self.nom+" - "+str(self.prix)+u"€"
-        return resultat
-    
-    class Meta:
-        verbose_name_plural = "Prix"
-    
-class Tarification(models.Model):
+class Prix(models.Model):
+    intitule = models.CharField("Intitulé ", max_length=255, blank=False, null=False)
+    prix = models.FloatField("Prix (séparateur point ex : 0.5 )", default=None ,blank=False, null=True)
     evenement = models.ForeignKey(Evenement)
-    prix = models.ManyToManyField(Prix)
-    
-    def __unicode__(self):
-        return self.evenement.nom
-    
-    def Evenement(self):
-        return self.evenement.nom
-    
-    def Prix(self):
-        i = 1
-        for s in self.prix.all():
-            if s.gratuit:
-                if i == 1:
-                    resultat = s.nom+" - Gratuit"
-                    i=i+1
-                else:
-                    resultat = resultat+" ; "+s.nom+" - Gratuit"
-            else:
-                if i == 1:
-                    resultat = s.nom+" - "+str(s.prix)+u"€"
-                    i=i+1
-                else:
-                    resultat = resultat+" ; "+s.nom+" - "+str(s.prix)+u"€"
-        return resultat
     
     
-    
-
-    
-    
-    
-    
-    
+class DocumentAttache(models.Model):
+    nom = models.CharField(max_length=255, verbose_name="Nom") 
+    document = FileBrowseField("Document", max_length=200, directory="editorial/docs", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
+    reference = models.ForeignKey(Evenement)    
     
     
     

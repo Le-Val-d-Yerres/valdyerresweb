@@ -67,6 +67,11 @@ tinyMCE.init({
     // Plugins
     plugins: 'advimage,fullscreen,paste,media,searchreplace,grappelli,grappelli_contextmenu,template',
     
+    // table edition
+    
+    table_inline_editing : true
+
+    
     // Theme Advanced
     theme_advanced_toolbar_location: 'top',
     theme_advanced_toolbar_align: 'left',

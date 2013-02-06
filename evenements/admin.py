@@ -1,9 +1,21 @@
 # -*- coding: utf-8 -*-
-from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, Tarification
-
+from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, DocumentAttache
+from valdyerresweb.utils.functions import pdftojpg
 from django.contrib import admin
 from django.template import defaultfilters
+from valdyerresweb import settings
+import os
 
+class PrixInline(admin.TabularInline):
+    model = Prix
+    extra = 5
+    max_num = 15
+
+class DocumentAttacheInline(admin.TabularInline):
+    model = DocumentAttache
+    extra = 5
+    max_num = 15
+    
 class EvenementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
     fieldsets = [
@@ -16,7 +28,9 @@ class EvenementAdmin(admin.ModelAdmin):
     list_filter = ['publish']
     filter_horizontal = ("organisateur",)
 
-    
+    inlines = [
+        PrixInline,DocumentAttacheInline,
+    ]
     class Media:
         js = [
             'js/tinymce/tiny_mce.js',
@@ -32,6 +46,12 @@ class EvenementAdmin(admin.ModelAdmin):
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
+        
+        pouet, imageextension = os.path.splitext(obj.image.path)
+        imageextension = imageextension.lower()
+        if imageextension == ".pdf":
+            abspath_image = pdftojpg( os.path.join(settings.MEDIA_ROOT,obj.image.path), subpath="")
+            obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT) 
         obj.save()
 
 class TypeEvenementAdmin(admin.ModelAdmin):
@@ -117,15 +137,6 @@ class SaisonCulturelleAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
 
-class PrixAdmin(admin.ModelAdmin):
-    list_display = ['nom', 'prix', 'gratuit']
-    fieldsets = [
-        (None, {'fields': ['nom']}),
-        ('Prix', {'fields': ['gratuit', 'prix']}),
-    ]
-    search_fields = ['nom']
-    list_filter = ['gratuit']
-    
 class TarificationAdmin(admin.ModelAdmin):
     list_display = ['Evenement', 'Prix']
     fieldsets = [
@@ -139,5 +150,3 @@ admin.site.register(Organisateur, OrganisateurAdmin)
 admin.site.register(SaisonCulturelle, SaisonCulturelleAdmin)
 admin.site.register(TypeEvenement,TypeEvenementAdmin)
 admin.site.register(Festival, FestivalAdmin)
-admin.site.register(Prix, PrixAdmin)
-admin.site.register(Tarification, TarificationAdmin)

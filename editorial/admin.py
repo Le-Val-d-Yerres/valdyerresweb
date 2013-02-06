@@ -12,6 +12,8 @@ class DocumentAttacheInline(admin.TabularInline):
     model = DocumentAttache
     extra = 5
     max_num = 15
+    
+
 
 
 class AdminActualite(admin.ModelAdmin):

@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.http import HttpRequest
 from django.utils.cache import get_cache_key
-
+from PIL import Image
 
 
 
@@ -34,16 +34,20 @@ def deserialize(base64pickleditem):
     return pickle.loads(pickleditem)
 
 
-def pdftojpg(pdfFilePath):
+def pdftojpg(pdfFilePath, subpath = "/img/"):
     outpoutepng = pdfFilePath.replace(".pdf",".png")
     head,tail = os.path.split(outpoutepng)
-    head = head+"/img/"
+    head = head+subpath
     outpoutepng = os.path.join(head,tail)
     commande = "pdftoppm -png -l 1 "+pdfFilePath+" "+outpoutepng.replace(".png","")
     os.system(commande)
     tmpoutpoute = outpoutepng.replace(".png","-01.png")
     os.rename(tmpoutpoute, outpoutepng)
-    return outpoutepng
+    image = Image.open(outpoutepng)
+    outpoutejpg = outpoutepng.replace(".png",".jpg")
+    image.save(outpoutejpg, "JPEG", quality=90, optimize=True, progressive=True)
+    os.remove(outpoutepng)
+    return outpoutejpg
 
     
 

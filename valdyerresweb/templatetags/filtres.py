@@ -180,9 +180,9 @@ def resize(myfile, size='100x100x1'):
         image = ImageOps.fit(Image.open(filename), (x,y), Image.ANTIALIAS)
           
         try:
-            image.save(miniature_filename, image.format, quality=90, optimize=True, progressive=True)
+            image.save(miniature_filename, "JPEG", quality=90, optimize=True, progressive=True)
         except:
-            image.save(miniature_filename, image.format, quality=90)
+            image.save(miniature_filename, "JPEG", quality=90)
     
     if logo is True:
         return miniature_url.replace(settings.STATIC_ROOT,settings.STATIC_URL)
@@ -195,7 +195,7 @@ def resize(myfile, size='100x100x1'):
 def expand(myfile, size='100x100x1'):
     logo = False 
     try:
-        path = myfile.path.replace(settings.MEDIA_ROOT,"") #TODO: trouver pkoi Image et Filebrowsefield renvoient des chemins différents
+        path = myfile.path.replace(settings.MEDIA_ROOT,"")
         path = settings.MEDIA_ROOT+path
     except AttributeError:
         path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
@@ -236,9 +236,9 @@ def expand(myfile, size='100x100x1'):
         #image = resizeandcrop(image, (x,y), True)
        
         try:
-            image.save(miniature_filename, image.format, quality=90, optimize=True, progressive=True)
+            image.save(miniature_filename, "JPEG", quality=90, optimize=True, progressive=True)
         except:
-            image.save(miniature_filename, image.format, quality=90)
+            image.save(miniature_filename, "JPEG", quality=90)
     
     if logo is True:
         return miniature_url.replace(settings.STATIC_ROOT,settings.STATIC_URL)
