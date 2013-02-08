@@ -111,3 +111,14 @@ thead{
 	background-color:#CCCCCC;
 }
 
+.label-complet{
+	border: 1px dashed #fff;
+	font-size:2em;
+	line-height: 2em;
+	float:left;
+	z-index:9999;
+	box-shadow: 1px 1px 3px #444444;
+	position: relative;
+	
+	transform: rotate(-25deg);
+}

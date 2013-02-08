@@ -50,7 +50,7 @@
 				{% endif %}
 			</ul>
 		</div>
-		<div class="span12">
+		<div class="span11">
 			<div class="page-header">
 				{% if festival %}
 					<h1><a href="{% url evenements.views.SaisonDetailsHtml slug=festival.slug %}">{{ festival.nom }}</a></h1>
@@ -84,7 +84,7 @@
 			<div class="row-fluid">
 				<div class="span6">
 					
-					<h2>Les évènements à venir : </h2>
+					<h2>Les événements à venir : </h2>
 					
 					<div style="border:1px solid #ccc;">
 						{% if flash %}
@@ -128,7 +128,7 @@
 			{% if evenementspasses %}
 			<div class="row-fluid">
 				<div class="span6">
-					<h2>Les évènements passés: </h2>
+					<h2>Les événements passés: </h2>
 					<div style="border:1px solid #ccc;">
 						{% if flash %}
 						<div class="alert alert-error">

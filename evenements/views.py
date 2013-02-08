@@ -548,8 +548,8 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
         saison = Saison.objects.select_related().select_subclasses().get(slug=slug)
         evenement_qr = GenerationQrCode(EvenementDetailsIcalendar(evenement))
         evenement.lieu = Lieu.objects.select_subclasses().get(id=evenement.lieu.id)
-        tarification = Prix.objects.filter(evenement = evenement.id)
-        documents_attaches =  DocumentAttache.objects.filter(evenement = evenement.id)
+        tarification = Prix.objects.filter(evenement = evenement.id).order_by('prix')
+        documentattache =  DocumentAttache.objects.filter(reference = evenement.id)
         
         festival = None
         if type(saison) == Festival:
@@ -568,7 +568,7 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
         print a_venir
     except SaisonCulturelle.DoesNotExist:
         raise Http404
-    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'festival':festival ,'tarification':tarification,'documents_attaches':documents_attaches, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr, 'a_venir':a_venir })
+    return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'festival':festival ,'tarification':tarification,'documentattache':documentattache, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr, 'a_venir':a_venir })
 
 
 

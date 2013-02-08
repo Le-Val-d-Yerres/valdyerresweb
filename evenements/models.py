@@ -79,7 +79,8 @@ class Evenement(models.Model):
     type = models.ForeignKey(TypeEvenement)
     lieu = models.ForeignKey(Lieu)
     publish = models.BooleanField("Publié")
-    haut_page = models.BooleanField("Haut de page")
+    page_accueil = models.BooleanField("Page d'accueil", default =  False)
+    complet = models.BooleanField("Ce spectacle est complet", default = False)
     slug = models.SlugField(max_length=255, unique=True)
     
     
@@ -101,7 +102,7 @@ class Prix(models.Model):
     
 class DocumentAttache(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom") 
-    document = FileBrowseField("Document", max_length=200, directory="editorial/docs", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
+    document = FileBrowseField("Document", max_length=200, directory="evenements/docs", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
     reference = models.ForeignKey(Evenement)    
     
     

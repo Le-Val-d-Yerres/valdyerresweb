@@ -25,7 +25,7 @@
 					<li class="active">Agenda<li>
 			</ul>
 		</div>
-		<div class="span12">
+		<div class="span11">
 			<div class="page-header">
 				<h1>Les événements à venir : </h1>
 
@@ -106,7 +106,7 @@
 						{% endfor %}
 						<li class="divider"></li>
 						<li {% if typeslug == "tous" %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug="tous" period=period orga_slug=orgaslug %}">Tous types d'évènements</a>
+							<a href="{% url agenda-type-period-orga type_slug="tous" period=period orga_slug=orgaslug %}">Tous types d'événements</a>
 						</li>
 						<li class="divider"></li>
 						<li class="nav-header">

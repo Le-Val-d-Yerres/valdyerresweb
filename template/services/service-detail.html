@@ -9,7 +9,7 @@
 {% block contenu %}	
 <div class="container" style="margin-top:60px;">
 	<div class="row-fluid">
-		<div class="span12">
+		<div class="span11">
 			<ul class="breadcrumb">
 				<li>
 					<a href="/">Accueil</a>
@@ -20,13 +20,13 @@
 				</li>
 			</ul>
 		</div>
-		<div class="span12">
+		<div class="span11">
 		<h1><a href="{% url services.views.ServiceDetail service_slug=service.slug %}">{{ service.nom }}</a></h1>
-		<hr/>
+		
 		</div>
 		<div class="span7">
 			{{service.description|safe}}
-			<hr/>
+			
 		</div>
 		<div class="span4">
 		<ul class="nav nav-tabs nav-stacked">

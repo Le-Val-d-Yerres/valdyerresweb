@@ -9,12 +9,12 @@
  */
  
 
-@import url(http://fonts.googleapis.com/css?family=Signika+Negative:400,700);
+/*@import url(http://fonts.googleapis.com/css?family=Signika+Negative:400,700);*/
 
 @font-face{
-	 font-family: 'Signika Negative';
-	 url(http://fonts.googleapis.com/css?family=Signika+Negative:400,700);
-	
+	font-family: 'Signika Negative';
+	src: url("/static/font/SignikaNegative-Regular.ttf");
+	font-weight:400;
 }
 
 article,
@@ -237,7 +237,7 @@ body {
   line-height: 20px;
   color: #333333;
   background-color: #ffffff;
-    background-image:url('http://geoffreydorne.com/communaute_vald/white_plaster.png');
+    background-image:url("/static/img/texture.png");
 
 }
 

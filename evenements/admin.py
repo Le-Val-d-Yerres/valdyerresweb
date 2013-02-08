@@ -8,12 +8,12 @@ import os
 
 class PrixInline(admin.TabularInline):
     model = Prix
-    extra = 5
+    extra = 2
     max_num = 15
 
 class DocumentAttacheInline(admin.TabularInline):
     model = DocumentAttache
-    extra = 5
+    extra = 2
     max_num = 15
     
 class EvenementAdmin(admin.ModelAdmin):
@@ -22,7 +22,7 @@ class EvenementAdmin(admin.ModelAdmin):
         ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
         ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url', 'url_reservation']}),
         ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
-        ('Option de publication', {'fields': ['publish']}),
+        ('Option de publication', {'fields': ['publish','complet']}),
     ]
     search_fields = ['nom']
     list_filter = ['publish']
