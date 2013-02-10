@@ -7,6 +7,8 @@
 {% load hoursfilters%}
 {% load tz %}
 
+{% block title %}{{datepage|queljour|resume:50}} dans le Val d'Yerres{% endblock %}
+
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block meta-description %}Liste des {{ fonction.nom }} du Val d'Yerres{% endblock %}

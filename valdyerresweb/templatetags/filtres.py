@@ -147,104 +147,110 @@ def resizeandcrop(img, box, fit):
 
 @register.filter(is_safe=True)   
 def resize(myfile, size='100x100x1'):
-    logo = False 
     try:
-        path = myfile.path.replace(settings.MEDIA_ROOT,"") #TODO: trouver pkoi Image et Filebrowsefield renvoient des chemins différents
-        path = settings.MEDIA_ROOT+path
-    except AttributeError:
-        path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
-        logo = True
-
-    x, y, ratio = [int(x) for x in size.split('x')]
-
-
-    filehead, filetail = os.path.split(path)
-    basename, format = os.path.splitext(filetail)
-    
-    if format == ".png":
-        format = ".jpg"
-        
-    miniature = basename + '_' + size + format
-    filename = path
-    filehead = os.path.join(filehead,'mini')
-    if not os.path.exists(filehead):
-        os.makedirs(filehead)
-    miniature_filename = os.path.join(filehead, miniature)
-    miniature_url = filehead + '/' + miniature
-    
-    if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
-        os.unlink(miniature_filename)
-
-    if not os.path.exists(miniature_filename):
-       
-        image = ImageOps.fit(Image.open(filename), (x,y), Image.ANTIALIAS)
-          
+        logo = False 
         try:
-            image.save(miniature_filename, "JPEG", quality=90, optimize=True, progressive=True)
-        except:
-            image.save(miniature_filename, "JPEG", quality=90)
+            path = myfile.path.replace(settings.MEDIA_ROOT,"") #TODO: trouver pkoi Image et Filebrowsefield renvoient des chemins différents
+            path = settings.MEDIA_ROOT+path
+        except AttributeError:
+            path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
+            logo = True
     
-    if logo is True:
-        return miniature_url.replace(settings.STATIC_ROOT,settings.STATIC_URL)
+        x, y, ratio = [int(x) for x in size.split('x')]
+    
+    
+        filehead, filetail = os.path.split(path)
+        basename, format = os.path.splitext(filetail)
+        
+        if format == ".png":
+            format = ".jpg"
             
-    return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
+        miniature = basename + '_' + size + format
+        filename = path
+        filehead = os.path.join(filehead,'mini')
+        if not os.path.exists(filehead):
+            os.makedirs(filehead)
+        miniature_filename = os.path.join(filehead, miniature)
+        miniature_url = filehead + '/' + miniature
+        
+        if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
+            os.unlink(miniature_filename)
+    
+        if not os.path.exists(miniature_filename):
+           
+            image = ImageOps.fit(Image.open(filename), (x,y), Image.ANTIALIAS)
+              
+            try:
+                image.save(miniature_filename, "JPEG", quality=90, optimize=True, progressive=True)
+            except:
+                image.save(miniature_filename, "JPEG", quality=90)
+        
+        if logo is True:
+            return miniature_url.replace(settings.STATIC_ROOT,settings.STATIC_URL)
+            
+        return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
+    
+    except:
+        return "fileerror.jpg"
 
 
 
 @register.filter(is_safe=True)   
 def expand(myfile, size='100x100x1'):
-    logo = False 
-    try:
-        path = myfile.path.replace(settings.MEDIA_ROOT,"")
-        path = settings.MEDIA_ROOT+path
-    except AttributeError:
-        path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
-        logo = True
-
-    x, y, ratio = [int(x) for x in size.split('x')]
-
-
-    filehead, filetail = os.path.split(path)
-    basename, format = os.path.splitext(filetail)
-    
-    if format == ".png":
-        format = ".jpg"
-        
-    miniature = basename + '_' + size + format
-    filename = path
-    filehead = os.path.join(filehead,'mini')
-    if not os.path.exists(filehead):
-        os.makedirs(filehead)
-    miniature_filename = os.path.join(filehead, miniature)
-    miniature_url = filehead + '/' + miniature
-    
-    if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
-        os.unlink(miniature_filename)
-
-    if not os.path.exists(miniature_filename):
-       
-        image = Image.open(filename)
-        for i in range(0,15):
-            image = image.filter(ImageFilter.BLUR)
-            
-        x2, y2 = image.size
-        x3 = (x2*2)/100
-        
-        image = image.crop((x3,0,x2-x3,y2))  
-        image = ImageOps.fit(image, (x,y), Image.ANTIALIAS)
-        #image = ImageChops.offset(image, x,y)
-        #image = resizeandcrop(image, (x,y), True)
-       
+    try:   
+        logo = False 
         try:
-            image.save(miniature_filename, "JPEG", quality=90, optimize=True, progressive=True)
-        except:
-            image.save(miniature_filename, "JPEG", quality=90)
+            path = myfile.path.replace(settings.MEDIA_ROOT,"")
+            path = settings.MEDIA_ROOT+path
+        except AttributeError:
+            path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
+            logo = True
     
-    if logo is True:
-        return miniature_url.replace(settings.STATIC_ROOT,settings.STATIC_URL)
+        x, y, ratio = [int(x) for x in size.split('x')]
+    
+    
+        filehead, filetail = os.path.split(path)
+        basename, format = os.path.splitext(filetail)
+        
+        if format == ".png":
+            format = ".jpg"
             
-    return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
-
+        miniature = basename + '_' + size + format
+        filename = path
+        filehead = os.path.join(filehead,'mini')
+        if not os.path.exists(filehead):
+            os.makedirs(filehead)
+        miniature_filename = os.path.join(filehead, miniature)
+        miniature_url = filehead + '/' + miniature
+        
+        if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
+            os.unlink(miniature_filename)
+    
+        if not os.path.exists(miniature_filename):
+           
+            image = Image.open(filename)
+            for i in range(0,15):
+                image = image.filter(ImageFilter.BLUR)
+                
+            x2, y2 = image.size
+            x3 = (x2*2)/100
+            
+            image = image.crop((x3,0,x2-x3,y2))  
+            image = ImageOps.fit(image, (x,y), Image.ANTIALIAS)
+            #image = ImageChops.offset(image, x,y)
+            #image = resizeandcrop(image, (x,y), True)
+           
+            try:
+                image.save(miniature_filename, "JPEG", quality=90, optimize=True, progressive=True)
+            except:
+                image.save(miniature_filename, "JPEG", quality=90)
+        
+        if logo is True:
+            return miniature_url.replace(settings.STATIC_ROOT,settings.STATIC_URL)
+                
+        return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
+    except:
+        return "fileerror.jpg"
 
 # evenements
 @register.filter(is_safe=True) 
