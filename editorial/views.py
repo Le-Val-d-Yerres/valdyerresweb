@@ -202,16 +202,37 @@ def Ephemeride(request,jour='aujourd-hui'):
     equipements_qst = Equipement.objects.all().select_related().order_by('fonction','ville__nom','nom')
     equipement_dict = dict([obj.id,obj] for obj in equipements_qst)
     listhoraires = list()
-    equipements = list()
+#    equipements = list()
+#    for equipement in equipements_qst:
+#            periodes = Periode.objects.filter(date_debut__lte=datepage , date_fin__gte=datepage).filter(horaires__equipement=equipement.id).order_by('date_debut')
+#            if len(periodes) >= 1:
+#                periodes.query.group_by = ['periode_id']
+#                periode_active = periodes[len(periodes) - 1]
+#                horaires = Horaires.objects.filter(equipement=equipement.id).filter(periodes__id=periode_active.id).select_related()
+#                listhoraires.append(horaires)
+#                if equipement not in equipements:
+#                    equipements.append(equipement_dict[equipement.id])
+
+    
     for equipement in equipements_qst:
-            periodes = Periode.objects.filter(date_debut__lte=datepage , date_fin__gte=datepage).filter(horaires__equipement=equipement.id).order_by('date_debut')
-            if len(periodes) >= 1:
-                periodes.query.group_by = ['periode_id']
-                periode_active = periodes[len(periodes) - 1]
-                horaires = Horaires.objects.filter(equipement=equipement.id).filter(periodes__id=periode_active.id).select_related()
-                listhoraires.append(horaires)
-                if equipement not in equipements:
-                    equipements.append(equipement_dict[equipement.id])
+        periodes = Periode.objects.filter(date_debut__lte=datepage , date_fin__gte=datepage).filter(horaires__equipement=equipement.id).order_by('date_debut')
+        if len(periodes) >= 1:
+            periodes.query.group_by = ['periode_id']
+            periode_active = periodes[len(periodes) - 1]
+            horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(periodes__id=periode_active.id)
+            listhoraires.append(horaires)
+    
+
+    numjour = datepage.isoweekday()
+    equipements_ouverts = list()        
+    for horaires in listhoraires:
+        for horaire in horaires:
+            myJour = horaire.GetDay(numjour)
+            if myJour.matin_ferme and myJour.am_ferme:
+                continue
+            else:
+                if horaire.equipement not in equipements_ouverts:
+                    equipements_ouverts.append(horaire.equipement)
 
     #pagination
     suivant_date = datepage + datetime.timedelta(days=1)
@@ -225,5 +246,5 @@ def Ephemeride(request,jour='aujourd-hui'):
         precedent = None
         
     
-    return render_to_response('editorial/ephemeride.html',{'datepage':datepage,'num_jour':datepage.isoweekday(),'seances' : seances,'evenements':evenements, 'equipements': equipements , 'listhoraires':listhoraires, 'suivant_date':suivant_date, 'precedent_date':precedent_date , 'suivant':suivant,'precedent':precedent})
+    return render_to_response('editorial/ephemeride.html',{'datepage':datepage,'num_jour':datepage.isoweekday(),'seances' : seances,'evenements':evenements, 'equipements': equipements_ouverts , 'listhoraires':listhoraires, 'suivant_date':suivant_date, 'precedent_date':precedent_date , 'suivant':suivant,'precedent':precedent})
     

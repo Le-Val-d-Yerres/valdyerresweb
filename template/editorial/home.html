@@ -97,7 +97,7 @@
 						{% for evenement in evenements_une_lg1 %}
 						<li class="span4">
 							<div class="thumbnail">
-								<img alt="300x200" style="width: 300px; height: 200px;" src="{{evenement.image|resize:'300x200x1'}}">
+								<img alt="300x200" style="width: 300px; height: 200px;" src="{{evenement.image|resize:'225x200x1'}}">
 								<div class="caption">
 									<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
 									<br/>
@@ -124,7 +124,7 @@
 						{% for evenement in evenements_une_lg2 %}
 						<li class="span4">
 							<div class="thumbnail">
-								<img alt="{{evenement.nom|safe}}" style="width: 300px; height: 200px;" src="{{evenement.image|resize:'300x200x1'}}">
+								<img alt="{{evenement.nom|safe}}" style="width: 300px; height: 200px;" src="{{evenement.image|resize:'225x200x1'}}">
 								<div class="caption">
 									<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
 									<br/>
@@ -146,7 +146,7 @@
 				<div class="row ">
 					<div class="span3 box-right">
 						<h3><a href="#">Lettre d'informations</a></h3>
-						<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://widget.mailjet.com/877673355fe4c1457e9452b2c2d36e532e12101a.html" width="250" height="138"></iframe>
+						<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://widget.mailjet.com/877673355fe4c1457e9452b2c2d36e532e12101a.html" width="220" height="138"></iframe>
 					</div>
 					<div class="span3 box-right">
 						<h3><a href="{% url editorial.views.Ephemeride %}">Aujourd'hui
@@ -155,18 +155,18 @@
 						<ul style="list-style: none;">
 							{% if cinema_count > 0  %}
 							<li>
-								<a href="#" class="circle-btn">{{cinema_count|deuxchiffres}}</a><a href="#">séance{{cinema_count|pluralize}} de cinéma</a>
+								<a href="{% url editorial.views.Ephemeride %}#cinemas" class="circle-btn">{{cinema_count|deuxchiffres}}</a><a href="{% url editorial.views.Ephemeride %}#cinemas">séance{{cinema_count|pluralize}} de cinéma</a>
 							</li>
 
 							{% endif %}
 							{% if evenements_count > 0  %}
 							<li>
-								<a href="#" class="circle-btn">{{evenements_count|deuxchiffres}}</a><a href="#"> événement{{evenements_count|pluralize}}</a>
+								<a href="{% url editorial.views.Ephemeride %}#evenements" class="circle-btn">{{evenements_count|deuxchiffres}}</a><a href="{% url editorial.views.Ephemeride %}#evenements"> événement{{evenements_count|pluralize}}</a>
 							</li>
 							{% endif %}
 							{% if equipements_count > 0  %}
 							<li>
-								<a href="#" class="circle-btn">{{equipements_count|deuxchiffres}}</a><a href="#">équipement{{equipements_count|pluralize}}  ouvert{{equipements_count|pluralize}}</a>
+								<a href="{% url editorial.views.Ephemeride %}#equipements" class="circle-btn">{{equipements_count|deuxchiffres}}</a><a href="{% url editorial.views.Ephemeride %}#equipements">équipement{{equipements_count|pluralize}}  ouvert{{equipements_count|pluralize}}</a>
 							</li>
 							{% endif %}
 						</ul>
@@ -175,7 +175,7 @@
 						<h3><a href="{% url editorial.views.Magazines %}">Le Magazine</a></h3>
 						<p>
 							<h4><a href="{% url editorial.views.Magazines %}">{{magazine.date_parution|moisannee}}</a></h4>
-							<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" src="{{magazine.image|resize:'250x300x1'}}" alt="{{magazine.titre|safe}}"></a>
+							<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
 							Dossier : {{magazine.titre|safe}}
 						</p>
 					</div>
@@ -187,7 +187,7 @@
 							<ul style="list-style: none;" >
 								{% for annonces in annonceslists %}
 								<li>
-									<a href="#" class="circle-btn">{{annonces.list|length|deuxchiffres}}</a><a href="#"> annonces {{annonces.grouper}}</a>
+									<a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonces.grouper.slug %}" class="circle-btn">{{annonces.list|length|deuxchiffres}}</a><a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonces.grouper.slug %}"> annonces {{annonces.grouper}}</a>
 								</li>
 								{% endfor%}
 							</ul>
