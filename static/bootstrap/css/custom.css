@@ -1,24 +1,44 @@
-.table th,
-.table td {
-  vertical-align: middle;
+.table th, .table td {
+	vertical-align: middle;
+}
+h3 {
+	line-height: 1.10em;
 }
 .img-polaroid-fix {
-  padding: 4px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
- margin-bottom: 50px;
--webkit-border-radius: 5px;
-border-radius: 5px;
+	padding: 4px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	margin-bottom: 50px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
 
+.box-right {
+	padding-left: 15px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	padding-bottom:20px;
+	font-size: 0.95em;
+}
+.box-right ul {
+	margin: 0;
+padding: 0;
+list-style-type: none;
 }
 .navbar .brand {
-    max-height: 30px;
-    overflow: visible;
-    padding-top: 4px;
-    padding-bottom: 0px;
+	max-height: 30px;
+	overflow: visible;
+	padding-top: 4px;
+	padding-bottom: 0px;
 }
 .linklist {
 	list-style: none;
@@ -26,42 +46,39 @@ border-radius: 5px;
 
 .linklist  img {
 	margin: 5px;
-	
 }
 
-.bkgd-white{
+.bkgd-white {
 	background: white;
 }
 
-.img-circle{
+.img-circle {
 	padding: 4px;
 	border: 1px solid #ccc;
 }
-thead{
-	color:#CCCCCC;
+thead {
+	color: #CCCCCC;
 	font-size: 1.5em;
 	font-weight: normal;
 }
 
-
 .carouselbkgd {
-    left: 0;
-    min-width: 100%;
+	left: 0;
+	min-width: 100%;
 }
 
 .carousel-caption-large {
-    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.80);
-    bottom: 10%;
-    left: 15%;
-    padding: 15px;
-    position: absolute;
-    right: 20%;
-    border-radius: 5px;
-    display: block;
-   
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.80);
+	bottom: 10%;
+	left: 15%;
+	padding: 15px;
+	position: absolute;
+	right: 20%;
+	border-radius: 5px;
+	display: block;
 }
 .carousel-caption-large img {
-	float:left;
+	float: left;
 }
 .carousel-caption-large h2 {
 	text-shadow: 0.1em 0.1em 0.2em white;
@@ -70,56 +87,76 @@ thead{
 	color: black;
 }
 
-.carousel-control{
+.carousel-control {
 	border: 1px solid #CCCCCC;
 	border-radius: 0px;
-	top:50%;
+	top: 50%;
 }
 .carousel-caption {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height:70%;
-  padding: 50px;
-  background: #333333;
-  background: rgba(0, 0, 0, 0.75);
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 70%;
+	padding: 50px;
+	background: #333333;
+	background: rgba(0, 0, 0, 0.75);
 }
 @media (max-width: 480px) {
 	.carousel-caption {
-    position: static;
-  }
-  .carousel-inner  > .item img{
-  	display: none;
-  }
+		position: static;
+	}
+	.carousel-inner > .item img {
+		display: none;
+	}
 }
 
-.row{
-	
+.border-btm-sep {
 	border-bottom: 1px solid #CCCCCC;
 }
-.page-header, .breadcrumb,.row-fluid , .span12 , h1{
-  	background-color: white;
+.page-header, .breadcrumb, .row-fluid, .span12, h1 {
+	background-color: white;
 }
-.pagination-caroussel
-{
-	position:absolute;
-	bottom:-35px;
-	left:45%;
+.pagination-caroussel {
+	position: absolute;
+	bottom: -35px;
+	left: 45%;
 }
-.pagination-caroussel ul > .disabled{
-	background-color:#CCCCCC;
+.pagination-caroussel ul > .disabled {
+	background-color: #CCCCCC;
 }
 
-.label-complet{
+.label-complet {
 	border: 1px dashed #fff;
-	font-size:2em;
+	font-size: 2em;
 	line-height: 2em;
-	float:left;
-	z-index:9999;
+	float: left;
+	z-index: 9999;
 	box-shadow: 1px 1px 3px #444444;
 	position: absolute;
-	
 	transform: rotate(-25deg);
 	-webkit-transform: rotate(-25deg);
+}
+
+.circle-btn {
+  padding:15px;
+  margin:5px;
+  font-size:  1.15em;
+  font-weight: bold;
+  line-height: 60px;
+  color: #ffffff;
+  text-align: center;
+  background: #50B1E4;
+  
+  -webkit-border-radius: 100px;
+     -moz-border-radius: 100px;
+          border-radius:100px;
+ 
+	
+}
+.thumbnail{
+	min-height: 450px;
+}
+.thumbnail h3{
+	font-size: 1em;
 }

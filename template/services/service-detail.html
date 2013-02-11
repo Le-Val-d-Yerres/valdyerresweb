@@ -1,7 +1,8 @@
 {% extends "include/main.html" %}
 
 {% load menufilters %}
-	
+		{% block title %} {{service.nom}}{% endblock %}
+
 	{% block menu %}{% getmenu %}{% endblock %}
 	
 	{% block meta-description %}{{service.meta_description}}{% endblock %}

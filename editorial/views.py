@@ -30,13 +30,14 @@ def Home(request):
     enddate = enddate.replace(tzinfo=utcTZ)
     
     actualites = Actualite.objects.filter(publie=True).order_by('-date_publication')[0:3]
-    
+    evenements_une_lg1 = Evenement.objects.filter(page_accueil=False,publish=True,fin__gt = startdate).order_by('debut')[0:3]
+    evenements_une_lg2 = Evenement.objects.filter(page_accueil=True,publish=True,fin__gt = startdate).order_by('debut')[0:3]
     carroussel = PageBase.objects.filter(publie=True,carroussel=True).select_subclasses().order_by('index_carroussel')
     
     #nb de seances de vinéma aujourd'hui
     cinema_count = Seance.objects.filter(date_debut__gt = startdate, date_fin__lt = enddate).count()
     #nb d'evenements aujourd'hui
-    evenements_count = Evenement.objects.filter(debut__gt = startdate, fin__lt = enddate).count()
+    evenements_count = Evenement.objects.filter(publish=True,debut__gt = startdate, fin__lt = enddate).count()
     
     #nb d'equipements ouverts aujourd'hui 
     equipements = Equipement.objects.all()
@@ -79,7 +80,7 @@ def Home(request):
     notes = PageStatique.objects.filter(publie=True,note_page_accueil=True)
     
     
-    return render_to_response('editorial/home.html', {'carroussel' : carroussel, 'actualites':actualites, 'cinema_count': cinema_count,'evenements_count':evenements_count,'equipements_count':equipements_count, 'magazine':magazine, 'annoncesemploi': annoncesemploi, 'notes':notes })
+    return render_to_response('editorial/home.html', {'carroussel' : carroussel, 'actualites':actualites, 'cinema_count': cinema_count,'evenements_count':evenements_count,'equipements_count':equipements_count, 'magazine':magazine, 'annoncesemploi': annoncesemploi, 'notes':notes, 'evenements_une_lg1':evenements_une_lg1, 'evenements_une_lg2': evenements_une_lg2 })
 
 def ActuList(request):
     pages = get_list_or_404(Actualite.objects.order_by('-date_publication'))
@@ -161,7 +162,7 @@ def Rapports(request):
 
 @cache_control(must_revalidate=True, max_age=3600)
 @cache_page(3600)
-def Ephemeride(request,jour):
+def Ephemeride(request,jour='aujourd-hui'):
     jourdate = jour.split('-')
     datepage = date.today()
     

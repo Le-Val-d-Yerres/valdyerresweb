@@ -60,6 +60,159 @@
 	<a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
 </div>
 
+<div class="container">
+	<div class="row">
+		<div class="span12" style="padding-top:15px;">
+			<div class="span8">
+				<h2><a href="{% url editorial.views.ActuList  %}">Les actualités du Val d'Yerres :</a></h2>
+
+				{% for page in actualites %}
+
+				<div class="row">
+					<div class="span3"><img class="img-polaroid" src="{{page.image|resize:'300x225x1'}}">
+					</div>
+					<div class="span5">
+
+						<h3><a href="{% url editorial.views.ActuDetail actualite_slug=page.slug   %}">{{page.titre|safe}}</a>
+						<br/>
+						<small>Publié le {{page.date_publication|dateSimple}}. </small></h3>
+
+						<p>
+							{{page.contenu|resume:200|safe}}
+						</p>
+						<p style="text-align: right;" >
+							<a class="btn btn-primary" href="{% url editorial.views.ActuDetail actualite_slug=page.slug   %}">Lire la suite</a>
+						</p>
+
+					</div>
+				</div>
+				<hr/>
+
+				{% endfor %}
+				{%if evenements_une_lg1%}
+				<h2><a href="{% url evenements.views.AgendaGlobal  %}">Prochains événements :</a></h2>
+
+				<div class="row-fluid">
+					<ul class="thumbnails">
+						{% for evenement in evenements_une_lg1 %}
+						<li class="span4">
+							<div class="thumbnail">
+								<img alt="300x200" style="width: 300px; height: 200px;" src="{{evenement.image|resize:'300x200x1'}}">
+								<div class="caption">
+									<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
+									<br/>
+									<small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .</small></h3>
+
+									{{evenement.description|safe|resume:150}}
+									<p style="text-align: right;" >
+										<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+									</p>
+								</div>
+							</div>
+						</li>
+						{%endfor%}
+					</ul>
+					<p style="text-align: right;" >
+					<a class="btn btn-primary" href="{% url evenements.views.AgendaGlobal  %}">Voir tous les événements à venir</a>
+					</p>
+				</div>
+				{%endif%}
+				{%if evenements_une_lg2%}
+				<h2><a href="{% url evenements.views.AgendaGlobal  %}">A ne pas manquer:</a></h2>
+				<div class="row-fluid">
+					<ul class="thumbnails">
+						{% for evenement in evenements_une_lg2 %}
+						<li class="span4">
+							<div class="thumbnail">
+								<img alt="{{evenement.nom|safe}}" style="width: 300px; height: 200px;" src="{{evenement.image|resize:'300x200x1'}}">
+								<div class="caption">
+									<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
+									<br/>
+									<small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .</small></h3>
+
+									{{evenement.description|safe|resume:150}}
+									<p style="text-align: right;" >
+										<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+									</p>
+								</div>
+							</div>
+						</li>
+						{%endfor%}
+					</ul>
+				</div>
+				{%endif%}
+			</div>
+			<div class="span3">
+				<div class="row ">
+					<div class="span3 box-right">
+						<h3><a href="#">Lettre d'informations</a></h3>
+						<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://widget.mailjet.com/877673355fe4c1457e9452b2c2d36e532e12101a.html" width="250" height="138"></iframe>
+					</div>
+					<div class="span3 box-right">
+						<h3><a href="{% url editorial.views.Ephemeride %}">Aujourd'hui
+						<br/>
+						dans le Val d'Yerres</h3></a>
+						<ul style="list-style: none;">
+							{% if cinema_count > 0  %}
+							<li>
+								<a href="#" class="circle-btn">{{cinema_count|deuxchiffres}}</a><a href="#">séance{{cinema_count|pluralize}} de cinéma</a>
+							</li>
+
+							{% endif %}
+							{% if evenements_count > 0  %}
+							<li>
+								<a href="#" class="circle-btn">{{evenements_count|deuxchiffres}}</a><a href="#"> événement{{evenements_count|pluralize}}</a>
+							</li>
+							{% endif %}
+							{% if equipements_count > 0  %}
+							<li>
+								<a href="#" class="circle-btn">{{equipements_count|deuxchiffres}}</a><a href="#">équipement{{equipements_count|pluralize}}  ouvert{{equipements_count|pluralize}}</a>
+							</li>
+							{% endif %}
+						</ul>
+					</div>
+					<div class="span3 box-right">
+						<h3><a href="{% url editorial.views.Magazines %}">Le Magazine</a></h3>
+						<p>
+							<h4><a href="{% url editorial.views.Magazines %}">{{magazine.date_parution|moisannee}}</a></h4>
+							<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" src="{{magazine.image|resize:'250x300x1'}}" alt="{{magazine.titre|safe}}"></a>
+							Dossier : {{magazine.titre|safe}}
+						</p>
+					</div>
+					{% if annoncesemploi %}
+					<div class="span3 box-right">
+						<h3><a href="{% url annoncesemploi.views.AnnoncesList %}">Emploi</a></h3>
+						{% regroup annoncesemploi by service as annonceslists%}
+						<p>
+							<ul style="list-style: none;" >
+								{% for annonces in annonceslists %}
+								<li>
+									<a href="#" class="circle-btn">{{annonces.list|length|deuxchiffres}}</a><a href="#"> annonces {{annonces.grouper}}</a>
+								</li>
+								{% endfor%}
+							</ul>
+						</p>
+					</div>
+					{% endif %}
+					{% if notes %}
+					<div class="span3 box-right">
+						<h3><a href="#noubliezpas">N'oubliez pas ...</a></h3>
+						<ul>
+						{% for note in notes %}
+							<li><a href="{% url editorial.views.PageDetail page_slug=note.slug %}">{{ note.titre }}</a></li>
+						{% endfor%}
+						</ul>
+					</div>
+					{% endif %}
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
 {% endblock%}
 
 {% block jsload%}
@@ -67,10 +220,13 @@
 <script src="/static/bootstrap/js/bootstrap.js"></script>
 <script>
 	$(document).ready(function() {
-		
-		 var myCarousel = $('.carousel');
-		 myCarousel.carousel({interval: 5000,pause: false});
-		
+
+		var myCarousel = $('.carousel');
+		myCarousel.carousel({
+			interval : 5000,
+			pause : false
+		});
+
 		$('.carousel').bind('slid', function(e) {
 
 			index = $('.carousel .active').index('.carousel .item');
@@ -82,18 +238,15 @@
 			myCarousel.carousel($(this).index());
 
 		});
-		
+
 		$('.carousel-control').bind('click', function(e) {
-			if ($(this).attr('data-slide') == 'prev')
-			{
+			if ($(this).attr('data-slide') == 'prev') {
 				myCarousel.carousel('prev');
-			}
-			else
-			{
+			} else {
 				myCarousel.carousel('next');
 			}
 		});
-		
+
 	}); 
 </script>
 {% endblock%}

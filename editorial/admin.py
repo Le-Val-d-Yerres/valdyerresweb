@@ -55,7 +55,7 @@ class AdminPageStatique(admin.ModelAdmin):
     list_display = ['titre','date_creation','publie', 'carroussel']
     prepopulated_fields = {'slug':('titre',),}
     fieldsets = [
-        ('Page', {'fields': ['titre', 'slug', 'meta_description', 'contenu', 'image','publie']}),
+        ('Page', {'fields': ['titre', 'slug', 'meta_description', 'contenu', 'image','publie','note_page_accueil']}),
         ('Carrousel', {
                        
                        'fields': ['carroussel','index_carroussel'],

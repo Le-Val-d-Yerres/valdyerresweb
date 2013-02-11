@@ -18,12 +18,19 @@ mois_courts = [u'jan', u'fév', u'mars', u'avril', u'mai', u'juin', u'juil', u'a
     
 
 @register.filter(is_safe=True)
+def deuxchiffres(nombre):
+    if nombre < 10:
+        return "0"+str(nombre)
+    else:
+        return nombre
+
+@register.filter(is_safe=True)
 def monnaie(nombre):
     if nombre == 0.0:
         return "Gratuit"
     else:
         nombre = "{0:10.2f}".format(nombre)
-        nombre = str(nombre)+" €"
+        nombre = str(nombre)+"€"
         nombre = nombre.replace(".", ",") 
         return nombre
     

@@ -29,7 +29,7 @@
 			</ul>
 		</div>
 		<div class="span11">
-			<h1><a href="">{{ page.titre }}</a></h1>
+			<h1><a href="{% url editorial.views.PageDetail page_slug=page.slug %}">{{ page.titre }}</a></h1>
 
 		</div>
 		<div class="span7">
