@@ -79,21 +79,22 @@
 			{% if evenement.image %}
 			{% if evenement.image.width >= evenement.image.height %}
 			<div class="img-polaroid-fix">
-				
-				<img alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
 				{% if a_venir and evenement.complet %}
 				<span class="label label-important label-complet">Complet</span>
 				{% endif %}
+				<img alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
+				
 			</div>
 			{% endif %}
 
 			{% if evenement.image.height > evenement.image.width %}
 			<div class ="img-polaroid-fix" style="text-align: center;">
-				
-				<img alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'300x375x1' }}">
 				{% if a_venir and evenement.complet %}
-				<span class="label label-important label-complet">Complet</span>
+				
+				<div class="label label-important label-complet">Complet</div>
 				{% endif %}
+				<img alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'300x375x1' }}">
+				
 			</div>
 			{% endif %}
 			{% endif %}

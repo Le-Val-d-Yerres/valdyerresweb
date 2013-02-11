@@ -118,7 +118,8 @@ thead{
 	float:left;
 	z-index:9999;
 	box-shadow: 1px 1px 3px #444444;
-	position: relative;
+	position: absolute;
 	
 	transform: rotate(-25deg);
+	-webkit-transform: rotate(-25deg);
 }

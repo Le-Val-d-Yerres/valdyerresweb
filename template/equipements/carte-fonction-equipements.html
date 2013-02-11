@@ -6,6 +6,8 @@
 {% load aidefilters%}
 {% load hoursfilters%}
 {% load tz %}
+
+	{% block title %}{{ fonction.pluriel }}{% endblock %}
 	
 	{% block menu %}{% getmenu %}{% endblock %}
 	

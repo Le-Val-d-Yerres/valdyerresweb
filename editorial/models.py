@@ -21,6 +21,7 @@ class PageBase(models.Model):
     
 class PageStatique(PageBase):
     date_creation = models.DateTimeField()
+    note_page_accueil = models.BooleanField("Lister dans les notes de la page d'accueil")
     
     @permalink
     def get_absolute_url(self):
