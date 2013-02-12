@@ -35,5 +35,5 @@ class PageStatiqueService(models.Model):
     
 class DocumentAttache(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom") 
-    document = FileBrowseField("Document", max_length=200, directory="documents", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
+    document = FileBrowseField("Document", max_length=200, directory="services/docs", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
     reference = models.ForeignKey(PageStatiqueService)
