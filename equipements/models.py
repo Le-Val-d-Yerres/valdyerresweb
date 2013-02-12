@@ -20,7 +20,7 @@ class EquipementFonction(models.Model):
 class Equipement(Lieu):
     fonction = models.ForeignKey(EquipementFonction)
     email = models.EmailField("Mail (facultatif)", max_length=254, blank=True)
-    telephone = models.CharField(max_length=25)
+    telephone = models.CharField(max_length=25,blank=True)
     fax = models.CharField("Fax (facultatif)", max_length=25, blank=True, null=True)
     url = models.URLField(blank=True, null=True, verbose_name="Site web")
     presentation = models.TextField(blank=True)

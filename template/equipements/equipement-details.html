@@ -41,6 +41,11 @@
 			{% if equipement.image %}
 			<img class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
 			{% endif %}
+			{% if equipement.fonction.service %}
+			<p>
+				Cet équipement est géré par le service <a href="{% url services.views.ServiceDetail service_slug=equipement.fonction.service.slug %}">{{equipement.fonction.service.nom}}</a>.
+			</p>
+			{% endif %}
 			{{ equipement.presentation|safe }}
 		</div>
 		<div class="span4">
@@ -57,8 +62,10 @@
 					<br/>
 					<span>{{ equipement.ville.code_postal }}</span> <span itemprop="addressLocality">{{ equipement.ville.nom }}</span>
 					<br/>
+					{% if equipement.telephone %}
 					<span><abbr title="Téléphone">Tel</abbr>: {{ equipement.telephone }}</span>
 					<br/>
+					{% endif %}
 
 					{% if equipement.fax %}
 					<p>
@@ -73,11 +80,6 @@
 					{% endif %}
 				</div>
 			</address>
-			{% if equipement.fonction.service %}
-			<p>
-				Cet équipement est géré par le service <a href="{% url services.views.ServiceDetail service_slug=equipement.fonction.service.slug %}">{{equipement.fonction.service.nom}}</a>
-			</p>
-			{% endif %}
 			<hr/>
 			<p style="text-align: center;">
 				<a class="btn btn-primary" href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Ajouter cet équipement à vos contacts <b>(Vcard)</b></a>

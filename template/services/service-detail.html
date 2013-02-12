@@ -44,7 +44,7 @@
 		{% if equipements|length > 0 %}
 		<div class="span4">
 		{% with total=equipements|length%}
-		<p>{{total}} équipement{{total|pluralize}} geré{{total|pluralize}} :</p>
+		<p>Ce service gère {{total}} équipement{{total|pluralize}}:</p>
 		<ul class="nav nav-tabs nav-stacked">
 			{% for equipement in equipements %}
 			<li><a href="{{equipement.get_absolute_url}}">{{equipement.nom}}, {{equipement.ville}}.</a> </li>
