@@ -1,43 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="fr" >
-<head>
-	<title>{% block title %}{% endblock %} - Le Val d'Yerres</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="{% block meta-description %}{% endblock %}" />
-	{% block import%}
-	
-	 <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
-	 <link href="/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-	 <link href="/static/bootstrap/css/custom.css" rel="stylesheet">
-	 
-	{% endblock %}
+	<head>
+		<title>{% block title %}{% endblock %} - Le Val d'Yerres</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="{% block meta-description %}{% endblock %}" />
+		{% block import%}
 
-</head>
+		<link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="/static/bootstrap/css/custom.css" rel="stylesheet">
 
-<body>
-	
-	<div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-        	<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="/"><img alt="logo" width="30" height="30" src="/static/img/Y-val-d-yerres.png"></a>
-          	<div class="nav-collapse collapse">
-            {% block menu %}{% endblock %}
-           </div>
-       </div>
-      </div>
-    </div>
-	
+		{% endblock %}
 
-{% block contenu %}{% endblock %}
-	
-{%block jsload%}{% endblock %}
-{%block mapload%}{% endblock %}
-</body>
+	</head>
+
+	<body>
+
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+					<a class="brand" href="/"><img alt="logo" width="30" height="30" src="/static/img/Y-val-d-yerres.png"></a>
+					<div class="nav-collapse collapse">
+						{% block menu %}{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% block contenu %}{% endblock %}
+
+		<div id ="footer" class="footer">
+
+			<div class="wrap">
+				<div class="container">
+					<div class="row">
+						<div class="span3">
+							<h3>Le Val d'Yerres</h3>
+							<hr/>
+							<ul>
+								<li>
+									<a href="#">Aujoud'hui</a>
+								</li>
+								<li>
+									<a href="#">Vos élus</a>
+								</li>
+								<li>
+									<a href="#">L'agenda</a>
+								</li>
+								<li>
+									<a href="#">Les équipements</a>
+								</li>
+								<li>
+									<a href="#">Emploi</a>
+								</li>
+								<li>
+									<a href="#">Développement économique</a>
+								</li>
+							</ul>
+
+						</div>
+						<div class="span3">
+							<h3>Les villes</h3>
+							<hr/>
+							<ul>
+								<li>
+									<a href="#">Boussy-Saint-Antoine</a>
+								</li>
+								<li>
+									<a href="#">Brunoy</a>
+								</li>
+								<li>
+									<a href="#">Crosne</a>
+								</li>
+								<li>
+									<a href="#">Epinay-sous-Sénart</a>
+								</li>
+								<li>
+									<a href="#">Quincy-sous-Sénart</a>
+								</li>
+								<li>
+									<a href="#">Yerres</a>
+								</li>
+							</ul>
+
+						</div>
+						<div class="span3">
+							<h3>Réseaux sociaux</h3>
+							<hr/>
+							<table>
+								<tr>
+									<td><a href="http://www.facebook.com/pages/Communaute-dAgglomeration-du-Val-dYerres/171201942911202?v=wall"><img src="/static/img/reseaux-sociaux/facebook.png"><br/>facebook</a></td>
+									<td><a href="https://twitter.com/ValdYerres"><img src="/static/img/reseaux-sociaux/twitter.png"><br/>twitter</a></td>
+								</tr>
+							</table>
+
+						</div>
+						<div class="span3">
+							<h3>Contact</h3>
+							<hr/>
+							<address>
+								<div itemscope itemtype="http://schema.org/AdministrativeArea">
+
+									<span itemprop="name"><strong><a href="http://www.levaldyerres.fr">Le Val d'Yerres
+										<br/>
+										Communauté d'Agglomération</a></strong></span>
+									<br>
+									<div itemtype="http://schema.org/PostalAddress" itemscope="" itemprop="address">
+										<span itemprop="streetAddress">78 Route Nationale 6-BP 103</span>
+										<br>
+										<span>91800</span> <span itemprop="addressLocality">Brunoy</span>
+										<br>
+										<span><abbr title="Téléphone">Tel</abbr>:  <span itemprop="telephone">01 60 47 94 20</span></span>
+										<br/>
+										<span><abbr title="Télécopie">Fax</abbr>:  01 60 47 94 39</span>
+										<br>
+
+									</div>
+								</div>
+							</address>
+
+						</div>
+						<p style="text-align: right">
+						<a href="#">Mentions légales</a> - <a href="#">Marchés publics</a> - <a href="#">Recrutements</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		</div>
+
+		{%block jsload%}{% endblock %}
+		{%block mapload%}{% endblock %}
+	</body>
 </html>

@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 class EquipementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'fonction', 'ville']
     fieldsets = [
-        ('Description', {'fields': (('nom', 'fonction'), 'presentation', 'image')}),
+        ('Description', {'fields': (('nom', 'fonction'), 'presentation', 'image', 'url')}),
         ('Adresse', {'fields': ['rue', 'ville', 'latitude', 'longitude']}),
         ('Contact', {'fields': ['telephone', 'fax', 'email']}),
     ]
@@ -40,7 +40,7 @@ class EquipementFonctionAdmin(admin.ModelAdmin):
     list_display = ['nom']
     
     fieldsets = [
-        (None, {'fields': ['nom', 'pluriel', 'picto','logo']}),
+        (None, {'fields': ['nom', 'pluriel', 'picto','logo','service']}),
     ]
     
     def save_model(self, request, obj, form, change):

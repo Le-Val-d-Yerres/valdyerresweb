@@ -154,9 +154,38 @@ thead {
  
 	
 }
+.circle-btn:hover{
+  color: white;
+  text-decoration: none;
+   background: #439BC6;
+ 
+}
 .thumbnail{
 	min-height: 450px;
 }
 .thumbnail h3{
 	font-size: 1em;
+}
+
+.footer {
+    background: none repeat scroll 0 0 #1E1E1E;
+    margin-top: 20px;
+    padding: 23px 0 26px;
+    color: white;
+}
+.footer a{
+   color:#EAEAEA;
+}
+.footer hr{
+   color:#3D3B3B;
+   border-color: #3D3B3B;
+}
+.footer ul{
+    list-style: none;
+    margin:0px;
+    padding:0px;
+}
+.footer td{
+	text-align: center;
+	padding:5px;
 }

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from services.models import Service
 from filebrowser.fields import FileBrowseField
 from localisations.models import Lieu
 from django.core.urlresolvers import reverse
@@ -11,6 +12,7 @@ class EquipementFonction(models.Model):
     logo = FileBrowseField("Logo", max_length=200, directory="picto/equipements", extensions=[".png"] ,blank=True, null=True)
     picto = FileBrowseField("Pictogramme pour geolocalisation", max_length=200, directory="picto/equipements", extensions=[".png"])
     slug = models.SlugField(max_length=255,unique=True)
+    service = models.ForeignKey(Service,blank=True,null=True,verbose_name="Service Gestionnaire")
 
     def __unicode__(self):
         return self.nom
@@ -20,6 +22,7 @@ class Equipement(Lieu):
     email = models.EmailField("Mail (facultatif)", max_length=254, blank=True)
     telephone = models.CharField(max_length=25)
     fax = models.CharField("Fax (facultatif)", max_length=25, blank=True, null=True)
+    url = models.URLField(blank=True, null=True, verbose_name="Site web")
     presentation = models.TextField(blank=True)
     meta_description = models.CharField(max_length=200)
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
