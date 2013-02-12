@@ -189,3 +189,14 @@ thead {
 	text-align: center;
 	padding:5px;
 }
+.navbar .btn-navbar{
+	color:#333333;
+	text-shadow: none;
+	-webkit-border-radius: 15px;
+     -moz-border-radius: 15px;
+          border-radius:15px;
+	
+}
+.navbar .btn-navbar:hover{
+	color:#252525;
+}
