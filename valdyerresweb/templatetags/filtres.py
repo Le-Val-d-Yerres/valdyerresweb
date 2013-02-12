@@ -109,6 +109,13 @@ def moisannee(date):
     text = mois[int(month)-1]+u" "+str(year)
     return text.capitalize()
 
+@register.filter(is_safe=True)
+def annee(date):
+    
+    year = date.year
+    
+    text = str(year)
+    return text.capitalize()
  
 @register.filter(is_safe=True)    
 def dateFormat(dateUTC):

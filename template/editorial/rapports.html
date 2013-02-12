@@ -6,6 +6,7 @@
 {% load aidefilters%}
 {% load tz %}
 
+{% block title %}Rapports d'activité:{% endblock %}
 {% block meta-description %}Les rapports d'activité du Val d'Yerres{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
@@ -39,12 +40,10 @@
 					</div>
 					<div class="span5">
 
-						<h2>{{rapport.date_parution|moisannee}}</h2>
+						<h2>Rapport {{rapport.date_parution|annee}}</h2>
 						<p>
-							Dossier : <strong>{{rapport.titre}}</strong>
-							<br/>
 
-							Téléchargez : <a href="{{rapport.document.url}}">Le rapport du Val d'Yerres ({{rapport.date_parution|moisannee|lower}}) au format PDF ({{rapport.document.filesize|filesizeformat}})</a>
+							Téléchargez : <a href="{{rapport.document.url}}">Le rapport d'activité du Val d'Yerres ({{rapport.date_parution|annee|lower}}) au format PDF ({{rapport.document.filesize|filesizeformat}})</a>
 						</p>
 					</div>
 				</div>
@@ -55,7 +54,7 @@
 
 			</div>
 		</div>
-		<div class="span12">
+		<div class="span11">
 			<div class="pagination pagination-large pagination-centered">
 				<ul>
 					{% if rapports.has_previous %}

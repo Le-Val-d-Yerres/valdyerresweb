@@ -52,7 +52,7 @@ class Magazine(models.Model):
 
      
 class RapportActivite(models.Model):
-    titre = models.CharField(max_length=255, verbose_name="Titre")
+    titre = models.CharField(max_length=255, verbose_name="Titre", blank = True) # a supprimer
     slug = models.SlugField(max_length=255)
     date_parution = models.DateField()
     document = FileBrowseField("Document PDF", max_length=200, directory="rapports", extensions=[".pdf"])
