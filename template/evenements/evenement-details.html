@@ -200,6 +200,12 @@
 			{% endif %}
 
 			{% if a_venir %}
+			<p style="text-align: center";>
+				<ul class="linklist">
+					<li>{{evenement.get_absolute_url|facebook:evenement.nom|safe}}</li>
+					<li>{{evenement.get_absolute_url|twitter:evenement.nom|safe}}</li>
+				</ul>
+			</p>
 			<p style="text-align: center;">
 				{{evenement|calendaraddlinklist|safe}}
 
@@ -215,7 +221,10 @@
 				<br/>
 				{{"qr-code"|aide}}
 			</p>
+			<hr/>
+			
 			{% endif %}
+			
 			
 			
 		</div>

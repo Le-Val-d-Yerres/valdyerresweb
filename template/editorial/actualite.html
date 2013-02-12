@@ -49,6 +49,14 @@
 		
 		
 		</div>
+		<div class="span4">
+			<p style="text-align: center";>
+				<ul class="linklist">
+					<li>{{page.get_absolute_url|facebook:page.titre|safe}}</li>
+					<li>{{page.get_absolute_url|twitter:page.titre|safe}}</li>
+				</ul>
+			</p>
+		</div>
 		{% if documentattache|length > 0 %}
 		<div class="span4">
 		{% with total=documentattache|length%}

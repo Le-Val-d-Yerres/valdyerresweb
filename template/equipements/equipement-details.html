@@ -73,9 +73,11 @@
 					{% endif %}
 				</div>
 			</address>
+			{% if equipement.fonction.service %}
 			<p>
 				Cet équipement est géré par le service <a href="{% url services.views.ServiceDetail service_slug=equipement.fonction.service.slug %}">{{equipement.fonction.service.nom}}</a>
 			</p>
+			{% endif %}
 			<hr/>
 			<p style="text-align: center;">
 				<a class="btn btn-primary" href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Ajouter cet équipement à vos contacts <b>(Vcard)</b></a>

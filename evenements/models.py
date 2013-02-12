@@ -6,6 +6,8 @@ from model_utils.managers import InheritanceManager
 from services.models import Service
 from equipements.models import Equipement
 from localisations.models import Ville
+from django.db.models import permalink
+
 
 class Organisateur(models.Model):
     nom = models.CharField(max_length=255)
@@ -92,6 +94,10 @@ class Evenement(models.Model):
     
     def monthyeardebut(self):
         return self.debut.strftime("%m")+"-"+self.debut.strftime("%Y")
+    
+    @permalink
+    def get_absolute_url(self):
+        return ('event-details',(),{'slug':self.cadre_evenement.slug,'evenement_slug':self.slug})
         
     
 class Prix(models.Model):

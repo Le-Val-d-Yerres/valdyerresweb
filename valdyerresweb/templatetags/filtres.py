@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from django.utils import http
 from django import template
 from evenements.models import Saison
 from menu.models import MenuItem
@@ -8,7 +8,9 @@ import re , os.path , Image
 from pytz import timezone
 from django.conf import settings
 from PIL import Image, ImageOps , ImageFilter ,ImageChops
+
 import datetime
+import valdyerresweb
 
 register = template.Library()
 
@@ -279,9 +281,15 @@ def generateMenu():
     menu=''
     return menu
         
+@register.filter(is_safe=True) 
+def twitter(url,txt):
+    lien = "<a href=\"https://www.twitter.com/share?text="+http.urlquote_plus(txt)+"&url="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img src=\"/static/img/reseaux-sociaux/twitter-share.png\"> Partager sur Twitter</a>"
+    return lien
         
-        
-
+@register.filter(is_safe=True) 
+def facebook(url,txt):
+    lien = "<a href=\"https://www.facebook.com/sharer.php?t="+http.urlquote_plus(txt)+"&u="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img src=\"/static/img/reseaux-sociaux/facebook-share.png\"> Partager sur Facebook</a>"
+    return lien
     
     
     
