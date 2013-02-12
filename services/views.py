@@ -20,5 +20,5 @@ def ServiceDetail(request,service_slug):
 def PageContenu(request, service_slug ,page_slug):
     
     page = get_object_or_404(PageStatiqueService.objects.select_related(), slug = page_slug, service__slug = service_slug, publie = True )
-    documentattache = DocumentAttache.objects.filter(id = page.id)
+    documentattache = DocumentAttache.objects.filter(reference_id = page.id)
     return render_to_response('services/page-service.html', {'page' : page, 'documentattache':documentattache})
