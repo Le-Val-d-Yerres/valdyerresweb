@@ -28,7 +28,7 @@ class Equipement(Lieu):
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     
     def __unicode__(self):
-        return self.nom
+        return self.nom+" "+self.ville.nom
     
     @permalink
     def get_absolute_url(self):
