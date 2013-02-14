@@ -1,1 +1,23 @@
-Cette ressource n'a pas été trouvée
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
+
+{% block title %}Erreur 404{% endblock %}
+{% block meta-description %}404 error{% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+
+<div  class="row-fluid">
+			<div class="span7">
+				<h1>Ceci est la page 404</h1>
+				Le contenu que vous cherchez n'est pas / plus disponible.
+			</div>
+</div>
+
+{% endblock%}

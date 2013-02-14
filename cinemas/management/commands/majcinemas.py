@@ -78,8 +78,17 @@ class Command(NoArgsCommand):
                     urlimage = movie.xpath("./bob:onShow/bob:movie/bob:poster",namespaces = mynsmap)
                     duration = movie.xpath("./bob:onShow/bob:movie/bob:runtime",namespaces = mynsmap)
                     monfilm.titre = title[0].text
-                    monfilm.url_allocine_image = urlimage[0].attrib['href']
-                    monfilm.duree = int(duration[0].text)
+                    
+                    try:
+                        monfilm.url_allocine_image = urlimage[0].attrib['href']
+                    except:
+                        monfilm.url_allocine_image = "http://images.allocine.fr/commons/emptymedia/empty_photo.jpg"
+                    try:
+                        monfilm.duree = int(duration[0].text)
+                    except:
+                        monfilm.duree = 3600
+
+                    
                     monfilm.slug = defaultfilters.slugify(monfilm.titre)
                     monfilm.save()
                     time.sleep(1)

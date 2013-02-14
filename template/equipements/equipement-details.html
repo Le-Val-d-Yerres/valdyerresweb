@@ -78,6 +78,11 @@
 						Courriel : <a href="mailto:{{ equipement.email }}">{{ equipement.email }}</a>
 					</p>
 					{% endif %}
+					{% if equipement.url %}
+					<p>
+						Site Web : <a href="{{equipement.url}}">{{ equipement.nom }}</a>
+					</p>
+					{% endif %}
 				</div>
 			</address>
 			<hr/>

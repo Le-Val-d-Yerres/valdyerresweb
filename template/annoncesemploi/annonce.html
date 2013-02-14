@@ -36,31 +36,31 @@
 			</ul>
 		</div>
 		<div class="span7" itemscope itemtype="http://schema.org/JobPosting" >
-			<h1  itemprop="title"><a href="{% url annoncesemploi.views.AnnonceDetail annonce_slug=annonce.slug   %}">{{annonce.intitule}}</a></h1>
+			<h1  itemprop="title"><a href="{% url annoncesemploi.views.AnnonceDetail annonce_slug=annonce.slug   %}">{{annonce.intitule|safe}}</a></h1>
 			<hr/>
 			{% if annonce.lieu_travail %}
-			<p><strong>Lieu(x) de travail: </strong><span itemprop="jobLocation" itemscope itemtype="http://schema.org/Place"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> <span itemprop="addressLocality">{{annonce.lieu_travail}} </span> </span> </span></p>
+			<p><strong>Lieu(x) de travail: </strong><span itemprop="jobLocation" itemscope itemtype="http://schema.org/Place"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> <span itemprop="addressLocality">{{annonce.lieu_travail|safe}} </span> </span> </span></p>
 			{% endif %}
 			
 			{% if annonce.nom_employeur %}
-			<p><strong>Nom de l'employeur: </strong><span itemprop="industry">{{annonce.nom_employeur}}</span></p>
+			<p><strong>Nom de l'employeur: </strong><span itemprop="industry">{{annonce.nom_employeur|safe}}</span></p>
 			{% endif %}
 			
 			{% if annonce.secteur_activite %}
-			<p><strong>Secteur activité: </strong><span itemprop="industry">{{annonce.secteur_activite}}</span></p>
+			<p><strong>Secteur activité: </strong><span itemprop="industry">{{annonce.secteur_activite|safe}}</span></p>
 			{% endif %}
 			
 			{% if annonce.description_du_poste %}
 			<p itemprop="description">
     		<strong>Description :</strong>
-    		{{annonce.description_du_poste}}
+    		{{annonce.description_du_poste|safe}}
   			</p>
 			{% endif %}
 			
 			{% if annonce.niveau_formation %}
 			<p><strong>Niveau de formation :</strong>
   				<span itemprop="educationRequirements">
-    			{{annonce.niveau_formation}}
+    			{{annonce.niveau_formation|safe}}
   				</span>
   			</p>
 			{% endif %}
@@ -69,27 +69,27 @@
 			
 			{% if annonce.experience_requise %}
 				<p><strong>Experience requise:</strong><span itemprop="experienceRequirements">
-   				{{annonce.experience_requise}}
+   				{{annonce.experience_requise|safe}}
   			</span></p>
   			{% endif %}
   			
   			{% if annonce.type_de_poste %}
 				<p><strong>Type de poste:</strong>
-   				{{annonce.type_de_poste}}</p>
+   				{{annonce.type_de_poste|safe}}</p>
   			{% endif %}
 			
 			{% if annonce.salaire_indicatif %}
-			<p><strong>Salaire indicatif: </strong> {{annonce.salaire_indicatif}}</p>
+			<p><strong>Salaire indicatif: </strong> {{annonce.salaire_indicatif|safe}}</p>
 			{% endif %}
 			
 			{% if annonce.nb_postes %}
 				<p><strong>Contact :</strong>
-   				{{annonce.nb_postes}}</p>
+   				{{annonce.nb_postes|safe}}</p>
   			{% endif %}
 			
 			{% if annonce.contact %}
 				<p><strong>Contact :</strong>
-   				{{annonce.contact}}</p>
+   				{{annonce.contact|safe}}</p>
   			{% endif %}
 			
 		</div>
