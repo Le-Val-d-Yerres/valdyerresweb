@@ -164,7 +164,7 @@
 						{% endif %}
 						<span itemprop="streetAddress" >{{ evenement.lieu.rue }}</span>
 						<br/>
-						<span>{{ evenement.lieu.ville.code_postal }}</span><span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span>
+						<span>{{ evenement.lieu.ville.code_postal }}</span> <span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span>
 						<br/>
 						{% if evenement.lieu.telephone %}<span><abbr title="Téléphone">Tel</abbr>: {{ evenement.lieu.telephone }}</span>
 						<br/>
@@ -323,7 +323,8 @@
 		myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}};
 
 {% if evenement.lieu.image %}
-	myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{  evenement.lieu.nom }}" src="{{  evenement.lieu.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">{{  evenement.lieu.nom }}</a><br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}</p></div></div>';{% else %}
+	myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{  evenement.lieu.nom }}" src="{{  evenement.lieu.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">{{  evenement.lieu.nom }}</a><br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}</p></div></div>';
+	{% else %}
 	myMarker['description'] = '{{  evenement.lieu.nom }}<br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}';{% endif %}
 
 	myMarker['marker'] = '{{evenement.lieu|lieuMarker }}';

@@ -38,10 +38,13 @@ def pdftojpg(pdfFilePath, subpath = "/img/"):
     outpoutepng = pdfFilePath.replace(".pdf",".png")
     head,tail = os.path.split(outpoutepng)
     head = head+subpath
+    print head
+    if not os.path.exists(head):
+        os.makedirs(head)
     outpoutepng = os.path.join(head,tail)
     commande = "pdftoppm -png -l 1 "+pdfFilePath+" "+outpoutepng.replace(".png","")
     os.system(commande)
-    tmpoutpoute = outpoutepng.replace(".png","-01.png")
+    tmpoutpoute = outpoutepng.replace(".png","-1.png")
     os.rename(tmpoutpoute, outpoutepng)
     image = Image.open(outpoutepng)
     outpoutejpg = outpoutepng.replace(".png",".jpg")

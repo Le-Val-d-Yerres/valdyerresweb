@@ -46,12 +46,12 @@ class EvenementAdmin(admin.ModelAdmin):
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
-        
-        pouet, imageextension = os.path.splitext(obj.image.path)
-        imageextension = imageextension.lower()
-        if imageextension == ".pdf":
-            abspath_image = pdftojpg( os.path.join(settings.MEDIA_ROOT,obj.image.path), subpath="")
-            obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT) 
+        if obj.image != "":
+            pouet, imageextension = os.path.splitext(obj.image.path)
+            imageextension = imageextension.lower()
+            if imageextension == ".pdf":
+                abspath_image = pdftojpg( os.path.join(settings.MEDIA_ROOT,obj.image.path), subpath="")
+                obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT) 
         obj.save()
 
 class TypeEvenementAdmin(admin.ModelAdmin):
