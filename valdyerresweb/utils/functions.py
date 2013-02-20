@@ -5,9 +5,9 @@ from django.conf import settings
 from django.core.cache import cache
 from django.http import HttpRequest
 from django.utils.cache import get_cache_key
-from PIL import Image
+from PIL import Image , ImageFile
 
-
+ImageFile.MAXBLOCK = 2**20
 
 
 def GenerationQrCode(data):
