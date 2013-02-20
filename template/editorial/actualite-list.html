@@ -76,21 +76,21 @@
 					{%if pages.paginator.num_pages > 10 %}
 					{%if pages.number > 1%}
 					<li class="enabled">
-						<a href="{% url editorial.views.actu-list  %}?page=1">1</a>
+						<a href="{% url editorial.views.ActuList  %}?page=1">1</a>
 					</li>
 					<li class="disabled">
 						<a href=".">...</a>
 					</li>
 					{%endif%}
 					<li class="disabled">
-						<a href="{% url editorial.views.actu-list  %}?page={{pages.number}}">{{rapports.number}}</a>
+						<a href="{% url editorial.views.ActuList %}?page={{pages.number}}">{{rapports.number}}</a>
 					</li>
 					{%if pages.number < pages.paginator.num_pages%}
 					<li class="disabled">
 						<a href=".">...</a>
 					</li>
 					<li class="enabled">
-						<a href="{% url editorial.views.actu-list  %}?page={{pages.paginator.num_pages}}">{{rapports.paginator.num_pages}}</a>
+						<a href="{% url editorial.views.ActuList  %}?page={{pages.paginator.num_pages}}">{{rapports.paginator.num_pages}}</a>
 					</li>
 					{%endif%}
 
@@ -104,7 +104,7 @@
 					</li>
 					{% else %}
 					<li class="enabled">
-						<a href="{% url editorial.views.actu-list  %}?page={{page}}">{{page}}</a>
+						<a href="{% url editorial.views.ActuList  %}?page={{page}}">{{page}}</a>
 					</li>
 					{% endif %}
 
