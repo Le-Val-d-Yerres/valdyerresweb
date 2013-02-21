@@ -89,6 +89,9 @@
 				<hr/>
 
 				{% endfor %}
+				<p style="text-align: right;" >
+					<a class="btn btn-primary" href="{% url editorial.views.ActuList  %}">Voir toutes les actualités</a>
+				</p>
 				{%if evenements_une_lg1%}
 				<h2><a href="{% url evenements.views.AgendaGlobal  %}">Prochains événements :</a></h2>
 

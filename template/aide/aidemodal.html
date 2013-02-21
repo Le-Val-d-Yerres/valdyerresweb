@@ -3,17 +3,16 @@
 		<a href="#myModal-{{aide.slug}}" role="button" class="btn btn-mini" data-toggle="modal">{{aide.nom}}</a>
 	</p>
 </div>
-<div class="modal hide" id="myModal-{{aide.slug}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal hide" id="myModal-{{aide.slug}}" tabindex="-1" role="dialog"  aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 			×
 		</button>
-		<h3 id="myModalLabel">{{aide.nom}}</h3>
+		<h3>{{aide.nom}}</h3>
 	</div>
 	<div class="modal-body">
-		<p>
+		
 			{{aide.contenu|safe}}
-		</p>
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">

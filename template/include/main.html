@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr" >
 	<head>
+		<meta charset="UTF-8">
 		<title>{% block title %}{% endblock %} - Le Val d'Yerres</title>
-		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="{% block meta-description %}{% endblock %}" />
 		<link rel="shortcut icon" href="/static/img/cavy_favicon.ico" type="image/x-icon" />
@@ -92,12 +92,15 @@
 							<hr/>
 							<table>
 								<tr>
-									<td><a href="http://www.facebook.com/pages/Communaute-dAgglomeration-du-Val-dYerres/171201942911202?v=wall"><img src="/static/img/reseaux-sociaux/facebook.png">
+									<td><a href="http://www.facebook.com/pages/Communaute-dAgglomeration-du-Val-dYerres/171201942911202?v=wall"><img alt="facebook" src="/static/img/reseaux-sociaux/facebook.png">
 									<br/>
 									facebook</a></td>
-									<td><a href="https://twitter.com/ValdYerres"><img src="/static/img/reseaux-sociaux/twitter.png">
+									<td><a href="https://twitter.com/ValdYerres"><img alt="twitter" src="/static/img/reseaux-sociaux/twitter.png">
 									<br/>
 									twitter</a></td>
+									<td><a href="https://plus.google.com/114943711039529183405"><img alt="google plus" src="/static/img/reseaux-sociaux/google-plus.png">
+									<br/>
+									google plus</a></td>
 								</tr>
 							</table>
 
@@ -115,7 +118,7 @@
 									<div itemtype="http://schema.org/PostalAddress" itemscope="" itemprop="address">
 										<span itemprop="streetAddress">78 Route Nationale 6-BP 103</span>
 										<br>
-										<span>91800</span><span itemprop="addressLocality">Brunoy</span>
+										<span>91800</span> <span itemprop="addressLocality">Brunoy</span>
 										<br>
 										<span><abbr title="Téléphone">Tel</abbr>: <span itemprop="telephone">01 60 47 94 20</span></span>
 										<br/>
@@ -134,9 +137,6 @@
 				</div>
 			</div>
 		</div>
-
-		</div>
-
 		{%block jsload%}{% endblock %}
 		{%block mapload%}{% endblock %}
 		<script type="text/javascript">

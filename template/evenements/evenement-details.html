@@ -68,6 +68,7 @@
 			{% endif %}
 			<p>
 				Organisé par :
+			</p>
 				<ul>
 					{% for each in evenement.organisateur.all %}
 					<li>
@@ -75,7 +76,7 @@
 					</li>
 					{% endfor %}
 				</ul>
-			</p>
+			
 			{% if evenement.image %}
 			{% if evenement.image.width >= evenement.image.height %}
 			<div class="img-polaroid-fix">
@@ -88,7 +89,7 @@
 			{% endif %}
 
 			{% if evenement.image.height > evenement.image.width %}
-			<div class ="img-polaroid-fix" style="text-align: center;">
+			<div class ="img-polaroid-fix" style="text-align:center;">
 				{% if a_venir and evenement.complet %}
 				
 				<div class="label label-important label-complet">Complet</div>
@@ -117,9 +118,9 @@
 			{% if a_venir %}
 			{% if evenement.url_reservation != "" and  evenement.url_reservation != None %}
 
-			<div class="reservation" style="text-align:right;">
+			<div class="plusinfos" style="text-align:right;">
 				<p>
-					<a class="btn btn-info " href="{{ evenement.url_reservation }}" rel="tooltip" data-original-title="Réservation en suivant ce lien : {{ evenement.url_reservation}}" data-placement="top">Réservation</a>
+					<a class="btn btn-info " href="{{ evenement.url_reservation }}"  data-toggle="tooltip" data-original-title="Réservation en suivant ce lien : {{ evenement.url_reservation}}" data-placement="top">Réservation</a>
 				</p>
 			</div>
 
@@ -127,7 +128,7 @@
 
 			<div class="plusinfos" style="text-align:right;">
 				<p>
-					<a class="btn btn-info " href="{{ evenement.url }}" rel="tooltip" data-original-title="Plus d'infos en suivant ce lien : {{ evenement.url}}" data-placement="top">+ d'infos</a>
+					<a class="btn btn-info " href="{{ evenement.url }}" data-toggle="tooltip" data-original-title="Plus d'infos en suivant ce lien : {{ evenement.url}}" data-placement="top">+ d'infos</a>
 				</p>
 			</div>
 			
@@ -204,19 +205,20 @@
 			{% endif %}
 
 			{% if a_venir %}
-			<p style="text-align: center";>
+			
 				<ul class="linklist">
 					<li>{{evenement.get_absolute_url|facebook:evenement.nom|safe}}</li>
 					<li>{{evenement.get_absolute_url|twitter:evenement.nom|safe}}</li>
+					<li>{{evenement.get_absolute_url|googleplus:evenement.nom|safe}}</li>
 				</ul>
-			</p>
-			<p style="text-align: center;">
+			
+				<hr/>
 				{{evenement|calendaraddlinklist|safe}}
 
 				{{"ical"|aide}}
-			</p>
+			
 			<hr class="hidden-phone" />
-			<p class="hidden-phone" style="text-align: center;">
+			<div class="hidden-phone" style="text-align:center;">
 				Ajouter cet événement à votre agenda :
 				<br/>
 				(Format QR Code) :
@@ -224,7 +226,7 @@
 				<img alt="QrCode : {{ evenement.nom }}" src="data:image/png;base64,{{ evenement_qr }}"/>
 				<br/>
 				{{"qr-code"|aide}}
-			</p>
+			</div>
 			<hr/>
 			
 			{% endif %}
@@ -250,7 +252,7 @@
 			<hr/>
 			
 
-			<p style="text-align: center;">
+			<p style="text-align:center;">
 				Les coordonnées GPS :
 				<br/>
 				Latitude : {{ evenement.lieu.latitude }}
@@ -258,26 +260,26 @@
 				Longitude : {{ evenement.lieu.longitude }}
 			</p>
 			<hr/>
-			<p class="hidden-phone" style="text-align: center;">
+			<div class="hidden-phone" style="text-align:center;">
 				Les coordonnées GPS :
 				<br/>
 				(Format QR Code)
 				<br/>
 				<img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ localisation_qr }}"/>
 
-				{{"qr-code"|aide}}
-
-			</p>
-			<p>
-				<ul>
+				<br/>
+				<br/>
+				<ul style="list-style:none;">
 					<li>
-						<a href="http://www.openstreetmap.org/index.html?mlat={{evenement.lieu.latitude|toFloatjs}}&mlon={{evenement.lieu.longitude|toFloatjs}}&zoom=18"> Voir l'emplacement sur OpenstreetMap</a>
+						<a class="btn btn-primary" href="http://www.openstreetmap.org/index.html?mlat={{evenement.lieu.latitude|toFloatjs}}&amp;mlon={{evenement.lieu.longitude|toFloatjs}}&amp;zoom=18"> Voir l'emplacement sur OpenstreetMap</a>
 					</li>
+					<li>&nbsp;</li>
 					<li>
-						<a href="http://maps.google.com/?q={{evenement.lieu.latitude|toFloatjs}},{{evenement.lieu.longitude|toFloatjs}}&z=19"> Voir l'emplacement sur Google Maps</a>
+						<a class="btn btn-primary" href="http://maps.google.com/?q={{evenement.lieu.latitude|toFloatjs}},{{evenement.lieu.longitude|toFloatjs}}&amp;z=19"> Voir l'emplacement sur Google Maps</a>
 					</li>
 				</ul>
-			</p>
+				</div>
+			
 			<br/>
 		</div>
 
@@ -312,11 +314,11 @@
 <script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.js"></script>
 
-<script>{% if evenement.url != "" %}
+<script>{% if evenement.url != "" or evenement.url_reservation != ""%}
 	$('.plusinfos').tooltip({
-		selector : "a[rel=tooltip]"
+		selector : "a[data-toggle=tooltip]"
 	})
-{%endif%}
+{% endif %}
 	function LoadMap() {
 		var tabEquipement = Array();
 		var myMarker = Object();

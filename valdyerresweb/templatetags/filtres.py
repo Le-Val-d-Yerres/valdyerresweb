@@ -290,14 +290,19 @@ def generateMenu():
         
 @register.filter(is_safe=True) 
 def twitter(url,txt):
-    lien = "<a href=\"https://www.twitter.com/share?text="+http.urlquote_plus(txt)+"&url="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img src=\"/static/img/reseaux-sociaux/twitter-share.png\"> Partager sur Twitter</a>"
+    lien = "<a href=\"https://www.twitter.com/share?text="+http.urlquote_plus(txt)+"&amp;url="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img alt=\"twitter\" src=\"/static/img/reseaux-sociaux/twitter-share.png\"> Partager sur Twitter</a>"
     return lien
         
 @register.filter(is_safe=True) 
 def facebook(url,txt):
-    lien = "<a href=\"https://www.facebook.com/sharer.php?t="+http.urlquote_plus(txt)+"&u="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img src=\"/static/img/reseaux-sociaux/facebook-share.png\"> Partager sur Facebook</a>"
+    lien = "<a href=\"https://www.facebook.com/sharer.php?t="+http.urlquote_plus(txt)+"&amp;u="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img alt=\"facebook\" src=\"/static/img/reseaux-sociaux/facebook-share.png\"> Partager sur Facebook</a>"
     return lien
-    
+
+@register.filter(is_safe=True) 
+def googleplus(url,txt):
+    lien = "<a href=\"https://plus.google.com/share?url="+http.urlquote_plus(valdyerresweb.settings.NOM_DOMAINE+url)+"\"><img alt=\"google plus\" src=\"/static/img/reseaux-sociaux/google-plus-share.png\"> Partager sur Google+</a>"
+    return lien
+
     
     
     

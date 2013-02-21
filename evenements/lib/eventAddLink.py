@@ -9,6 +9,7 @@ import valdyerresweb.templatetags.filtres as filtres
 from StringIO import StringIO
 from django.http import HttpResponse
 from django.template import Context,loader
+from django.utils import http
 
 
 
@@ -17,8 +18,8 @@ class EventLink(object):
     
     def getLink(self,evenement):
         raise NotImplementedError('Exception : EventLink is supposed to be an interface')
-    def setLink(self,imgurl,linkurl):
-        return "<a href=\""+linkurl+"\"><img src=\""+imgurl+"\">"+self.text+"</a>"
+    def setLink(self,imgurl,linkurl,imgalt):
+        return "<a href=\""+linkurl+"\"><img alt=\""+imgalt+"\" src=\""+imgurl+"\">"+self.text+"</a>"
     
         
 class OutlookEventLink(EventLink):
@@ -26,7 +27,8 @@ class OutlookEventLink(EventLink):
         self.text += u" Outlook"
         linkurl = reverse('event-details-ics', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
         imgurl = "/static/img/evenements/40x40/outlook-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "Agenda outlook"
+        return self.setLink(imgurl,linkurl,imgalt)
     
 class GoogleEventLink(EventLink):
     def getLink(self, evenement):
@@ -34,18 +36,20 @@ class GoogleEventLink(EventLink):
         datedebut = evenement.debut
         datefin = evenement.fin
         self.text +=" Google"
-        linkurl = u"http://www.google.com/calendar/event?"
-        linkurl += u"&action=TEMPLATE"
-        linkurl += u"&text="+evenement.nom
-        linkurl += u"&dates="+datedebut.strftime("%Y")+datedebut.strftime("%m")+datedebut.strftime("%d")+u"T"+datedebut.strftime("%H")+datedebut.strftime("%M")+u"00Z"
+        linkurl = u"&amp;action=TEMPLATE"
+        linkurl += u"&amp;text="+http.urlquote_plus(evenement.nom)
+        linkurl += u"&amp;dates="+datedebut.strftime("%Y")+datedebut.strftime("%m")+datedebut.strftime("%d")+u"T"+datedebut.strftime("%H")+datedebut.strftime("%M")+u"00Z"
         if datefin != datedebut:
             linkurl += u"/"+datefin.strftime("%Y")+datefin.strftime("%m")+datefin.strftime("%d")+u"T"+datefin.strftime("%H")+datefin.strftime("%M")+u"00Z"
-        linkurl += u"&sprop=website:"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
-        linkurl += u"&sprop=name:"+settings.NOM_ORGANISATION
-        linkurl += u"&location="+evenement.lieu.nom+u","+evenement.lieu.rue+u","+evenement.lieu.ville.nom
-        linkurl += u"&details="+evenement.type.nom+" : "+resume(evenement.description, 150) +" "+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
+        linkurl += u"&amp;sprop=website:"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
+        linkurl += u"&amp;sprop=name:"+http.urlquote_plus(settings.NOM_ORGANISATION)
+        linkurl += u"&amp;location="+http.urlquote_plus(evenement.lieu.nom)+u","+http.urlquote_plus(evenement.lieu.rue)+u","+http.urlquote_plus(evenement.lieu.ville.nom)
+        linkurl += u"&amp;details="+http.urlquote_plus(evenement.type.nom+" : "+resume(evenement.description, 150))+"%20"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
+        
+        linkurl = u"http://www.google.com/calendar/event?"+linkurl
         imgurl =  "/static/img/evenements/40x40/gmail-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "Agenda Google"
+        return self.setLink(imgurl,linkurl,imgalt)
         
 class YahooEventLink(EventLink):
     def getLink(self, evenement):
@@ -56,20 +60,22 @@ class YahooEventLink(EventLink):
         
         self.text +=" Yahoo"
         linkurl = u"http://calendar.yahoo.com/?v=60"
-        linkurl += u"&TITLE="+evenement.nom
-        linkurl += u"&ST="+datedebut.strftime("%Y")+datedebut.strftime("%m")+datedebut.strftime("%d")+u"T"+datedebut.strftime("%H")+datedebut.strftime("%M")+u"00Z"
-        linkurl += u"&URL:"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
-        linkurl += u"&in_loc=="+evenement.lieu.nom+u","+evenement.lieu.rue+u","+evenement.lieu.ville.nom
-        linkurl += u"&DESC="+evenement.type.nom+" : "+resume(evenement.description, 150) +" "+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
+        linkurl += u"&amp;TITLE="+http.urlquote_plus(evenement.nom)
+        linkurl += u"&amp;ST="+datedebut.strftime("%Y")+datedebut.strftime("%m")+datedebut.strftime("%d")+u"T"+datedebut.strftime("%H")+datedebut.strftime("%M")+u"00Z"
+        linkurl += u"&amp;URL:"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
+        linkurl += u"&amp;in_loc=="+http.urlquote_plus(evenement.lieu.nom+u","+evenement.lieu.rue+u","+evenement.lieu.ville.nom)
+        linkurl += u"&amp;DESC="+http.urlquote_plus(evenement.type.nom+" : "+resume(evenement.description, 150) +" ")+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
         imgurl =  "/static/img/evenements/40x40/yahoo-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "Agenda Yahoo"
+        return self.setLink(imgurl,linkurl,imgalt)
 
 class IcalEventLink(EventLink):
     def getLink(self,evenement):
         self.text += u" Ical"
         linkurl = reverse('event-details-ics', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
         imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "Agenda Ical"
+        return self.setLink(imgurl,linkurl,imgalt)
 
 
 def getLinkList(evenement):
