@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-import os
+import os, subprocess, shlex, cStringIO
 import qrcode , base64, StringIO, pickle
 from django.conf import settings
 from django.core.cache import cache
 from django.http import HttpRequest
 from django.utils.cache import get_cache_key
 from PIL import Image , ImageFile
-
 ImageFile.MAXBLOCK = 2**20
 
 
@@ -35,21 +34,19 @@ def deserialize(base64pickleditem):
 
 
 def pdftojpg(pdfFilePath, subpath = "/img/"):
-    outpoutepng = pdfFilePath.replace(".pdf",".png")
-    head,tail = os.path.split(outpoutepng)
+    outpoutejpg = pdfFilePath.replace(".pdf",".jpg")
+    head,tail = os.path.split(outpoutejpg)
     head = head+subpath
-    print head
     if not os.path.exists(head):
         os.makedirs(head)
-    outpoutepng = os.path.join(head,tail)
-    commande = "pdftoppm -png -l 1 "+pdfFilePath+" "+outpoutepng.replace(".png","")
-    os.system(commande)
-    tmpoutpoute = outpoutepng.replace(".png","-1.png")
-    os.rename(tmpoutpoute, outpoutepng)
-    image = Image.open(outpoutepng)
-    outpoutejpg = outpoutepng.replace(".png",".jpg")
+    command_line = "pdftoppm -l 1 "+pdfFilePath
+    args = shlex.split(command_line)
+    proc = subprocess.Popen(args, stdout=subprocess.PIPE)
+    (out, err) = proc.communicate()
+    
+    mystrimage = cStringIO.StringIO(out)
+    image = Image.open(mystrimage)
     image.save(outpoutejpg, "JPEG", quality=90, optimize=True, progressive=True)
-    os.remove(outpoutepng)
     return outpoutejpg
 
     
