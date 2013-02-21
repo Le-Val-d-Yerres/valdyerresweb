@@ -171,6 +171,10 @@
 						{% endif %}
 
 					</div>
+					<span itemprop="geo" itemscope itemtype="http://data-vocabulary.org/​GeoCoordinates">
+						<meta itemprop="latitude" content="{{ evenement.lieu.latitude }}" />
+						<meta itemprop="longitude" content="{{ evenement.lieu.longitude }}" />
+					</span>
 				</div>
 			</address>
 			<hr/>
@@ -244,10 +248,7 @@
 
 		<div class="span4">
 			<hr/>
-			<span itemprop="geo" itemscope itemtype="http://data-vocabulary.org/​GeoCoordinates">
-				<meta itemprop="latitude" content="{{ evenement.lieu.latitude }}" />
-				<meta itemprop="longitude" content="{{ evenement.lieu.longitude }}" />
-			</span>
+			
 
 			<p style="text-align: center;">
 				Les coordonnées GPS :
