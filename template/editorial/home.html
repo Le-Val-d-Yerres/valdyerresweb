@@ -28,13 +28,13 @@
 				<br/>
 				<br/>
 				<p>
-					<a style="float: right" class ="btn btn-primary"href="{{item.get_absolute_url}}">+ d'infos</a>
+					<a style="float: right" class ="btn btn-primary" href="{{item.get_absolute_url}}">+ d'infos</a>
 				</p>
 			</div>
 			<div class="carousel-caption visible-phone visible-tablet ">
 
 				<p>
-					<strong><a href="{{item.get_absolute_url}}"></strong>{{item.titre}}</a>
+					<a href="{{item.get_absolute_url}}">{{item.titre}}</a>
 					<br/>
 					{{item.contenu|resume:250|safe}}
 					<br/>
@@ -69,7 +69,7 @@
 				{% for page in actualites %}
 
 				<div class="row">
-					<div class="span3"><img class="img-polaroid" src="{{page.image|resize:'300x225x1'}}">
+					<div class="span3"><img  alt="Illustration : {{page.titre}}" class="img-polaroid" src="{{page.image|resize:'300x225x1'}}">
 					</div>
 					<div class="span5">
 
@@ -108,7 +108,7 @@
 
 									{{evenement.description|safe|resume:150}}
 									<p style="text-align: right;" >
-										<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+										<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
 									</p>
 								</div>
 							</div>
@@ -135,7 +135,7 @@
 
 									{{evenement.description|safe|resume:150}}
 									<p style="text-align: right;" >
-										<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+										<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary">+ d'infos</a>
 									</p>
 								</div>
 							</div>
@@ -149,12 +149,12 @@
 				<div class="row ">
 					<div class="span3 box-right">
 						<h3><a href="#">Lettre d'informations</a></h3>
-						<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://widget.mailjet.com/877673355fe4c1457e9452b2c2d36e532e12101a.html" width="220" height="138"></iframe>
+						<iframe id="newsiframe" style="-webkit-scrollbar {display: none;};margin:0px;border:none;overflow:hidden;display: block;" src="http://widget.mailjet.com/877673355fe4c1457e9452b2c2d36e532e12101a.html" width="220" height="138"></iframe>
 					</div>
 					<div class="span3 box-right">
 						<h3><a href="{% url editorial.views.Ephemeride %}">Aujourd'hui
 						<br/>
-						dans le Val d'Yerres</h3></a>
+						dans le Val d'Yerres</a></h3>
 						<ul style="list-style: none;">
 							{% if cinema_count > 0  %}
 							<li>
@@ -176,17 +176,18 @@
 					</div>
 					<div class="span3 box-right">
 						<h3><a href="{% url editorial.views.Magazines %}">Le Magazine</a></h3>
-						<p>
+						
 							<h4><a href="{% url editorial.views.Magazines %}">{{magazine.date_parution|moisannee}}</a></h4>
 							<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
+							<p>
 							Dossier : {{magazine.titre|safe}}
-						</p>
+							</p>
 					</div>
 					{% if annoncesemploi %}
 					<div class="span3 box-right">
 						<h3><a href="{% url annoncesemploi.views.AnnoncesList %}">Emploi</a></h3>
 						{% regroup annoncesemploi by service as annonceslists%}
-						<p>
+						
 							<ul style="list-style: none;" >
 								{% for annonces in annonceslists %}
 								<li>
@@ -194,13 +195,13 @@
 								</li>
 								{% endfor%}
 							</ul>
-						</p>
+						
 					</div>
 					{% endif %}
 					{% if notes %}
 					<div class="span3 box-right">
 						<h3><a href="#noubliezpas">N'oubliez pas ...</a></h3>
-						<ul>
+						<ul style="list-style: square">
 						{% for note in notes %}
 							<li><a href="{% url editorial.views.PageDetail page_slug=note.slug %}">{{ note.titre }}</a></li>
 						{% endfor%}
@@ -224,7 +225,10 @@
 <script src="/static/bootstrap/js/bootstrap.js"></script>
 <script>
 	$(document).ready(function() {
-
+		
+		$("#newsiframe").attr('frameBorder','0');
+		$("#newsiframe").attr('scrolling','no');
+		
 		var myCarousel = $('.carousel');
 		myCarousel.carousel({
 			interval : 5000,
