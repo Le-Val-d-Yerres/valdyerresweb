@@ -162,7 +162,8 @@ class ExcelSaisonLink(EventsLink):
         self.text += u" Excel"
         linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'xls'})
         imgurl = "/static/img/evenements/40x40/excel-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "icone Excel"
+        return self.setLink(imgurl,linkurl,imgalt)
 
 class CSVSaisonLink(EventsLink):
     def getLink(self,saisonslug):
@@ -170,7 +171,8 @@ class CSVSaisonLink(EventsLink):
         self.text += u" CSV"
         linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'csv'})
         imgurl = "/static/img/evenements/40x40/csv-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "icone CSV"
+        return self.setLink(imgurl,linkurl,imgalt)
     
 class ICSSaisonLink(EventsLink):
     def getLink(self,saisonslug):
@@ -178,7 +180,8 @@ class ICSSaisonLink(EventsLink):
         self.text += u" Ical"
         linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'ics'})
         imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "icone ICS"
+        return self.setLink(imgurl,linkurl,imgalt)
 
 
 def getSaisonLinkList(saisonslug):

@@ -120,7 +120,7 @@
 
 			<div class="plusinfos" style="text-align:right;">
 				<p>
-					<a class="btn btn-info " href="{{ evenement.url_reservation }}"  data-toggle="tooltip" data-original-title="Réservation en suivant ce lien : {{ evenement.url_reservation}}" data-placement="top">Réservation</a>
+					<a class="btn btn-info btn-large " href="{{ evenement.url_reservation }}"  data-toggle="tooltip" data-original-title="Réservation en suivant ce lien : {{ evenement.url_reservation}}" data-placement="top" onclick="_gaq.push(['_trackEvent', 'Evenement', 'Reservation', '{{evenement.nom}}']);">Réservation</a>
 				</p>
 			</div>
 
