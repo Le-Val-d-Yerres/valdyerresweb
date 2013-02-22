@@ -157,7 +157,7 @@
 				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
 					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 						{% if evenement.lieu.presentation %}
-						<strong><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}">{{ evenement.lieu.nom }}</a></strong>
+						<strong><a itemprop="url" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}"><span itemprop="name">{{ evenement.lieu.nom }}</span></a></strong>
 						<br/>
 						{% else %}
 						<strong>{{ evenement.lieu.nom }}</strong>
