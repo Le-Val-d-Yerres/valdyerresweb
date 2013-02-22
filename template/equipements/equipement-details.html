@@ -17,7 +17,7 @@
 
 
 {% block contenu %}	
-<div class="container" style="margin-top:60px;">
+<div itemscope itemtype="http://schema.org/Place" class="container" style="margin-top:60px;">
 	<div class="row-fluid">
 		<div class="span12">
 			<ul class="breadcrumb">
@@ -35,9 +35,9 @@
 				</li>
 			</ul>
 		</div>
-		<div class="span7" itemscope itemtype="http://schema.org/Place">
+		<div class="span7" >
 
-			<h1 itemprop="name"><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom }}</a></h1>
+			<h1><a itemprop="url" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}"><span itemprop="name">{{ equipement.nom }}</span></a></h1>
 			{% if equipement.image %}
 			<img class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
 			{% endif %}
@@ -52,7 +52,7 @@
 
 			<br/>
 			{% if equipement.fonction.logo %}
-			<img src="{{equipement.fonction.logo.url}}" style="float:left;" />
+			<img alt="logo : {{equipement.fonction.nom}}" src="{{equipement.fonction.logo.url}}" style="float:left;" />
 			{% endif %}
 			<address>
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
@@ -86,13 +86,13 @@
 				</div>
 			</address>
 			<hr/>
-			<p style="text-align: center;">
+			<div style="text-align: center;">
 				<a class="btn btn-primary" href="{% url equipements.views.EquipementVCF slug=equipement.slug %}">Ajouter cet équipement à vos contacts <b>(Vcard)</b></a>
 				<br/>
 				{{"vcard"|aide}}
-			</p>
+			</div>
 			<hr class="hidden-phone" />
-			<p class="hidden-phone" style="text-align: center;">
+			<div class="hidden-phone" style="text-align: center;">
 
 				Ajouter cet équipement à vos contacts
 				<br/>
@@ -100,7 +100,7 @@
 				<br/>
 				<img alt="QrCode : code QR de : {{ each.nom }}" src="data:image/png;base64,{{ qr_code_vcard }}"/>
 				{{"qr-code"|aide}}
-			</p>
+			</div>
 
 		</div>
 
@@ -204,21 +204,30 @@
 	<div class="row-fluid">
 		<div class="span7">
 			<hr/>
-			<h2>Les prochains évènements:</h2>
-			<ul>
+			<h2>Les prochains événements:</h2>
+			
 				{% regroup evenements by monthyeardebut as eventlist %}
 				
 				{% for eventmonth in eventlist %}
-					<li>{{eventmonth.grouper|grouperToString}}</li>
-					<ul>
+					<table class=" table table-striped">
+					<thead><tr><th>{{eventmonth.grouper|grouperToString}}</th></tr></thead>	
+					
 					{% for each in eventmonth.list %}
-					<li>
-						{{ each.type.nom }} : &laquo;<a href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}">{{ each.nom }}</a>&raquo; , {{ each.debut|dateCustom:each.fin }}
-					</li>
+					
+					<tr itemscope itemtype="http://schema.org/Event">
+						<td>{{ each.type.nom }} : &laquo;
+						<a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=each.cadre_evenement.slug evenement_slug=each.slug %}"><span itemprop="name" >{{ each.nom }}</span></a>&raquo;
+						</td> 
+						<td style="text-align:right;">
+						<time itemprop="startDate" datetime=“{{each.debut|dateSEO}}”>
+						{{ each.debut|dateCustom:each.fin }}
+						</time>
+						</td>
+					</tr>
 				{% endfor %}
-					</ul>
+					</table>
 				{% endfor %}
-			</ul>
+			
 
 		</div>
 	</div>
