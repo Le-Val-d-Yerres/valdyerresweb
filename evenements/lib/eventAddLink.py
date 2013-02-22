@@ -96,8 +96,8 @@ class EventsLink(object):
     
     def getLink(self,evenement):
         raise NotImplementedError('Exception : EventLink is supposed to be an interface')
-    def setLink(self,imgurl,linkurl):
-        return "<a href=\""+linkurl+"\"><img src=\""+imgurl+"\">"+self.text+"</a>"
+    def setLink(self,imgurl,linkurl,imgalt):
+        return "<a href=\""+linkurl+"\"><img alt=\""+imgalt+"\" src=\""+imgurl+"\">"+self.text+"</a>"
     
 class ExcelLink(EventsLink):
     def getLink(self,dictargs):
@@ -108,7 +108,8 @@ class ExcelLink(EventsLink):
         self.text += u" Excel"
         linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'xls'})
         imgurl = "/static/img/evenements/40x40/excel-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "icone excel"
+        return self.setLink(imgurl,linkurl,imgalt)
 
 class CSVLink(EventsLink):
     def getLink(self, dictargs):
@@ -119,7 +120,8 @@ class CSVLink(EventsLink):
         self.text += u" CSV"
         linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'csv'})
         imgurl = "/static/img/evenements/40x40/csv-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
+        imgalt = "icone CSV"
+        return self.setLink(imgurl,linkurl,imgalt)
     
 class ICSLink(EventsLink):
     def getLink(self, dictargs):
@@ -130,8 +132,8 @@ class ICSLink(EventsLink):
         self.text += u" Ical"
         linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'ics'})
         imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
-        return self.setLink(imgurl,linkurl)
-
+        imgalt = "icone ICS"
+        return self.setLink(imgurl,linkurl,imgalt)
     
 def getEventsLinkList(dictargs):
     eventsLinkList = list()

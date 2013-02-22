@@ -64,7 +64,7 @@
 						<table class="table  table-striped">
 							{% for evenement in eventmonth.list %}
 							<tr>
-								<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
+								<td><img alt="image de l'événement : {{evenement.nom}}" class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
 								<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
 								<p>
 									Type : {{evenement.type}}.
@@ -74,7 +74,7 @@
 									Lieu : {{evenement.lieu.nom}}, {{evenement.lieu.ville.nom}}. 
 								</p>
 								<p style="text-align:right;">
-									<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" type="button">+ d'infos</a>
+									<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
 								</p></td>
 
 							</tr>
@@ -84,18 +84,16 @@
 					</div>
 				</div>
 				<div class="span4 offset1">
-					<p style="text-align: center;">
+					<div>
 						{{dictargs|calendarexportlinklist|safe}}
 		
 						{{"ical"|aide}}
-					</p>
+					</div>
 				</div>
-				<div class="span4 offset1">
-					
-					<ul class="nav nav-list  well ">
-						<p>
-						Voir les evènements :
-					</p>
+				<div class="span4 offset1 well">
+					Voir les événements :
+					<ul class="nav nav-list">
+
 						<li class="nav-header">
 							Par type
 						</li>
