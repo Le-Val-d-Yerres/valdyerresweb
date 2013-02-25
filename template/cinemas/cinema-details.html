@@ -6,17 +6,12 @@
 {% load aidefilters%}
 {% load hoursfilters%}
 {% load tz %}
-	
-
-
-
 
 	{% block title %}{% regroup seances by film as eventlist %} Cinéma «{{ cinema.nom }}» à {{cinema.ville.nom }}{% if seances|length > 0 %} , {{seances|length}} séance{{seances|length|pluralize}} à venir, {{eventlist|length}} film{{eventlist|length|pluralize}} à l'affiche {%endif%}{% endblock %}
 	{% block menu %}{% getmenu %}{% endblock %}
 	
 	{% block meta-description %}{% if seances|length > 0 %}{% regroup seances by film as eventlist %}A l'affiche : {% for film in eventlist%}{{film.grouper.titre}}, {% endfor %} tous les horaires.{%endif%}Cinéma «{{ cinema.nom }}» à {{cinema.ville.nom }}{% endblock %}
 	
-
 
 {% block contenu %}	
 <div class="container" style="margin-top:60px;">
