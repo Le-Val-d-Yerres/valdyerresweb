@@ -105,6 +105,8 @@ class Prix(models.Model):
     prix = models.FloatField("Prix (séparateur point ex : 0.5 )", default=None ,blank=False, null=True)
     evenement = models.ForeignKey(Evenement)
     
+    class Meta:
+        verbose_name_plural = u"Prix"
     
 class DocumentAttache(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom") 

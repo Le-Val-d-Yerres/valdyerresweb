@@ -7,9 +7,14 @@
 {% load hoursfilters%}
 {% load tz %}
 	
+
+
+
+
+	{% block title %}{% regroup seances by film as eventlist %} Cinéma «{{ cinema.nom }}» à {{cinema.ville.nom }}{% if seances|length > 0 %} , {{seances|length}} séance{{seances|length|pluralize}} à venir, {{eventlist|length}} film{{eventlist|length|pluralize}} à l'affiche {%endif%}{% endblock %}
 	{% block menu %}{% getmenu %}{% endblock %}
 	
-	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }} {{equipement.ville.nom }}{% endblock %}
+	{% block meta-description %}{% if seances|length > 0 %}{% regroup seances by film as eventlist %}A l'affiche : {% for film in eventlist%}{{film.grouper.titre}}, {% endfor %} tous les horaires.{%endif%}Cinéma «{{ cinema.nom }}» à {{cinema.ville.nom }}{% endblock %}
 	
 
 
@@ -39,16 +44,24 @@
 			{% endif %}
 			
 			{% if seances|length > 0 %}
+			<p>
+				{% regroup seances by film as eventlist %}
+				A l'affiche : {% for film in eventlist%}<a href="#{{film.grouper.slug}}">{{film.grouper.titre}}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}
+			</p>
 			<hr/>
-			<h2>Les séances à venir :</h2>
-			{% regroup seances by film as eventlist %}
 			
+			<h2>Les séances à venir :</h2>
+			
+			{% regroup seances by film as eventlist %}
 				<table class="table  table-striped">
 				{% for film in eventlist%}
-				<tr>
+				<tr id="{{film.grouper.slug}}">
 					<td><img class="img-polaroid" src="{{film.grouper.image|resize:'240x320x1'}}"></td>
 				<td><h3>{{film.grouper.titre}}</h3>Durée : {{film.grouper.duree|dureesec}}.<br/>
+					<p>
 					<a href = "http://www.allocine.fr/film/fichefilm_gen_cfilm={{film.grouper.id_allocine_film}}.html">Fiche du film sur allocine.fr</a>.<br/>
+					
+					</p>
 					{% regroup film.list by cinema as cinemalist %}
 					{% for cinema in cinemalist %}
 					<hr/>
@@ -107,13 +120,13 @@
 					
 					{% if cinema.fax %}
 					<p>
-						Fax : {{ equipement.fax }}
+						Fax : {{ cinema.fax }}
 					</p>
 					{% endif %}
 
 					{% if cinema.email %}
 					<p>
-						Courriel : <a href="mailto:{{ equipement.email }}">{{ cinema.email }}</a>
+						Courriel : <a href="mailto:{{ cinema.email }}">{{ cinema.email }}</a>
 					</p>
 					{% endif %}
 				</div>
@@ -158,20 +171,23 @@
 				<br/>
 				Longitude : {{ cinema.longitude }}
 			</p>
-			<meta itemprop="latitude" content="{{ equipement.latitude }}" />
-			<meta itemprop="longitude" content="{{ equipement.longitude }}" />
+			<meta itemprop="latitude" content="{{ cinema.latitude }}" />
+			<meta itemprop="longitude" content="{{ cinema.longitude }}" />
 			<hr/>
-			<p class="hidden-phone" style="text-align: center;">
+			<div >
+			<p class="hidden-phone" style="text-align:center;">
 				Les coordonnées géographiques au format QR Code :
 				<br/>
 				<img alt="QrCode : {{ cinema.nom }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
 			</p>
-			<p>	
-				<ul>
-				<li><a href="http://www.openstreetmap.org/index.html?mlat={{cinema.latitude|toFloatjs}}&mlon={{cinema.longitude|toFloatjs}}&zoom=18"> Voir l'emplacement sur OpenstreetMap</a></li>
-				<li><a href="http://maps.google.com/?q={{cinema.latitude|toFloatjs}},{{cinema.longitude|toFloatjs}}&z=19"> Voir l'emplacement sur Google Maps</a></li>
+			<div style="text-align:center;">
+				<ul style="list-style:none;">
+				<li><a class="btn btn-primary" href="http://www.openstreetmap.org/index.html?mlat={{cinema.latitude|toFloatjs}}&mlon={{cinema.longitude|toFloatjs}}&zoom=18"> Voir l'emplacement sur OpenstreetMap</a></li>
+				<li>&nbsp;</li>
+				<li><a class="btn btn-primary" href="http://maps.google.com/?q={{cinema.latitude|toFloatjs}},{{cinema.longitude|toFloatjs}}&z=19"> Voir l'emplacement sur Google Maps</a></li>
 				</ul>
-			</p>
+			
+			</div>
 		</div>
 
 	</div>

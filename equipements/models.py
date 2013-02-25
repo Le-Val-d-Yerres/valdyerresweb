@@ -28,7 +28,7 @@ class Equipement(Lieu):
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     
     def __unicode__(self):
-        return self.nom+" "+self.ville.nom
+        return self.ville.nom+" - "+ self.nom
     
     @permalink
     def get_absolute_url(self):
@@ -45,14 +45,14 @@ class Facilite(models.Model):
         return self.nom
     
 class Facilites(models.Model):
-    equipement = models.ForeignKey(Equipement)
+    equipement = models.ForeignKey(Lieu)
     facilites = models.ManyToManyField(Facilite)
     
     def __unicode__(self):
-        return self.equipement.nom_lieu
+        return self.equipement.nom
     
     def Equipement(self):
-        return self.equipement.nom_lieu
+        return self.equipement.nom
     
     def Facilites(self):
         i = 1
@@ -94,4 +94,6 @@ class Tarif(models.Model):
     class Meta:
         verbose_name_plural = "Tarifs"
         ordering = ['categorie__index','index']
+
+        
     

@@ -77,6 +77,7 @@ class Command(NoArgsCommand):
                     title  = movie.xpath("./bob:onShow/bob:movie/bob:title",namespaces = mynsmap)
                     urlimage = movie.xpath("./bob:onShow/bob:movie/bob:poster",namespaces = mynsmap)
                     duration = movie.xpath("./bob:onShow/bob:movie/bob:runtime",namespaces = mynsmap)
+                    note = movie.xpath("./bob:onShow/bob:movie/bob:statistics/bob:userRating",namespaces = mynsmap)
                     monfilm.titre = title[0].text
                     
                     try:
@@ -87,6 +88,10 @@ class Command(NoArgsCommand):
                         monfilm.duree = int(duration[0].text)
                     except:
                         monfilm.duree = 3600
+                    try:
+                        monfilm.note = float(note[0].text)
+                    except:
+                        monfilm.note = 0
 
                     
                     monfilm.slug = defaultfilters.slugify(monfilm.titre)

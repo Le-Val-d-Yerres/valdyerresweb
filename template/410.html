@@ -6,25 +6,18 @@
 {% load aidefilters%}
 {% load tz %}
 
-{% block title %}Erreur 404{% endblock %}
-{% block meta-description %}404 error{% endblock %}
+{% block title %}Erreur 410{% endblock %}
+{% block meta-description %}410 error{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
 <div class="container" style="margin-top:60px;">
 <div  class="row-fluid">
-	<div class="span12">
-			<ul class="breadcrumb">
-				<li>
-					<a href="/">Retourner à l'accueil du site</a><span class="divider">/</span>
-				</li>
-			</ul>
-	</div>
 			<div class="span7">
-				<h1>Erreur 404</h1>
+				<h1>Erreur 410</h1>
 				<p>
-				Le contenu que vous cherchez n'est pas disponible à cette adresse.
+				{{message}}
 				</p>
 			</div>
 </div>
