@@ -7,6 +7,7 @@
 {% load hoursfilters%}
 {% load tz %}
 	
+	{%  block title%}  {%endblock%}
 	{% block menu %}{% getmenu %}{% endblock %}
 	
 	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }} {{equipement.ville.nom }}{% endblock %}
