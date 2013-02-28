@@ -7,10 +7,10 @@
 {% load hoursfilters%}
 {% load tz %}
 	
-	{%  block title%}  {%endblock%}
+	{% block title %}{{ equipement.nom }} tous les horaires, toutes les périodes{% endblock %}
 	{% block menu %}{% getmenu %}{% endblock %}
 	
-	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }} {{equipement.ville.nom }}{% endblock %}
+	{% block meta-description %}{{ equipement.fonction.pluriel }} : {{ equipement.nom }}. Ville : {{equipement.ville.nom }}, tous les horaires, toutes les périodes{% endblock %}
 	
 
 

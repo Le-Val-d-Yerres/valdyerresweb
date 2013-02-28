@@ -7,11 +7,11 @@
 {% load hoursfilters%}
 {% load tz %}
 
-{% block title %} {{equipement.nom}} {% endblock %}
+{% block title %} {{tarifs.0.categorie.equipement_fonction.pluriel}}, tarification. {%for item in equipements%}{{item.nom}} à {{item.ville.nom}}{% if forloop.last%}{%else%}, {%endif%}{% endfor %} {% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
-{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }} {{equipement.ville.nom }}{% endblock %}
+{% block meta-description %}{{tarifs.0.categorie.equipement_fonction.pluriel}}, tarification, tarifs. {%for item in equipements%}{{item.nom}} à {{item.ville.nom}}{% if forloop.last%}.{%else%}, {%endif%}{% endfor %}{% endblock %}
 
 {% block contenu %}
 {%regroup tarifs by categorie as cat%}

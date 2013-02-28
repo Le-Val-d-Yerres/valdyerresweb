@@ -97,10 +97,10 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
         evenements =  evenements.filter(debut__lt = endDate )
     
     if type_slug != "tous" :
-        typeevenement = TypeEvenement.objects.get(slug=type_slug)
+        typeevenement = get_object_or_404(TypeEvenement,slug=type_slug)
         evenements =  evenements.filter(type = typeevenement.id)
     if orga_slug != "tous" :
-        organisateur = Organisateur.objects.get(slug=orga_slug)    
+        organisateur = get_object_or_404(Organisateur,slug=orga_slug)    
         evenements =  evenements.filter(organisateur = organisateur.id)
     if export == True:
         return evenements

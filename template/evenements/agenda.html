@@ -6,9 +6,9 @@
 {% load aidefilters%}
 {% load tz %}
 
-{% block title %} L'agenda du Val d'Yerres {% if orgaslug != "tous" %} les événements organisés par {% for item in orgalist %} {% if orgaslug == item.slug %} {{item.nom}},{% endif %}{% endfor %}{%endif%}{% if period == "toutes" %} toutes périodes {% elif period == "cette-semaine" %} cette semaine {% elif period == "ce-week-end" %}ce week end{% elif period == "ce-mois" %}ce mois{%endif%}{% endblock %}
+{% block title %}L'agenda du Val d'Yerres {%if orgaslug != "tous" %} les événements organisés par {% for item in orgalist %}{% if orgaslug == item.slug %}{{item.nom}}, {% endif %}{% endfor %}{%endif%}{% if period == "toutes" %}toutes périodes{% elif period == "cette-semaine" %}cette semaine{% elif period == "ce-week-end" %}ce week end{% elif period == "ce-mois" %}ce mois{%endif%}{% if typeslug == "tous" %}, tout type d'événements, {%else%} {% for item in typeslist %}{% if typeslug == item.slug %}, événement{{evenements|pluralize}} de type : {{item.nom}}{% endif %}{% endfor %}{% endif %}{% endblock %}
 
-{% block meta-description %}Agenda des spectacles et évènements organisé par le Val d'Yerres et ses partenaires : {% if period == "toutes" %} toutes périodes {%endif%}{% if period == "cette-semaine" %} cette semaine {%endif%} {% endblock %}
+{% block meta-description %}Agenda des spectacles et événements organisé par le Val d'Yerres et ses partenaires : {% if period == "toutes" %}toutes périodes{%endif%}{% if period == "cette-semaine" %}cette semaine{%endif%}{% if typeslug == "tous" %}, tout type d'événements, {%else%}{% for item in typeslist %}{% if typeslug == item.slug %}, événement{{evenements|pluralize}} de type : {{item.nom}}{% endif %}{% endfor %}{% endif %}{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 

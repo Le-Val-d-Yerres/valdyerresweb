@@ -93,7 +93,6 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         
     return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7, 'tarifs_principaux':tarifs_principaux })
 
-@cache_control(must_revalidate=True, max_age=3600)
 def EquipementHoraires(request, equipement_slug):
     equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
     today = datetime.date.today()
@@ -112,11 +111,13 @@ def EquipementHoraires(request, equipement_slug):
 
 def EquipementFonctionTarifs(request, equipement_fonction_slug):
     tarifs = Tarif.objects.select_related().filter(categorie__equipement_fonction__slug = equipement_fonction_slug)
-    return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs})
+    fonction = EquipementFonction.objects.get(slug=equipement_fonction_slug)
+    equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
+            
+    return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs,'equipements':equipements})
     
 
-@cache_control(must_revalidate=True, max_age=3600)
-@cache_page(3600)
+
 def FonctionDetailsHtml(request, fonction_slug):
     try:
         fonction = EquipementFonction.objects.get(slug=fonction_slug)
