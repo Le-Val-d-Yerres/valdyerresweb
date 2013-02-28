@@ -3,6 +3,7 @@
 from django.shortcuts import render_to_response , redirect , get_object_or_404 , get_list_or_404
 from services.models import Service,PageStatiqueService,DocumentAttache
 from equipements.models import Equipement
+from annoncesemploi.models import Annonce
 
 
 def Services(request):
@@ -15,8 +16,9 @@ def ServiceDetail(request,service_slug):
     
     service = get_object_or_404(Service.objects.select_related(),slug = service_slug)
     pages_liees = PageStatiqueService.objects.filter(service = service.id,publie = True).select_related().order_by('index')
-    equipements = Equipement.objects.select_related().filter(fonction__service= service.id) 
-    return render_to_response('services/service-detail.html', {'service' : service, 'pages_liees': pages_liees, 'equipements': equipements})
+    equipements = Equipement.objects.select_related().filter(fonction__service= service.id)
+    nb_annonces = Annonce.objects.filter(service=service.id).count()
+    return render_to_response('services/service-detail.html', {'service' : service, 'pages_liees': pages_liees, 'nb_annonces':nb_annonces ,'equipements': equipements})
 
 def PageContenu(request, service_slug ,page_slug):
     

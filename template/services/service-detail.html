@@ -31,6 +31,7 @@
 			{{service.description|safe}}
 			
 		</div>
+		{% if pages_liees|length > 0 %}
 		<div class="span4">
 		<ul class="nav nav-tabs nav-stacked">
 			{% for page in pages_liees %}
@@ -40,6 +41,19 @@
 		</ul>
 
 		</div>
+		{%endif%}
+		{% if nb_annonces > 0 %}
+		<div class="span4">
+		<hr/>
+		<p>
+		Il y a {{nb_annonces}} annonce{{nb_annonces|pluralize}} emploi publié{{nb_annonces|pluralize:"es"}} par le service «{{service.nom}}»:
+		</p>
+		<p style="text-align:right;" >
+		<a class="btn btn-primary" href="{% url annoncesemploi.views.AnnoncesListService service_slug=service.slug %}">Voir l{{nb_annonces|pluralize:"',es"}} annonce{{nb_annonces|pluralize}}</a>
+		</p>
+		<hr/>
+		</div>
+		{% endif%}
 		
 		{% if equipements|length > 0 %}
 		<div class="span4">
