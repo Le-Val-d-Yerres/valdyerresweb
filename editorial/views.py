@@ -96,7 +96,7 @@ def ActuList(request):
         elif int(page) == 1:
             return redirect('actu-list')
         else:
-            pages = paginator.page(pages)
+            pages = paginator.page(page)
     except PageNotAnInteger:
         raise Http404
     except EmptyPage:
@@ -200,7 +200,7 @@ def Ephemeride(request,jour='aujourd-hui'):
     evenements = Evenement.objects.select_related().filter(fin__gt=startdate,debut__lt = enddate, publish = True).order_by('debut')
     
     equipements_qst = Equipement.objects.all().select_related().order_by('fonction','ville__nom','nom')
-    equipement_dict = dict([obj.id,obj] for obj in equipements_qst)
+#   equipement_dict = dict([obj.id,obj] for obj in equipements_qst)
     listhoraires = list()
 #    equipements = list()
 #    for equipement in equipements_qst:

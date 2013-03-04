@@ -7,12 +7,12 @@
 {% load hoursfilters%}
 {% load tz %}
 	
-	{% block title %} {{equipement.nom}} {% endblock %}
-
+	{% block title %} {{equipement.nom}}{% endblock %}
+	{% block meta-description %}{{ equipement.nom }}, {{equipement.meta_description}}, {% if evenements %}événements à venir: {% for item in evenements|slice:":4" %} {{item.type.nom}} «{{item.nom}}»{% if forloop.last%}. {% else %}, {%endif%}{% endfor %}{% endif %}{{ equipement.fonction.nom }}, {{equipement.ville.nom }}.{% endblock %}
 	
 	{% block menu %}{% getmenu %}{% endblock %}
 	
-	{% block meta-description %}{{ equipement.fonction.nom }} {{ equipement.nom }} {{equipement.ville.nom }}{% endblock %}
+	
 	
 
 

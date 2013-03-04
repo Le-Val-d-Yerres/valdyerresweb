@@ -7,11 +7,12 @@
 {% load hoursfilters%}
 {% load tz %}
 
-{% block title %}{{datepage|queljour|resume:50}} dans le Val d'Yerres{% endblock %}
+{% block title %}{{datepage|queljour|resume:50}} dans le Val d'Yerres :{% if seances|length > 0 %}{% with seancestotal=seances|length %} {{seancestotal}} séance{{seancestotal|pluralize}} de cinéma,{% endwith %}{% endif %}{%if evenements|length > 0%}{{evenements|length}} événement{{evenements|length|pluralize}}{%endif%}{% if equipements|length > 0%}{% with equipementstotal=equipements|length %} {{equipementstotal}} équipement{{equipementstotal|pluralize}} ouvert{{equipementstotal|pluralize}}{%endwith%}{%endif%}{% endblock %}
+{% block meta-description %}{{datepage|queljour|resume:50}} dans le Val d'Yerres :{% if seances|length > 0 %}{% with seancestotal=seances|length %} {{seancestotal}} séance{{seancestotal|pluralize}} de cinéma,{% endwith %}{% endif %}{%if evenements|length > 0%}{{evenements|length}} événement{{evenements|length|pluralize}}{%endif%}{% if equipements|length > 0%}{% with equipementstotal=equipements|length %} {{equipementstotal}} équipement{{equipementstotal|pluralize}} ouvert{{equipementstotal|pluralize}}: {%regroup equipements by fonction as fonctions %}{% for item in fonctions %}{{item.grouper.nom}}{% if forloop.last %}.{%else%}, {% endif %} {%endfor%}{%endwith%}{%endif%}{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
-{% block meta-description %}Liste des {{ fonction.nom }} du Val d'Yerres{% endblock %}
+
 
 {% block contenu %}
 <div class="container" style="margin-top:60px;">

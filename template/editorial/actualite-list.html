@@ -6,8 +6,8 @@
 {% load aidefilters%}
 {% load tz %}
 
-{% block title %}Les actualités, page {{pages.number}} {% endblock %}
-{% block meta-description %}Les actualités du Val d'Yerres{% endblock %}
+{% block title %}Les actualités du Val d'Yerres : page {{pages.number}} {% endblock %}
+{% block meta-description %}Les actualités du Val d'Yerres, page {{pages.number}} : {% for page in pages %}{{page.titre}} {% if forloop.last %}.{%else%}, {% endif %}{%endfor%} {% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 

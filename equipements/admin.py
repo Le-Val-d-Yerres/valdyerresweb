@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 class EquipementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'fonction', 'ville']
     fieldsets = [
-        ('Description', {'fields': (('nom', 'fonction'), 'presentation', 'image', 'url')}),
+        ('Description', {'fields': (('nom', 'fonction'),'meta_description', 'presentation', 'image', 'url')}),
         ('Adresse', {'fields': ['rue', 'ville', 'latitude', 'longitude']}),
         ('Contact', {'fields': ['telephone', 'fax', 'email']}),
     ]
