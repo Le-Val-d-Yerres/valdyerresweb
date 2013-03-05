@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
+from django.views.generic.simple import direct_to_template
 
 from filebrowser.sites import site
 
@@ -27,4 +28,5 @@ urlpatterns = patterns('',
     url(r'^annoncesemploi/', include('annoncesemploi.urls')),
     url(r'^debug/', include('debug_toolbar.urls')),
     url(r'', include('editorial.urls')),
+    url(r'^robots\.txt$', direct_to_template,{'template': 'robots.txt', 'mimetype': 'text/plain'}),
 )

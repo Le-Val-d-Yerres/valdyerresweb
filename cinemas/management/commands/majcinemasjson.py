@@ -64,7 +64,10 @@ class Command(NoArgsCommand):
                 movie.delete()
             
             seances_to_delete.delete()
-            movies = [item for item in data["feed"]['theaterShowtimes'][0]['movieShowtimes']]
+            try:
+                movies = [item for item in data["feed"]['theaterShowtimes'][0]['movieShowtimes']]
+            except KeyError:
+                continue
            
             for movie in movies:
                 monfilm = Film()
