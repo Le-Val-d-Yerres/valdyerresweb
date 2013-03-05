@@ -1,3 +1,4 @@
 User-agent:*
 Disallow: /node/
 Disallow: /cinemas/add/
+Dissalow: /sites/default/files/
