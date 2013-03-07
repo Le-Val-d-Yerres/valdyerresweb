@@ -32,7 +32,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     tarif_categorie_principale = TarifCategorie.objects.select_related().filter(equipement_fonction = equipement.fonction,index=0 ) 
     tarifs_principaux = Tarif.objects.select_related().filter(categorie= tarif_categorie_principale )
         
-    facilites = Facilites.objects.filter(equipement_id=equipement.id).order_by('facilites__importance')
+    facilites = Facilites.objects.filter(equipement_id=equipement.id)
     
     evenements = None
     try:

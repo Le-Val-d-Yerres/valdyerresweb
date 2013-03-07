@@ -37,12 +37,14 @@ class Equipement(Lieu):
 class Facilite(models.Model):
     nom = models.CharField(max_length=255)
     description = models.TextField()
-    importance = models.IntegerField("Degrée d'Importance (de 0 à 100)")
+    importance = models.IntegerField("Degrée d'importance (de 0 + important à 100 - important )")
     picto = FileBrowseField("Pictogramme", max_length=200, directory="picto", extensions=[".png"])
     slug = models.SlugField(max_length=255,unique=True)
     
     def __unicode__(self):
         return self.nom
+    class Meta:
+        ordering = ('importance',)
     
 class Facilites(models.Model):
     equipement = models.ForeignKey(Lieu)
