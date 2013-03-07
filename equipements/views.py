@@ -1,6 +1,6 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response , redirect , get_object_or_404, get_list_or_404
-from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites
+from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites,Facilite
 from evenements.models import Evenement, Organisateur
 from localisations.models import Lieu
 from horaires.models import Horaires, Periode
@@ -21,6 +21,11 @@ def CarteEquipements(request):
 
     return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'mediaDir': settings.MEDIA_DIR_NAME})
 
+def CarteFacilite(request,slug):
+    
+    facilite = get_object_or_404(Facilite.objects.filter(slug=slug))
+    facilites = Facilites.objects.select_related().prefetch_related().filter(facilites=facilite.id)
+    return render_to_response('equipements/carte-facilites.html', {'facilite': facilite,'facilites': facilites, 'mediaDir': settings.MEDIA_DIR_NAME})
 
 @cache_control(must_revalidate=True, max_age=3600)
 @cache_page(3600)

@@ -37,8 +37,9 @@ class Equipement(Lieu):
 class Facilite(models.Model):
     nom = models.CharField(max_length=255)
     description = models.TextField()
-    importance = models.IntegerField("Degrée d'importance (de 0 + important à 100 - important )")
+    importance = models.IntegerField("Degrée d'importance (de 0 + important à 100 - important ). Entre 0 et 20 c'est géolocalisable au delà de 20 non.")
     picto = FileBrowseField("Pictogramme", max_length=200, directory="picto", extensions=[".png"])
+    picto_geoloc = FileBrowseField("Pictogramme pour la géolocalisation", max_length=200, directory="picto", extensions=[".png"], blank=True, null=True)
     slug = models.SlugField(max_length=255,unique=True)
     
     def __unicode__(self):
