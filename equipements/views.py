@@ -4,15 +4,13 @@ from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tari
 from evenements.models import Evenement, Organisateur
 from localisations.models import Lieu
 from horaires.models import Horaires, Periode
-from datetime import datetime
+import datetime
 from django.db.models import Q
 from django.conf import settings
 from pytz import timezone
 from django.template import Context, loader
 from valdyerresweb.utils.functions import GenerationQrCode
 from django.views.decorators.cache import cache_control, cache_page
-
-import datetime
 
 
 utcTZ = timezone("UTC")
@@ -34,7 +32,8 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     tarif_categorie_principale = TarifCategorie.objects.select_related().filter(equipement_fonction = equipement.fonction,index=0 ) 
     tarifs_principaux = Tarif.objects.select_related().filter(categorie= tarif_categorie_principale )
         
-    facilites = Facilites.objects.filter(equipement_id=equipement.id)
+    facilites = Facilites.objects.filter(equipement_id=equipement.id).order_by('facilites__importance')
+    
     evenements = None
     try:
         organisateur = Organisateur.objects.get(orga_equipement = equipement.id)
