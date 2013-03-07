@@ -105,23 +105,6 @@
 		</div>
 
 	</div>
-
-
-	{% if facilites %}
-	<div class="row-fluid">
-		<div class="span7">
-			<hr/>
-			<h2>Dans cet équipement:</h2>
-			<ul>
-				{% for facilite in facilites.facilites.all %}
-				<li style="margin-top:5px;list-style: none;"><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}
-				</li>
-				{% endfor %}
-			</ul>
-		</div>
-	</div>
-
-	{% endif %}
 	
 	{% if horaires %}
 	<div class="row-fluid">
@@ -231,6 +214,22 @@
 
 		</div>
 	</div>
+	{% endif %}
+	
+	{% if facilites %}
+	<div class="row-fluid">
+		<div class="span7">
+			<hr/>
+			<h2>Dans cet équipement:</h2>
+			<ul>
+				{% for facilite in facilites.facilites.all %}
+				<li style="margin-top:5px;list-style: none;"><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
 	{% endif %}
 	
 	<div class="row-fluid">
