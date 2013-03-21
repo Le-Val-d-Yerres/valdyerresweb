@@ -100,7 +100,7 @@
 						{% for evenement in evenements_une_lg1 %}
 						<li class="span4">
 							<div class="thumbnail">
-								<img alt="300x200" style="width: 300px; height: 200px;" src="{{evenement.image|resize:'225x200x1'}}">
+								<img alt="300x200"  src="{{evenement.image|resize:'225x200x1'}}">
 								<div class="caption">
 									<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
 									<br/>
@@ -127,7 +127,7 @@
 						{% for evenement in evenements_une_lg2 %}
 						<li class="span4">
 							<div class="thumbnail">
-								<img alt="{{evenement.nom|safe}}" style="width: 300px; height: 200px;" src="{{evenement.image|resize:'225x200x1'}}">
+								<img alt="{{evenement.nom|safe}}"  src="{{evenement.image|resize:'225x200x1'}}">
 								<div class="caption">
 									<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
 									<br/>
@@ -178,7 +178,7 @@
 						<h3><a href="{% url editorial.views.Magazines %}">Le Magazine</a></h3>
 						
 							<h4><a href="{% url editorial.views.Magazines %}">{{magazine.date_parution|moisannee}}</a></h4>
-							<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
+							<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" style="max-width:90%" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
 							<p>
 							Dossier : {{magazine.titre|safe}}
 							</p>

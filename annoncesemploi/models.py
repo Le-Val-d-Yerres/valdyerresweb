@@ -3,6 +3,7 @@
 from django.db import models
 from filebrowser.fields import FileBrowseField
 from services.models import Service
+from django.db.models import permalink
 
 
 
@@ -26,6 +27,9 @@ class Annonce(models.Model):
     def __unicode__(self):
         return self.intitule
     
+    @permalink
+    def get_absolute_url(self):
+        return ('annonce-detail',(),{'annonce_slug':self.slug,'service_slug':self.service.slug})
 
 # Classe d'interconnexion avec l'export XLS du logiciel
 # utilisé par les maisons de l'emploi

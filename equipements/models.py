@@ -5,6 +5,8 @@ from filebrowser.fields import FileBrowseField
 from localisations.models import Lieu
 from django.core.urlresolvers import reverse
 from django.db.models import permalink
+from model_utils.managers import InheritanceManager
+
 
 class EquipementFonction(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Fonction")
@@ -51,6 +53,7 @@ class Facilites(models.Model):
     equipement = models.ForeignKey(Lieu)
     facilites = models.ManyToManyField(Facilite)
     
+
     def __unicode__(self):
         return self.equipement.nom
     

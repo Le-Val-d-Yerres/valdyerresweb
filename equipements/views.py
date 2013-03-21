@@ -10,25 +10,45 @@ from django.conf import settings
 from pytz import timezone
 from django.template import Context, loader
 from valdyerresweb.utils.functions import GenerationQrCode
-from django.views.decorators.cache import cache_control, cache_page
 
 
 utcTZ = timezone("UTC")
 
-def CarteEquipements(request):
+def EquipementsCarte(request):
       
     equipements = Equipement.objects.select_related().all().order_by('fonction__nom', 'ville__nom')
 
     return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'mediaDir': settings.MEDIA_DIR_NAME})
 
-def CarteFacilite(request,slug):
+def FaciliteCarte(request,slug):
     
     facilite = get_object_or_404(Facilite.objects.filter(slug=slug))
-    facilites = Facilites.objects.select_related().prefetch_related().filter(facilites=facilite.id)
-    return render_to_response('equipements/carte-facilites.html', {'facilite': facilite,'facilites': facilites, 'mediaDir': settings.MEDIA_DIR_NAME})
+    
+    facilites = Facilites.objects.prefetch_related().select_related().filter(facilites=facilite.id)
+    
+    
+    
+    dict_lieux = {}
+    lieux = Lieu.objects.all().select_related().select_subclasses()
+    for lieu in lieux:
+        dict_lieux[lieu.id] = lieu
+    
+    
+    list_facilites = list()
+    
+    
+    
+    for item in facilites:
+        item.equipement = dict_lieux[item.equipement.id]
+        list_facilites.append(item)
 
-@cache_control(must_revalidate=True, max_age=3600)
-@cache_page(3600)
+    
+    return render_to_response('equipements/carte-facilites.html', {'lieux':lieux,'facilite': facilite,'facilites': list_facilites, 'mediaDir': settings.MEDIA_DIR_NAME})
+
+def FaciliteListe(request):
+    
+    return render_to_response('equipements/facilites.html')
+
 def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 
     now = datetime.datetime.now(utcTZ)

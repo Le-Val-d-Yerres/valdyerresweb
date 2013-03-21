@@ -43,7 +43,7 @@ def pdftojpg(pdfFilePath, subpath = "/img/"):
     args = shlex.split(command_line)
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
     (out, err) = proc.communicate()
-    
+    proc.wait()
     mystrimage = cStringIO.StringIO(out)
     image = Image.open(mystrimage)
     image.save(outpoutejpg, "JPEG", quality=90, optimize=True, progressive=True)

@@ -10,7 +10,7 @@
 	{% block title %}{% regroup seances by film as eventlist %} Cinéma «{{ cinema.nom }}» à {{cinema.ville.nom }}{% if seances|length > 0 %} , {{seances|length}} séance{{seances|length|pluralize}} à venir, {{eventlist|length}} film{{eventlist|length|pluralize}} à l'affiche {%endif%}{% endblock %}
 	{% block menu %}{% getmenu %}{% endblock %}
 	
-	{% block meta-description %}{% if seances|length > 0 %}{% regroup seances by film as eventlist %}A l'affiche : {% for film in eventlist%}{{film.grouper.titre}}, {% endfor %} tous les horaires.{%endif%}Cinéma «{{ cinema.nom }}» à {{cinema.ville.nom }}{% endblock %}
+	{% block meta-description %}{% if seances|length > 0 %}{% regroup seances by film as eventlist %}au programme : {% for film in eventlist%}{{film.grouper.titre}}, {% endfor %} tous les horaires.{%endif%}Cinéma «{{ cinema.nom }}» à {{cinema.ville.nom }} non loin de Carré Sénart{% endblock %}
 	
 
 {% block contenu %}	
@@ -45,7 +45,7 @@
 			</p>
 			<hr/>
 			
-			<h2>Les séances à venir :</h2>
+			<h2>Programme des séances à venir :</h2>
 			
 			{% regroup seances by film as eventlist %}
 				<table class="table  table-striped">

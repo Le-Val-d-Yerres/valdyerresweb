@@ -25,7 +25,7 @@ function map_init(zoomMulti)
 	OpenLayers.Lang.setCode("fr");
    	map = new OpenLayers.Map("map_canvas");
 	var osm = new OpenLayers.Layer.OSM();            
-    var gmap = new OpenLayers.Layer.Google("Google Streets");
+    var gmap = new OpenLayers.Layer.Google("Google Map");
     
     map.addLayers([osm, gmap]);
 

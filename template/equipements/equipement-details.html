@@ -25,7 +25,7 @@
 					<a href="/">Accueil</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
+					<a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
 				</li>
 				<li>
 					<a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.pluriel }}</a><span class="divider">/</span>
@@ -224,6 +224,9 @@
 			<ul>
 				{% for facilite in facilites.facilites.all %}
 				<li style="margin-top:5px;list-style: none;"><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}
+				{% if facilite.importance < 10 %}
+				(<a href="{% url equipements.views.FaciliteCarte slug=facilite.slug %}">Voir tous</a>)
+				{% endif %}
 				</li>
 				{% endfor %}
 			</ul>
@@ -241,9 +244,11 @@
 			<div id="map_canvas" style="text-align:center;margin-left:auto;margin-right:auto;"></div>
 
 		</div>
-		<div class="span4" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+		<div style="text-align:center; class="span4" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
 			<hr/>
 			<p>
+				 Les coordonnées GPS : 
+				 <br/>
 				Latitude : {{ equipement.latitude }}
 				<br/>
 				Longitude : {{ equipement.longitude }}
@@ -252,14 +257,17 @@
 			<meta itemprop="longitude" content="{{ equipement.longitude }}" />
 			<hr/>
 			<p class="hidden-phone" style="text-align: center;">
-				Les coordonnées géographiques au format QR Code :
+				 Les coordonnées GPS :
+				<br/>
+				(Format QR Code)
 				<br/>
 				<img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ qr_code_geo }}"/>
 			</p>
 			<p>	
-				<ul>
-				<li><a href="http://www.openstreetmap.org/index.html?mlat={{equipement.latitude|toFloatjs}}&mlon={{equipement.longitude|toFloatjs}}&zoom=18"> Voir l'emplacement sur OpenstreetMap</a></li>
-				<li><a href="http://maps.google.com/?q={{equipement.latitude|toFloatjs}},{{equipement.longitude|toFloatjs}}&z=19"> Voir l'emplacement sur Google Maps</a></li>
+				<ul style="list-style:none;">
+				<li><a class="btn btn-primary" href="http://www.openstreetmap.org/index.html?mlat={{equipement.latitude|toFloatjs}}&mlon={{equipement.longitude|toFloatjs}}&zoom=18"> Voir l'emplacement sur OpenstreetMap</a></li>
+				<li>&nbsp;</li>
+				<li><a class="btn btn-primary" href="http://maps.google.com/?q={{equipement.latitude|toFloatjs}},{{equipement.longitude|toFloatjs}}&z=19"> Voir l'emplacement sur Google Maps</a></li>
 				</ul>
 			</p>
 		</div>
@@ -292,8 +300,8 @@
 			
 			$(window).resize(function () {
     			var h =$('#map_canvas').parent().width();
-    			$('#map_canvas').css('height', (h*2/3));
-    			$('#map_canvas').css('width', (h*2/3));
+    			$('#map_canvas').css('height', (h));
+    			$('#map_canvas').css('width', (h));
 				}).resize();		
 		</script>
 		

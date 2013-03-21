@@ -30,13 +30,19 @@
 				<li>
 					<span class="divider">/</span>
 				</li>
+				<li class='active'>
+					<a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonce.service.slug %}">{{annonce.service.nom}}</a>
+				</li>
+				<li>
+					<span class="divider">/</span>
+				</li>
 				<li class="active">
 					{{annonce.intitule}}</a>
 				</li>
 			</ul>
 		</div>
 		<div class="span7" itemscope itemtype="http://schema.org/JobPosting" >
-			<h1  itemprop="title"><a href="{% url annoncesemploi.views.AnnonceDetail annonce_slug=annonce.slug   %}">{{annonce.intitule|safe}}</a></h1>
+			<h1  itemprop="title"><a href="{{page.get_absolute_url}}">{{annonce.intitule|safe}}</a></h1>
 			<hr/>
 			{% if annonce.lieu_travail %}
 			<p><strong>Lieu(x) de travail: </strong><span itemprop="jobLocation" itemscope itemtype="http://schema.org/Place"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> <span itemprop="addressLocality">{{annonce.lieu_travail|safe}} </span> </span> </span></p>

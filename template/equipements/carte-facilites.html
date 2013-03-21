@@ -6,7 +6,7 @@
 {% load aidefilters%}
 {% load tz %}
 
-{% block title %}Les équipements du Val d'Yerres{% endblock %}
+{% block title %}Facilités et services - {%with totalfacilite=facilites|length %}{{facilite.nom}} : {{totalfacilite}} lieu{{totalfacilite|pluralize:'x'}} recensé{{totalfacilite|pluralize}}{%endwith%}  {% endblock %}
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block meta-description %}Liste des équipements du Val d'Yerres{% endblock %}
@@ -18,17 +18,32 @@
 		<div class="span11">
 			<ul class="breadcrumb">
 				<li>
-					<a href="/">Accueil</a><span class="divider">/</span>
+					<a href="/">Accueil</a>
+				</li>
+				<li>
+					<span class="divider">/</span>
+				</li>
+				<li>
+					<a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a>
+				</li>
+				<li>
+					<span class="divider">/</span>
 				</li>
 				<li class="active">
-					Les équipements du Val d'Yerres
+					Facilités et services
+				</li>
+				<li>
+					<span class="divider">/</span>
+				</li>
+				<li class="active">
+					{{facilite.nom}}
 				</li>
 			</ul>
 
-			<h1><a href="{% url equipements.views.CarteEquipements %}">Les équipements du Val d'Yerres</a></h1>
+			<h1><a href="{% url equipements.views.EquipementsCarte %}">{%with totalfacilite=facilites|length %}{{facilite.nom}} : {{totalfacilite}} lieu{{totalfacilite|pluralize:'x'}} recensé{{totalfacilite|pluralize}}  {%endwith%}</a></h1>
 			
 			
-			{% regroup equipements by fonction as fonctionlist %}
+		
 			<ul>
 			{% for func in fonctionlist %}
 			
@@ -63,10 +78,10 @@
 				    		var myMarker = Object(); 
 				    		myMarker['longitude'] ={{facilitem.equipement.longitude|toFloatjs}} ; 
 							myMarker['latitude'] ={{facilitem.equipement.latitude|toFloatjs}}; 	
-				    	{% if facilitem.equipement.image %}
-							myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ facilitem.equipement.nom }}" src="{{ facilitem.equipement.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url facilitem.equipements.views.EquipementsDetailsHtml fonction_slug=facilitem.equipement.fonction.slug equipement_slug=facilitem.equipement.slug %}">{{ facilitem.equipement.nom }}</a><br  \>{{ facilitem.equipement.rue }}<br  \>{{ facilitem.equipement.ville.code_postal }}<br  \>{{ facilitem.equipement.ville.nom }}</p></div></div>'; 
+				    	{% if facilitem.equipement.get_absolute_url %}
+							myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ facilitem.equipement.nom }}" src="{{ facilitem.equipement.image|resize:'250x140x0' }}"/></div><div><p><a href="{{facilitem.equipement.get_absolute_url}}">{{ facilitem.equipement.nom }}</a><br  \>{{ facilitem.equipement.rue }}<br  \>{{ facilitem.equipement.ville.code_postal }}<br  \>{{ facilitem.equipement.ville.nom }}</p></div></div>'; 
 						{% else %}
-							myMarker['description'] = '<a href="{{facilitem.equipement.get_absolute_url }}">{{ facilitem.equipement.nom }}</a><br  \>{{ facilitem.equipement.rue }}<br  \>{{ facilitem.equipement.ville.code_postal }}<br  \>{{ facilitem.equipement.ville.nom }}'; 
+							myMarker['description'] = '{{ facilitem.equipement.nom }}<br  \>{{ facilitem.equipement.rue }}<br  \>{{ facilitem.equipement.ville.code_postal }}<br  \>{{ facilitem.equipement.ville.nom }}'; 
 						{% endif %}
 							myMarker['marker'] ='{{facilite.picto_geoloc}}';
 							tabFacilite.push(myMarker);			

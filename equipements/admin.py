@@ -56,7 +56,7 @@ class EquipementFonctionAdmin(admin.ModelAdmin):
 class FaciliteAdmin(admin.ModelAdmin):
     list_display = ['nom', 'importance']
     fieldsets = [
-        ('Nom', {'fields': ('nom', 'description')}),
+        ('Nom', {'fields': ('nom','slug', 'description')}),
         ('Attributs', {'fields': ['importance', 'picto','picto_geoloc']}),
     ]
     search_fields = ['nom']
