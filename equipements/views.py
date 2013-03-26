@@ -46,8 +46,22 @@ def FaciliteCarte(request,slug):
     return render_to_response('equipements/carte-facilites.html', {'lieux':lieux,'facilite': facilite,'facilites': list_facilites, 'mediaDir': settings.MEDIA_DIR_NAME})
 
 def FaciliteListe(request):
+    equipements = Equipement.objects.select_related().all()
+    facilites = Facilites.objects.select_related().all()
+    facilite_geo = Facilite.objects.filter(importance__lt = 10)
     
-    return render_to_response('equipements/facilites.html')
+    dict_equipements = {}
+    for equipement in equipements:
+        dict_equipements[equipement.id]=equipement
+    
+    list_facilites = list()
+    for item in facilites:
+        item.equipement = dict_equipements[item.equipement.pk]
+        list_facilites.append(item)
+    
+    list_facilites = reversed(sorted(list_facilites, key= lambda facilite: facilite.equipement.fonction.id ))
+    
+    return render_to_response('equipements/facilites.html',{'facilites':list_facilites,'facilite_geo':facilite_geo})
 
 def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 

@@ -1,15 +1,66 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>facilites</title>
-		<meta name="author" content="rtrjl" />
-		<!-- Date: 2013-03-21 -->
-	</head>
-	<body>
+{% block title %}Les équipements du Val d'Yerres{% endblock %}
+{% block menu %}{% getmenu %}{% endblock %}
 
-	</body>
-</html>
+{% block meta-description %}Liste des équipements du Val d'Yerres{% endblock %}
 
+{% block contenu %}
+<div class="container" style="margin-top:60px;">
+
+	<div class="row-fluid">
+		<div class="span11">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">Accueil</a><span class="divider">/</span>
+				</li>
+				<li class="active">
+					Facilités et services
+				</li>
+			</ul>
+
+			<h1><a href="{% url equipements.views.EquipementsCarte %}">Facilités et services</a></h1>
+
+			{% regroup facilites by equipement.fonction as fonctionlist %}
+			
+			<h2>Les cartes :</h2>
+			<ul>
+			{% for item in facilite_geo%}
+				<li><a href="{% url equipements.views.FaciliteCarte slug=item.slug %}">{{item.nom}} (voir sur une carte)</a></li>
+			{% endfor %}
+			</ul>
+			<h2>Dans les équipements :</h2>
+			{%for item in fonctionlist%}
+			<h3>{{item.grouper.pluriel}} :</h3>
+			<ul>
+				{%for equip in item.list%}
+				
+				<li>
+					<a href="{{equip.equipement.get_absolute_url}}">{{equip.equipement.nom}}</a> - {{equip.equipement.ville.nom}}
+					<ul>
+						{%for facilite in equip.facilites.all%}
+							<li>{{facilite.nom}} </li> 
+						{%endfor%}
+					</ul>
+				</li>
+
+				{%endfor%}
+			</ul>
+			{%endfor%}
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block jsload%}
+<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+{% endblock %}

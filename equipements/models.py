@@ -32,6 +32,9 @@ class Equipement(Lieu):
     def __unicode__(self):
         return self.ville.nom+" - "+ self.nom
     
+    class Meta:
+        ordering = ('fonction__nom','ville__nom',)
+    
     @permalink
     def get_absolute_url(self):
         return ('equipement-details',(),{'equipement_slug':self.slug,'fonction_slug':self.fonction.slug})
