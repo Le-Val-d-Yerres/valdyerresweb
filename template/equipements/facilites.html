@@ -9,7 +9,7 @@
 {% block title %}Les équipements du Val d'Yerres{% endblock %}
 {% block menu %}{% getmenu %}{% endblock %}
 
-{% block meta-description %}Liste des équipements du Val d'Yerres{% endblock %}
+{% block meta-description %}Liste des facilités et service en Val d'Yerres : {% for item in facilite_geo%}{{item.nom}}{% if forloop.last %}.{% else %}, {%endif%}{%endfor%}{% endblock %}
 
 {% block contenu %}
 <div class="container" style="margin-top:60px;">
@@ -18,7 +18,16 @@
 		<div class="span11">
 			<ul class="breadcrumb">
 				<li>
-					<a href="/">Accueil</a><span class="divider">/</span>
+					<a href="/">Accueil</a>
+				</li>
+				<li>
+					<span class="divider">/</span>
+				</li>
+				<li>
+					<a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a>
+				</li>
+				<li>
+					<span class="divider">/</span>
 				</li>
 				<li class="active">
 					Facilités et services
@@ -29,7 +38,7 @@
 
 			{% regroup facilites by equipement.fonction as fonctionlist %}
 			
-			<h2>Les cartes :</h2>
+			<h2>Sur le territoire :</h2>
 			<ul>
 			{% for item in facilite_geo%}
 				<li><a href="{% url equipements.views.FaciliteCarte slug=item.slug %}">{{item.nom}} (voir sur une carte)</a></li>

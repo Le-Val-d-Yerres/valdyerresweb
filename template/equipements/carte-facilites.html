@@ -9,7 +9,7 @@
 {% block title %}Facilités et services - {%with totalfacilite=facilites|length %}{{facilite.nom}} : {{totalfacilite}} lieu{{totalfacilite|pluralize:'x'}} recensé{{totalfacilite|pluralize}}{%endwith%}  {% endblock %}
 {% block menu %}{% getmenu %}{% endblock %}
 
-{% block meta-description %}Liste des équipements du Val d'Yerres{% endblock %}
+{% block meta-description %}{%with totalfacilite=facilites|length %}{{facilite.nom}} : {{totalfacilite}} lieu{{totalfacilite|pluralize:'x'}} recensé{{totalfacilite|pluralize}}{%endwith%} {% endblock %}
 
 {% block contenu %}
 <div class="container" style="margin-top:60px;">
@@ -30,7 +30,7 @@
 					<span class="divider">/</span>
 				</li>
 				<li class="active">
-					Facilités et services
+					<a href="{% url equipements.views.FaciliteListe %}">Facilités et services</a>
 				</li>
 				<li>
 					<span class="divider">/</span>
