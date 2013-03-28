@@ -13,57 +13,57 @@
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
-<div id="myCarousel" class="carousel slide">
-	<div class="carousel-inner">
-		{% for item in carroussel %}
-		<div class="item {%if forloop.first %}active{%endif%}" >
-			<img class="carouselbkgd" alt="Fond flou : {{item.titre}}" src={{item.image|expand:'1500x500x1'}}>
-			<div class="carousel-caption-large visible-desktop ">
 
-				<img class="img-polaroid-fix visible-desktop" alt="Illustration : {{item.titre}}" src={{item.image|resize:'200x150x1'}}>
-				<h2><a href="{{item.get_absolute_url}}">{{item.titre}}</a></h2>
-				<p>
-					{{item.contenu|resume:250|safe}}
-				</p>
-				<br/>
-				<br/>
-				<p>
-					<a style="float: right" class ="btn btn-primary" href="{{item.get_absolute_url}}">+ d'infos</a>
-				</p>
-			</div>
-			<div class="carousel-caption visible-phone visible-tablet ">
-
-				<p>
-					<a href="{{item.get_absolute_url}}">{{item.titre}}</a>
-					<br/>
-					{{item.contenu|resume:250|safe}}
-					<br/>
-					<a href="{{item.get_absolute_url}}">Lire la suite</a>
-				</p>
-
-			</div>
-		</div>
-		{% endfor %}
-	</div>
-	<div id="paginators" class="pagination pagination-caroussel">
-		<ul class ="carousel-links">
-			{% for item in carroussel %}
-
-			<li id="paginator-{{forloop.counter0}}" class='paginator {%if forloop.first %}active{%endif%}'>
-				<a  href="#">{{forloop.counter}}</a>
-			</li>
-
-			{% endfor %}
-		</ul>
-	</div>
-	<a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
-	<a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
-</div>
-
-<div class="container">
+<div class="container" style="padding-top:60px;">
 	<div class="row">
 		<div class="span12" style="padding-top:15px;">
 			<div class="span8">
+				<div id="myCarousel" class="carousel slide">
+					<div class="carousel-inner">
+						{% for item in carroussel %}
+						<div class="item {%if forloop.first %}active{%endif%}" >
+							<img class="carouselbkgd" alt="Fond flou : {{item.titre}}" src={{item.image|resize:'770x400x1'}}>
+							<div class="carousel-caption-large visible-desktop ">
+
+						
+								<h2><a href="{{item.get_absolute_url}}">{{item.titre}}</a></h2>
+								<p>
+									{{item.contenu|resume:250|safe}}
+								</p>
+								<br/>
+								<br/>
+								<p>
+									<a style="float: right" class ="btn btn-primary" href="{{item.get_absolute_url}}">+ d'infos</a>
+								</p>
+							</div>
+							<div class="carousel-caption visible-phone visible-tablet ">
+
+								<p>
+									<a href="{{item.get_absolute_url}}">{{item.titre}}</a>
+									<br/>
+									{{item.contenu|resume:250|safe}}
+									<br/>
+									<a href="{{item.get_absolute_url}}">Lire la suite</a>
+								</p>
+
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					<div id="paginators" class="pagination pagination-caroussel">
+						<ul class ="carousel-links">
+							{% for item in carroussel %}
+
+							<li id="paginator-{{forloop.counter0}}" class='paginator {%if forloop.first %}active{%endif%}'>
+								<a  href="#">{{forloop.counter}}</a>
+							</li>
+
+							{% endfor %}
+						</ul>
+					</div>
+					<a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
+					<a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
+				</div>
 				<h2><a href="{% url editorial.views.ActuList  %}">Les actualités du Val d'Yerres :</a></h2>
 
 				{% for page in actualites %}
@@ -116,7 +116,7 @@
 						{%endfor%}
 					</ul>
 					<p style="text-align: right;" >
-					<a class="btn btn-primary" href="{% url evenements.views.AgendaGlobal  %}">Voir tous les événements à venir</a>
+						<a class="btn btn-primary" href="{% url evenements.views.AgendaGlobal  %}">Voir tous les événements à venir</a>
 					</p>
 				</div>
 				{%endif%}
@@ -176,35 +176,37 @@
 					</div>
 					<div class="span3 box-right">
 						<h3><a href="{% url editorial.views.Magazines %}">Le Magazine</a></h3>
-						
-							<h4><a href="{% url editorial.views.Magazines %}">{{magazine.date_parution|moisannee}}</a></h4>
-							<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" style="max-width:90%" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
-							<p>
+
+						<h4><a href="{% url editorial.views.Magazines %}">{{magazine.date_parution|moisannee}}</a></h4>
+						<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" style="max-width:90%" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
+						<p>
 							Dossier : {{magazine.titre|safe}}
-							</p>
+						</p>
 					</div>
 					{% if annoncesemploi %}
 					<div class="span3 box-right">
 						<h3><a href="{% url annoncesemploi.views.AnnoncesList %}">Emploi</a></h3>
 						{% regroup annoncesemploi by service as annonceslists%}
-						
-							<ul style="list-style: none;" >
-								{% for annonces in annonceslists %}
-								<li>
-									<a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonces.grouper.slug %}" class="circle-btn">{{annonces.list|length|deuxchiffres}}</a><a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonces.grouper.slug %}"> annonces {{annonces.grouper}}</a>
-								</li>
-								{% endfor%}
-							</ul>
-						
+
+						<ul style="list-style: none;" >
+							{% for annonces in annonceslists %}
+							<li>
+								<a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonces.grouper.slug %}" class="circle-btn">{{annonces.list|length|deuxchiffres}}</a><a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonces.grouper.slug %}"> annonces {{annonces.grouper}}</a>
+							</li>
+							{% endfor%}
+						</ul>
+
 					</div>
 					{% endif %}
 					{% if notes %}
 					<div class="span3 box-right">
 						<h3><a href="#noubliezpas">N'oubliez pas ...</a></h3>
 						<ul style="list-style: square">
-						{% for note in notes %}
-							<li><a href="{% url editorial.views.PageDetail page_slug=note.slug %}">{{ note.titre }}</a></li>
-						{% endfor%}
+							{% for note in notes %}
+							<li>
+								<a href="{% url editorial.views.PageDetail page_slug=note.slug %}">{{ note.titre }}</a>
+							</li>
+							{% endfor%}
 						</ul>
 					</div>
 					{% endif %}
@@ -217,7 +219,6 @@
 
 </div>
 
-
 {% endblock%}
 
 {% block jsload%}
@@ -225,10 +226,10 @@
 <script src="/static/bootstrap/js/bootstrap.js"></script>
 <script>
 	$(document).ready(function() {
-		
-		$("#newsiframe").attr('frameBorder','0');
-		$("#newsiframe").attr('scrolling','no');
-		
+
+		$("#newsiframe").attr('frameBorder', '0');
+		$("#newsiframe").attr('scrolling', 'no');
+
 		var myCarousel = $('.carousel');
 		myCarousel.carousel({
 			interval : 5000,
