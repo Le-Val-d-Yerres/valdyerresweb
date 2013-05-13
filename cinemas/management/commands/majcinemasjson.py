@@ -11,7 +11,7 @@ from valdyerresweb import settings
 from PIL import Image, ImageFile
 from StringIO import StringIO
 from django.template import defaultfilters
-import os, glob
+import os, glob  , base64, urllib
 import json
 
 myTimezone = timezone(settings.TIME_ZONE)
@@ -20,17 +20,31 @@ utcTZ = timezone("UTC")
 ImageFile.MAXBLOCK = 2**20
 
 
+
 class Command(NoArgsCommand):
 
     def handle_noargs(self, **options):
+        
+        api_url = "http://api.allocine.fr/rest/v3/showtimelist"
+        user_agent = {"User-agent":"Dalvik/1.6.0 (Linux; U; Android 4.0.3; GT-P3100 Build/IML74K)"}
+        partner_key = "100043982026"
+        secret_key = "29d185d98c984a359e6e6f26a0474269"
+        export_format = "json"
+        
+        
         cinemas = Cinema.objects.all()
         cinemas.order_by('nom')
         
         for cinema in cinemas:
-            url_api_alcn = "http://api.allocine.fr/rest/v3/showtimelist?partner=YW5kcm9pZC12M3M&format=json&theaters="+cinema.id_allocine_cine
+            url_parameters = []
+            url_parameters.append(('partner', partner_key))
+            url_parameters.append(('format',export_format)) 
+            url_parameters.append(('theaters', cinema.id_allocine_cine))
+            url_parameters.append(('sed', time.strftime("%Y%m%d")))
+            url_parameters.append(( 'sig' ,base64.b64encode(hashlib.sha1(secret_key+urllib.urlencode(url_parameters)).digest()).rstrip("=")+"="))
             response = None
             try :
-                response =  requests.get(url_api_alcn, timeout= 5 )
+                response =  requests.get(api_url,params=url_parameters, headers = user_agent )
             except requests.exceptions.Timeout:
                 exit()
            
