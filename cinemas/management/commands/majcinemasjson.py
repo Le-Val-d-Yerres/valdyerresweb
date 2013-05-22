@@ -26,7 +26,7 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         
         api_url = "http://api.allocine.fr/rest/v3/showtimelist"
-        user_agent = {"User-agent":"Dalvik/1.6.0 (Linux; U; Android 4.0.3; SGH-T989 Build/IML74K)"}
+        user_agent = {"User-agent":"Dalvik/1.6.0 (Linux; U; Android 4.0.4; WIKO-CINK SLIM Build/IMM76D)"}
         partner_key = "100043982026"
         secret_key = "29d185d98c984a359e6e6f26a0474269"
         export_format = "json"
