@@ -25,8 +25,16 @@ class EquipementAdmin(admin.ModelAdmin):
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
         obj.save()
+        
         path = reverse('equipements.views.EquipementsDetailsHtml', kwargs={'fonction_slug':obj.fonction.slug,'equipement_slug':obj.slug})
         functions.expire_page(path)
+        
+        path = reverse('equipements.views.EquipementsCarte', kwargs={})
+        functions.expire_page(path)
+
+        path = reverse('equipements.views.EquipementVCF', kwargs={'slug':obj.slug})
+        functions.expire_page(path)
+        
     
     class Media:
         js = [
@@ -52,6 +60,12 @@ class EquipementFonctionAdmin(admin.ModelAdmin):
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
         obj.save()
+        
+        path = reverse('equipements.views.EquipementsCarte', kwargs={})
+        functions.expire_page(path)
+
+        path = reverse('equipements.views.FonctionDetailsHtml', kwargs={'fonction_slug':obj.slug})
+        functions.expire_page(path)
     
 class FaciliteAdmin(admin.ModelAdmin):
     list_display = ['nom', 'importance']
@@ -70,6 +84,12 @@ class FaciliteAdmin(admin.ModelAdmin):
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
         obj.save()
+        
+        path = reverse('equipements.views.FaciliteListe', kwargs={})
+        functions.expire_page(path)
+
+        path = reverse('equipements.views.FaciliteCarte', kwargs={'slug':obj.slug})
+        functions.expire_page(path)
         
 class FacilitesAdmin(admin.ModelAdmin):
     list_display = ['Equipement', 'Facilites']

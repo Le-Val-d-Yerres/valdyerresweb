@@ -6,6 +6,8 @@ from django.template import defaultfilters
 from accounts.models import UserProfile
 from services.models import Service
 from valdyerresweb import settings
+from valdyerresweb.utils import functions
+from django.core.urlresolvers import reverse
 import xlrd
 import datetime , os
 
@@ -35,6 +37,15 @@ class AnnonceAdmin(admin.ModelAdmin):
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
         obj.save()
+        
+        path = reverse('annoncesemploi.views.AnnonceDetail', kwargs={'annonce_slug':obj.slug,'service_slug':obj.service.slug})
+        functions.expire_page(path)
+        
+        path = reverse('annoncesemploi.views.AnnoncesList', kwargs={})
+        functions.expire_page(path)
+        
+        path = reverse('annoncesemploi.views.AnnoncesListService', kwargs={'service_slug':obj.service.slug})
+        functions.expire_page(path)
     
 class ImportGIDEMAdmin(admin.ModelAdmin):
     list_display = ['id','date_import']
@@ -45,6 +56,7 @@ class ImportGIDEMAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.date_import = datetime.datetime.utcnow()
         obj.save()
+        
         user_profile = request.user.get_profile()
         id_service = user_profile.service.id
         to_delete = Annonce.objects.filter(service=id_service)
@@ -83,6 +95,15 @@ class ImportGIDEMAdmin(admin.ModelAdmin):
             annonce.publie = True
             annonce.save()
             loop = loop+1
+            
+            path = reverse('annoncesemploi.views.AnnonceDetail', kwargs={'annonce_slug':annonce.slug,'service_slug':annonce.service.slug})
+            functions.expire_page(path)
+            
+            path = reverse('annoncesemploi.views.AnnoncesList', kwargs={})
+            functions.expire_page(path)
+            
+            path = reverse('annoncesemploi.views.AnnoncesListService', kwargs={'service_slug':annonce.service.slug})
+            functions.expire_page(path)
             
         
         

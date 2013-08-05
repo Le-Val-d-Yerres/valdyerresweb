@@ -5,6 +5,8 @@ from django.contrib import admin
 from django.template import defaultfilters
 from valdyerresweb import settings
 from valdyerresweb.utils.functions import pdftojpg
+from valdyerresweb.utils import functions
+from django.core.urlresolvers import reverse
 import datetime
 
 
@@ -48,7 +50,12 @@ class AdminActualite(admin.ModelAdmin):
             obj.slug = monslug
         obj.date_mise_a_jour=datetime.datetime.utcnow()
         obj.save()
-
+        
+        path = reverse('editorial.views.ActuList', kwargs={})
+        functions.expire_page(path)
+        
+        path = reverse('editorial.views.ActuDetail', kwargs={'actualite_slug':obj.slug})
+        functions.expire_page(path)
 
 
 class AdminPageStatique(admin.ModelAdmin):
@@ -86,6 +93,9 @@ class AdminPageStatique(admin.ModelAdmin):
             obj.date_creation = datetime.datetime.utcnow()
         obj.date_mise_a_jour=datetime.datetime.utcnow()
         obj.save()
+        
+        path = reverse('editorial.views.PageDetail', kwargs={'page_slug':obj.slug})
+        functions.expire_page(path)
 
     
 class AdminMagazine(admin.ModelAdmin):
@@ -103,6 +113,9 @@ class AdminMagazine(admin.ModelAdmin):
         obj.image = pdftojpg(settings.MEDIA_ROOT+obj.document.path).replace(settings.MEDIA_ROOT,"")
         
         obj.save()
+        
+        path = reverse('editorial.views.Magazines', kwargs={})
+        functions.expire_page(path)
     
 class AdminRapportActivite(admin.ModelAdmin):
     list_display = ['titre','date_parution','document']
@@ -117,6 +130,9 @@ class AdminRapportActivite(admin.ModelAdmin):
             obj.slug = monslug
         obj.image = pdftojpg(settings.MEDIA_ROOT+obj.document.path).replace(settings.MEDIA_ROOT,"")
         obj.save()
+        
+        path = reverse('editorial.views.Rapports', kwargs={})
+        functions.expire_page(path)
         
         
         
