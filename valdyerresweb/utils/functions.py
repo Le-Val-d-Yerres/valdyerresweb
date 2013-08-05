@@ -39,6 +39,7 @@ def pdftojpg(pdfFilePath, subpath = "/img/"):
     head = head+subpath
     if not os.path.exists(head):
         os.makedirs(head)
+    outpoutejpg = os.path.join(head,tail)
     command_line = "pdftoppm -l 1 "+pdfFilePath
     args = shlex.split(command_line)
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
