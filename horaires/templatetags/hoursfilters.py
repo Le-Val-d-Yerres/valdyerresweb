@@ -39,9 +39,22 @@ def horaire_journee_timedelta(delta,horaire):
     return horaires_jour(day, horaire)
 
 @register.filter(is_safe=True)
-def horaires_semaine(horaire):
+def horaires_semaine(horaire, periode):
     txthoraires = ""
-    for day in range(1,8):
+    
+    nbreJour = (periode.date_fin-periode.date_debut).days
+    
+    if nbreJour >= 6:
+        listeJour = range(1, 8)
+    else:
+        listeJour = []
+        prochainJour = periode.date_debut
+        while (periode.date_fin-prochainJour).days >= 0:
+            listeJour.append(prochainJour.weekday()+1)
+            
+            prochainJour += datetime.timedelta(days=1)
+    
+    for day in listeJour:
         txthoraires += "<li>"+WeekDay[day-1].capitalize()+" : "+horaires_journee(day, horaire)+"</li>"
     return txthoraires
 

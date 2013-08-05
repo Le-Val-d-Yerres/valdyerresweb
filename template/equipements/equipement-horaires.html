@@ -44,16 +44,19 @@
 			{% for periode in periodes %}
 				<h4>{{periode.nom}} : <small>{{ periode.date_debut|dates_periode:periode.date_fin }}</small></h4>
 					<ul>
-					{% for horaire in horaires %}
-						{% for periode_horaire in horaire.periodes.all %}
-							{% if periode.id == periode_horaire.id %}
-								<li>{{horaire.nom}}</li>
-								<ul>
-									{{horaire|horaires_semaine|safe}}
-								</ul>
-							{%endif%}
-						{% endfor %}
-					{% endfor %} 
+						{% for horaire in horaires %}
+							{% for periode_horaire in horaire.periodes.all %}
+								{% if periode.id == periode_horaire.id %}
+									
+									<li>{{horaire.nom}}</li>
+									
+									<ul>
+										{{horaire|horaires_semaine:periode|safe}}
+									</ul>
+									
+								{%endif%}
+							{% endfor %}
+						{% endfor %} 
 					</ul>
 				<hr/>
 			{% endfor %}
