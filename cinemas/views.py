@@ -16,13 +16,13 @@ myTimezone = timezone(settings.TIME_ZONE)
 
 def Seances(request):
     now = datetime.now(myTimezone)
-    seances = Seance.objects.select_related().filter(date_debut__gt = now).order_by('-film__note','cinema__nom','date_debut')
+    seances = Seance.objects.select_related().filter(date_debut__gt = now).order_by('film__id','cinema__nom','date_debut')
     return render_to_response('cinemas/seances.html', {'seances' : seances})
 
 def CinemaLieu(request,cinema_slug):
     now = datetime.now(myTimezone)
     cinema = get_object_or_404(Cinema, slug=cinema_slug)
-    seances = Seance.objects.select_related().filter(cinema__slug = cinema_slug ,date_debut__gt = now).order_by('-film__note','cinema__nom','date_debut')
+    seances = Seance.objects.select_related().filter(cinema__slug = cinema_slug ,date_debut__gt = now).order_by('film__id','cinema__nom','date_debut')
     qr_code_vcard = GenerationQrCode(CinemaVcard(cinema))
     qr_code_geo = GenerationQrCode("geo:" + str(cinema.latitude) + "," + str(cinema.longitude))
     return render_to_response('cinemas/cinema-details.html', {'cinema':cinema ,'seances' : seances, 'qr_code_vcard': qr_code_vcard, 'qr_code_geo':qr_code_geo})

@@ -6,6 +6,10 @@ from django.core.cache import cache
 from django.http import HttpRequest
 from django.utils.cache import get_cache_key
 from PIL import Image , ImageFile
+from django.utils.timezone import utc
+import datetime
+from django.core.urlresolvers import reverse
+
 ImageFile.MAXBLOCK = 2**20
 
 
@@ -56,5 +60,24 @@ def expire_page(path):
     request = HttpRequest()
     request.path = path
     key = get_cache_key(request)
-    if cache.has_key(key):   
+    print key
+    if cache.has_key(key):
         cache.delete(key)
+        
+def resetEphemerideCache(debut):
+    today = datetime.datetime.utcnow().replace(tzinfo=utc)
+            
+    if (debut-today).days <= 7:
+        path = reverse('editorial.views.Ephemeride', kwargs={'jour':'aujourd-hui'})
+        expire_page(path)
+        
+        path = reverse('editorial.views.Ephemeride', kwargs={'jour':'demain'})
+        expire_page(path)
+        
+        for i in range(2, 10):
+            day = datetime.datetime.today()+datetime.timedelta(days=i)
+            
+            slug = u""+str(day.day)+"-"+str(day.month)+"-"+str(day.year)
+            
+            path = reverse('editorial.views.Ephemeride', kwargs={'jour':slug})
+            expire_page(path)

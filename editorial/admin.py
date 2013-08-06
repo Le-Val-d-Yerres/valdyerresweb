@@ -51,6 +51,9 @@ class AdminActualite(admin.ModelAdmin):
         obj.date_mise_a_jour=datetime.datetime.utcnow()
         obj.save()
         
+        path = reverse('editorial.views.Home', kwargs={})
+        functions.expire_page(path)
+        
         path = reverse('editorial.views.ActuList', kwargs={})
         functions.expire_page(path)
         

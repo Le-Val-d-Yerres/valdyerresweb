@@ -2,6 +2,10 @@
 from localisations.models import Ville, Lieu
 from django.contrib import admin
 from django.template import defaultfilters
+from django.utils.timezone import utc
+import datetime
+from valdyerresweb.utils import functions
+from django.core.urlresolvers import reverse
     
 class LieuAdmin(admin.ModelAdmin):
     list_display = ['nom', 'ville']
@@ -22,6 +26,13 @@ class LieuAdmin(admin.ModelAdmin):
                 monslug = monslug+'-'+str(listsize+1)
             obj.slug = monslug
         obj.save()
+        
+        today = datetime.datetime.utcnow().replace(tzinfo=utc)
+        functions.resetEphemerideCache(today)
+        
+        path = reverse('evenements.views.EquipementsDetailsHtml', kwargs={'fonction_slug':fonction.slug,'equipement_slug':equipement.slug})
+        functions.expire_page(path)
+        
     
 class VilleAdmin(admin.ModelAdmin):
     list_display = ['nom', 'lien', 'communaute_agglo']

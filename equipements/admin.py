@@ -5,6 +5,7 @@ from django.template import defaultfilters
 from localisations.models import Lieu
 from valdyerresweb.utils import functions
 from django.core.urlresolvers import reverse
+from django.core.cache import cache
 
 class EquipementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'fonction', 'ville']
@@ -96,14 +97,22 @@ class FacilitesAdmin(admin.ModelAdmin):
     search_fields = ['Equipement']
     filter_horizontal = ("facilites",)
     
+    def save_model(self, request, obj, form, change):
+        path = reverse('equipements.views.FaciliteListe', kwargs={})
+        functions.expire_page(path)
+    
 
 class TarifCategorieAdmin(admin.ModelAdmin):
     list_display = ['equipement_fonction','nom']
     prepopulated_fields = {'slug':('nom',),}
     
+    # TODO : ajouter la suppression du cache de la page "equipements/tarifs/" quand elle sera ajouté
+    
     
 class TarifAdmin(admin.ModelAdmin):
     list_display = ['designation','categorie', 'index']
+    
+    # TODO : ajouter la suppression du cache de la page "equipements/tarifs/" quand elle sera ajouté
 
 admin.site.register(Equipement, EquipementAdmin)
 admin.site.register(EquipementFonction, EquipementFonctionAdmin)
