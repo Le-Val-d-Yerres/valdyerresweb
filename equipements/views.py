@@ -66,8 +66,8 @@ def FaciliteListe(request):
 def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 
     now = datetime.datetime.now(utcTZ)
-    equipement = get_object_or_404(Equipement.objects.select_related(), slug=equipement_slug)
-     
+    equipement = get_object_or_404(Equipement.objects.select_related().filter(fonction__slug=fonction_slug), slug=equipement_slug)
+    
     tarif_categorie_principale = TarifCategorie.objects.select_related().filter(equipement_fonction = equipement.fonction,index=0 ) 
     tarifs_principaux = Tarif.objects.select_related().filter(categorie= tarif_categorie_principale )
         
@@ -148,8 +148,8 @@ def EquipementHoraires(request, equipement_slug):
 
 
 def EquipementFonctionTarifs(request, equipement_fonction_slug):
+    fonction = get_object_or_404(EquipementFonction.objects, slug=equipement_fonction_slug)
     tarifs = Tarif.objects.select_related().filter(categorie__equipement_fonction__slug = equipement_fonction_slug)
-    fonction = EquipementFonction.objects.get(slug=equipement_fonction_slug)
     equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
             
     return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs,'equipements':equipements})
@@ -157,33 +157,27 @@ def EquipementFonctionTarifs(request, equipement_fonction_slug):
 
 
 def FonctionDetailsHtml(request, fonction_slug):
-    try:
-        fonction = EquipementFonction.objects.get(slug=fonction_slug)
-        equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
-            
-        today = datetime.date.today()
-        listhoraires = list()
+    fonction = get_object_or_404(EquipementFonction.objects, slug=fonction_slug)
+    equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
         
-        for equipement in equipements:
-            periodes = Periode.objects.filter(date_debut__lte=today , date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
-            if len(periodes) >= 1:
-                periodes.query.group_by = ['periode_id']
-                periode_active = periodes[len(periodes) - 1]
-                horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(periodes__id=periode_active.id)
-                listhoraires.append(horaires)
-            
-        
-    except Equipement.DoesNotExist:
-        raise Http404
+    today = datetime.date.today()
+    listhoraires = list()
+    
+    for equipement in equipements:
+        periodes = Periode.objects.filter(date_debut__lte=today , date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+        if len(periodes) >= 1:
+            periodes.query.group_by = ['periode_id']
+            periode_active = periodes[len(periodes) - 1]
+            horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(periodes__id=periode_active.id)
+            listhoraires.append(horaires)
+
     return render_to_response('equipements/carte-fonction-equipements.html', {'equipements': equipements, 'fonction': fonction, 'listhoraires': listhoraires})
 
 def EquipementVCF(request, slug):
-    try:
-        lieu = Lieu.objects.select_related().select_subclasses().get(slug=slug)
-        
-        myText = EquipementVcard(lieu)
-    except Lieu.DoesNotExist:
-        raise Http404
+    lieu = get_object_or_404(Lieu.objects.select_related().select_subclasses(), slug=slug)
+    
+    myText = EquipementVcard(lieu)
+
     return HttpResponse(myText, content_type="text/vcard")
 
 def EquipementVcard(equipement):
