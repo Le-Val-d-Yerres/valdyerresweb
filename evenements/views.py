@@ -551,3 +551,15 @@ def EvenementDetailsICS(request, slug, evenement_slug, festival_slug = None):
     myText = EvenementDetailsIcalendar(evenement)
 
     return HttpResponse(myText,content_type="text/calendar")
+
+def OrganisateurRedirect(request):
+    return redirect('agenda-global')
+
+def AgendaTypeRedirect(request):
+    return redirect('agenda-global')
+
+def AgendaPeriodRedirect(request, type_slug):
+    return redirect('agenda-type-period-orga', type_slug=type_slug, period='toutes')
+
+def AgendaOrgaRedirect(request, type_slug, period):
+    return redirect('agenda-type-period-orga', type_slug=type_slug, period=period, orga_slug='tous')

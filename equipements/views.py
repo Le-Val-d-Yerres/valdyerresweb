@@ -184,3 +184,42 @@ def EquipementVcard(equipement):
     myTemplate = loader.get_template('equipements/equipement.vcf.html')
     myContext = Context({"equipement": equipement, "settings": settings})
     return myTemplate.render(myContext)
+
+def EquipementTarifs(request):
+    tarifs = Tarif.objects.select_related().order_by('categorie__equipement_fonction__nom').filter(categorie__index=0)
+    
+    listeEquipements = []
+    
+    for each in tarifs:
+        if each.categorie.equipement_fonction not in listeEquipements:
+            listeEquipements.append(each.categorie.equipement_fonction)
+    
+    return render_to_response('equipements/equipement-tarifs-complet.html', {'tarifs':tarifs, 'listeEquipements':listeEquipements})
+
+def HorairesTousEquipements(request):
+    horaires = Horaires.objects.all()
+    
+    listeEquipements = []
+    
+    for each in horaires:
+        if each.equipement not in listeEquipements:
+            listeEquipements.append(each.equipement)
+
+    
+    for each in listeEquipements:
+        equipement = get_object_or_404(Equipement.objects.select_related() , slug=each.slug)
+        today = datetime.date.today()
+        periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+        periodes.query.group_by = ['periode_id']
+        each.periodes = periodes
+        horaires = Horaires.objects.prefetch_related('periodes').select_related().filter(equipement=equipement.id)
+        for periode in periodes:
+            horaires.filter(periodes__id = periode.id)
+        
+        each.periodes.horaires = horaires
+        
+        if len(horaires) == 0:
+            raise Http404
+    
+        print each.periodes.horaires
+    return render_to_response('equipements/tous-equipement-horaires.html', {'listeEquipements':listeEquipements})

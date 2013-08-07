@@ -86,7 +86,10 @@ def nom_jour_index(index):
 
 @register.filter(is_safe=True)
 def dates_periode(debut, fin):
-    text = u"du "+WeekDay[debut.weekday()]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+" "+debut.strftime(u"%Y") + " au "+WeekDay[fin.weekday()]+u" "+fin.strftime(u"%d")+u" "+mois[int(fin.strftime(u"%m"))-1]+" "+fin.strftime(u"%Y")
+    if debut.strftime(u"%d") != fin.strftime(u"%d") or debut.strftime(u"%m") != fin.strftime(u"%m") or debut.strftime(u"%Y") != fin.strftime(u"%Y"):
+        text = u"du "+WeekDay[debut.weekday()]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+" "+debut.strftime(u"%Y")+" au "+WeekDay[fin.weekday()]+u" "+fin.strftime(u"%d")+u" "+mois[int(fin.strftime(u"%m"))-1]+" "+fin.strftime(u"%Y")
+    else:
+        text = u""+WeekDay[debut.weekday()]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+" "+debut.strftime(u"%Y")
     return text
 
 

@@ -28,7 +28,7 @@
 					<a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=equipement.fonction.slug %}">Horaires</a><span class="divider">/</span>
+					<a href="{% url equipements.views.HorairesTousEquipements %}">Horaires</a><span class="divider">/</span>
 				</li>
 				<li class="active">
 					{{ equipement.nom}} , {{equipement.ville.nom }}

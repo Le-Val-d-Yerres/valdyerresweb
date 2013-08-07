@@ -1,0 +1,74 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load hoursfilters%}
+{% load tz %}
+	
+	{% block title %}Horaires des équipements du Val d'Yerres{% endblock %}
+	{% block menu %}{% getmenu %}{% endblock %}
+	
+	{% block meta-description %}Horaires des équipements du Val d'Yerres{% endblock %}
+	
+
+
+{% block contenu %}
+	
+<div class="container" style="margin-top:60px;">
+	<div class="row-fluid">
+		<div class="span12">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">Accueil</a><span class="divider">/</span>
+				</li>
+				<li>
+					<a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
+				</li>
+				<li class="active">
+					Horaires
+				</li>
+			</ul>
+		</div>
+		{% for each in listeEquipements%}
+		<div class="span11">
+			{% if forloop.counter != 1 %}
+				<hr \>
+			{% endif%}
+			<h2><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.fonction.slug equipement_slug=each.slug%}">{{ each.nom }}</a></h2>
+			
+			<h3>Horaires :</h3>
+			
+			{% for periode in each.periodes %}
+				<h4>{{periode.nom}} : <small>{{ periode.date_debut|dates_periode:periode.date_fin }}</small></h4>
+					<ul>
+						{% for horaire in each.periodes.horaires %}
+							{% for periode_horaire in horaire.periodes.all %}
+								{% if periode.id == periode_horaire.id %}
+									
+									<li>{{horaire.nom}}</li>
+									
+									<ul>
+										{{horaire|horaires_semaine:periode|safe}}
+									</ul>
+									
+								{%endif%}
+							{% endfor %}
+						{% endfor %} 
+					</ul>
+			{% endfor %}
+			
+		</div>
+		{% endfor %}
+
+	</div>
+
+</div>
+
+</div>
+{% endblock %}
+{% block jsload%}
+<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+{% endblock%}
