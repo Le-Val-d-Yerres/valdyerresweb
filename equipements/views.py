@@ -193,7 +193,10 @@ def EquipementTarifs(request):
     for each in tarifs:
         if each.categorie.equipement_fonction not in listeEquipements:
             listeEquipements.append(each.categorie.equipement_fonction)
-    
+            
+    if len(listeEquipements) == 0:
+            raise Http404
+        
     return render_to_response('equipements/equipement-tarifs-complet.html', {'tarifs':tarifs, 'listeEquipements':listeEquipements})
 
 def HorairesTousEquipements(request):
@@ -205,6 +208,8 @@ def HorairesTousEquipements(request):
         if each.equipement not in listeEquipements:
             listeEquipements.append(each.equipement)
 
+    if len(listeEquipements) == 0:
+            raise Http404
     
     for each in listeEquipements:
         equipement = get_object_or_404(Equipement.objects.select_related() , slug=each.slug)
@@ -218,8 +223,4 @@ def HorairesTousEquipements(request):
         
         each.periodes.horaires = horaires
         
-        if len(horaires) == 0:
-            raise Http404
-    
-        print each.periodes.horaires
     return render_to_response('equipements/tous-equipement-horaires.html', {'listeEquipements':listeEquipements})
