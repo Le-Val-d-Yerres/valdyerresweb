@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Confirmation de votre abonnement à la liste de diffusion</title>
+
+	<style type="text/css">
+		a { border: none; color:#777777; }
+		img { border: none; }
+		p { margin: 0; line-height: 1em; }
+		h1,h2,h3,h4 {font-size:100%;margin:0;}
+	</style>
+</head>
+
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="background: #fafafa; font-family:Helvetica,Arial,sans-serif; line-height: 12px; color:#999999; font-size: 11px;">
+
+
+<table width="100%" cellpadding="0" cellspacing="0">
+	<tr valign="top" align="center">
+		<td>
+			<table width="600" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="padding:15px 0px 10px 0px; text-align:left;"></td>
+					<td><p style="padding:19px 12px 19px 0; text-align:right;">Confirmation de votre abonnement à la liste de diffusion</p></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table width="100%" bgcolor="#fafafa" cellpadding="0" cellspacing="0">
+	<tr valign="top" align="center">
+		<td>
+			<table cellpadding="0" cellspacing="0" border="0" width="600">
+				<tbody>
+					<tr>
+						<td><img src="{{ domaine }}/static/img/mail/header.png" width="600" alt="" style="display: block; width: 600px;border: none;"></td>
+		 			</tr>
+				</tbody>
+			</table>
+ 		</td>
+	</tr>
+
+	<tr valign="top" align="center">
+		<td style="padding-bottom:20px;">
+			<table width="600" cellpadding="0" cellspacing="0" bgcolor="#fff" style="border: 1px solid #dddddd; border-width: 0px 1px;">
+				<tr>
+					<td style="padding: 30px 25px 30px 25px; color:#444444;">
+						<p style="font-size:12px; line-height:18px;">
+							Bonjour,<br />
+							<br />
+							Merci de vous être abonné à notre liste de diffusion.<br />
+							Afin de confirmer votre abonnement et recevoir nos emails, merci de cliquer sur le lien suivant :
+							<br/><br/>
+							<a href="{{ domaine }}/mail/validation/{{ hash }}.html">www.levaldyerres.fr/mail/validation/{{ hash }}.html</a>
+							<br/><br />
+							Le Val d'Yerres
+						</p>
+					</td>
+				</tr>
+			</table>
+
+
+			<table width="600" cellpadding="0" cellspacing="0" bgcolor="#fafafa" style="border: 1px solid #dddddd; border-top:1px solid #efefef;">
+				<tr>
+					<td style="padding: 8px 25px 8px 15px;">
+						<p><a href="{{ domaine }}/mail/validation/{{ hash }}.html" style="display:block; float:left;background:#6db240; color:#fff; text-transform:uppercase; text-decoration:none; margin-right: 8px; padding: 8px 11px; font-family:arial; font-size:11px;border-radius:4px; border:1px solid #6f9233;">Confirmer mon abonnement</a></p>
+					</td>
+					<td style="padding: 10px 25px 10px 25px;"></td>
+				</tr>
+			</table>
+
+
+			<table width="600" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="padding:10px 0 10px 5px;" colspan="2">
+						<p style="font-family:Georgia,'Lucida Grande',Verdana,Helvetica,Arial,sans-serif; line-height: 15px; color:#aaaaaa; font-size: 11px; margin:4px 0 0 0;"><em>Le Val d'Yerres - 78 RN6, BP 103, 91805 Brunoy CEDEX - 01 60 47 94 20 - <a href="mailto:levaldyerres@levaldyerres.fr">levaldyerres@levaldyerres.fr</a></em></p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" valign="middle"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

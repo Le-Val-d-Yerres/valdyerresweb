@@ -9,6 +9,8 @@ from PIL import Image , ImageFile
 from django.utils.timezone import utc
 import datetime
 from django.core.urlresolvers import reverse
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 ImageFile.MAXBLOCK = 2**20
 
@@ -81,3 +83,10 @@ def resetEphemerideCache(debut):
             
             path = reverse('editorial.views.Ephemeride', kwargs={'jour':slug})
             expire_page(path)
+            
+def validateEmail(email):
+    try:
+        validate_email(email)
+        return True
+    except ValidationError:
+        return False

@@ -1,0 +1,55 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
+
+{% block title %}Lettre d'informations du Val d'Yerres{% endblock %}
+{% block meta-description %}Lettre d'informations du Val d'Yerres{% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+<div class="container" style="margin-top:60px;">
+<div  class="row-fluid">
+	<div class="span12">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">Retourner à l'accueil du site</a><span class="divider">/</span>
+				</li>
+			</ul>
+	</div>
+			<div class="span7">
+				<h1>Lettre d'informations</h1>
+				<p>
+				{% if reponse == 1 %}
+					<div class="alert alert-success">Votre adresse a été ajoutée avec succès!</div>
+				{% endif %}
+				{% if reponse == 2 %}
+					<div class="alert alert-danger">Une erreur est survenue lors de l'ajout de votre courriel, merci de réessayer plus tard.</div>
+				{% endif %}
+				{% if reponse == 3 %}
+					<div class="alert alert-info">Vous êtes déjà abonné à la lettre d'informations du Val d'Yerres.</div>
+				{% endif %}
+				{% if reponse == 4 %}
+					<div class="alert">Ce lien est expiré, merci de réessayer. Attention, vous avez 24h pour confirmer votre adresse.</div>
+					
+					<form method="post" action="/mail/mailjet-post.html" id="mailJetForm"><input type="hidden" name="csrftoken" value="{{ token }}">
+						<label for="mail">Votre courriel :</label>
+						<input type="email" name="email" id="mail"><br \>
+						<input id="mailPost" type="submit" class="btn btn-primary" value="S'abonner">
+					</form>
+				{% endif %}
+				</p>
+			</div>
+</div>
+</div>
+
+{% endblock%}
+
+{% block jsload%}
+	<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.js"> </script>
+{% endblock%}

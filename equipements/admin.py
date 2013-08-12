@@ -5,7 +5,6 @@ from django.template import defaultfilters
 from localisations.models import Lieu
 from valdyerresweb.utils import functions
 from django.core.urlresolvers import reverse
-from django.core.cache import cache
 
 class EquipementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'fonction', 'ville']

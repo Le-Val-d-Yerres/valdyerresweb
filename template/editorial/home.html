@@ -147,9 +147,15 @@
 			</div>
 			<div class="span3">
 				<div class="row ">
-					<div class="span3 box-right">
+					<div class="span3 box-right" id="mailBox">
 						<h3><a href="#">Lettre d'informations</a></h3>
-						<iframe id="newsiframe" style="-webkit-scrollbar {display: none;};margin:0px;border:none;overflow:hidden;display: block;" scrolling="no" src="http://widget.mailjet.com/877673355fe4c1457e9452b2c2d36e532e12101a.html" width="220" height="138"></iframe>
+						<p id="newsletter">Abonnez-vous à la lettre d'informations du Val d'Yerres </p>
+						<form method="post" action="mail/mailjet-post.html" id="mailJetForm"><input type="hidden" name="csrftoken" value="{{ token }}">
+							<label for="mail">Votre courriel :</label>
+							<input type="email" name="email" id="mail"><br \>
+							<div id="mailAjax" class="hide" onclick="mailjet();">S'abonner</div>
+							<input id="mailPost" type="submit" class="btn btn-primary" value="S'abonner">
+						</form>
 					</div>
 					<div class="span3 box-right">
 						<h3><a href="{% url editorial.views.Ephemeride %}">Aujourd'hui
@@ -224,6 +230,7 @@
 {% block jsload%}
 <script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.js"></script>
+<script src="/static/js/mailjet/mailjet.js"></script>
 <script>
 	$(document).ready(function() {
 
@@ -256,6 +263,11 @@
 			}
 		});
 
+		if (getXMLHttpRequest() != null)
+		{
+			document.getElementById('mailAjax').className = "btn btn-primary";
+			document.getElementById('mailPost').style.display = "none";
+		}
 	}); 
 </script>
 {% endblock%}
