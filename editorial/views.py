@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.http import Http404
+from django.http import Http404, HttpResponse
+from django.core.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response , redirect , get_object_or_404,\
     get_list_or_404
@@ -14,6 +15,10 @@ from valdyerresweb import settings
 import datetime
 from django.views.decorators.cache import cache_control, cache_page
 from annoncesemploi.models import Annonce
+from django import forms
+from django.template import RequestContext
+from valdyerresweb.utils import functions
+import uuid
 
 
 myTZ = timezone(settings.TIME_ZONE)
@@ -29,7 +34,7 @@ def Home(request):
     startdate = startdate.replace(tzinfo=utcTZ)
     enddate = enddate.replace(tzinfo=utcTZ)
     
-    actualites = Actualite.objects.filter(publie=True,page_accueil=True).order_by('-date_publication')[0:3]
+    actualites = Actualite.objects.filter(publie=True,page_accueil=True).order_by('-date_publication')[0:4]
     evenements_une_lg1 = Evenement.objects.filter(page_accueil=False,publish=True,fin__gt = startdate).order_by('debut')[0:3]
     evenements_une_lg2 = Evenement.objects.filter(page_accueil=True,publish=True,fin__gt = startdate).order_by('debut')[0:3]
     carroussel = PageBase.objects.filter(publie=True,carroussel=True).select_subclasses().order_by('index_carroussel')
@@ -80,7 +85,12 @@ def Home(request):
     notes = PageStatique.objects.filter(publie=True,note_page_accueil=True)
     
     
-    return render_to_response('editorial/home.html', {'carroussel' : carroussel, 'actualites':actualites, 'cinema_count': cinema_count,'evenements_count':evenements_count,'equipements_count':equipements_count, 'magazine':magazine, 'annoncesemploi': annoncesemploi, 'notes':notes, 'evenements_une_lg1':evenements_une_lg1, 'evenements_une_lg2': evenements_une_lg2 })
+    tokenCSRF = uuid.uuid1()
+    
+    reponse = render_to_response('editorial/home.html', {'token': tokenCSRF, 'carroussel' : carroussel, 'actualites':actualites, 'cinema_count': cinema_count,'evenements_count':evenements_count,'equipements_count':equipements_count, 'magazine':magazine, 'annoncesemploi': annoncesemploi, 'notes':notes, 'evenements_une_lg1':evenements_une_lg1, 'evenements_une_lg2': evenements_une_lg2 })
+    reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
+    
+    return reponse
 
 def ActuList(request):
     pages = get_list_or_404(Actualite.objects.order_by('-date_publication'))

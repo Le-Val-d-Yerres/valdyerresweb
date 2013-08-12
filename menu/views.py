@@ -40,6 +40,7 @@ def getChilds(items , subitems, menutxt ="" , sub = False):
 def TopMenu():
     
     items = MenuItem.objects.all().select_related('parent').order_by('index')
+    
     toplistItems = [item for item in items if item.parent == None]
     flatSubItems = [item for item in items if item.parent != None]
     subitems = defaultdict(list)

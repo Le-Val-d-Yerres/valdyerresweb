@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^services/', include('services.urls')),
     url(r'^annoncesemploi/', include('annoncesemploi.urls')),
     url(r'^debug/', include('debug_toolbar.urls')),
+    url(r'^mail/', include('lettreinformations.urls')),
     url(r'', include('editorial.urls')),
     url(r'^robots\.txt$', direct_to_template,{'template': 'robots.txt', 'mimetype': 'text/plain'}),
 )

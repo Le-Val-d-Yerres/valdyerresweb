@@ -95,9 +95,9 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     #'django.middleware.cache.UpdateCacheMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -228,4 +228,3 @@ LOGO_ORGANISATION = "img/valdyerresweb/logo-val-d-yerres-carre.png"
 MAIL_ORGANISATION = "levaldyerres@levaldyerres.fr"
 
 NOM_DOMAINE = 'http://127.0.0.1:8080'
-
