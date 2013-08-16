@@ -1,0 +1,80 @@
+<small><a href="#widgetAlertes" role="button" data-toggle="modal" class="text-error" onclick="compteur();">Pour nous signaler un problème dans cet équipement:<br \>cliquez ici.</a></small>
+
+<div style="text-align: left;width: 700px;margin-left: -350px;" id="widgetAlertes" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3>{{ alerte.nom }}</h3>
+		{{ alerte.cible|safe }}
+		<div id="alerteErreur" style="position: absolute;left: 350px;top: 40px;"></div>
+	</div>
+		<div class="modal-body" style="padding-top: 0px;">
+			<div id="form1">
+				<input type="hidden" id="alerteId" value="{{ alerte.id }}">
+				<input type="hidden" id="equipementId" value="{{ alerte.equipement }}">
+				<input type="hidden" id="tokenCsrf" value="{{ alerte.token }}">
+				<fieldset style="width:45%;">
+					<legend>Nom et prénom</legend>
+					<div id="nomErreur" class="control-group" style="margin: 0">
+						<div class="input-prepend">
+							<span class="add-on" style="width: 80px;text-align: left;">Nom</span>
+							<input type="text" id="alerteNom" required>
+						</div>
+					</div>
+					<div id="prenomErreur" class="control-group" style="margin: 0">
+						<div class="input-prepend">
+							<span class="add-on" style="width: 80px;text-align: left;">Prénom</span>
+							<input type="text" id="alertePrenom" required>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset style="width:46%;margin-left: 50%;margin-top: 0px;position: absolute;top: 0px;">
+					<legend>Vos coordonnées</legend>
+					<div id="rueErreur" class="control-group" style="margin: 0">
+						<div class="input-prepend">
+							<span class="add-on" style="width: 80px;text-align: left;">Rue</span>
+							<input type="text" id="alerteRue" required>
+						</div>
+					</div>
+					<div id="codepostalErreur" class="control-group" style="margin: 0">
+						<div class="input-prepend">
+							<span class="add-on" style="width: 80px;text-align: left;">Code Postal</span>
+							<input type="text" id="alerteCodePostal" required>
+						</div>
+					</div>
+					<div id="villeErreur" class="control-group" style="margin: 0">
+						<div class="input-prepend">
+							<span class="add-on" style="width: 80px;text-align: left;">Ville</span>
+							<input type="text" id="alerteVille" required>
+						</div>
+					</div>
+					<div id="telErreur" class="control-group" style="margin: 0">
+						<div class="input-prepend">
+							<span class="add-on" style="width: 80px;text-align: left;">Téléphone</span>
+							<input type="tel" id="alerteTel">
+						</div>
+					</div>
+					<div id="mailErreur" class="control-group" style="margin: 0">
+						<div class="input-prepend" style="width: 80px;">
+							<span class="add-on" style="width: 80px;text-align: left;">Courriel</span>
+							<input type="email" id="alerteMail" >
+						</div>
+					</div>
+				</fieldset>
+				
+				<fieldset>
+					<legend style="margin-top: 65px;">Votre message</legend>
+					<div id="msgErreur" class="control-group" style="margin: 0">
+						<textarea name="message" style="width: 75%;height: 140px;margin: auto;" id="alerteMessage" onkeyup="compteur();" maxlength="500"></textarea>
+					</div>
+					<div style="margin-left:78%; position: absolute; top: 260px;">Nombre de caractères : <span id="alerteCompteur">0/500</span></div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<span id="form2">
+				<div class="btn btn-primary" onclick="envoiAlerte();">Envoyer</div>
+			</span>
+		</div>
+	</form>
+</div>

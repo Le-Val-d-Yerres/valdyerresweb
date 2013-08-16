@@ -105,13 +105,26 @@ class TarifCategorieAdmin(admin.ModelAdmin):
     list_display = ['equipement_fonction','nom']
     prepopulated_fields = {'slug':('nom',),}
     
-    # TODO : ajouter la suppression du cache de la page "equipements/tarifs/" quand elle sera ajouté
+    def save_model(self, request, obj, form, change):
+        path = reverse('equipements.views.EquipementTarifs', kwargs={})
+        functions.expire_page(path)
     
     
 class TarifAdmin(admin.ModelAdmin):
     list_display = ['designation','categorie', 'index']
     
-    # TODO : ajouter la suppression du cache de la page "equipements/tarifs/" quand elle sera ajouté
+    def save_model(self, request, obj, form, change):
+        path = reverse('equipements.views.EquipementTarifs', kwargs={})
+        functions.expire_page(path)
+        
+class AlerteAdmin(admin.ModelAdmin):
+    list_display = ['nom', 'texte_lien']
+    search_fields = ['nom']
+    
+class AlertesReponsesAdmin(admin.ModelAdmin):
+    list_display = ['alerte', 'equipement', 'nom', 'prenom', 'date', 'etat']
+    list_filter = ['etat', 'equipement']
+    search_fields = ['equipement_id']
 
 admin.site.register(Equipement, EquipementAdmin)
 admin.site.register(EquipementFonction, EquipementFonctionAdmin)
@@ -119,3 +132,5 @@ admin.site.register(Facilites, FacilitesAdmin)
 admin.site.register(Facilite, FaciliteAdmin)
 admin.site.register(TarifCategorie, TarifCategorieAdmin)
 admin.site.register(Tarif, TarifAdmin)
+admin.site.register(Alerte, AlerteAdmin)
+admin.site.register(AlertesReponses, AlertesReponsesAdmin)

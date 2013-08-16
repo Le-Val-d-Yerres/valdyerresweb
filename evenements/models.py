@@ -85,6 +85,8 @@ class Evenement(models.Model):
     complet = models.BooleanField("Ce spectacle est complet", default = False)
     slug = models.SlugField(max_length=255, unique=True)
     
+    class Meta:
+        ordering = ['-debut']
     
     def Organisateurs(self):
         return "\n;\n".join([s.nom for s in self.organisateur.all()])
