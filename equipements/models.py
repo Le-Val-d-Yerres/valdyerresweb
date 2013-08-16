@@ -6,7 +6,19 @@ from localisations.models import Lieu
 from django.core.urlresolvers import reverse
 from django.db.models import permalink
 from model_utils.managers import InheritanceManager
+from django.contrib.auth.models import User
+from django.contrib.localflavor.fr.forms import FRPhoneNumberField
 
+class Alerte(models.Model):
+    nom = models.CharField(max_length=255, verbose_name="Titre")
+    users = models.ManyToManyField(User)
+    texte_lien = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name_plural = "Alertes"
+        
+    def __unicode__(self):
+        return self.nom
 
 class EquipementFonction(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Fonction")
@@ -27,6 +39,7 @@ class Equipement(Lieu):
     url = models.URLField(blank=True, null=True, verbose_name="Site web")
     presentation = models.TextField(blank=True)
     meta_description = models.CharField(max_length=200)
+    alerte = models.ForeignKey(Alerte, null=True, default=None)
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     
     def __unicode__(self):
@@ -103,6 +116,26 @@ class Tarif(models.Model):
     class Meta:
         verbose_name_plural = "Tarifs"
         ordering = ['categorie__index','index']
+    
+class AlertesReponses(models.Model):
+    alerte = models.ForeignKey(Alerte)
+    equipement = models.ForeignKey(Equipement)
+    nom = models.CharField(max_length=255)
+    prenom = models.CharField(max_length=255)
+    rue = models.CharField(max_length=255)
+    codePostal = models.CharField(max_length=10)
+    ville = models.CharField(max_length=255)
+    tel = models.CharField(max_length=255)
+    mail = models.EmailField()
+    message = models.TextField(blank=False)
+    ip = models.IPAddressField()
+    date = models.DateTimeField()
+    etat = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name_plural = "Alertes Reponses"
+        ordering = ['etat','-date']
+    
 
         
     

@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response , redirect , get_object_or_404, get_list_or_404
-from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites,Facilite
+from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites, Facilite, AlertesReponses, Alerte
 from evenements.models import Evenement, Organisateur
 from localisations.models import Lieu
 from horaires.models import Horaires, Periode
@@ -9,7 +10,10 @@ from django.db.models import Q
 from django.conf import settings
 from pytz import timezone
 from django.template import Context, loader
-from valdyerresweb.utils.functions import GenerationQrCode
+from valdyerresweb.utils.functions import GenerationQrCode, validateEmail
+from valdyerresweb.templatetags import filtres
+import uuid
+import re
 
 
 utcTZ = timezone("UTC")
@@ -128,8 +132,21 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
          
     qr_code_geo = GenerationQrCode("geo:" + str(equipement.latitude) + "," + str(equipement.longitude))
     qr_code_vcard = GenerationQrCode(EquipementVcard(equipement))
+    
+    tokenCSRF = uuid.uuid1()
+    
+    alerte = {
+        'nom': 'Signaler un problème',
+        'cible': '<img src="'+filtres.resize(equipement.image, '100x100x1')+'" style="float:left;margin-right: 10px;" class="img-polaroid"><address style="width: 500px;"><strong>'+equipement.nom+'</strong><br \>'+equipement.rue+'<br \>'+equipement.ville.code_postal+' '+equipement.ville.nom+'<br \>'+equipement.telephone+'</address>',
+        'id': 2,
+        'token': tokenCSRF,
+        'equipement': 15
+    }
         
-    return render_to_response('equipements/equipement-details.html', {'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7, 'tarifs_principaux':tarifs_principaux })
+    reponse = render_to_response('equipements/equipement-details.html', {'alerte': alerte, 'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7, 'tarifs_principaux':tarifs_principaux })
+    reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
+    
+    return reponse
 
 def EquipementHoraires(request, equipement_slug):
     equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
@@ -224,3 +241,46 @@ def HorairesTousEquipements(request):
         each.periodes.horaires = horaires
         
     return render_to_response('equipements/tous-equipement-horaires.html', {'listeEquipements':listeEquipements})
+
+def AlertesAjax(request):
+    
+    result = re.match('^[0-9 ]+$', request.POST['tel'])
+    longueur = len(request.POST['tel'])
+    if result and (longueur == 10 or longueur == 14):     
+        if validateEmail(request.POST['mail']):
+            alerte = AlertesReponses()
+            alerte.nom = request.POST['nom']
+            alerte.prenom = request.POST['prenom']
+            alerte.rue = request.POST['rue']
+            alerte.codePostal = request.POST['codePostal']
+            alerte.ville = request.POST['ville']
+            alerte.tel = request.POST['tel']
+            alerte.mail = request.POST['mail']
+            alerte.message = request.POST['msg']
+            alerte.ip = request.META.get('REMOTE_ADDR')
+            alerte.etat = False
+            alerte.date = datetime.datetime.now(utcTZ)
+            
+            alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId'])
+    
+            equipement = Equipement.objects.filter(id=request.POST['equipementId'])
+            
+            if len(alerteTemplate) == 0 or len(equipement) == 0:
+                return HttpResponse("2", content_type="text/plain")
+            else:
+                alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId'])[0]
+    
+                equipement = Equipement.objects.filter(id=request.POST['equipementId'])[0]
+            
+                alerte.equipement = equipement
+                alerte.alerte = alerteTemplate
+            
+            alerte.save()
+            
+            return HttpResponse("1", content_type="text/plain")
+        else:
+            # Adresse mail non valide
+            return HttpResponse("0", content_type="text/plain")
+    else:
+            # tel non valide
+            return HttpResponse("3", content_type="text/plain")
