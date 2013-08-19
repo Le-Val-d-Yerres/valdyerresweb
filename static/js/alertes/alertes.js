@@ -183,6 +183,14 @@ function envoiAlerte()
 	            		{
 	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Merci d\'utiliser un numéro de téléphone valide.</div>';
 	            		}
+	            		else if (xhr.responseText == "4")
+	            		{
+	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Merci d\'attendre une minute entre deux signalements.</div>';
+	            		}
+	            		else if (xhr.responseText == "5")
+	            		{
+	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Vous devez accepter les cookies pour utiliser ce formulaire.</div>';
+	            		}
 	            	}
 	            	else
 	            	{

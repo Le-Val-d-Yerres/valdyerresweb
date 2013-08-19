@@ -103,7 +103,9 @@
 			</div>
 			<hr \>
 			<div style="text-align: right;">
-				{% include 'equipements/alertes/widget-with-js.html' %}
+				{% if alerte %}
+					{% include 'equipements/alertes/widget-with-js.html' %}
+				{% endif %}
 			</div>
 
 		</div>
@@ -314,4 +316,15 @@
 		<script src="/static/js/openstreetmap/lib/OpenLayers/Lang/fr.js"></script>
 		<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
 		<script src="/static/js/map/osm-fonction.js"></script>
+		
+		<script>
+			$(document).ready(function() 
+			{
+				if (getXMLHttpRequest() != null)
+				{
+					document.getElementById('lienAjax').style.display = "";
+					document.getElementById('lienPost').style.display = "none";
+				}
+			}); 
+		</script>
 	{% endblock %}

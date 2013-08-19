@@ -12,6 +12,7 @@ class EquipementAdmin(admin.ModelAdmin):
         ('Description', {'fields': (('nom', 'fonction'),'meta_description', 'presentation', 'image', 'url')}),
         ('Adresse', {'fields': ['rue', 'ville', 'latitude', 'longitude']}),
         ('Contact', {'fields': ['telephone', 'fax', 'email']}),
+        ('Alerte', {'fields': ['alerte']}),
     ]
     list_filter = ['fonction__nom', 'ville__nom']
     search_fields = ['nom']

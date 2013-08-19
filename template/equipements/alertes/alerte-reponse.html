@@ -1,0 +1,58 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load tz %}
+
+{% block title %}Lettre d'informations du Val d'Yerres{% endblock %}
+{% block meta-description %}Lettre d'informations du Val d'Yerres{% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+<div class="container" style="margin-top:60px;">
+<div  class="row-fluid">
+	<div class="span12">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">Retourner à l'accueil du site</a><span class="divider">/</span>
+				</li>
+			</ul>
+	</div>
+			<div class="span7" style="margin-bottom:20px;">
+				<h2>{{ equipement.alerte.nom }}</h2>
+				<p>
+					{% if reponse == 0 %}
+						<div class="alert">Merci d'utiliser un courriel valide.</div>
+					{% endif %}
+					{% if reponse == 1 %}
+						<div class="alert alert-success">Votre message a été envoyé avec success.</div>
+					{% endif %}
+					{% if reponse == 2 %}
+						<div class="alert alert-danger">Une erreur est survenue lors de l'envoi de votre message, merci de réessayer plus tard.</div>
+					{% endif %}
+					{% if reponse == 3 %}
+						<div class="alert alert">Merci d\'utiliser un numéro de téléphone valide.</div>
+					{% endif %}
+					{% if reponse == 4 %}
+						<div class="alert">Merci d'attendre une minute entre deux signalements.</div>
+					{% endif %}
+					{% if reponse == 5 %}
+						<div class="alert">Vous devez accepter les cookies pour utiliser ce formulaire.</div>
+					{% endif %}
+				</p>
+				<div style="text-align: center;">
+					<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
+				</div>
+			</div>
+</div>
+</div>
+
+{% endblock%}
+
+{% block jsload%}
+	<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.js"> </script>
+{% endblock%}

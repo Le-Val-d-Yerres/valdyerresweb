@@ -1,4 +1,5 @@
-<small><a href="#widgetAlertes" role="button" data-toggle="modal" class="text-error" onclick="compteur();">Pour nous signaler un problème dans cet équipement:<br \>cliquez ici.</a></small>
+<small><a id="lienAjax" style="display: none;" href="#widgetAlertes" role="button" data-toggle="modal" class="text-error" onclick="compteur();">{{ alerte.lien|safe }}</a></small>
+<small><a id="lienPost" href="{% url equipements.views.AlertesSansJs equipement_slug=alerte.equipement.slug %}" class="text-error">{{ alerte.lien|safe }}</a></small>
 
 <div style="text-align: left;width: 700px;margin-left: -350px;" id="widgetAlertes" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
@@ -10,7 +11,7 @@
 		<div class="modal-body" style="padding-top: 0px;">
 			<div id="form1">
 				<input type="hidden" id="alerteId" value="{{ alerte.id }}">
-				<input type="hidden" id="equipementId" value="{{ alerte.equipement }}">
+				<input type="hidden" id="equipementId" value="{{ alerte.equipement.id }}">
 				<input type="hidden" id="tokenCsrf" value="{{ alerte.token }}">
 				<fieldset style="width:45%;">
 					<legend>Nom et prénom</legend>

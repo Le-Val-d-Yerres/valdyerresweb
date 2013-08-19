@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Avis sur {{ equipement }}</title>
+
+	<style type="text/css">
+		a { border: none; color:#777777; }
+		img { border: none; }
+		p { margin: 0; line-height: 1em; }
+		h1,h2,h3,h4 {font-size:100%;margin:0;}
+	</style>
+</head>
+
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="background: #fafafa; font-family:Helvetica,Arial,sans-serif; line-height: 12px; color:#999999; font-size: 11px;">
+
+
+<table width="100%" cellpadding="0" cellspacing="0">
+	<tr valign="top" align="center">
+		<td>
+			<table width="600" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="padding:15px 0px 10px 0px; text-align:left;"></td>
+					<td><p style="padding:19px 12px 19px 0; text-align:right;">Avis sur {{ equipement }}</p></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table width="100%" bgcolor="#fafafa" cellpadding="0" cellspacing="0">
+	<tr valign="top" align="center">
+		<td>
+			<table cellpadding="0" cellspacing="0" border="0" width="600">
+				<tbody>
+					<tr>
+						<td><img src="{{ domaine }}/static/img/mail/header.png" width="600" alt="" style="display: block; width: 600px;border: none;"></td>
+		 			</tr>
+				</tbody>
+			</table>
+ 		</td>
+	</tr>
+
+	<tr valign="top" align="center">
+		<td style="padding-bottom:20px;">
+			<table width="600" cellpadding="0" cellspacing="0" bgcolor="#fff" style="border: 1px solid #dddddd; border-width: 0px 1px;">
+				<tr>
+					<td style="padding: 30px 25px 30px 25px; color:#444444;">
+						<p style="font-size:12px; line-height:18px;">
+							Bonjour,<br \>
+							<br \>
+							Un signalement a été effectuer pour l'équipement "{{ equipement }}" par :
+							<address>
+								{{ signaleur.nom }} {{ signaleur.prenom }}<br \>
+								{{ signaleur.rue }}<br \>
+								{{ signaleur.codePostal }}, {{ signaleur.ville }}<br \>
+								{{ signaleur.tel }}<br \>
+								{{ signaleur.mail }}<br \>
+							</address>
+							<br \>
+							-----------------------------------------------------------------------------------------------------------------<br \>
+							{{ signaleur.message }}<br \>
+							-----------------------------------------------------------------------------------------------------------------
+						</p>
+					</td>
+				</tr>
+			</table>
+			
+			<table width="600" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="padding:10px 0 10px 5px;" colspan="2">
+						<p style="font-family:Georgia,'Lucida Grande',Verdana,Helvetica,Arial,sans-serif; line-height: 15px; color:#aaaaaa; font-size: 11px; margin:4px 0 0 0;"><em>Le Val d'Yerres - 78 RN6, BP 103, 91805 Brunoy CEDEX - 01 60 47 94 20 - <a href="mailto:levaldyerres@levaldyerres.fr">levaldyerres@levaldyerres.fr</a></em></p>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" valign="middle"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>
