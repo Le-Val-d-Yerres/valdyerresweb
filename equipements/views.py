@@ -10,11 +10,15 @@ from django.db.models import Q
 from django.conf import settings
 from pytz import timezone
 from django.template import Context, loader
-from valdyerresweb.utils.functions import GenerationQrCode, validateEmail
+from valdyerresweb.utils.functions import GenerationQrCode, validateEmail, envoiMail
 from valdyerresweb.templatetags import filtres
 import uuid
 import re
-
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from lettreinformations import settings as conf
+from django.core.cache import cache
+import md5
 
 utcTZ = timezone("UTC")
 
@@ -134,14 +138,18 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     qr_code_vcard = GenerationQrCode(EquipementVcard(equipement))
     
     tokenCSRF = uuid.uuid1()
-    
-    alerte = {
-        'nom': 'Signaler un problème',
-        'cible': '<img src="'+filtres.resize(equipement.image, '100x100x1')+'" style="float:left;margin-right: 10px;" class="img-polaroid"><address style="width: 500px;"><strong>'+equipement.nom+'</strong><br \>'+equipement.rue+'<br \>'+equipement.ville.code_postal+' '+equipement.ville.nom+'<br \>'+equipement.telephone+'</address>',
-        'id': 2,
-        'token': tokenCSRF,
-        'equipement': 15
-    }
+
+    if equipement.alerte != None:
+        alerte = {
+            'nom': equipement.alerte.nom,
+            'cible': '<img src="'+filtres.resize(equipement.image, '100x100x1')+'" style="float:left;margin-right: 10px;" class="img-polaroid"><address style="width: 500px;"><strong>'+equipement.nom+'</strong><br \>'+equipement.rue+'<br \>'+equipement.ville.code_postal+' '+equipement.ville.nom+'<br \>'+equipement.telephone+'</address>',
+            'id': equipement.alerte.id,
+            'token': tokenCSRF,
+            'equipement': equipement,
+            'lien': equipement.alerte.texte_lien
+        }
+    else:
+        alerte = None
         
     reponse = render_to_response('equipements/equipement-details.html', {'alerte': alerte, 'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7, 'tarifs_principaux':tarifs_principaux })
     reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
@@ -243,44 +251,220 @@ def HorairesTousEquipements(request):
     return render_to_response('equipements/tous-equipement-horaires.html', {'listeEquipements':listeEquipements})
 
 def AlertesAjax(request):
-    
-    result = re.match('^[0-9 ]+$', request.POST['tel'])
-    longueur = len(request.POST['tel'])
-    if result and (longueur == 10 or longueur == 14):     
-        if validateEmail(request.POST['mail']):
-            alerte = AlertesReponses()
-            alerte.nom = request.POST['nom']
-            alerte.prenom = request.POST['prenom']
-            alerte.rue = request.POST['rue']
-            alerte.codePostal = request.POST['codePostal']
-            alerte.ville = request.POST['ville']
-            alerte.tel = request.POST['tel']
-            alerte.mail = request.POST['mail']
-            alerte.message = request.POST['msg']
-            alerte.ip = request.META.get('REMOTE_ADDR')
-            alerte.etat = False
-            alerte.date = datetime.datetime.now(utcTZ)
+    result = re.search(conf.NOM_DOMAINE, request.META['HTTP_REFERER'])
+    if result != None:
+        key = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
+        if not cache.has_key(key):
+            if request.COOKIES.has_key('csrftoken'):
+                if request.COOKIES['csrftoken'] == request.POST['csrftoken']:
+                    result = re.match('^[0-9 ]+$', request.POST['tel'])
+                    longueur = len(request.POST['tel'])
+                    if result and (longueur == 10 or longueur == 14):     
+                        if validateEmail(request.POST['mail']):
+                            alerte = AlertesReponses()
+                            alerte.nom = request.POST['nom']
+                            alerte.prenom = request.POST['prenom']
+                            alerte.rue = request.POST['rue']
+                            alerte.codePostal = request.POST['codePostal']
+                            alerte.ville = request.POST['ville']
+                            alerte.tel = request.POST['tel']
+                            alerte.mail = request.POST['mail']
+                            alerte.message = request.POST['msg']
+                            alerte.ip = request.META.get('REMOTE_ADDR')
+                            alerte.etat = False
+                            alerte.date = datetime.datetime.now(utcTZ)
+                            
+                            alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId']).prefetch_related('users')
+                    
+                            equipement = Equipement.objects.filter(id=request.POST['equipementId'])
+                            
+                            if len(alerteTemplate) == 0 or len(equipement) == 0:
+                                return HttpResponse("2", content_type="text/plain")
+                            else:
+                                alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId'])[0]
+                    
+                                equipement = Equipement.objects.filter(id=request.POST['equipementId'])[0]
+                            
+                                alerte.equipement = equipement
+                                alerte.alerte = alerteTemplate
+                            
+                            alerte.save()
+                            
+                            users = alerteTemplate.users.all()
+                            
+                            for mail in users:
+                                if mail.email != "":
+                                    msg = MIMEMultipart('alternative')
+                                            
+                                    msg['Subject'] = u"Avis sur "+equipement.nom
+                                    msg['From'] = 'levaldyerres@levaldyerres.fr'
+                                    msg['To'] = mail.email
+                                    
+                                    myTemplate = loader.get_template('equipements/alertes/mail-html.html')
+                                    myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': conf.NOM_DOMAINE})
+                                    html = myTemplate.render(myContext)
+                                    
+                                    myTemplate = loader.get_template('equipements/alertes/mail-txt.html')
+                                    myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': conf.NOM_DOMAINE})
+                                    text = myTemplate.render(myContext)
+                                    
+                                    text = text.encode('utf-8')
+                                    html = html.encode('utf-8')
+                                    
+                                    part1 = MIMEText(text, 'plain', "utf-8")
+                                    part2 = MIMEText(html, 'html', "utf-8")
+                                    
+                                    # Attach parts into message container.
+                                    # According to RFC 2046, the last part of a multipart message, in this case
+                                    # the HTML message, is best and preferred.
+                                    msg.attach(part1)
+                                    msg.attach(part2)
+                                    
+                                    reponse = envoiMail(mail.email, msg)
             
-            alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId'])
-    
-            equipement = Equipement.objects.filter(id=request.POST['equipementId'])
-            
-            if len(alerteTemplate) == 0 or len(equipement) == 0:
-                return HttpResponse("2", content_type="text/plain")
+                            hash = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
+                            cache.set(hash, 'alerteToken', 60)
+                            
+                            return HttpResponse("1", content_type="text/plain")
+                        else:
+                            # Adresse mail non valide
+                            return HttpResponse("0", content_type="text/plain")
+                    else:
+                        # tel non valide
+                        return HttpResponse("3", content_type="text/plain")
+                else:
+                    # attaque csrf
+                    return HttpResponse("2", content_type="text/plain")
             else:
-                alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId'])[0]
-    
-                equipement = Equipement.objects.filter(id=request.POST['equipementId'])[0]
-            
-                alerte.equipement = equipement
-                alerte.alerte = alerteTemplate
-            
-            alerte.save()
-            
-            return HttpResponse("1", content_type="text/plain")
+                # pas cookie
+                return HttpResponse("5", content_type="text/plain")
         else:
-            # Adresse mail non valide
-            return HttpResponse("0", content_type="text/plain")
+            # token
+            return HttpResponse("4", content_type="text/plain")
     else:
-            # tel non valide
-            return HttpResponse("3", content_type="text/plain")
+        # Http refere non valide
+        return HttpResponse("2", content_type="text/plain")
+    
+def AlertesSansJs(request, equipement_slug):
+    if request.META['REQUEST_METHOD'] == "POST":
+        equipement = Equipement.objects.filter(id=request.POST['equipementId'])
+         
+        result = re.search(conf.NOM_DOMAINE, request.META['HTTP_REFERER'])
+        if result != None:
+            key = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
+            if not cache.has_key(key):
+                if request.COOKIES.has_key('csrftoken'):
+                    if request.COOKIES['csrftoken'] == request.POST['tokenCsrf']:
+                        result = re.match('^[0-9 ]+$', request.POST['tel'])
+                        longueur = len(request.POST['tel'])
+                        if result and (longueur == 10 or longueur == 14):     
+                            if validateEmail(request.POST['mail']):
+                                alerte = AlertesReponses()
+                                alerte.nom = request.POST['nom']
+                                alerte.prenom = request.POST['prenom']
+                                alerte.rue = request.POST['rue']
+                                alerte.codePostal = request.POST['codePostal']
+                                alerte.ville = request.POST['ville']
+                                alerte.tel = request.POST['tel']
+                                alerte.mail = request.POST['mail']
+                                alerte.message = request.POST['message']
+                                alerte.ip = request.META.get('REMOTE_ADDR')
+                                alerte.etat = False
+                                alerte.date = datetime.datetime.now(utcTZ)
+                                
+                                alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId']).prefetch_related('users')
+                                
+                                if len(alerteTemplate) == 0 or len(equipement) == 0:
+                                    return HttpResponse("2", content_type="text/plain")
+                                else:
+                                    alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId'])[0]
+                        
+                                    equipement = Equipement.objects.filter(id=request.POST['equipementId'])[0]
+                                
+                                    alerte.equipement = equipement
+                                    alerte.alerte = alerteTemplate
+                                
+                                alerte.save()
+                                
+                                users = alerteTemplate.users.all()
+                                
+                                for mail in users:
+                                    if mail.email != "":
+                                        msg = MIMEMultipart('alternative')
+                                                
+                                        msg['Subject'] = u"Avis sur "+equipement.nom
+                                        msg['From'] = 'levaldyerres@levaldyerres.fr'
+                                        msg['To'] = mail.email
+                                        
+                                        myTemplate = loader.get_template('equipements/alertes/mail-html.html')
+                                        myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': conf.NOM_DOMAINE})
+                                        html = myTemplate.render(myContext)
+                                        
+                                        myTemplate = loader.get_template('equipements/alertes/mail-txt.html')
+                                        myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': conf.NOM_DOMAINE})
+                                        text = myTemplate.render(myContext)
+                                        
+                                        text = text.encode('utf-8')
+                                        html = html.encode('utf-8')
+                                        
+                                        part1 = MIMEText(text, 'plain', "utf-8")
+                                        part2 = MIMEText(html, 'html', "utf-8")
+                                        
+                                        # Attach parts into message container.
+                                        # According to RFC 2046, the last part of a multipart message, in this case
+                                        # the HTML message, is best and preferred.
+                                        msg.attach(part1)
+                                        msg.attach(part2)
+                                        
+                                        reponse = envoiMail(mail.email, msg)
+                
+                                hash = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
+                                cache.set(hash, 'alerteToken', 60)
+                                
+                                return redirect('alertes-reponse', reponse="1", equipement=equipement_slug)
+                            else:
+                                # Adresse mail non valide
+                                return redirect('alertes-reponse', reponse="0", equipement=equipement_slug)
+                        else:
+                            # tel non valide
+                            return redirect('alertes-reponse', reponse="3", equipement=equipement_slug)
+                    else:
+                        # attaque csrf
+                        return redirect('alertes-reponse', reponse="2", equipement=equipement_slug)
+                else:
+                    # pas cookies
+                    return redirect('alertes-reponse', reponse="5", equipement=equipement_slug)
+            else:
+                # token
+                return redirect('alertes-reponse', reponse="4", equipement=equipement_slug)
+        else:
+            # Http refere non valide
+            return redirect('alertes-reponse', reponse="2", equipement=equipement.slug)
+    else:
+        equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
+        
+        if equipement.alerte == None:
+            raise Http404
+        else:
+            equipement.alerte.cible = '<img src="'+filtres.resize(equipement.image, '100x100x1')+'" style="float:left;margin-right: 10px;" class="img-polaroid"><address style="width: 500px;"><strong>'+equipement.nom+'</strong><br \>'+equipement.rue+'<br \>'+equipement.ville.code_postal+' '+equipement.ville.nom+'<br \>'+equipement.telephone+'</address>'
+        
+        tokenCSRF = uuid.uuid1()
+        
+        reponse = render_to_response('equipements/alertes/widget-without-js.html', {'token': tokenCSRF, 'equipement': equipement})
+        reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
+        
+        return reponse
+    
+def AlertesReponse(request, reponse, equipement):
+    listeRep = range(0, 6)
+    reponse = int(reponse)
+    if reponse not in listeRep:
+        raise Http404
+    
+    equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement)
+        
+    if equipement.alerte == None:
+        raise Http404
+    
+    
+    return render_to_response('equipements/alertes/alerte-reponse.html', {'reponse':reponse, 'equipement': equipement})

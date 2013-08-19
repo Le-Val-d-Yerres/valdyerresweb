@@ -11,6 +11,9 @@ import datetime
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+import smtplib
+import socket
+from lettreinformations import settings as conf
 
 ImageFile.MAXBLOCK = 2**20
 
@@ -90,3 +93,25 @@ def validateEmail(email):
         return True
     except ValidationError:
         return False
+    
+def envoiMail(mail, msg):
+    try:
+        smtpServ = smtplib.SMTP('in.mailjet.com', 587, socket.getfqdn(), 3)
+
+        try:
+            smtpServ.login(conf.MAILJET_API_KEY, conf.MAILJET_SECRET_KEY)
+        
+            try:
+                smtpServ.sendmail('levaldyerres@levaldyerres.fr', mail, msg.as_string())
+                smtpServ.quit()
+                
+                return 1
+                
+            except (smtplib.SMTPRecipientsRefused, smtplib.SMTPHeloError, smtplib.SMTPSenderRefused, smtplib.SMTPDataError):
+                return 2
+            
+        except (smtplib.SMTPHeloError, smtplib.SMTPAuthenticationError, smtplib.SMTPException):
+            return 2
+            
+    except (smtplib.SMTPConnectError, socket.timeout):
+        return 2
