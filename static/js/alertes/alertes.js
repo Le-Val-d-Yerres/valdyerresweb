@@ -173,7 +173,7 @@ function envoiAlerte()
 							
 							document.getElementById('alerteErreur').innerHTML = '';
 							
-							document.getElementById('form1').innerHTML = '<div style="margin-top: 10px;margin-right: 10px;text-align: left;" class="alert alert-success">Votre message a été envoyé avec success.</div>';
+							document.getElementById('form1').innerHTML = '<div style="margin-top: 10px;margin-right: 10px;text-align: left;" class="alert alert-success">Votre message a été envoyé avec succes.</div>';
 	            		}
 	            		else if (xhr.responseText == "2")
 	            		{
