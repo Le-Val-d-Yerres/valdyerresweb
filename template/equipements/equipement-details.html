@@ -117,16 +117,19 @@
 		<div class="span7">
 			<hr/>
 			<h2>Horaires:</h2>
-			<ul>
-				<li>Aujourd'hui : <b>{%nom_jour_aujourdhui%}</b>. </li>
-				<ul>
-				{% for horaire in horaires %}
-				
-					<li>{{horaire.nom}} : <b>{{horaire|horaires_aujourdhui}}</b></li>
-				
-				{%endfor%}
-				</ul>
-			</ul>
+			<h3>Aujourd'hui :</h3>
+			<table class="table table-striped" align="center">
+				<tr>
+					<td><b>{%nom_jour_aujourdhui%}</b></td>
+					<td>
+						<ul>
+							{% for horaire in horaires %}
+								<li>{{horaire.nom}} : <b>{{horaire|horaires_aujourdhui}}</b></li>
+							{%endfor%}
+						</ul>
+					</td>
+				</tr>
+			</table>
 			<h3>Les 7 prochains jours : </h3>
 			<table class="table table-striped" align="center">
 	    		<thead>
