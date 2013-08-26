@@ -12,6 +12,11 @@ function compteur()
         {
                 document.getElementById("alerteCompteur").innerHTML = "<span style=\"color: red\">"+longueur+"/500</span>";
         }
+        
+        if (longueur > 0)
+        {
+        	document.getElementById('msgErreur').className = "control-group";
+        }
 }
 
 function getXMLHttpRequest() 
@@ -177,7 +182,7 @@ function envoiAlerte()
 	            		}
 	            		else if (xhr.responseText == "2")
 	            		{
-	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert alert-danger">Une erreur c\'est produite lors de l\'envoi de votre message, merci de réessayer plus tard.</div>';
+	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert alert-danger">Une erreur s\'est produite lors de l\'envoi de votre message, merci de réessayer plus tard.</div>';
 	            		}
 	            		else if (xhr.responseText == "3")
 	            		{
@@ -194,7 +199,7 @@ function envoiAlerte()
 	            	}
 	            	else
 	            	{
-	            		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert alert-danger">Une erreur c\'est produite lors de l\'envoi de votre message, merci de réessayer plus tard.</div>';
+	            		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert alert-danger">Une erreur s\'est produite lors de l\'envoi de votre message, merci de réessayer plus tard.</div>';
 	            	}
 	                    
 	            }

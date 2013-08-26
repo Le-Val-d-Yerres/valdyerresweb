@@ -110,7 +110,7 @@ def mailJetPost(request):
                     html = myTemplate.render(myContext)
                     
                     myTemplate = loader.get_template('lettreinformations/mail-validation-txt.html')
-                    myContext = Context({"hash": UserUUID, "mail": mail})
+                    myContext = Context({"hash": UserUUID, "mail": mail, "domaine": settings.NOM_DOMAINE})
                     text = myTemplate.render(myContext)
                     
                     text = text.encode('utf-8')

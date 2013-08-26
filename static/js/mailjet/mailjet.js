@@ -31,44 +31,49 @@ function getXMLHttpRequest()
 function affichageReponse(texte)
 {
 	form = document.getElementById('mailJetForm');
-	form.parentNode.removeChild(form);
 	
-	mailBox = document.getElementById('mailBox');
 	
-	divAlert = document.createElement("div");
 	
 	if (texte == "0")
 	{
-		divAlert.className = "alert mailMsg";
-		divAlert.innerHTML = "Merci d'utiliser un courriel valide.";
+		document.getElementById('lettreErreur').innerHTML = "Merci d'utiliser un courriel valide.";
+		document.getElementById('lettreErreur').className = "alert mailMsg";
 	}
 	else if (texte == "1")
 	{
+		mailBox = document.getElementById('mailBox');
+		form.parentNode.removeChild(form);
+		
+		document.getElementById('lettreErreur').innerHTML = "";
+		document.getElementById('lettreErreur').className = "";
+		
+		divAlert = document.createElement("div");
+		
 		divAlert.className = "alert mailMsg alert-success";
 		divAlert.innerHTML = "Votre adresse a été ajoutée. Un courriel vous a été envoyé, vous avez 24h pour confirmer votre adresse.";
+		
+		mailBox.appendChild(divAlert);
 	}
 	else if (texte == "2")
 	{
-		divAlert.className = "alert mailMsg alert-danger";
-		divAlert.innerHTML = "Une erreur est survenue lors de l'ajout de votre courriel, merci de réessayer plus tard.";
+		document.getElementById('lettreErreur').innerHTML = "Une erreur est survenue lors de l'ajout de votre courriel, merci de réessayer plus tard.";
+		document.getElementById('lettreErreur').className = "alert mailMsg alert-danger";
 	}
 	else if (texte == "3")
 	{
-		divAlert.className = "alert mailMsg alert-info";
-		divAlert.innerHTML = "Vous êtes déjà abonné à la lettre d'informations du Val d'Yerres.";
+		document.getElementById('lettreErreur').innerHTML = "Vous êtes déjà abonné à la lettre d'informations du Val d'Yerres.";
+		document.getElementById('lettreErreur').className = "alert mailMsg alert-info";
 	}
 	else if (texte == "4")
 	{
-		divAlert.className = "alert mailMsg";
-		divAlert.innerHTML = "Vous devez accepter les cookies pour utiliser ce formulaire.";
+		document.getElementById('lettreErreur').innerHTML = "Vous devez accepter les cookies pour utiliser ce formulaire.";
+		document.getElementById('lettreErreur').className = "alert mailMsg";
 	}
 	else
 	{
-		divAlert.className = "alert mailMsg alert-danger";
-		divAlert.innerHTML = "Une erreur est survenue lors de l'ajout de votre courriel, merci de réessayer plus tard.";
+		document.getElementById('lettreErreur').innerHTML = "Une erreur est survenue lors de l'ajout de votre courriel, merci de réessayer plus tard.";
+		document.getElementById('lettreErreur').className = "alert mailMsg alert-danger";
 	}
-	
-	mailBox.appendChild(divAlert);
 }
 
 function mailjet()

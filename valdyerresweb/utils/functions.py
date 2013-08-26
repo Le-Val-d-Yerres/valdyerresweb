@@ -96,22 +96,14 @@ def validateEmail(email):
     
 def envoiMail(mail, msg):
     try:
-        smtpServ = smtplib.SMTP('in.mailjet.com', 587, socket.getfqdn(), 3)
-
+        smtpServ = smtplib.SMTP('localhost')
         try:
-            smtpServ.login(conf.MAILJET_API_KEY, conf.MAILJET_SECRET_KEY)
-        
-            try:
-                smtpServ.sendmail('levaldyerres@levaldyerres.fr', mail, msg.as_string())
-                smtpServ.quit()
-                
-                return 1
-                
-            except (smtplib.SMTPRecipientsRefused, smtplib.SMTPHeloError, smtplib.SMTPSenderRefused, smtplib.SMTPDataError):
-                return 2
+            smtpServ.sendmail('levaldyerres@levaldyerres.fr', mail, msg.as_string())
+            smtpServ.quit()
             
-        except (smtplib.SMTPHeloError, smtplib.SMTPAuthenticationError, smtplib.SMTPException):
-            return 2
+            return 1
             
+        except (smtplib.SMTPRecipientsRefused, smtplib.SMTPHeloError, smtplib.SMTPSenderRefused, smtplib.SMTPDataError):
+            return 2 
     except (smtplib.SMTPConnectError, socket.timeout):
         return 2

@@ -251,7 +251,7 @@ def HorairesTousEquipements(request):
     return render_to_response('equipements/tous-equipement-horaires.html', {'listeEquipements':listeEquipements})
 
 def AlertesAjax(request):
-    result = re.search(conf.NOM_DOMAINE, request.META['HTTP_REFERER'])
+    result = re.search(settings.NOM_DOMAINE, request.META['HTTP_REFERER'])
     if result != None:
         key = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
         if not cache.has_key(key):
@@ -301,11 +301,11 @@ def AlertesAjax(request):
                                     msg['To'] = mail.email
                                     
                                     myTemplate = loader.get_template('equipements/alertes/mail-html.html')
-                                    myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': conf.NOM_DOMAINE})
+                                    myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': settings.NOM_DOMAINE})
                                     html = myTemplate.render(myContext)
                                     
                                     myTemplate = loader.get_template('equipements/alertes/mail-txt.html')
-                                    myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': conf.NOM_DOMAINE})
+                                    myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': settings.NOM_DOMAINE})
                                     text = myTemplate.render(myContext)
                                     
                                     text = text.encode('utf-8')
@@ -325,7 +325,7 @@ def AlertesAjax(request):
                             hash = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
                             cache.set(hash, 'alerteToken', 60)
                             
-                            return HttpResponse("1", content_type="text/plain")
+                            return HttpResponse(str(reponse), content_type="text/plain")
                         else:
                             # Adresse mail non valide
                             return HttpResponse("0", content_type="text/plain")
@@ -349,7 +349,7 @@ def AlertesSansJs(request, equipement_slug):
     if request.META['REQUEST_METHOD'] == "POST":
         equipement = Equipement.objects.filter(id=request.POST['equipementId'])
          
-        result = re.search(conf.NOM_DOMAINE, request.META['HTTP_REFERER'])
+        result = re.search(settings.NOM_DOMAINE, request.META['HTTP_REFERER'])
         if result != None:
             key = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
             if not cache.has_key(key):
@@ -397,11 +397,11 @@ def AlertesSansJs(request, equipement_slug):
                                         msg['To'] = mail.email
                                         
                                         myTemplate = loader.get_template('equipements/alertes/mail-html.html')
-                                        myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': conf.NOM_DOMAINE})
+                                        myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': settings.NOM_DOMAINE})
                                         html = myTemplate.render(myContext)
                                         
                                         myTemplate = loader.get_template('equipements/alertes/mail-txt.html')
-                                        myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': conf.NOM_DOMAINE})
+                                        myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': settings.NOM_DOMAINE})
                                         text = myTemplate.render(myContext)
                                         
                                         text = text.encode('utf-8')
@@ -421,7 +421,7 @@ def AlertesSansJs(request, equipement_slug):
                                 hash = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
                                 cache.set(hash, 'alerteToken', 60)
                                 
-                                return redirect('alertes-reponse', reponse="1", equipement=equipement_slug)
+                                return redirect('alertes-reponse', reponse=str(reponse), equipement=equipement_slug)
                             else:
                                 # Adresse mail non valide
                                 return redirect('alertes-reponse', reponse="0", equipement=equipement_slug)
