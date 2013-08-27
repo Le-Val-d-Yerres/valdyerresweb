@@ -10,6 +10,7 @@ from lettreinformations.utils import mailjet
 from valdyerresweb.utils import functions
 from django.template import RequestContext
 import uuid
+from django.views.decorators.cache import never_cache
 
 def mailForm(request):
     tokenCSRF = uuid.uuid1()
@@ -86,7 +87,8 @@ def mailJetAjax(request):
     else:
         # absence cookie
         return HttpResponse("4", content_type="text/plain")
-    
+
+@never_cache
 def mailJetPost(request):
     if request.COOKIES.has_key('csrftoken'):
         if request.COOKIES['csrftoken'] == request.POST['csrftoken']:
@@ -137,7 +139,8 @@ def mailJetPost(request):
     else:
         # absence cookie
         return redirect('mailjet-reponse', reponse=4)
-        
+    
+@never_cache  
 def mailJetReponse(request, reponse):
     listeRep = range(0, 5)
     reponse = int(reponse)
@@ -145,3 +148,12 @@ def mailJetReponse(request, reponse):
         raise Http404
     
     return render_to_response('lettreinformations/mailjet-reponse.html', {'reponse':reponse})
+
+@never_cache
+def mailJetGetToken(request):
+    tokenCSRF = uuid.uuid1()
+
+    reponse = HttpResponse(str(tokenCSRF), content_type="text/plain")
+    reponse.set_cookie("csrftoken", tokenCSRF, 60*60*5)
+    
+    return reponse

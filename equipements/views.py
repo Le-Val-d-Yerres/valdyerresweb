@@ -18,6 +18,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from lettreinformations import settings as conf
 from django.core.cache import cache
+from django.views.decorators.cache import never_cache
 import md5
 
 utcTZ = timezone("UTC")
@@ -152,7 +153,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         alerte = None
         
     reponse = render_to_response('equipements/equipement-details.html', {'alerte': alerte, 'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7, 'tarifs_principaux':tarifs_principaux })
-    reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
+    reponse.set_cookie("csrftoken", tokenCSRF, 60*60*5)
     
     return reponse
 
@@ -253,7 +254,7 @@ def HorairesTousEquipements(request):
 def AlertesAjax(request):
     result = re.search(settings.NOM_DOMAINE, request.META['HTTP_REFERER'])
     if result != None:
-        key = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
+        key = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
         if not cache.has_key(key):
             if request.COOKIES.has_key('csrftoken'):
                 if request.COOKIES['csrftoken'] == request.POST['csrftoken']:
@@ -344,14 +345,15 @@ def AlertesAjax(request):
     else:
         # Http refere non valide
         return HttpResponse("2", content_type="text/plain")
-    
+
+@never_cache
 def AlertesSansJs(request, equipement_slug):
     if request.META['REQUEST_METHOD'] == "POST":
         equipement = Equipement.objects.filter(id=request.POST['equipementId'])
          
         result = re.search(settings.NOM_DOMAINE, request.META['HTTP_REFERER'])
         if result != None:
-            key = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
+            key = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
             if not cache.has_key(key):
                 if request.COOKIES.has_key('csrftoken'):
                     if request.COOKIES['csrftoken'] == request.POST['tokenCsrf']:
@@ -454,7 +456,8 @@ def AlertesSansJs(request, equipement_slug):
         reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
         
         return reponse
-    
+
+@never_cache
 def AlertesReponse(request, reponse, equipement):
     listeRep = range(0, 6)
     reponse = int(reponse)
@@ -468,3 +471,12 @@ def AlertesReponse(request, reponse, equipement):
     
     
     return render_to_response('equipements/alertes/alerte-reponse.html', {'reponse':reponse, 'equipement': equipement})
+
+@never_cache
+def AlertesGetToken(request):
+    tokenCSRF = uuid.uuid1()
+
+    reponse = HttpResponse(str(tokenCSRF), content_type="text/plain")
+    reponse.set_cookie("csrftoken", tokenCSRF, 60*60*5)
+    
+    return reponse

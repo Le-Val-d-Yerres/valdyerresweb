@@ -104,6 +104,6 @@ def envoiMail(mail, msg):
             return 1
             
         except (smtplib.SMTPRecipientsRefused, smtplib.SMTPHeloError, smtplib.SMTPSenderRefused, smtplib.SMTPDataError):
-            return 2 
+            return 2
     except (smtplib.SMTPConnectError, socket.timeout):
         return 2

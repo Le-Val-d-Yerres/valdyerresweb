@@ -49,6 +49,32 @@ function getXMLHttpRequest()
         return xhr;
 }
 
+function setCSRFToken()
+{
+	var xhr = getXMLHttpRequest();
+	
+	if (xhr && xhr.readyState != 0) 
+	{
+	        xhr.abort();
+	        delete xhr;
+	}
+	
+	xhr.onreadystatechange = function() 
+	{
+        if (xhr.readyState == 4)
+        {
+        	if (xhr.status == 200)
+        	{
+     			document.getElementById('tokenCsrf').value = xhr.responseText;
+        	} 
+        }
+	}
+	
+	xhr.open("GET", "/equipements/alertes/get-token.html", true);
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send();
+}
+
 function envoiAlerte()
 {
 	var valide = true;

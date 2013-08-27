@@ -150,7 +150,7 @@
 					<div class="span3 box-right" id="mailBox">
 						<h3><a href="#">Lettre d'informations</a></h3>
 						<p id="newsletter">Abonnez-vous à la lettre d'informations du Val d'Yerres </p>
-						<form method="post" action="mail/mailjet-post.html" id="mailJetForm"><input type="hidden" name="csrftoken" value="{{ token }}">
+						<form method="post" action="mail/mailjet-post.html" id="mailJetForm"><input type="hidden" id="csrftoken" name="csrftoken" value="">
 							<label for="mail">Votre courriel :</label>
 							<input type="email" name="email" id="mail"><br \>
 							<div id="mailAjax" class="hide" onclick="mailjet();">S'abonner</div>
@@ -268,6 +268,8 @@
 		{
 			document.getElementById('mailAjax').className = "btn btn-primary";
 			document.getElementById('mailPost').style.display = "none";
+			
+			setCSRFToken();
 		}
 	}); 
 </script>

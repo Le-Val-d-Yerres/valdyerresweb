@@ -11,6 +11,7 @@ urlpatterns = patterns('equipements.views',
     url(r'^horaires/', 'HorairesTousEquipements', name="horaires-tous-equipements"),
     
     url(r'^alertes/alertes-ajax.html', 'AlertesAjax', name="alertes-ajax"),
+    url(r'^alertes/get-token.html', 'AlertesGetToken', name="alertes-get-token"),
     url(r'^alertes/alertes-post-(?P<equipement_slug>[^\/]+).html', 'AlertesSansJs', name="alertes-sans-js"),
     url(r'^alertes/alertes-reponse-(?P<reponse>[0-9])-(?P<equipement>[^\/]+).html', 'AlertesReponse', name="alertes-reponse"),
     
