@@ -28,18 +28,20 @@ function getXMLHttpRequest()
         return xhr;
 }
 
-function affichageReponse(texte)
+var ajaxReponse;
+
+function affichageReponse()
 {
 	form = document.getElementById('mailJetForm');
 	
 	
 	
-	if (texte == "0")
+	if (ajaxReponse == "0")
 	{
 		document.getElementById('lettreErreur').innerHTML = "Merci d'utiliser un courriel valide.";
 		document.getElementById('lettreErreur').className = "alert mailMsg";
 	}
-	else if (texte == "1")
+	else if (ajaxReponse == "1")
 	{
 		mailBox = document.getElementById('mailBox');
 		form.parentNode.removeChild(form);
@@ -54,17 +56,17 @@ function affichageReponse(texte)
 		
 		mailBox.appendChild(divAlert);
 	}
-	else if (texte == "2")
+	else if (ajaxReponse == "2")
 	{
 		document.getElementById('lettreErreur').innerHTML = "Une erreur est survenue lors de l'ajout de votre courriel, merci de réessayer plus tard.";
 		document.getElementById('lettreErreur').className = "alert mailMsg alert-danger";
 	}
-	else if (texte == "3")
+	else if (ajaxReponse == "3")
 	{
 		document.getElementById('lettreErreur').innerHTML = "Vous êtes déjà abonné à la lettre d'informations du Val d'Yerres.";
 		document.getElementById('lettreErreur').className = "alert mailMsg alert-info";
 	}
-	else if (texte == "4")
+	else if (ajaxReponse == "4")
 	{
 		document.getElementById('lettreErreur').innerHTML = "Vous devez accepter les cookies pour utiliser ce formulaire.";
 		document.getElementById('lettreErreur').className = "alert mailMsg";
@@ -91,16 +93,21 @@ function mailjet()
             delete xhr;
     }
     
+    document.getElementById('lettreErreur').className = "mailMsg";
+    document.getElementById('lettreErreur').innerHTML = '<img style="margin-left: 50px;" src="/static/img/loader.gif" \>';
+	setTimeout(affichageReponse, 500);
+	ajaxReponse = "2";
+    
     xhr.onreadystatechange = function() {
             if (xhr.readyState == 4)
             {
             	if (xhr.status == 200)
             	{
-            		affichageReponse(xhr.responseText);
+            		ajaxReponse = xhr.responseText;
             	}
             	else
             	{
-            		affichageReponse("2");
+            		ajaxReponse = "2";
             	}
                     
             }

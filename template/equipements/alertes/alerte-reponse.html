@@ -23,29 +23,54 @@
 	</div>
 			<div class="span7" style="margin-bottom:20px;">
 				<h2>{{ equipement.alerte.nom }}</h2>
-				<p>
-					{% if reponse == 0 %}
+				{% if reponse == 0 %}
+					<p>
 						<div class="alert">Merci d'utiliser un courriel valide.</div>
-					{% endif %}
-					{% if reponse == 1 %}
-						<div class="alert alert-success">Votre message a été envoyé avec succes.</div>
-					{% endif %}
-					{% if reponse == 2 %}
+					</p>
+					<div style="text-align: center;">
+						<a href="{% url equipements.views.AlertesSansJs equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+					</div>
+				{% endif %}
+				{% if reponse == 1 %}
+					<p>
+						<div class="alert alert-success">Votre message a bien été envoyé, nous vous répondrons dans les plus brefs délais.</div>
+					</p>
+					<div style="text-align: center;">
+						<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
+					</div>
+				{% endif %}
+				{% if reponse == 2 %}
+					<p>
 						<div class="alert alert-danger">Une erreur est survenue lors de l'envoi de votre message, merci de réessayer plus tard.</div>
-					{% endif %}
-					{% if reponse == 3 %}
-						<div class="alert alert">Merci d\'utiliser un numéro de téléphone valide.</div>
-					{% endif %}
-					{% if reponse == 4 %}
+					</p>
+					<div style="text-align: center;">
+						<a href="{% url equipements.views.AlertesSansJs equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+					</div>
+				{% endif %}
+				{% if reponse == 3 %}
+					<p>
+						<div class="alert alert">Merci d'utiliser un numéro de téléphone valide.</div>
+					</p>
+					<div style="text-align: center;">
+						<a href="{% url equipements.views.AlertesSansJs equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+					</div>
+				{% endif %}
+				{% if reponse == 4 %}
+					<p>
 						<div class="alert">Merci d'attendre une minute entre deux signalements.</div>
-					{% endif %}
-					{% if reponse == 5 %}
+					</p>
+					<div style="text-align: center;">
+						<a href="{% url equipements.views.AlertesSansJs equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+					</div>
+				{% endif %}
+				{% if reponse == 5 %}
+					<p>
 						<div class="alert">Vous devez accepter les cookies pour utiliser ce formulaire.</div>
-					{% endif %}
-				</p>
-				<div style="text-align: center;">
-					<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
-				</div>
+					</p>
+					<div style="text-align: center;">
+						<a href="{% url equipements.views.AlertesSansJs equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+					</div>
+				{% endif %}
 			</div>
 </div>
 </div>

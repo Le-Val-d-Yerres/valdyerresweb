@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response , redirect
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from lettreinformations import settings
+from valdyerresweb import settings
 from django.template import Context,loader
 from django.core.cache import cache
 from lettreinformations.utils import mailjet

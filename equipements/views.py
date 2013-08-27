@@ -271,7 +271,7 @@ def AlertesAjax(request):
                             alerte.tel = request.POST['tel']
                             alerte.mail = request.POST['mail']
                             alerte.message = request.POST['msg']
-                            alerte.ip = request.META.get('REMOTE_ADDR')
+                            alerte.ip = request.META['HTTP_X_REAL_IP']
                             alerte.etat = False
                             alerte.date = datetime.datetime.now(utcTZ)
                             
@@ -323,7 +323,7 @@ def AlertesAjax(request):
                                     
                                     reponse = envoiMail(mail.email, msg)
             
-                            hash = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
+                            hash = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
                             cache.set(hash, 'alerteToken', 60)
                             
                             return HttpResponse(str(reponse), content_type="text/plain")
@@ -370,7 +370,7 @@ def AlertesSansJs(request, equipement_slug):
                                 alerte.tel = request.POST['tel']
                                 alerte.mail = request.POST['mail']
                                 alerte.message = request.POST['message']
-                                alerte.ip = request.META.get('REMOTE_ADDR')
+                                alerte.ip = request.META['HTTP_X_REAL_IP']
                                 alerte.etat = False
                                 alerte.date = datetime.datetime.now(utcTZ)
                                 
@@ -420,7 +420,7 @@ def AlertesSansJs(request, equipement_slug):
                                         
                                         reponse = envoiMail(mail.email, msg)
                 
-                                hash = md5.new("alerteToken"+request.META['REMOTE_ADDR']+request.META['HTTP_USER_AGENT']).hexdigest()
+                                hash = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
                                 cache.set(hash, 'alerteToken', 60)
                                 
                                 return redirect('alertes-reponse', reponse=str(reponse), equipement=equipement_slug)

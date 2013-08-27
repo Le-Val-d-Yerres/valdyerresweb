@@ -75,6 +75,52 @@ function setCSRFToken()
 	xhr.send();
 }
 
+var ajaxReponse;
+
+function affichage()
+{
+	if (ajaxReponse == "0")
+	{
+		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Merci d\'utiliser une adresse courriel valide.</div>';
+	}
+	else if (ajaxReponse == "1")
+	{
+		var form = document.getElementById("form1");
+		while (form.firstChild) {
+			form.removeChild(form.firstChild);
+		}
+		
+		var form = document.getElementById("form2");
+		while (form.firstChild) {
+			form.removeChild(form.firstChild);
+		}
+		
+		document.getElementById('alerteErreur').innerHTML = '';
+		
+		document.getElementById('form1').innerHTML = '<div style="margin-top: 10px;margin-right: 10px;text-align: left;" class="alert alert-success">Votre message a bien été envoyé, nous vous répondrons dans les plus brefs délais.</div>';
+	}
+	else if (ajaxReponse == "2")
+	{
+		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert alert-danger">Une erreur s\'est produite lors de l\'envoi de votre message, merci de réessayer plus tard.</div>';
+	}
+	else if (ajaxReponse == "3")
+	{
+		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Merci d\'utiliser un numéro de téléphone valide.</div>';
+	}
+	else if (ajaxReponse == "4")
+	{
+		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Merci d\'attendre une minute entre deux signalements.</div>';
+	}
+	else if (ajaxReponse == "5")
+	{
+		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Vous devez accepter les cookies pour utiliser ce formulaire.</div>';
+	}
+	else if (ajaxReponse == "6")
+	{
+		document.getElementById('alerteErreur').innerHTML = '<div class="alert">Merci de remplir tous les champs.</div>'
+	}
+}
+
 function envoiAlerte()
 {
 	var valide = true;
@@ -171,6 +217,10 @@ function envoiAlerte()
 	
 	var token = encodeURIComponent(document.getElementById('tokenCsrf').value);
 	
+	document.getElementById('alerteErreur').innerHTML = '<img style="margin-left: 50px;" src="/static/img/loader.gif" \>';
+	setTimeout(affichage, 500);
+	ajaxReponse = "2";
+
 	if (valide)
 	{
 		var xhr = getXMLHttpRequest();
@@ -186,48 +236,8 @@ function envoiAlerte()
 	            {
 	            	if (xhr.status == 200)
 	            	{
-	            		if (xhr.responseText == "0")
-	            		{
-	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Merci d\'utiliser une adresse courriel valide.</div>';
-	            		}
-	            		else if (xhr.responseText == "1")
-	            		{
-	            			var form = document.getElementById("form1");
-							while (form.firstChild) {
-								form.removeChild(form.firstChild);
-							}
-							
-							var form = document.getElementById("form2");
-							while (form.firstChild) {
-								form.removeChild(form.firstChild);
-							}
-							
-							document.getElementById('alerteErreur').innerHTML = '';
-							
-							document.getElementById('form1').innerHTML = '<div style="margin-top: 10px;margin-right: 10px;text-align: left;" class="alert alert-success">Votre message a été envoyé avec succes.</div>';
-	            		}
-	            		else if (xhr.responseText == "2")
-	            		{
-	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert alert-danger">Une erreur s\'est produite lors de l\'envoi de votre message, merci de réessayer plus tard.</div>';
-	            		}
-	            		else if (xhr.responseText == "3")
-	            		{
-	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Merci d\'utiliser un numéro de téléphone valide.</div>';
-	            		}
-	            		else if (xhr.responseText == "4")
-	            		{
-	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Merci d\'attendre une minute entre deux signalements.</div>';
-	            		}
-	            		else if (xhr.responseText == "5")
-	            		{
-	            			document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert">Vous devez accepter les cookies pour utiliser ce formulaire.</div>';
-	            		}
-	            	}
-	            	else
-	            	{
-	            		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert alert-danger">Une erreur s\'est produite lors de l\'envoi de votre message, merci de réessayer plus tard.</div>';
-	            	}
-	                    
+	            		ajaxReponse = xhr.responseText;
+	            	}    
 	            }
 	    }
 	    
@@ -236,7 +246,7 @@ function envoiAlerte()
 	    xhr.send("equipementId="+equipement+"&alerteId="+alerteId+"&nom="+nom+"&prenom="+prenom+"&rue="+rue+"&codePostal="+codePostal+"&ville="+ville+"&tel="+tel+"&mail="+mail+"&msg="+msg+"&csrftoken="+token);	
 	}
 	else
-	{		
-		document.getElementById('alerteErreur').innerHTML = '<div class="alert">Merci de remplir tous les champs.</div>'
+	{	
+		ajaxReponse = "6";
 	}
 }
