@@ -150,13 +150,16 @@
 					<div class="span3 box-right" id="mailBox">
 						<h3><a href="#">Lettre d'informations</a></h3>
 						<p id="newsletter">Abonnez-vous à la lettre d'informations du Val d'Yerres </p>
-						<form method="post" action="mail/mailjet-post.html" id="mailJetForm"><input type="hidden" id="csrftoken" name="csrftoken" value="">
+						<div id="mailAjax" class="hide">
+							<input type="hidden" id="csrftoken" name="csrftoken" value="">
 							<label for="mail">Votre courriel :</label>
-							<input type="email" name="email" id="mail" required><br \>
-							<div id="mailAjax" class="hide" onclick="mailjet();">S'abonner</div>
-							<input id="mailPost" type="submit" class="btn btn-primary" value="S'abonner">
-						</form>
-						<div id="lettreErreur"></div>
+							<input type="email" name="email" id="mail" required><br>
+							<div class="btn btn-info" onclick="mailjet();">S'abonner</div>
+							<div style="margin-top: 8px;text-align: center;" id="lettreErreur"></div>
+						</div>
+						<p style="text-align: center;">
+							<a href="/mail/" id="mailPost" class="btn btn-info">S'abonner</a>
+						</p>
 					</div>
 					<div class="span3 box-right">
 						<h3><a href="{% url editorial.views.Ephemeride %}">Aujourd'hui
@@ -266,7 +269,7 @@
 
 		if (getXMLHttpRequest() != null)
 		{
-			document.getElementById('mailAjax').className = "btn btn-primary";
+			document.getElementById('mailAjax').className = "";
 			document.getElementById('mailPost').style.display = "none";
 			
 			setCSRFToken();

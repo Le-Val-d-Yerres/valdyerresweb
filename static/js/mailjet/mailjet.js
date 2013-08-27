@@ -71,6 +71,10 @@ function affichageReponse()
 		document.getElementById('lettreErreur').innerHTML = "Vous devez accepter les cookies pour utiliser ce formulaire.";
 		document.getElementById('lettreErreur').className = "alert mailMsg";
 	}
+	else if (ajaxReponse == "-1")
+	{
+		setTimeout(affichageReponse, 500);
+	}
 	else
 	{
 		document.getElementById('lettreErreur').innerHTML = "Une erreur est survenue lors de l'ajout de votre courriel, merci de réessayer plus tard.";
@@ -81,9 +85,7 @@ function affichageReponse()
 function mailjet()
 {
 	var mail = encodeURIComponent(document.getElementById('mail').value);
-	
-	DOMptr = document.getElementById('mailJetForm');
-	var token = DOMptr.firstChild.value;
+	var token = document.getElementById('csrftoken').value;
 	
     var xhr = getXMLHttpRequest();
     
@@ -94,9 +96,9 @@ function mailjet()
     }
     
     document.getElementById('lettreErreur').className = "mailMsg";
-    document.getElementById('lettreErreur').innerHTML = '<img style="margin-left: 50px;" src="/static/img/loader.gif" \>';
+    document.getElementById('lettreErreur').innerHTML = '<img src="/static/img/loader.gif" \>';
 	setTimeout(affichageReponse, 500);
-	ajaxReponse = "2";
+	ajaxReponse = "-1";
     
     xhr.onreadystatechange = function() {
             if (xhr.readyState == 4)

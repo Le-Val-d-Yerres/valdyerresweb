@@ -13,6 +13,7 @@ from django.template import RequestContext
 import uuid
 from django.views.decorators.cache import never_cache
 
+@never_cache
 def mailForm(request):
     tokenCSRF = uuid.uuid1()
     

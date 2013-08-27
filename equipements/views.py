@@ -17,6 +17,7 @@ import re
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from lettreinformations import settings as conf
+
 from django.core.cache import cache
 from django.views.decorators.cache import never_cache
 import md5
