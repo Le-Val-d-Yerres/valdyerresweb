@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response , redirect
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from valdyerresweb import settings
+from lettreinformations import settings as conf
 from django.template import Context,loader
 from django.core.cache import cache
 from lettreinformations.utils import mailjet
@@ -24,7 +25,7 @@ def mailValidation(request, hash):
     if cache.has_key(hash):
         mail = cache.get(hash)
         
-        rep = mailjet.addContact(mail, settings.MAIL_LIST_ID)
+        rep = mailjet.addContact(mail, conf.MAIL_LIST_ID)
         if rep == 1 or rep == 3:
             cache.delete(hash)
     else:
@@ -42,7 +43,7 @@ def mailJetAjax(request):
             mail = request.POST['email']
             
             if functions.validateEmail(mail):
-                rep = mailjet.isContactInList(mail, settings.MAIL_LIST_ID)
+                rep = mailjet.isContactInList(mail, conf.MAIL_LIST_ID)
                 
                 if rep == 1:
                     UserUUID = uuid.uuid1()
@@ -104,7 +105,7 @@ def mailJetPost(request):
                 msg['From'] = 'levaldyerres@levaldyerres.fr'
                 msg['To'] = mail
                 
-                rep = mailjet.isContactInList(mail, settings.MAIL_LIST_ID)
+                rep = mailjet.isContactInList(mail, conf.MAIL_LIST_ID)
                 
                 if rep == 1:
                     myTemplate = loader.get_template('lettreinformations/mail-validation-html.html')
