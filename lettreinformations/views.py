@@ -26,6 +26,7 @@ def mailValidation(request, hash):
         mail = cache.get(hash)
         
         rep = mailjet.addContact(mail, conf.MAIL_LIST_ID)
+
         if rep == 1 or rep == 3:
             cache.delete(hash)
     else:
@@ -43,6 +44,7 @@ def mailJetAjax(request):
             mail = request.POST['email']
             
             if functions.validateEmail(mail):
+                
                 rep = mailjet.isContactInList(mail, conf.MAIL_LIST_ID)
                 
                 if rep == 1:
