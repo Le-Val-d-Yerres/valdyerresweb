@@ -32,7 +32,7 @@ var ajaxReponse;
 
 function affichageReponse()
 {
-	form = document.getElementById('mailJetForm');
+	form = document.getElementById('mailAjax');
 	
 	
 	
@@ -45,9 +45,6 @@ function affichageReponse()
 	{
 		mailBox = document.getElementById('mailBox');
 		form.parentNode.removeChild(form);
-		
-		document.getElementById('lettreErreur').innerHTML = "";
-		document.getElementById('lettreErreur').className = "";
 		
 		divAlert = document.createElement("div");
 		
