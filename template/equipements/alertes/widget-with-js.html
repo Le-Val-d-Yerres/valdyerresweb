@@ -1,5 +1,6 @@
-<small><a id="lienAjax" style="display: none;" href="#widgetAlertes" role="button" data-toggle="modal" class="text-error" onclick="compteur();">{{ alerte.lien|safe }}</a></small>
+<small><a class="hidden-phone text-error" id="lienAjax" style="display: none;" href="#widgetAlertes" role="button" data-toggle="modal" onclick="compteur();">{{ alerte.lien|safe }}</a></small>
 <small><a id="lienPost" href="{% url equipements.views.AlertesSansJs equipement_slug=alerte.equipement.slug %}" class="text-error">{{ alerte.lien|safe }}</a></small>
+<small><a class="visible-phone text-error" href="{% url equipements.views.AlertesSansJs equipement_slug=alerte.equipement.slug %}">{{ alerte.lien|safe }}</a></small>
 
 <div style="text-align: left;width: 700px;margin-left: -350px;" id="widgetAlertes" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
@@ -62,8 +63,8 @@
 					</div>
 				</fieldset>
 				
-				<fieldset>
-					<legend style="margin-top: 65px;">Votre message</legend>
+				<fieldset style="margin-top: 70px;">
+					<legend>Votre message</legend>
 					<div id="msgErreur" class="control-group" style="margin: 0">
 						<textarea name="message" style="width: 75%;height: 140px;margin: auto;" id="alerteMessage" onkeyup="compteur();" maxlength="500"></textarea>
 					</div>
