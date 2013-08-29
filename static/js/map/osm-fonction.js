@@ -95,3 +95,4 @@ function destroyPopup(feature) {
 	feature.popup.destroy();
 	feature.popup = null;
 }
+LoadMap();
