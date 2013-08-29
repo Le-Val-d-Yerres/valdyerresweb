@@ -322,7 +322,7 @@
 
 			$(document).ready(function() 
 			{
-				if (getXMLHttpRequest() != null)
+				if (getXMLHttpRequest() != null && document.getElementById('lienAjax') && document.getElementById('lienPost'))
 				{
 					document.getElementById('lienAjax').style.display = "";
 					document.getElementById('lienPost').style.display = "none";
