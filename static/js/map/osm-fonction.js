@@ -76,18 +76,6 @@ function setMarkers(tabMarkers)
 	nbreEvenement = tabMarkers.length ;
 	listeMarkers = tabMarkers;
 }
-
-/**
- Cette fonction passe bientôt à la poubelle  
- function nouveauMarker(lon, lat, desc, marker)
-{
-	nbreEvenement++;
-	listeMarkers[nbreEvenement]['longitude'] = lon;
-	listeMarkers[nbreEvenement]['latitude'] = lat;
-	listeMarkers[nbreEvenement]['description'] = desc;		 	
-	listeMarkers[nbreEvenement]['marker'] = marker;
-}
-**/
 function createPopup(feature) 
 {
 	feature.popup = new OpenLayers.Popup.FramedCloud("pop",
@@ -107,4 +95,3 @@ function destroyPopup(feature) {
 	feature.popup.destroy();
 	feature.popup = null;
 }
-LoadMap();

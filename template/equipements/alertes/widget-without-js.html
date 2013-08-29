@@ -22,7 +22,7 @@
 				</ul>
 		</div>
 	
-		<div class="span11">
+		<div class="span11 hidden-phone">
 			<h2>{{ equipement.alerte.nom }}</h2>
 			{{ equipement.alerte.cible|safe }}
 			<br \>
@@ -75,23 +75,89 @@
 									<input type="email" name="mail" required>
 								</div>
 							</fieldset>
-						</div>
-					</td>
-				</tr>
-			</table>
-			
-			<fieldset>
-				<legend style="margin-top: 65px;">Votre message</legend>
-				<div id="msgErreur" class="control-group" style="margin: 0">
-					<textarea name="message" style="width: 75%;height: 140px;margin: auto;" id="alerteMessage" maxlength="500"></textarea>
-				</div>
+						</td>
+					</tr>
+				</table>
 				
-				<div style="width: 60%;margin: auto;margin-top: 15px;margin-bottom: 15px;">
-					<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
-					<input style="margin-left: 40%;" type="submit" class="btn btn-primary" value="Envoyer">
-				</div>
-			</fieldset>
-		</form>
+				<fieldset>
+					<legend>Votre message</legend>
+					<div id="msgErreur" class="control-group" style="margin: 0">
+						<textarea name="message" style="width: 75%;height: 140px;margin: auto;" id="alerteMessage" maxlength="500"></textarea>
+					</div>
+					
+					<div style="width: 60%;margin: auto;margin-top: 15px;margin-bottom: 15px;">
+						<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
+						<input style="margin-left: 40%;" type="submit" class="btn btn-primary" value="Envoyer">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		
+		<div>
+			
+		<div class="span11 visible-phone">
+			<h2>{{ equipement.alerte.nom }}</h2>
+			{{ equipement.alerte.cible|safe }}
+			<br \>
+			<hr \>
+			<form method="post" action="">
+				<input type="hidden" name="alerteId" value="{{ equipement.alerte.id }}">
+				<input type="hidden" name="equipementId" value="{{ equipement.id }}">
+				<input type="hidden" name="tokenCsrf" value="{{ token }}">
+				<fieldset style="width:100%;margin-left: 2%;">
+					<legend>Nom et prénom</legend>
+					<div class="input-prepend">
+						<span class="add-on" style="width: 80px;text-align: left;">Nom</span>
+						<input type="text" name="nom" required>
+					</div>
+					
+					<div class="input-prepend">
+						<span class="add-on" style="width: 80px;text-align: left;">Prénom</span>
+						<input type="text" name="prenom" required>
+					</div>
+				</fieldset>
+							
+				<fieldset style="width:100%;margin-left: 2%;">
+					<legend>Vos coordonnées</legend>
+					<div class="input-prepend">
+						<span class="add-on" style="width: 80px;text-align: left;">Rue</span>
+						<input type="text" name="rue" required>
+					</div>
+
+					<div class="input-prepend">
+						<span class="add-on" style="width: 80px;text-align: left;">Code Postal</span>
+						<input type="text" name="codePostal" required>
+					</div>
+
+					<div class="input-prepend">
+						<span class="add-on" style="width: 80px;text-align: left;">Ville</span>
+						<input type="text" name="ville" required>
+					</div>
+
+					<div class="input-prepend">
+						<span class="add-on" style="width: 80px;text-align: left;">Téléphone</span>
+						<input type="tel" name="tel" required>
+					</div>
+
+					<div class="input-prepend" style="width: 80px;">
+						<span class="add-on" style="width: 80px;text-align: left;">Courriel</span>
+						<input type="email" name="mail" required>
+					</div>
+				</fieldset>
+				
+				<fieldset style="margin-left: 2%;">
+					<legend>Votre message</legend>
+					<div id="msgErreur" class="control-group" style="margin: 0">
+						<textarea name="message" style="width: 75%;height: 140px;margin: auto;" id="alerteMessage" maxlength="500"></textarea>
+					</div>
+					
+					<div style="width: 60%;margin: auto;margin-top: 15px;margin-bottom: 15px;">
+						<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
+						<input style="margin-left: 10%;" type="submit" class="btn btn-primary" value="Envoyer">
+					</div>
+				</fieldset>
+			</form>
+		</div>
 	</div>
 </div>
 

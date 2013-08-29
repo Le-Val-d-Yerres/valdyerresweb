@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 import requests
 import smtplib
@@ -81,4 +80,3 @@ def envoiMail(mail, msg):
 
     except (smtplib.SMTPConnectError, socket.timeout):
         return 2
-

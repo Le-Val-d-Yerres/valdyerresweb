@@ -17,6 +17,7 @@ import re
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from lettreinformations import settings as conf
+
 from django.core.cache import cache
 from django.views.decorators.cache import never_cache
 import md5
@@ -252,8 +253,7 @@ def HorairesTousEquipements(request):
     return render_to_response('equipements/tous-equipement-horaires.html', {'listeEquipements':listeEquipements})
 
 def AlertesAjax(request):
-    result = re.search(settings.NOM_DOMAINE, request.META['HTTP_REFERER'])
-    if result != None:
+    if settings.NOM_DOMAINE in request.META['HTTP_REFERER']:
         key = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
         if not cache.has_key(key):
             if request.COOKIES.has_key('csrftoken'):
@@ -350,9 +350,8 @@ def AlertesAjax(request):
 def AlertesSansJs(request, equipement_slug):
     if request.META['REQUEST_METHOD'] == "POST":
         equipement = Equipement.objects.filter(id=request.POST['equipementId'])
-         
-        result = re.search(settings.NOM_DOMAINE, request.META['HTTP_REFERER'])
-        if result != None:
+        
+        if settings.NOM_DOMAINE in request.META['HTTP_REFERER']:
             key = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
             if not cache.has_key(key):
                 if request.COOKIES.has_key('csrftoken'):
