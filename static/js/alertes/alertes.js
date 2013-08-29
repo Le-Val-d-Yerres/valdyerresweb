@@ -119,6 +119,14 @@ function affichage()
 	{
 		document.getElementById('alerteErreur').innerHTML = '<div class="alert">Merci de remplir tous les champs.</div>'
 	}
+	else if (ajaxReponse == "-1")
+	{
+		setTimeout(affichage, 500);
+	}
+	else
+	{
+		document.getElementById('alerteErreur').innerHTML = '<div style="margin-right: 10px;" class="alert alert-danger">Une erreur s\'est produite lors de l\'envoi de votre message, merci de réessayer plus tard.</div>';
+	}
 }
 
 function envoiAlerte()
@@ -219,7 +227,7 @@ function envoiAlerte()
 	
 	document.getElementById('alerteErreur').innerHTML = '<img style="margin-left: 50px;" src="/static/img/loader.gif" \>';
 	setTimeout(affichage, 500);
-	ajaxReponse = "2";
+	ajaxReponse = "-1";
 
 	if (valide)
 	{
