@@ -30,9 +30,6 @@ class LieuAdmin(admin.ModelAdmin):
         today = datetime.datetime.utcnow().replace(tzinfo=utc)
         functions.resetEphemerideCache(today)
         
-        path = reverse('evenements.views.EquipementsDetailsHtml', kwargs={'fonction_slug':fonction.slug,'equipement_slug':equipement.slug})
-        functions.expire_page(path)
-        
     
 class VilleAdmin(admin.ModelAdmin):
     list_display = ['nom', 'lien', 'communaute_agglo']
