@@ -59,8 +59,8 @@ class EvenementAdmin(admin.ModelAdmin):
             if imageextension == ".pdf":
                 abspath_image = pdftojpg( os.path.join(settings.MEDIA_ROOT,obj.image.path), subpath="")
                 obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
-        
-        if obj.slug != "":
+        print obj.id
+        if obj.id != None:
             evenementInfo = Evenement.objects.select_related().get(slug=obj.slug)
             
             equipements = Equipement.objects.filter(lieu_ptr_id=evenementInfo.lieu.id)
