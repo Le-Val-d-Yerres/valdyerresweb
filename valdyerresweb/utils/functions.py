@@ -96,7 +96,7 @@ def validateEmail(email):
     
 def envoiMail(mail, msg):
     try:
-        smtpServ = smtplib.SMTP('127.0.1.1')
+        smtpServ = smtplib.SMTP('127.0.0.1')
         try:
             smtpServ.sendmail('levaldyerres@levaldyerres.fr', mail, msg.as_string())
             smtpServ.quit()
