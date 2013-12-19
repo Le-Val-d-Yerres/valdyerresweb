@@ -39,7 +39,7 @@ class Equipement(Lieu):
     url = models.URLField(blank=True, null=True, verbose_name="Site web")
     presentation = models.TextField(blank=True)
     meta_description = models.CharField(max_length=200)
-    alerte = models.ForeignKey(Alerte, null=True, default=None)
+    alerte = models.ForeignKey(Alerte, blank=True,null=True, default=None)
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     
     def __unicode__(self):
