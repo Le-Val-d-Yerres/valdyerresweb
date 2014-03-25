@@ -98,6 +98,7 @@ class TypeEvenementAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('nom',),}
     
     def save_model(self, request, obj, form, change):
+        obj.save()
         path = reverse('evenements.views.AgendaListTypePeriodOrga', kwargs={'type_slug':obj.slug,'period':'toutes','orga_slug':'tous'})
         functions.expire_page(path)
         
