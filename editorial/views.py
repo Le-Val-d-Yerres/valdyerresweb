@@ -42,7 +42,8 @@ def Home(request):
     #nb de seances de vinéma aujourd'hui
     cinema_count = Seance.objects.filter(date_debut__gt = startdate, date_fin__lt = enddate).count()
     #nb d'evenements aujourd'hui
-    evenements_count = Evenement.objects.filter(publish=True,debut__gt = startdate, fin__lt = enddate).count()
+    #evenements_count = Evenement.objects.filter(publish=True,debut__gt = startdate, fin__lt = enddate).count()
+    evenements_count = Evenement.objects.filter(fin__gt=startdate,debut__lt = enddate, publish = True).count()
     
     #nb d'equipements ouverts aujourd'hui 
     equipements = Equipement.objects.all()
