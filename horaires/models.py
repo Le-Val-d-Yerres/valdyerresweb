@@ -9,9 +9,11 @@ class Periode(models.Model):
     nom = models.CharField(max_length=255, verbose_name=u"Nom de la période")
     date_debut = models.DateField(u"Début de la période", default=datetime.date.today)
     date_fin = models.DateField(u"Fin de la période", default=datetime.date.today)
+
     class Meta:
         verbose_name_plural = "Periodes"
-    
+        ordering = ['date_debut']
+
     def __unicode__(self):
         return self.nom
     
@@ -24,6 +26,7 @@ class Periode(models.Model):
         if self.date_debut <= periode.date_debut and periode.date_fin <= self.date_fin:
             return True
         return False
+
 
 class Jour():
     def __init__(self,heure_matin_debut =None,heure_matin_fin = None, heure_am_debut=None,heure_am_fin=None,matin_ferme=False,am_ferme=False,journee_continue=False,jourNom="",jourInt=42):
@@ -101,6 +104,7 @@ class Horaires(models.Model):
     
     class Meta:
         verbose_name_plural = "Horaires"
+        ordering = ['equipement__ville__nom', 'equipement__nom']
     
     def __unicode__(self):
         return self.nom
@@ -190,7 +194,3 @@ class Horaires(models.Model):
             monJour.journee_continue = self.samedi_journee_continue
         
         return monJour
-        
-        
-        
-    

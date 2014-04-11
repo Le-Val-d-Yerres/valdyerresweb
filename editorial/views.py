@@ -108,7 +108,7 @@ def ActuList(request):
             return redirect('actu-list')
         else:
             pages = paginator.page(page)
-    except PageNotAnInteger:
+    except ValueError:
         raise Http404
     except EmptyPage:
         raise Http404
@@ -129,24 +129,25 @@ def PageDetail(request, page_slug):
 def Magazines(request):
     
     magazines_list = Magazine.objects.filter(publie=True).order_by('-date_parution')
-    paginator = Paginator(magazines_list,5)
+    paginator = Paginator(magazines_list, 5)
     page = request.GET.get('page')
     
     try:
-        if page == None:
+        if page is None:
             magazines = paginator.page(1)
-        elif page =="":
+            page = 1
+        elif page == "":
             return redirect('magazines')
         elif int(page) == 1:
             return redirect('magazines')
         else:
             magazines = paginator.page(page)
-    except PageNotAnInteger:
+    except ValueError:
         raise Http404
     except EmptyPage:
         raise Http404
 
-    return render_to_response('editorial/magazines.html',{'magazines' : magazines})
+    return render_to_response('editorial/magazines.html',{'magazines': magazines, 'page': page})
 
 
 def Rapports(request):
@@ -156,20 +157,21 @@ def Rapports(request):
     page = request.GET.get('page')
     
     try:
-        if page == None:
+        if page is None:
             rapports = paginator.page(1)
+            page = 1
         elif page =="":
             return redirect('rapports')
         elif int(page) == 1:
             return redirect('rapports')
         else:
             rapports = paginator.page(page)
-    except PageNotAnInteger:
+    except ValueError:
         raise Http404
     except EmptyPage:
         raise Http404
 
-    return render_to_response('editorial/rapports.html',{'rapports' : rapports})
+    return render_to_response('editorial/rapports.html', {'rapports': rapports, 'page': page})
 
 @cache_control(must_revalidate=True, max_age=3600)
 @cache_page(3600)

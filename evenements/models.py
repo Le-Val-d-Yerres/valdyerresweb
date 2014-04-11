@@ -113,10 +113,4 @@ class Prix(models.Model):
 class DocumentAttache(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom") 
     document = FileBrowseField("Document", max_length=200, directory="evenements/docs", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
-    reference = models.ForeignKey(Evenement)    
-    
-    
-    
-    
-    
-    
+    reference = models.ForeignKey(Evenement)
