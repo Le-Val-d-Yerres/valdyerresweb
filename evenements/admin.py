@@ -48,7 +48,7 @@ class EvenementAdmin(admin.ModelAdmin):
         monslug = defaultfilters.slugify(obj.nom)
             
         if obj.slug == "":
-            listevenement = Evenement.objects.filter(slug=monslug)
+            listevenement = Evenement.objects.filter(slug__startswith=monslug)
             listsize = len(listevenement)
             if listsize > 0:
                 monslug = monslug+'-'+str(listsize+1)
