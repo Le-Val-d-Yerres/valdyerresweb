@@ -98,6 +98,7 @@ class FacilitesAdmin(admin.ModelAdmin):
     filter_horizontal = ("facilites",)
     
     def save_model(self, request, obj, form, change):
+        obj.save()
         path = reverse('equipements.views.FaciliteListe', kwargs={})
         functions.expire_page(path)
     
@@ -107,6 +108,7 @@ class TarifCategorieAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('nom',),}
     
     def save_model(self, request, obj, form, change):
+        obj.save()
         path = reverse('equipements.views.EquipementTarifs', kwargs={})
         functions.expire_page(path)
     
@@ -115,6 +117,7 @@ class TarifAdmin(admin.ModelAdmin):
     list_display = ['designation','categorie', 'index']
     
     def save_model(self, request, obj, form, change):
+        obj.save()
         path = reverse('equipements.views.EquipementTarifs', kwargs={})
         functions.expire_page(path)
         
