@@ -114,7 +114,7 @@ class TarifCategorieAdmin(admin.ModelAdmin):
     
     
 class TarifAdmin(admin.ModelAdmin):
-    list_display = ['designation','categorie', 'index']
+    list_display = ['designation', 'categorie', 'prix_residents', 'prix_non_residents', 'index']
     
     def save_model(self, request, obj, form, change):
         obj.save()
