@@ -4,7 +4,7 @@ PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
 SUPPROJECT_PATH = os.path.split(PROJECT_PATH)[0]
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -56,7 +56,7 @@ MEDIA_DIR_NAME = '/media/'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'http://localhost:82/media/'
+MEDIA_URL = 'http://levaldyerres/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -66,7 +66,7 @@ STATIC_ROOT = SUPPROJECT_PATH+'/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = 'http://localhost:82/static/'
+STATIC_URL = 'http://levaldyerres/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -94,14 +94,15 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    #'django.middleware.cache.UpdateCacheMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    #'django.middleware.cache.FetchFromCacheMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -202,17 +203,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'TAG': 'body',
     'ENABLE_STACKTRACES' : True,
 }
-DEBUG_TOOLBAR_PANELS = (
-    'debug_toolbar.panels.version.VersionDebugPanel',
-    'debug_toolbar.panels.timer.TimerDebugPanel',
-    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
-    'debug_toolbar.panels.headers.HeaderDebugPanel',
-    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
-    'debug_toolbar.panels.template.TemplateDebugPanel',
-    'debug_toolbar.panels.sql.SQLDebugPanel',
-    'debug_toolbar.panels.signals.SignalDebugPanel',
-    'debug_toolbar.panels.logger.LoggingPanel',
-)
 
 
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
@@ -227,4 +217,4 @@ LOGO_ORGANISATION = "img/valdyerresweb/logo-val-d-yerres-carre.png"
 
 MAIL_ORGANISATION = "levaldyerres@levaldyerres.fr"
 
-NOM_DOMAINE = 'http://localhost:82'
+NOM_DOMAINE = 'http://levaldyerres'

@@ -4,7 +4,7 @@ from django import template
 from evenements.models import Saison
 from menu.models import MenuItem
 from aide.models import  Aide
-import re , os.path , Image
+import re , os.path
 from pytz import timezone
 from django.conf import settings
 from PIL import Image, ImageOps , ImageFilter ,ImageChops
