@@ -94,15 +94,17 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    #'django.middleware.cache.UpdateCacheMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    #'middleware.SmartUpdateCacheMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    #'django.middleware.cache.FetchFromCacheMiddleware',
-    
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -113,7 +115,10 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
 CACHE_MIDDLEWARE_SECONDS = 3600
+CACHE_MIDDLEWARE_KEY_PREFIX = "valdyerresweb"
+CACHE_MIDDLEWARE_ANONYMOUS_ONLY=True
 
 ROOT_URLCONF = 'valdyerresweb.urls'
 
@@ -196,23 +201,7 @@ GRAPPELLI_INDEX_DASHBOARD = 'valdyerresweb.dashboard.CustomIndexDashboard'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-    'HIDE_DJANGO_SQL': False,
-    'TAG': 'body',
-    'ENABLE_STACKTRACES' : True,
-}
-DEBUG_TOOLBAR_PANELS = (
-    'debug_toolbar.panels.version.VersionDebugPanel',
-    'debug_toolbar.panels.timer.TimerDebugPanel',
-    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
-    'debug_toolbar.panels.headers.HeaderDebugPanel',
-    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
-    'debug_toolbar.panels.template.TemplateDebugPanel',
-    'debug_toolbar.panels.sql.SQLDebugPanel',
-    'debug_toolbar.panels.signals.SignalDebugPanel',
-    'debug_toolbar.panels.logger.LoggingPanel',
-)
+
 
 
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
@@ -227,4 +216,4 @@ LOGO_ORGANISATION = "img/valdyerresweb/logo-val-d-yerres-carre.png"
 
 MAIL_ORGANISATION = "levaldyerres@levaldyerres.fr"
 
-NOM_DOMAINE = 'http://localhost:82'
+NOM_DOMAINE = 'http://localhost:8000'
