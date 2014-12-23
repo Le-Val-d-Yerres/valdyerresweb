@@ -4,7 +4,7 @@ from django import template
 from evenements.models import Saison
 from menu.models import MenuItem
 from aide.models import  Aide
-import re, os.path
+import re, os.path, sys
 from pytz import timezone
 from django.conf import settings
 from PIL import Image, ImageOps , ImageFilter ,ImageChops
@@ -166,36 +166,38 @@ def resize(myfile, size='100x100x1'):
     try:
         logo = False 
         try:
-            path = myfile.path.replace(settings.MEDIA_ROOT,"") #TODO: trouver pkoi Image et Filebrowsefield renvoient des chemins différents
-            path = settings.MEDIA_ROOT+path
+            filename = myfile.path.replace(settings.MEDIA_ROOT,"") #TODO: trouver pkoi Image et Filebrowsefield renvoient des chemins différents
+            filename = settings.MEDIA_ROOT+filename
         except AttributeError:
-            path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
+            filename = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
             logo = True
     
-        x, y, ratio = [int(x) for x in size.split('x')]
-    
-    
-        filehead, filetail = os.path.split(path)
+        filehead, filetail = os.path.split(filename)
         basename, format = os.path.splitext(filetail)
-        
-        if format == ".png":
-            format = ".jpg"
-            
-        miniature = basename + '_' + size + format
-        filename = path
-        filehead = os.path.join(filehead,'mini')
+        miniature = basename + '_' + size + ".jpg"
+        filehead = os.path.join(filehead, 'mini')
+
         if not os.path.exists(filehead):
             os.makedirs(filehead)
+
         miniature_filename = os.path.join(filehead, miniature)
         miniature_url = filehead + '/' + miniature
         
-        if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
+        if os.path.exists(miniature_filename) and os.path.getmtime(filename) > os.path.getmtime(miniature_filename):
             os.unlink(miniature_filename)
     
         if not os.path.exists(miniature_filename):
-           
-            image = ImageOps.fit(Image.open(filename), (x,y), Image.ANTIALIAS)
-              
+            x, y, ratio = [int(x) for x in size.split('x')]
+            image = Image.open(filename)
+
+            if format == ".png":
+                #https://stackoverflow.com/questions/7911451/pil-convert-png-or-gif-with-transparency-to-jpg-without
+                bg = Image.new("RGB", image.size, (255, 255, 255))
+
+                bg.paste(image, image)
+                image = bg
+
+            image = ImageOps.fit(image, (x, y), Image.ANTIALIAS)
             try:
                 image.save(miniature_filename, "JPEG", quality=90, optimize=True, progressive=True)
             except:
@@ -206,7 +208,7 @@ def resize(myfile, size='100x100x1'):
             
         return miniature_url.replace(settings.MEDIA_ROOT,settings.MEDIA_URL)
     
-    except:
+    except :
         return "fileerror.jpg"
 
 

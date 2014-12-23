@@ -3,131 +3,137 @@
 {% load aidefilters %}
 {% load eventfilters %}
 {% load menufilters %}
-{% load aidefilters%}
+{% load aidefilters %}
 {% load tz %}
 
-{% block title %}Les actualités du Val d'Yerres : page {{pages.number}} {% endblock %}
-{% block meta-description %}Les actualités du Val d'Yerres, page {{pages.number}} : {% for page in pages %}{{page.titre}} {% if forloop.last %}.{%else%}, {% endif %}{%endfor%} {% endblock %}
+{% block title %}Les actualités du Val d'Yerres : page {{ pages.number }} {% endblock %}
+{% block meta-description %}Les actualités du Val d'Yerres, page {{ pages.number }} :
+    {% for page in pages %}{{ page.titre }} {% if forloop.last %}.{% else %}, {% endif %}{% endfor %} {% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
+    <div class="container" style="margin-top:60px;">
 
-<div class="container"style="margin-top:60px;">
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="/">Accueil</a>
+                    </li>
+                    <li>
+                        <span class="divider">/</span>
+                    </li>
+                    <li class="active">
+                        Actualités
+                    <li>
+                </ul>
+            </div>
 
-	<div  class="row-fluid">
-		<div class="span12">
-			<ul class="breadcrumb">
-				<li>
-					<a href="/">Accueil</a>
-				</li>
-				<li>
-					<span class="divider">/</span>
-				</li>
-				<li class="active">
-					Actualités
-				<li>
-			</ul>
-		</div>
-		
-			<div class="span11">
+            <div class="span11">
 
-				<h1><a href="{% url editorial.views.Rapports  %}">Actualités</a></h1>
-			</div>
-		
-		
-			<div class="span11">
+                <h1><a href="{% url editorial.views.Rapports %}">Actualités</a></h1>
+            </div>
 
-				<br/>
-				{% for page in pages %}
-				<div class="row bkgd-white">
-					<div class="offset1 span3"><img class="img-polaroid" src="{{page.image|resize:'300x225x1'}}">
-					</div>
-					<div class="span6">
 
-						<h2><a href="{% url editorial.views.ActuDetail actualite_slug=page.slug   %}">{{page.titre|safe}}</a></h2>
-						<p>
-							<small>Publié le {{page.date_publication|dateSimple}}. </small>
-						</p>
-						<p>
-							{{page.contenu|resume:200|safe}}
-						</p>
-						<p style="text-align: right;" >
-							<a class="btn btn-primary" href="{% url editorial.views.ActuDetail actualite_slug=page.slug   %}">Lire la suite</a>
-						</p>
-					</div>
-				</div>
-				<br/>
+            <div class="span11">
 
-				<br/>
-				{% endfor %}
+                <br/>
+                {% for page in pages %}
+                    <div class="row bkgd-white">
+                        <div class="offset1 span3"><img class="img-polaroid" src="{{ page.image|resize:'300x225x1' }}">
+                        </div>
+                        <div class="span6">
 
-			</div>
-		
-		<div class="span11">
-			<div class="pagination pagination-large pagination-centered">
-				<ul>
-					{% if pages.has_previous %}
-					<li>
-						<a href="?page={{ rapports.previous_page_number }}">« précédent</a>
-					</li>
-					{% endif %}
+                            <h2>
+                                <a href="{% url editorial.views.ActuDetail actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                            </h2>
 
-					{%if pages.paginator.num_pages > 10 %}
-					{%if pages.number > 1%}
-					<li class="enabled">
-						<a href="{% url editorial.views.ActuList  %}?page=1">1</a>
-					</li>
-					<li class="disabled">
-						<a href=".">...</a>
-					</li>
-					{%endif%}
-					<li class="disabled">
-						<a href="{% url editorial.views.ActuList %}?page={{pages.number}}">{{rapports.number}}</a>
-					</li>
-					{%if pages.number < pages.paginator.num_pages%}
-					<li class="disabled">
-						<a href=".">...</a>
-					</li>
-					<li class="enabled">
-						<a href="{% url editorial.views.ActuList  %}?page={{pages.paginator.num_pages}}">{{rapports.paginator.num_pages}}</a>
-					</li>
-					{%endif%}
+                            <p>
+                                <small>Publié le {{ page.date_publication|dateSimple }}.</small>
+                            </p>
+                            <p>
+                                {{ page.contenu|resume:200|safe }}
+                            </p>
 
-					{% else %}
+                            <p style="text-align: right;">
+                                <a class="btn btn-primary"
+                                   href="{% url editorial.views.ActuDetail actualite_slug=page.slug %}">Lire la
+                                    suite</a>
+                            </p>
+                        </div>
+                    </div>
+                    <br/>
 
-					{% for page in pages.paginator.page_range %}
+                    <br/>
+                {% endfor %}
 
-					{% if pages.number == page %}
-					<li class="disabled">
-						<a href=".">{{page}}</a>
-					</li>
-					{% else %}
-					<li class="enabled">
-						<a href="{% url editorial.views.ActuList  %}?page={{page}}">{{page}}</a>
-					</li>
-					{% endif %}
+            </div>
 
-					{%endfor%}
+            <div class="span11">
+                <div class="pagination pagination-large pagination-centered">
+                    <ul>
+                        {% if pages.has_previous %}
+                            <li>
+                                <a href="?page={{ pages.previous_page_number }}">« précédent</a>
+                            </li>
+                        {% endif %}
 
-					{%endif%}
+                        {% if pages.paginator.num_pages > 10 %}
+                            {% if pages.number > 1 %}
+                                <li class="enabled">
+                                    <a href="{% url editorial.views.ActuList %}?page=1">1</a>
+                                </li>
+                                <li class="disabled">
+                                    <a href=".">...</a>
+                                </li>
+                            {% endif %}
+                            <li class="disabled">
+                                <a href="{% url editorial.views.ActuList %}?page={{ pages.number }}">{{ pages.number }}</a>
+                            </li>
+                            {% if pages.number < pages.paginator.num_pages %}
+                                <li class="disabled">
+                                    <a href=".">...</a>
+                                </li>
+                                <li class="enabled">
+                                    <a href="{% url editorial.views.ActuList %}?page={{ pages.paginator.num_pages }}">{{ pages.paginator.num_pages }}</a>
+                                </li>
+                            {% endif %}
 
-					{% if pages.has_next %}
-					<li>
-						<a href="?page={{ pages.next_page_number }}">suivant »</a>
-					</li>
-					{% endif %}
+                        {% else %}
 
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
+                            {% for page in pages.paginator.page_range %}
 
-{% endblock%}
+                                {% if pages.number == page %}
+                                    <li class="disabled">
+                                        <a href=".">{{ page }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="enabled">
+                                        <a href="{% url editorial.views.ActuList %}?page={{ page }}">{{ page }}</a>
+                                    </li>
+                                {% endif %}
 
-{% block jsload%}
+                            {% endfor %}
 
-<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
-<script src="/static/bootstrap/js/bootstrap.js"></script>
-{% endblock%}
+                        {% endif %}
+
+                        {% if pages.has_next %}
+                            <li>
+                                <a href="?page={{ pages.next_page_number }}">suivant »</a>
+                            </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jsload %}
+
+    <script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+{% endblock %}
