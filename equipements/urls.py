@@ -20,4 +20,3 @@ urlpatterns = patterns('equipements.views',
     url(r'^(?P<fonction_slug>[^\/]+)/$', 'FonctionDetailsHtml'),
     url(r'^(?P<slug>[^\/]+).vcf$', 'EquipementVCF'),
 )
-    
