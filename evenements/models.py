@@ -135,8 +135,18 @@ class DocumentAttache(models.Model):
     reference = models.ForeignKey(Evenement)
 
 
+class DateLieuEvenementBibManager(models.Manager):
+    def get_queryset(self):
+        return super(DateLieuEvenementBibManager, self).get_queryset().filter(lieu__fonction_slug='bibliotheque')
+
+
+class DateLieuEvenementBib(DateLieuEvenement):
+    class Meta:
+        proxy=True
+
 class EvenementBib(Evenement):
     class Meta:
         proxy = True
         verbose_name_plural = u"Événements Bibliothèques "
         verbose_name = u"Événement Bibliothèque "
+
