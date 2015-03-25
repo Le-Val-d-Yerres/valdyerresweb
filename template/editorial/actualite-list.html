@@ -32,7 +32,7 @@
 
             <div class="span11">
 
-                <h1><a href="{% url editorial.views.Rapports %}">Actualités</a></h1>
+                <h1><a href="{% url 'editorial.views.Rapports' %}">Actualités</a></h1>
             </div>
 
 
@@ -46,7 +46,7 @@
                         <div class="span6">
 
                             <h2>
-                                <a href="{% url editorial.views.ActuDetail actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                                <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                             </h2>
 
                             <p>
@@ -58,7 +58,7 @@
 
                             <p style="text-align: right;">
                                 <a class="btn btn-primary"
-                                   href="{% url editorial.views.ActuDetail actualite_slug=page.slug %}">Lire la
+                                   href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
                                     suite</a>
                             </p>
                         </div>
@@ -82,21 +82,21 @@
                         {% if pages.paginator.num_pages > 10 %}
                             {% if pages.number > 1 %}
                                 <li class="enabled">
-                                    <a href="{% url editorial.views.ActuList %}?page=1">1</a>
+                                    <a href="{% url 'editorial.views.ActuList' %}?page=1">1</a>
                                 </li>
                                 <li class="disabled">
                                     <a href=".">...</a>
                                 </li>
                             {% endif %}
                             <li class="disabled">
-                                <a href="{% url editorial.views.ActuList %}?page={{ pages.number }}">{{ pages.number }}</a>
+                                <a href="{% url 'editorial.views.ActuList' %}?page={{ pages.number }}">{{ pages.number }}</a>
                             </li>
                             {% if pages.number < pages.paginator.num_pages %}
                                 <li class="disabled">
                                     <a href=".">...</a>
                                 </li>
                                 <li class="enabled">
-                                    <a href="{% url editorial.views.ActuList %}?page={{ pages.paginator.num_pages }}">{{ pages.paginator.num_pages }}</a>
+                                    <a href="{% url 'editorial.views.ActuList' %}?page={{ pages.paginator.num_pages }}">{{ pages.paginator.num_pages }}</a>
                                 </li>
                             {% endif %}
 
@@ -110,7 +110,7 @@
                                     </li>
                                 {% else %}
                                     <li class="enabled">
-                                        <a href="{% url editorial.views.ActuList %}?page={{ page }}">{{ page }}</a>
+                                        <a href="{% url 'editorial.views.ActuList' %}?page={{ page }}">{{ page }}</a>
                                     </li>
                                 {% endif %}
 

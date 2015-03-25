@@ -1,11 +1,11 @@
 BEGIN:VCARD
 VERSION:3.0
-SOURCE:{{settings.NOM_DOMAINE }}{% url evenements.views.OrganisateurVCF organisateur_slug=organisateur.slug %}
+SOURCE:{{settings.NOM_DOMAINE }}{% url 'evenements.views.OrganisateurVCF' organisateur_slug=organisateur.slug %}
 NAME:{{ organisateur.nom }}
 N:;;;;
 FN;LANGUAGE=fr;CHARSET=utf-8:{{ organisateur.nom|safe }}
 ORG;CHARSET=utf-8:{{settings.NOM_ORGANISATION|safe  }}
-URL:{{settings.NOM_DOMAINE }}{% url evenements.views.OrganisateurDetailsHtml organisateur_slug=organisateur.slug  %}
+URL:{{settings.NOM_DOMAINE }}{% url 'evenements.views.OrganisateurDetailsHtml' organisateur_slug=organisateur.slug  %}
 EMAIL:{% if organisateur.email %}{{ organisateur.email }}{% else %}{{ settings.MAIL_ORGANISATION }}{% endif %}
 ADR;LANGUAGE=fr;CHARSET=utf-8:;;{{ organisateur.rue }};{{ organisateur.ville.code_postal }};;{{ organisateur.ville.nom }}; 
 TEL:{{ organisateur.telephone }}

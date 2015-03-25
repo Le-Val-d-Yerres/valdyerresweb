@@ -1,6 +1,6 @@
 BEGIN:VCARD
 VERSION:3.0
-SOURCE:{{settings.NOM_DOMAINE}}{% url cinemas.views.CinemaVCF cinema_slug=cinema.slug %}
+SOURCE:{{settings.NOM_DOMAINE}}{% url 'cinemas.views.CinemaVCF' cinema_slug=cinema.slug %}
 NAME:{{ cinema.nom }}
 N:;;;;
 FN;LANGUAGE=fr;CHARSET=utf-8:{{ cinema.nom|safe }}

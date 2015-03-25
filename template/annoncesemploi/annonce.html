@@ -25,19 +25,19 @@
 					<span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url annoncesemploi.views.AnnoncesList %}">Les annonces emploi du Val d'Yerres</a>
+					<a href="{% url 'annoncesemploi.views.AnnoncesList' %}">Les annonces emploi du Val d'Yerres</a>
 				</li>
 				<li>
 					<span class="divider">/</span>
 				</li>
 				<li class='active'>
-					<a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonce.service.slug %}">{{annonce.service.nom}}</a>
+					<a href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonce.service.slug %}">{{annonce.service.nom}}</a>
 				</li>
 				<li>
 					<span class="divider">/</span>
 				</li>
 				<li class="active">
-					{{annonce.intitule}}</a>
+					{{annonce.intitule}} </a>
 				</li>
 			</ul>
 		</div>

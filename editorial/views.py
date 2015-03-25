@@ -147,7 +147,7 @@ def Magazines(request):
     except EmptyPage:
         raise Http404
 
-    return render_to_response('editorial/magazines.html',{'magazines': magazines, 'page': page})
+    return render_to_response('editorial/magazines.html' ,{'magazines': magazines, 'page': page})
 
 
 def Rapports(request):

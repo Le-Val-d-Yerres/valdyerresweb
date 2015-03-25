@@ -9,7 +9,7 @@ from django.db.models import permalink
 
 class Annonce(models.Model):
     service = models.ForeignKey(Service,null=True)
-    publie = models.BooleanField(verbose_name = "publication",)
+    publie = models.BooleanField(verbose_name = "publication", default=False)
     intitule = models.CharField(max_length=255, verbose_name="Intitulé:")
     slug = models.SlugField()
     type_de_poste = models.CharField(max_length=255, verbose_name = "Type de Poste:",blank=True)

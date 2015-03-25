@@ -13,24 +13,26 @@ class PageBase(models.Model):
     meta_description = models.CharField(max_length=200)
     image = FileBrowseField("Image principale de l'article (facultatif)", max_length=200, directory="editorial", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     contenu = models.TextField()
-    publie = models.BooleanField(verbose_name="Publié")
+    publie = models.BooleanField(verbose_name="Publié", default=False)
     date_mise_a_jour = models.DateTimeField()
     carroussel = models.BooleanField("Présence dans le carroussel de la page d'accueil",default=False)
     index_carroussel = models.IntegerField("Ordre d'affichage dans le caroussel (0 = premier)",default=0)
     objects = InheritanceManager()
-    
+
+
 class PageStatique(PageBase):
     date_creation = models.DateTimeField()
-    note_page_accueil = models.BooleanField("Lister dans les notes de la page d'accueil")
+    note_page_accueil = models.BooleanField("Lister dans les notes de la page d'accueil", default=False)
     
     @permalink
     def get_absolute_url(self):
         return ('page-detail',(),{'page_slug':self.slug})
-    
+
+
 class Actualite(PageBase):
     
     date_publication = models.DateTimeField()
-    page_accueil = models.BooleanField("Affichage en page d'accueil ?",default=False)
+    page_accueil = models.BooleanField("Affichage en page d'accueil ?", default=False)
     
     @permalink
     def get_absolute_url(self):
@@ -48,7 +50,7 @@ class Magazine(models.Model):
     date_parution = models.DateField()
     document = FileBrowseField("Document PDF", max_length=200, directory="magazines", extensions=[".pdf"])
     image = models.ImageField(upload_to="magazines/img",blank=True)
-    publie = models.BooleanField(verbose_name="Publié")
+    publie = models.BooleanField(verbose_name="Publié", default=False)
 
      
 class RapportActivite(models.Model):
@@ -57,4 +59,4 @@ class RapportActivite(models.Model):
     date_parution = models.DateField()
     document = FileBrowseField("Document PDF", max_length=200, directory="rapports", extensions=[".pdf"])
     image = models.ImageField(upload_to="rapports/img") 
-    publie = models.BooleanField(verbose_name="Publié")
+    publie = models.BooleanField(verbose_name="Publié", default=False)

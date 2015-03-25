@@ -16,7 +16,7 @@
 					<a href="/">Accueil</a>
 				</li>
 				<li><span class="divider">/</span></li>
-				<li><a href="{% url services.views.Services %}">Services</a></li>
+				<li><a href="{% url 'services.views.Services' %}">Services</a></li>
 				<li><span class="divider">/</span></li>
 				<li class="active">
 					{{service.nom}}
@@ -24,7 +24,7 @@
 			</ul>
 		</div>
 		<div class="span11">
-		<h1><a href="{% url services.views.ServiceDetail service_slug=service.slug %}">{{ service.nom }}</a></h1>
+		<h1><a href="{% url 'services.views.ServiceDetail' service_slug=service.slug %}">{{ service.nom }}</a></h1>
 		
 		</div>
 		<div class="span7">
@@ -35,7 +35,7 @@
 		<div class="span4">
 		<ul class="nav nav-tabs nav-stacked">
 			{% for page in pages_liees %}
-			<li><a href="{% url services.views.PageContenu service_slug=service.slug page_slug=page.slug %}">{{page.titre}}</a> </li>
+			<li><a href="{% url 'services.views.PageContenu' service_slug=service.slug page_slug=page.slug %}">{{page.titre}}</a> </li>
 			{% endfor %}
 			
 		</ul>
@@ -49,7 +49,7 @@
 		Il y a {{nb_annonces}} annonce{{nb_annonces|pluralize}} emploi publié{{nb_annonces|pluralize:"es"}} par le service «{{service.nom}}»:
 		</p>
 		<p style="text-align:right;" >
-		<a class="btn btn-primary" href="{% url annoncesemploi.views.AnnoncesListService service_slug=service.slug %}">Voir l{{nb_annonces|pluralize:"',es"}} annonce{{nb_annonces|pluralize}}</a>
+		<a class="btn btn-primary" href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=service.slug %}">Voir l{{nb_annonces|pluralize:"',es"}} annonce{{nb_annonces|pluralize}}</a>
 		</p>
 		<hr/>
 		</div>

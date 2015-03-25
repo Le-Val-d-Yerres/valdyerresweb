@@ -24,7 +24,7 @@
 					<a href="/">Accueil</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url cinemas.views.Seances %}">Les cinémas du Val d'Yerres</a><span class="divider">/</span>
+					<a href="{% url 'cinemas.views.Seances' %}">Les cinémas du Val d'Yerres</a><span class="divider">/</span>
 				</li>
 				<li class="active">
 					{{ cinema.nom}} , {{cinema.ville.nom }}
@@ -33,7 +33,7 @@
 		</div>
 		<div class="span7" itemscope itemtype="http://schema.org/Place">
 
-			<h1 itemprop="name"><a href="{% url cinemas.views.CinemaLieu cinema_slug=cinema.slug %}">{{ cinema.nom }}</a></h1>
+			<h1 itemprop="name"><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=cinema.slug %}">{{ cinema.nom }}</a></h1>
 			{% if cinema.image %}
 			<img class="img-polaroid-fix"  alt="{{ cinema.nom }}" src="{{ cinema.image|resize:'670x375x1' }}">
 			{% endif %}
@@ -128,7 +128,7 @@
 			</address>
 			<hr/>
 			<p style="text-align: center;">
-				<a class="btn btn-primary" href="{% url cinemas.views.CinemaVCF cinema_slug=cinema.slug %}">Ajouter ce cinéma à vos contacts <b>(Vcard)</b></a>
+				<a class="btn btn-primary" href="{% url 'cinemas.views.CinemaVCF' cinema_slug=cinema.slug %}">Ajouter ce cinéma à vos contacts <b>(Vcard)</b></a>
 				<br/>
 				
 				{{"vcard"|aide}}

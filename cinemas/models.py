@@ -36,5 +36,5 @@ class Seance(models.Model):
     date_fin = models.DateTimeField(verbose_name="Date et heure de fin du film")
     format = models.CharField(max_length=255, verbose_name="Format ( facultatif )", blank=True, null=True)
     version_lang = models.CharField(max_length=255, verbose_name="Langue")
-    version_vo = models.BooleanField(verbose_name="Version originale")
+    version_vo = models.BooleanField(verbose_name="Version originale", default=False)
     

@@ -24,7 +24,7 @@
 					<a href="/">Accueil</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
+					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
 				</li>
 				<li class="active">
 					Horaires
@@ -36,7 +36,7 @@
 			{% if forloop.counter != 1 %}
 				<hr \>
 			{% endif%}
-			<h2><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=each.fonction.slug equipement_slug=each.slug%}">{{ each.nom }}</a></h2>
+			<h2><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=each.fonction.slug equipement_slug=each.slug%}">{{ each.nom }}</a></h2>
 			
 			<h3>Horaires :</h3>
 			

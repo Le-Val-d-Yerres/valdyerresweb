@@ -26,24 +26,23 @@
 					<span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url evenements.views.AgendaGlobal %}">Agenda</a>
+					<a href="{% url 'evenements.views.AgendaGlobal' %}">Agenda</a>
 				</li>
 				<li>
 					<span class="divider">/</span>
-				</li>
-				{% if festival %}
+				</li>{% if festival %}
 				<li>
-					<a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a><span class="divider">/</span>
+					<a href="{% url 'evenements.views.SaisonDetailsHtml' slug=saison.slug %}">{{saison.nom}}</a><span class="divider">/</span>
 				</li>
 				<li class="active">
-					<a href="{%url evenements.views.SaisonDetailsHtml slug=festival.slug %}">{{ festival.nom }}</a><span class="divider">/</span>
+					<a href="{%url 'evenements.views.SaisonDetailsHtml' slug=festival.slug %}">{{festival.nom}}</a><span class="divider">/</span>
 				</li>
 				<li class="active">
 					{{ evenement.nom }}
 				</li>
 				{% else %}
 				<li>
-					<a href="{% url evenements.views.SaisonDetailsHtml slug=saison.slug %}">{{ saison.nom }}</a><span class="divider">/</span>
+					<a href="{% url 'evenements.views.SaisonDetailsHtml' slug=saison.slug %}">{{saison.nom}}</a><span class="divider">/</span>
 				</li>
 				<li class="active">
 					{{ evenement.nom }}
@@ -56,15 +55,15 @@
 			<div class="alert alert-error">
 				<strong>Cet événement est terminé.</strong>
 				<br/>
-				Pour les événements à venir consultez <a href="{% url evenements.views.AgendaGlobal %}">l'agenda</a>.
+				Pour les événements à venir consultez <a href="{% url 'evenements.views.AgendaGlobal' %}">l'agenda</a>.
 			</div>
 			{% endif %}
 			
 			
 			{% if festival %}
-			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=festival.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
+			<h1 itemprop="name"><a itemprop="url" href="{% url 'evenements.views.EvenementDetailsHtml' slug=festival.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 			{% else %}
-			<h1 itemprop="name"><a itemprop="url" href="{% url evenements.views.EvenementDetailsHtml slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
+			<h1 itemprop="name"><a itemprop="url" href="{% url 'evenements.views.EvenementDetailsHtml' slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
 			{% endif %}
 			<p>
 				Organisé par :
@@ -72,7 +71,7 @@
 				<ul>
 					{% for each in evenement.organisateur.all %}
 					<li>
-						<a href="{% url evenements.views.OrganisateurDetailsHtml organisateur_slug=each.slug%}"> {{ each.nom }}</a>
+						<a href="{% url 'evenements.views.OrganisateurDetailsHtml' organisateur_slug=each.slug%}"> {{ each.nom }}</a>
 					</li>
 					{% endfor %}
 				</ul>
@@ -107,7 +106,7 @@
 				<br/>
 				Durée : {{evenement.debut|duree:evenement.fin}}
 				<br/>
-				Type : <a href="{% url agenda-type-period-orga type_slug=evenement.type.slug period="toutes"  orga_slug="tous" %}" >{{evenement.type}}</a>
+				Type : <a href="{% url 'agenda-type-period-orga' type_slug=evenement.type.slug period="toutes"  orga_slug="tous" %}" >{{evenement.type}}</a>
 
 			</p>
 
@@ -157,7 +156,7 @@
 				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
 					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 						{% if evenement.lieu.presentation %}
-						<strong><a itemprop="url" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}"><span itemprop="name">{{ evenement.lieu.nom }}</span></a></strong>
+						<strong><a itemprop="url" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}"><span itemprop="name">{{ evenement.lieu.nom }}</span></a></strong>
 						<br/>
 						{% else %}
 						<strong>{{ evenement.lieu.nom }}</strong>
@@ -326,7 +325,7 @@
 		myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}};
 
 {% if evenement.lieu.image %}
-	myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{  evenement.lieu.nom }}" src="{{  evenement.lieu.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">{{  evenement.lieu.nom }}</a><br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}</p></div></div>';
+	myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{  evenement.lieu.nom }}" src="{{  evenement.lieu.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">{{  evenement.lieu.nom }}</a><br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}</p></div></div>';
 	{% else %}
 	myMarker['description'] = '{{  evenement.lieu.nom }}<br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}';{% endif %}
 

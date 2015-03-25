@@ -5,7 +5,7 @@ from model_utils.managers import InheritanceManager
 class Ville(models.Model):
     nom = models.CharField(max_length=150)
     code_postal = models.CharField(max_length=10)
-    communaute_agglo = models.BooleanField()
+    communaute_agglo = models.BooleanField(default=False)
     description = models.TextField()
     lien = models.URLField()
     meta_description = models.CharField(max_length=200)

@@ -45,7 +45,7 @@
 				{% for page in pages %}
 				<div class="row bkgd-white">
 
-					<h2><a href="{% url annoncesemploi.views.AnnonceDetail annonce_slug=page.slug   %}">{{page.intitule}}</a></h2>
+					<h2><a href="{% url 'annoncesemploi.views.AnnonceDetail' annonce_slug=page.slug   %}">{{page.intitule}}</a></h2>
 					<p>
 						Proposé par : <a href="{{page.service.get_absolute_url}}">{{page.service.nom}}</a>
 					</p>
@@ -53,7 +53,7 @@
 					{{page.description_du_poste|resume:400|safe}}
 
 					<p style="text-align: right;" >
-						<a class = "btn btn-primary" href="{% url annoncesemploi.views.AnnonceDetail annonce_slug=page.slug   %}">+ d'infos</a>
+						<a class = "btn btn-primary" href="{% url 'annoncesemploi.views.AnnonceDetail' annonce_slug=page.slug   %}">+ d'infos</a>
 					</p>
 
 				</div>
@@ -77,21 +77,21 @@
 					{%if pages.paginator.num_pages > 10 %}
 					{%if pages.number > 1%}
 					<li class="enabled">
-						<a href="{% url annoncesemploi.views.AnnoncesList  %}?page=1">1</a>
+						<a href="{% url 'annoncesemploi.views.'  %}?page=1">1</a>
 					</li>
 					<li class="disabled">
 						<a href=".">...</a>
 					</li>
 					{%endif%}
 					<li class="disabled">
-						<a href="{% url annoncesemploi.views.AnnoncesList  %}?page={{pages.number}}">{{pages.number}}</a>
+						<a href="{% url 'annoncesemploi.views.AnnoncesList'  %}?page={{pages.number}}">{{pages.number}}</a>
 					</li>
 					{%if pages.number < pages.paginator.num_pages%}
 					<li class="disabled">
 						<a href=".">...</a>
 					</li>
 					<li class="enabled">
-						<a href="{% url annoncesemploi.views.AnnoncesList  %}?page={{pages.paginator.num_pages}}">{{pages.paginator.num_pages}}</a>
+						<a href="{% url 'annoncesemploi.views.AnnoncesList'  %}?page={{pages.paginator.num_pages}}">{{pages.paginator.num_pages}}</a>
 					</li>
 					{%endif%}
 
@@ -105,7 +105,7 @@
 					</li>
 					{% else %}
 					<li class="enabled">
-						<a href="{% url annoncesemploi.views.AnnoncesList  %}?page={{page}}">{{page}}</a>
+						<a href="{% url 'annoncesemploi.views.AnnoncesList'  %}?page={{page}}">{{page}}</a>
 					</li>
 					{% endif %}
 

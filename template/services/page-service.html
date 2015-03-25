@@ -16,10 +16,10 @@
 					
 				</li>
 				<li><span class="divider">/</span></li>
-				<li><a href="{% url services.views.Services %}">Services</a></li>
+				<li><a href="{% url 'services.views.Services' %}">Services</a></li>
 				<li><span class="divider">/</span></li>
 				<li>
-					<a href="{% url services.views.ServiceDetail service_slug=page.service.slug %}">{{page.service.nom}}</a>
+					<a href="{% url 'services.views.ServiceDetail' service_slug=page.service.slug %}">{{page.service.nom}}</a>
 				</li>
 				<li><span class="divider">/</span></li>
 				<li class="active">
@@ -28,7 +28,7 @@
 			</ul>
 		</div>
 		<div class="span11">
-		<h1><a href="{% url services.views.PageContenu page_slug=page.slug service_slug=page.service.slug %}">{{ page.titre }}</a></h1>
+		<h1><a href="{% url 'services.views.PageContenu' page_slug=page.slug service_slug=page.service.slug %}">{{ page.titre }}</a></h1>
 		
 		</div>
 		<div class="span7">

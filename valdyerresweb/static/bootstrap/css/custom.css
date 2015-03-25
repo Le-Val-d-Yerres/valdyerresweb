@@ -1,0 +1,222 @@
+.table th, .table td {
+	vertical-align: middle;
+}
+h3 {
+	line-height: 1.10em;
+}
+.img-polaroid-fix {
+	padding: 4px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	margin-bottom: 50px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.box-right {
+	padding-left: 15px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	padding-bottom:20px;
+	font-size: 0.95em;
+}
+.box-right ul {
+	margin: 0;
+padding: 0;
+list-style-type: none;
+}
+.navbar .brand {
+	max-height: 30px;
+	overflow: visible;
+	padding-top: 4px;
+	padding-bottom: 0px;
+}
+.linklist {
+	list-style: none;
+}
+
+.linklist  img {
+	margin: 5px;
+}
+
+.bkgd-white {
+	background: white;
+}
+
+.img-circle {
+	padding: 4px;
+	border: 1px solid #ccc;
+}
+thead th{
+	color: #333333;
+	font-size: 1.5em;
+
+}
+
+.carouselbkgd {
+	left: 0;
+	min-width: 100%;
+}
+
+.carousel-caption-large {
+	background:  repeat scroll 0 0 rgba(0, 0, 0, 0.80);
+	top:0px;
+	left: 60%;
+	padding: 15px;
+	height:100%;
+	position: absolute;
+	display: block;
+
+}
+.carousel-caption-large img {
+	float: left;
+}
+.carousel-caption-large h2 {
+	
+	font-size: 1.5em;
+	line-height: 1.1em;
+}
+.carousel-caption-large p {
+	color: white;
+	line-height:1.3em;
+}
+
+.carousel-control {
+	border: 1px solid #CCCCCC;
+	border-radius: 0px;
+	top: 50%;
+}
+.carousel-control.left {
+	left:-20px;
+}
+.carousel-control.right {
+	right:-20px;
+}
+.carousel-caption {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 70%;
+	padding: 50px;
+	background: #333333;
+	background: rgba(0, 0, 0, 0.75);
+}
+
+
+
+@media (max-width: 480px) {
+	.carousel-caption {
+		position: static;
+	}
+	.carousel-inner > .item img {
+		display: none;
+	}
+}
+
+.border-btm-sep {
+	border-bottom: 1px solid #CCCCCC;
+}
+.page-header, .breadcrumb, .row-fluid, .span12, h1 {
+	background-color: white;
+}
+.pagination-caroussel {
+	position: absolute;
+	bottom: -35px;
+	left: 45%;
+}
+.pagination-caroussel ul > .disabled {
+	background-color: #CCCCCC;
+}
+
+.label-complet {
+	border: 1px dashed #fff;
+	font-size: 2em;
+	line-height: 2em;
+	float: left;
+	z-index: 999;
+	box-shadow: 1px 1px 3px #444444;
+	position: absolute;
+	transform: rotate(-25deg);
+	-webkit-transform: rotate(-25deg);
+}
+
+.circle-btn {
+  padding:15px;
+  margin:5px;
+  font-size:  1.15em;
+  font-weight: bold;
+  line-height: 60px;
+  color: #ffffff;
+  text-align: center;
+  background: #50B1E4;
+  
+  -webkit-border-radius: 100px;
+     -moz-border-radius: 100px;
+          border-radius:100px;
+ 
+	
+}
+.circle-btn:hover{
+  color: white;
+  text-decoration: none;
+   background: #439BC6;
+ 
+}
+.thumbnail{
+	min-height: 450px;
+}
+.thumbnail h3{
+	font-size: 1em;
+}
+
+.footer {
+    background: none repeat scroll 0 0 #1E1E1E;
+    margin-top: 20px;
+    padding: 23px 0 26px;
+    color: white;
+}
+.footer a{
+   color:#EAEAEA;
+}
+.footer hr{
+   color:#3D3B3B;
+   border-color: #3D3B3B;
+}
+.footer ul{
+    list-style: none;
+    margin:0px;
+    padding:0px;
+}
+.footer td{
+	text-align: center;
+	padding:5px;
+}
+.navbar .btn-navbar{
+	color:#333333;
+	text-shadow: none;
+	-webkit-border-radius: 15px;
+     -moz-border-radius: 15px;
+          border-radius:15px;
+	
+}
+.navbar .btn-navbar:hover{
+	color:#252525;
+}
+
+.mailMsg{
+	margin-right: 15px;
+}
+
+.avisForm{
+	text-align: center;
+}

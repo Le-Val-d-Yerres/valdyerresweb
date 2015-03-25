@@ -28,16 +28,16 @@ tinyMCE.init({
     // Init
     mode: 'textareas',
     theme: 'advanced',
-    skin: 'default',
+    skin: 'grappelli',
     
     // General
     //accessibility_warnings: false,
     browsers: 'gecko,msie,safari,opera',
-    dialog_type: 'modal',
+    dialog_type: 'window',
     editor_deselector: 'mceNoEditor',
-    keep_styles: true,
-    language: 'fr',
-    object_resizing: true,
+    keep_styles: false,
+    language: 'en',
+    object_resizing: false,
     media_strict: true,
     
     // Callbackss
@@ -65,20 +65,14 @@ tinyMCE.init({
     // content_css : "css/example.css",
     
     // Plugins
-    plugins: 'fullscreen,paste,media,searchreplace,template',
+    plugins: 'advimage,advlink,fullscreen,paste,media,searchreplace,grappelli,grappelli_contextmenu,template',
     
     // Theme Advanced
     theme_advanced_toolbar_location: 'top',
     theme_advanced_toolbar_align: 'left',
     theme_advanced_statusbar_location: 'bottom',
-    theme_advanced_buttons1: 'formatselect,styleselect,fontsizeselect,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,anchor,|,image,|,fullscreen',
-   
-    // Ligne avec les templates actif
-    //theme_advanced_buttons2: 'search,|,pasteword,template,media,charmap,|,code,|,table,cleanup',
-    
-    // Ligne avec les templates inactif
-    theme_advanced_buttons2: 'search,|,pasteword,charmap,|,code,|,table,cleanup,|,sub,sup,|,hr,newdocument',
-    
+    theme_advanced_buttons1: 'formatselect,styleselect,|,bold,italic,underline,|,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,|,image,|,fullscreen,|,grappelli_adv',
+    theme_advanced_buttons2: 'search,|,pasteword,template,media,charmap,|,code,|,table,cleanup,grappelli_documentstructure',
     theme_advanced_buttons3: '',
     theme_advanced_path: false,
     theme_advanced_blockformats: 'p,h2,h3,h4,pre',
@@ -86,28 +80,6 @@ tinyMCE.init({
     theme_advanced_resize_horizontal: false,
     theme_advanced_resizing_use_cookie: true,
     theme_advanced_styles: 'Image Left=img_left;Image Right=img_right;Image Block=img_block',
-    
-    
-    
-    // Theme Simple
-    theme_simple_toolbar_location: 'top',
-    theme_simple_toolbar_align: 'left',
-    theme_simple_statusbar_location: 'bottom',
-    theme_simple_buttons1: 'formatselect,styleselect,fontsizeselect,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,blockquote,|,undo,redo,|,link,unlink,anchor,|,image,|,fullscreen',
-   
-    // Ligne avec les templates actif
-    //theme_simple_buttons2: 'search,|,pasteword,template,media,charmap,|,code,|,table,cleanup',
-    
-    // Ligne avec les templates inactif
-    theme_simple_buttons2: 'search,|,pasteword,charmap,|,code,|,table,cleanup,|,sub,sup,|,hr,newdocument',
-    
-    theme_simple_buttons3: '',
-    theme_simple_path: false,
-    theme_simple_blockformats: 'p,h2,h3,h4,pre',
-    theme_simple_resizing: true,
-    theme_simple_resize_horizontal: false,
-    theme_simple_resizing_use_cookie: true,
-    theme_simple_styles: 'Image Left=img_left;Image Right=img_right;Image Block=img_block',
     
     // Style formats
     // see http://wiki.moxiecode.com/index.php/TinyMCE:Configuration/style_formats
@@ -136,7 +108,7 @@ tinyMCE.init({
     ],
     
     // Adv
-    advlink_styles: 'Internal Link=interne;External Link=externe',
+    advlink_styles: 'Internal Link=internal;External Link=external',
     advimage_update_dimensions_onchange: true,
     
     // Grappelli

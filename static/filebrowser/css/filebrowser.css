@@ -73,6 +73,14 @@ button.fb_selectlink {
     }
 }*/
 
+body.rtl a.fb_viewlink, 
+body.rtl button.fb_selectlink {
+    float: right;
+    top: -4px !important;
+    margin-bottom: -5px !important;
+    margin-right: 0;
+}
+
 
 
 /*  Filebrowser Pulldown Actions
@@ -162,6 +170,18 @@ ul.grp-pulldown-versions a:hover, ul.grp-pulldown-versions a:active {
     color: #fff;
     background: #444;
 }
+
+body.rtl .grp-pulldown-versions-handler {
+    margin-right: 2px;
+    margin-left: 0;
+}
+body.rtl .grp-open ul.grp-pulldown-versions {
+    margin: -2px 2px 0 0;
+}
+body.rtl ul.grp-pulldown-versions a {
+    padding: 5px 10px 5px 30px;
+}
+
 
 /* Upload button
 ------------------------------------------------------------------------------------------------------ */
@@ -254,6 +274,20 @@ span.qq-upload-file {
     font-size: 11px;
     margin-left: 10px;
 }
+.qq-upload-complete {
+    display: none;
+    position: absolute;
+    float: right;
+    left: 334px;
+    margin: -15px -2px 0 0;
+    color: transparent !important;
+    width: 16px;
+    height: 16px;
+    background: url('../img/completed.png') top left no-repeat;
+}
+.qq-upload-success .qq-upload-complete {
+    display: block;
+}
 .progress-bar {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -287,4 +321,32 @@ span.qq-upload-file {
     background: -ms-linear-gradient(top, #444444 0%,#333333 100%); /* IE10+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', endColorstr='#333333',GradientType=0 ); /* IE6-9 */
     background: linear-gradient(top, #444444 0%,#333333 100%); /* W3C */
+}
+.qq-upload-success .progress-bar .content:after {
+    background: transparent url('../img/cancel.png') 0 0 no-repeat scroll;
+}
+
+
+body.rtl .qq-upload-cancel {
+    left: auto;
+    right: 336px;
+    margin: 0;
+}
+body.rtl .qq-upload-list li {
+    position: relative;
+    float: right;
+    clear: both;
+    line-height: 14px;
+}
+body.rtl .qq-upload-list li .progress-bar {
+    position: relative;
+    float: right;
+    clear: both;
+}
+body.rtl .qq-upload-list li span, 
+body.rtl .qq-upload-list li a {
+    float: right;
+    margin-right: 0;
+    margin-left: 10px;
+    vertical-align: baseline;
 }

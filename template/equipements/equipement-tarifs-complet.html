@@ -25,16 +25,16 @@
 					<a href="/">Accueil</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
+					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
 				</li>
 				<li class="active">
-					<a href="{% url equipements.views.EquipementTarifs %}">Tarifs</a><span class="divider">/</span>
+					<a href="{% url 'equipements.views.EquipementTarifs' %}">Tarifs</a><span class="divider">/</span>
 				</li>
 			</ul>
 		</div>
 		{% for fonction in listeEquipements %}
 		<div class="span11">
-			<h1><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=fonction.slug %}">{{fonction.pluriel}}</a></h1>
+			<h1><a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=fonction.slug %}">{{fonction.pluriel}}</a></h1>
 			<hr/>
 		</div>
 		<div class="span7">
@@ -62,7 +62,7 @@
 			</table>
 			{% endif %}
 			{% endfor %}
-			<a href="{% url equipements.views.EquipementFonctionTarifs equipement_fonction_slug=fonction.slug %}">Voir tous les tarifs</a>
+			<a href="{% url 'equipements.views.EquipementFonctionTarifs' equipement_fonction_slug=fonction.slug %}">Voir tous les tarifs</a>
 		</div>
 		{% endfor %}
 	</div>

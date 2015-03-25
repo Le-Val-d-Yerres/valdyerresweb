@@ -67,7 +67,7 @@
 				{% for item in screenings%}
 				<tr>
 					<td><img class="img-polaroid" src="{{item.grouper.image|resize:'100x100x1'}}"></td>
-					<td><a href="{% url cinemas.views.CinemaLieu cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></td>
+					<td><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></td>
 					<td>{{item.grouper.ville.nom}}</td>
 					<td> {% regroup item.list by film as thefilm %}
 					<ul>
@@ -76,7 +76,7 @@
 							{{seances.grouper}}:
 
 							{% for seance in seances.list %}
-							<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
+							<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
 							{% endfor%}
 						</li>
 
@@ -118,8 +118,8 @@
 					<td><img class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
 					<td> {{evenement.lieu.nom}} </td>
 					<td>{{evenement.lieu.ville.nom}}</td>
-					<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }} </td>
-					<td><td><a class="btn  btn-primary" href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a></td></td>
+					<td><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }} </td>
+					<td><td><a class="btn  btn-primary" href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a></td></td>
 				</tr>
 
 				{% endfor %}
@@ -147,7 +147,7 @@
 				<tr>
 
 					<td><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
-					<td><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td><td> {{equipement.ville.nom}} </td>
+					<td><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td><td> {{equipement.ville.nom}} </td>
 
 					<td> {% for horaires in listhoraires %}
 					{% for horaire in horaires %}
@@ -163,7 +163,7 @@
 					{%endfor%}
 					{% endfor %} </td>
 
-					<td><a class="btn  btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
+					<td><a class="btn  btn-primary" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
 				</tr>
 				{%endfor%}
 			</table>
@@ -205,7 +205,7 @@
 				{% regroup seances by cinema as screenings %}
 				{% for item in screenings%}
 				
-					<h3><a href="{% url cinemas.views.CinemaLieu cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></h3>
+					<h3><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></h3>
 					<p>
 					{{item.grouper.ville.nom}}
 					{% regroup item.list by film as thefilm %}
@@ -215,7 +215,7 @@
 							{{seances.grouper}}:
 
 							{% for seance in seances.list %}
-							<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
+							<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
 							{% endfor%}
 						</li>
 
@@ -245,10 +245,10 @@
 					<p>
 					{{evenement.lieu.nom}}
 					{{evenement.lieu.ville.nom}}
-					<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }}
+					<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }}
 					</p>
 					<p style="text-align:right;">
-					<a class="btn  btn-primary" href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a>
+					<a class="btn  btn-primary" href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a>
 					</p>
 					</li>
 				{% endfor %}
@@ -264,8 +264,8 @@
 				{% for equipement in fonction.list %}
 				<p>
 
-					<img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'200x100x0' }}"/><br/>
-					<h4><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></h4> 
+					<img class="img-polaroid" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'200x100x0' }}"/><br/>
+					<h4><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></h4>
 					{{equipement.ville.nom}}
 
 					{% for horaires in listhoraires %}
@@ -274,7 +274,7 @@
 					{% if horaire.equipement.id == equipement.id %}
 					<ul>
 						<li>
-							{{horaire.nom}} : {{num_jour|horaires_journee:horaire}}</br>
+							{{horaire.nom}} : {{ num_jour|horaires_journee:horaire }} </br>
 						</li>
 
 					</ul> {% endif %}
@@ -282,7 +282,7 @@
 					{%endfor%}
 					{% endfor %}
 					<p style="text-align:right;">
-					<a class="btn  btn-primary" href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a>
+					<a class="btn  btn-primary" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a>
 					</p>
 				<hr/>
 				{%endfor%}

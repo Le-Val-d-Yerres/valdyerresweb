@@ -63,7 +63,7 @@
 					<a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
 					<a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
 				</div>
-				<h2><a href="{% url editorial.views.ActuList  %}">Les actualités du Val d'Yerres :</a></h2>
+				<h2><a href="{% url 'editorial.views.ActuList'  %}">Les actualités du Val d'Yerres :</a></h2>
 
 				{% for page in actualites %}
 
@@ -72,7 +72,7 @@
 					</div>
 					<div class="span5">
 
-						<h3><a href="{% url editorial.views.ActuDetail actualite_slug=page.slug   %}">{{page.titre|safe}}</a>
+						<h3><a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}">{{page.titre|safe}}</a>
 						<br/>
 						<small>Publié le {{page.date_publication|dateSimple}}. </small></h3>
 
@@ -80,7 +80,7 @@
 							{{page.contenu|resume:200|safe}}
 						</p>
 						<p style="text-align: right;" >
-							<a class="btn btn-primary" href="{% url editorial.views.ActuDetail actualite_slug=page.slug   %}">Lire la suite</a>
+							<a class="btn btn-primary" href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}">Lire la suite</a>
 						</p>
 
 					</div>
@@ -89,10 +89,10 @@
 
 				{% endfor %}
 				<p style="text-align: right;" >
-					<a class="btn btn-primary" href="{% url editorial.views.ActuList  %}">Voir toutes les actualités</a>
+					<a class="btn btn-primary" href="{% url 'editorial.views.ActuList'  %}">Voir toutes les actualités</a>
 				</p>
 				{%if evenements_une_lg1%}
-				<h2><a href="{% url evenements.views.AgendaGlobal  %}">Prochains événements :</a></h2>
+				<h2><a href="{% url 'evenements.views.AgendaGlobal'  %}">Prochains événements :</a></h2>
 
 				<div class="row-fluid">
 					<ul class="thumbnails">
@@ -101,13 +101,13 @@
 							<div class="thumbnail">
 								<img alt="300x200"  src="{{evenement.image|resize:'225x200x1'}}">
 								<div class="caption">
-									<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
+									<h3><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
 									<br/>
 									<small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .</small></h3>
 
 									{{evenement.description|safe|resume:150}}
 									<p style="text-align: right;" >
-										<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
+										<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
 									</p>
 								</div>
 							</div>
@@ -115,12 +115,12 @@
 						{%endfor%}
 					</ul>
 					<p style="text-align: right;" >
-						<a class="btn btn-primary" href="{% url evenements.views.AgendaGlobal  %}">Voir tous les événements à venir</a>
+						<a class="btn btn-primary" href="{% url 'evenements.views.AgendaGlobal'  %}">Voir tous les événements à venir</a>
 					</p>
 				</div>
 				{%endif%}
 				{%if evenements_une_lg2%}
-				<h2><a href="{% url evenements.views.AgendaGlobal  %}">A ne pas manquer:</a></h2>
+				<h2><a href="{% url 'evenements.views.AgendaGlobal'  %}">A ne pas manquer:</a></h2>
 				<div class="row-fluid">
 					<ul class="thumbnails">
 						{% for evenement in evenements_une_lg2 %}
@@ -128,13 +128,13 @@
 							<div class="thumbnail">
 								<img alt="{{evenement.nom|safe}}"  src="{{evenement.image|resize:'225x200x1'}}">
 								<div class="caption">
-									<h3><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
+									<h3><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
 									<br/>
 									<small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .</small></h3>
 
 									{{evenement.description|safe|resume:150}}
 									<p style="text-align: right;" >
-										<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary">+ d'infos</a>
+										<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary">+ d'infos</a>
 									</p>
 								</div>
 							</div>
@@ -161,46 +161,46 @@
 						</p>
 					</div>
 					<div class="span3 box-right">
-						<h3><a href="{% url editorial.views.Ephemeride %}">Aujourd'hui
+						<h3><a href="{% url 'editorial.views.Ephemeride' %}">Aujourd'hui
 						<br/>
 						dans le Val d'Yerres</a></h3>
 						<ul style="list-style: none;">
 							{% if cinema_count > 0  %}
 							<li>
-								<a href="{% url editorial.views.Ephemeride %}#cinemas" class="circle-btn">{{cinema_count|deuxchiffres}}</a><a href="{% url editorial.views.Ephemeride %}#cinemas">séance{{cinema_count|pluralize}} de cinéma à 6 &euro;</a>
+								<a href="{% url 'editorial.views.Ephemeride' %}#cinemas" class="circle-btn">{{cinema_count|deuxchiffres}}</a><a href="{% url 'editorial.views.Ephemeride' %}#cinemas">séance{{cinema_count|pluralize}} de cinéma à 6 &euro;</a>
 							</li>
 
 							{% endif %}
 							{% if evenements_count > 0  %}
 							<li>
-								<a href="{% url editorial.views.Ephemeride %}#evenements" class="circle-btn">{{evenements_count|deuxchiffres}}</a><a href="{% url editorial.views.Ephemeride %}#evenements"> événement{{evenements_count|pluralize}}</a>
+								<a href="{% url 'editorial.views.Ephemeride' %}#evenements" class="circle-btn">{{evenements_count|deuxchiffres}}</a><a href="{% url 'editorial.views.Ephemeride' %}#evenements"> événement{{evenements_count|pluralize}}</a>
 							</li>
 							{% endif %}
 							{% if equipements_count > 0  %}
 							<li>
-								<a href="{% url editorial.views.Ephemeride %}#equipements" class="circle-btn">{{equipements_count|deuxchiffres}}</a><a href="{% url editorial.views.Ephemeride %}#equipements">équipement{{equipements_count|pluralize}}  ouvert{{equipements_count|pluralize}}</a>
+								<a href="{% url 'editorial.views.Ephemeride' %}#equipements" class="circle-btn">{{equipements_count|deuxchiffres}}</a><a href="{% url 'editorial.views.Ephemeride' %}#equipements">équipement{{equipements_count|pluralize}}  ouvert{{equipements_count|pluralize}}</a>
 							</li>
 							{% endif %}
 						</ul>
 					</div>
 					<div class="span3 box-right">
-						<h3><a href="{% url editorial.views.Magazines %}">Le Magazine</a></h3>
+						<h3><a href="{% url 'editorial.views.Magazines' %}">Le Magazine</a></h3>
 
-						<h4><a href="{% url editorial.views.Magazines %}">{{magazine.date_parution|moisannee}}</a></h4>
-						<a href="{% url editorial.views.Magazines %}"><img class="img-polaroid" style="max-width:90%" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
+						<h4><a href="{% url 'editorial.views.Magazines' %}">{{magazine.date_parution|moisannee}}</a></h4>
+						<a href="{% url 'editorial.views.Magazines' %}"><img class="img-polaroid" style="max-width:90%" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
 						<p>
 							Dossier : {{magazine.titre|safe}}
 						</p>
 					</div>
 					{% if annoncesemploi %}
 					<div class="span3 box-right">
-						<h3><a href="{% url annoncesemploi.views.AnnoncesList %}">Emploi</a></h3>
+						<h3><a href="{% url 'annoncesemploi.views.AnnoncesList' %}">Emploi</a></h3>
 						{% regroup annoncesemploi by service as annonceslists%}
 
 						<ul style="list-style: none;" >
 							{% for annonces in annonceslists %}
 							<li>
-								<a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonces.grouper.slug %}" class="circle-btn">{{annonces.list|length|deuxchiffres}}</a><a href="{% url annoncesemploi.views.AnnoncesListService service_slug=annonces.grouper.slug %}"> annonces {{annonces.grouper}}</a>
+								<a href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}" class="circle-btn">{{annonces.list|length|deuxchiffres}}</a><a href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}"> annonces {{annonces.grouper}}</a>
 							</li>
 							{% endfor%}
 						</ul>
@@ -213,7 +213,7 @@
 						<ul style="list-style: square">
 							{% for note in notes %}
 							<li>
-								<a href="{% url editorial.views.PageDetail page_slug=note.slug %}">{{ note.titre }}</a>
+								<a href="{% url 'editorial.views.PageDetail' page_slug=note.slug %}">{{ note.titre }}</a>
 							</li>
 							{% endfor%}
 						</ul>

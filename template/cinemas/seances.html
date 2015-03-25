@@ -36,7 +36,7 @@
 					{% for film in eventlist%}
 					<li><a href="#{{film.grouper.slug}}">{{film.grouper.titre}} :</a></li>
 					
-							Prochaine séance : <a href="{% url cinemas.views.CinemaLieu cinema_slug=film.list.0.cinema.slug %}"> «{{film.list.0.cinema.nom}}»</a>,<br/>
+							Prochaine séance : <a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=film.list.0.cinema.slug %}"> «{{film.list.0.cinema.nom}}»</a>,<br/>
 							{{film.list.0.date_debut.date|queljour|safe}} à {{film.list.0.date_debut|quelleheure}}<br/>
 							
 							
@@ -56,14 +56,14 @@
 					{% regroup film.list by cinema as cinemalist %}
 					{% for cinema in cinemalist %}
 					
-					<h4>Au cinéma <a href="{% url cinemas.views.CinemaLieu cinema_slug=cinema.grouper.slug %}">«{{cinema.grouper.nom}}»</a> à {{cinema.grouper.ville.nom}} :</h4>
+					<h4>Au cinéma <a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=cinema.grouper.slug %}">«{{cinema.grouper.nom}}»</a> à {{cinema.grouper.ville.nom}} :</h4>
 					<ul>
 						{%regroup cinema.list by date_debut.date as seances%}
 							{%for jour in seances%}
 							<li>
 								{{jour.grouper|queljour|safe}} à
 								{% for seance in jour.list%}
-							 		<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}					 		
+							 		<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
 								{%endfor%}
 							</li>
 							{%endfor%}

@@ -10,7 +10,7 @@ class Service(models.Model):
     index  = models.IntegerField()
     parent = models.ForeignKey('self', null= True,blank=True)
     description = models.TextField(null= True,blank=True)
-    publie = models.BooleanField(verbose_name="Publié")
+    publie = models.BooleanField(verbose_name="Publié", default=False)
     
     def __unicode__(self):
         return self.nom
@@ -25,7 +25,7 @@ class PageStatiqueService(models.Model):
     slug = models.SlugField()
     meta_description = models.CharField(max_length=200)
     contenu = models.TextField()
-    publie = models.BooleanField(verbose_name="Publié")
+    publie = models.BooleanField(verbose_name="Publié", default=False)
     index = models.IntegerField(verbose_name="Ordre apparition dans la liste")
     
     def __unicode__(self):

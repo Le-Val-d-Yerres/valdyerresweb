@@ -30,7 +30,7 @@
 
 		<div class="span11">
 
-			<h1><a href="{% url editorial.views.Rapports  %}">Les rapports d'activité du Val d'Yerres:</a></h1>
+			<h1><a href="{% url 'editorial.views.Rapports'  %}">Les rapports d'activité du Val d'Yerres:</a></h1>
 			<div class="span11 ">
 				
 				<br/>
@@ -63,13 +63,13 @@
 					
 					{%if rapports.paginator.num_pages > 10 %}
 					{%if rapports.number > 1%}
-						<li class="enabled"><a href="{% url editorial.views.Rapports  %}?page=1">1</a></li>
+						<li class="enabled"><a href="{% url 'editorial.views.Rapports'  %}?page=1">1</a></li>
 						<li class="disabled"><a href=".">...</a></li>
 					{%endif%}
-					<li class="disabled"><a href="{% url editorial.views.Rapports  %}?page={{rapports.number}}">{{rapports.number}}</a></li>
+					<li class="disabled"><a href="{% url 'editorial.views.Rapports'  %}?page={{rapports.number}}">{{rapports.number}}</a></li>
 					{%if rapports.number < rapports.paginator.num_pages%}
 						<li class="disabled"><a href=".">...</a></li>
-					<li class="enabled"><a href="{% url editorial.views.Rapports  %}?page={{rapports.paginator.num_pages}}">{{rapports.paginator.num_pages}}</a></li>
+					<li class="enabled"><a href="{% url 'editorial.views.Rapports'  %}?page={{rapports.paginator.num_pages}}">{{rapports.paginator.num_pages}}</a></li>
 					{%endif%}
 					
 					{% else %}
@@ -79,7 +79,7 @@
 					{% if rapports.number == page %}
 					<li class="disabled"><a href=".">{{page}}</a></li>
 					{% else %}
-					<li class="enabled"><a href="{% url editorial.views.Rapports  %}?page={{page}}">{{page}}</a></li>
+					<li class="enabled"><a href="{% url 'editorial.views.Rapports'  %}?page={{page}}">{{page}}</a></li>
 					{% endif %}
 
 					{%endfor%}

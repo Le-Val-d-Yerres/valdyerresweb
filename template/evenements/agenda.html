@@ -34,17 +34,17 @@
 				<div class="span6">
 					<ul class="nav nav-tabs" style="margin-bottom:0px;">
 						<li {% if period == "toutes" %}class="active"{%endif%}>
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period="toutes" orga_slug=orgaslug %}">Toutes périodes </a>
+							<a href="{% url 'agenda-type-period-orga' type_slug=typeslug period="toutes" orga_slug=orgaslug %}">Toutes périodes </a>
 						</li>
 						<li {% if period == "cette-semaine" %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period="cette-semaine" orga_slug=orgaslug %}">Cette semaine</a>
+							<a href="{% url 'agenda-type-period-orga' type_slug=typeslug period="cette-semaine" orga_slug=orgaslug %}">Cette semaine</a>
 						</li>
 						<li {% if period == "ce-week-end" %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period="ce-week-end" orga_slug=orgaslug %}">Ce week-end</a>
+							<a href="{% url 'agenda-type-period-orga' type_slug=typeslug period="ce-week-end" orga_slug=orgaslug %}">Ce week-end</a>
 						</li>
 						<li {% if period == "ce-mois" %}class="active"{%endif%} >
 							
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period="ce-mois" orga_slug=orgaslug %}">Ce mois</a>
+							<a href="{% url 'agenda-type-period-orga' type_slug=typeslug period="ce-mois" orga_slug=orgaslug %}">Ce mois</a>
 						</li>
 					</ul>
 					<div style="border-left:1px solid #ccc;border-right:1px solid #ccc;border-bottom:1px solid #ccc;">
@@ -65,7 +65,7 @@
 							{% for evenement in eventmonth.list %}
 							<tr>
 								<td><img alt="image de l'événement : {{evenement.nom}}" class="img-polaroid" src="{{evenement.image|resize:'100x100x1'}}"></td>
-								<td><a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
+								<td><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
 								<p>
 									Type : {{evenement.type}}.
 									<br/>
@@ -74,7 +74,7 @@
 									Lieu : {{evenement.lieu.nom}}, {{evenement.lieu.ville.nom}}. 
 								</p>
 								<p style="text-align:right;">
-									<a href="{% url evenements.views.EvenementDetailsHtml slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
+									<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
 								</p></td>
 
 							</tr>
@@ -99,12 +99,12 @@
 						</li>
 						{% for item in typeslist %}
 						<li {% if typeslug == item.slug %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug=item.slug period=period  orga_slug=orgaslug %}" >{{item.nom}}</a>
+							<a href="{% url 'agenda-type-period-orga' type_slug=item.slug period=period  orga_slug=orgaslug %}" >{{item.nom}}</a>
 						</li>
 						{% endfor %}
 						<li class="divider"></li>
 						<li {% if typeslug == "tous" %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug="tous" period=period orga_slug=orgaslug %}">Tous types d'événements</a>
+							<a href="{% url 'agenda-type-period-orga' type_slug="tous" period=period orga_slug=orgaslug %}">Tous types d'événements</a>
 						</li>
 						<li class="divider"></li>
 						<li class="nav-header">
@@ -112,12 +112,12 @@
 						</li>
 						{% for item in orgalist %}
 						<li {% if orgaslug == item.slug %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period=period orga_slug=item.slug %}" >{{item.nom}}</a>
+							<a href="{% url 'agenda-type-period-orga' type_slug=typeslug period=period orga_slug=item.slug %}" >{{item.nom}}</a>
 						</li>
 						{% endfor %}
 						<li class="divider"></li>
 						<li {% if orgaslug == "tous" %}class="active"{%endif%} >
-							<a href="{% url agenda-type-period-orga type_slug=typeslug period=period orga_slug="tous" %}">Tous les organisateurs</a>
+							<a href="{% url 'agenda-type-period-orga' type_slug=typeslug period=period orga_slug="tous" %}">Tous les organisateurs</a>
 						</li>
 					</ul>
 				</div>

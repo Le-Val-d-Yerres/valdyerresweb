@@ -25,10 +25,10 @@
 					<a href="/">Accueil</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
+					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
 				</li>
 				<li>
-					<a href="{% url equipements.views.HorairesTousEquipements %}">Horaires</a><span class="divider">/</span>
+					<a href="{% url 'equipements.views.HorairesTousEquipements' %}">Horaires</a><span class="divider">/</span>
 				</li>
 				<li class="active">
 					{{ equipement.nom}} , {{equipement.ville.nom }}
@@ -37,7 +37,7 @@
 		</div>
 		<div class="span7">
 
-			<h1><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom }}</a></h1>
+			<h1><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom }}</a></h1>
 			
 			<h2>Horaires :</h2>
 			

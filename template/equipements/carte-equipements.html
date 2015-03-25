@@ -25,17 +25,17 @@
 				</li>
 			</ul>
 
-			<h1><a href="{% url equipements.views.EquipementsCarte %}">Les équipements du Val d'Yerres</a></h1>
+			<h1><a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a></h1>
 			
 			
 			{% regroup equipements by fonction as fonctionlist %}
 			<ul>
 			{% for func in fonctionlist %}
 			
-			<li><a href="{% url equipements.views.FonctionDetailsHtml fonction_slug=func.grouper.slug %}">{{func.grouper.pluriel}}</a></li>
+			<li><a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=func.grouper.slug %}">{{func.grouper.pluriel}}</a></li>
 				<ul>
 					{%for equipement in func.list%}
-						<li><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{equipement.nom}}</a> à {{equipement.ville.nom}}</li>
+						<li><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{equipement.nom}}</a> à {{equipement.ville.nom}}</li>
 					{% endfor%} 
 				</ul>
 			
@@ -64,9 +64,9 @@
 				    		myMarker['longitude'] ={{equipement.longitude|toFloatjs}} ; 
 							myMarker['latitude'] ={{equipement.latitude|toFloatjs}}; 	
 				    	{% if equipement.image %}
-							myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}</p></div></div>'; 
+							myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}</p></div></div>';
 						{% else %}
-							myMarker['description'] = '<a href="{% url equipements.views.EquipementsDetailsHtml fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}'; 
+							myMarker['description'] = '<a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a><br  \>{{ equipement.rue }}<br  \>{{ equipement.ville.code_postal }}<br  \>{{ equipement.ville.nom }}';
 						{% endif %}
 							myMarker['marker'] ='{{equipement.fonction.picto}}';
 							tabEquipement.push(myMarker);			
