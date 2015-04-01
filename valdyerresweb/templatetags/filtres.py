@@ -164,7 +164,6 @@ def resizeandcrop(img, box, fit):
 
 @register.filter(is_safe=True)   
 def resize(myfile, size='100x100x1'):
-    print('resize')
     try:
         logo = False 
         try:

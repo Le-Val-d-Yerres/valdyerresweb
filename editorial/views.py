@@ -173,8 +173,7 @@ def Rapports(request):
 
     return render_to_response('editorial/rapports.html', {'rapports': rapports, 'page': page})
 
-@cache_control(must_revalidate=True, max_age=3600)
-@cache_page(3600)
+
 def Ephemeride(request,jour='aujourd-hui'):
     jourdate = jour.split('-')
     datepage = date.today()
