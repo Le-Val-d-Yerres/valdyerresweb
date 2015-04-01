@@ -8,9 +8,9 @@ import xlwt,csv
 import valdyerresweb.templatetags.filtres as filtres
 from StringIO import StringIO
 from django.http import HttpResponse
-from django.template import Context,loader
+from django.template import Context, loader
 from django.utils import http
-
+from django.templatetags.static import static
 
 
 class EventLink(object):
@@ -26,7 +26,7 @@ class OutlookEventLink(EventLink):
     def getLink(self,evenement):
         self.text += u" Outlook"
         linkurl = reverse('event-details-ics', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
-        imgurl = "/static/img/evenements/40x40/outlook-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/outlook-icon-40x40.png")
         imgalt = "Agenda outlook"
         return self.setLink(imgurl,linkurl,imgalt)
     
@@ -47,7 +47,7 @@ class GoogleEventLink(EventLink):
         linkurl += u"&amp;details="+http.urlquote_plus(evenement.type.nom+" : "+resume(evenement.description, 150))+"%20"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
         
         linkurl = u"http://www.google.com/calendar/event?"+linkurl
-        imgurl =  "/static/img/evenements/40x40/gmail-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/gmail-icon-40x40.png")
         imgalt = "Agenda Google"
         return self.setLink(imgurl,linkurl,imgalt)
         
@@ -65,7 +65,7 @@ class YahooEventLink(EventLink):
         linkurl += u"&amp;URL:"+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
         linkurl += u"&amp;in_loc=="+http.urlquote_plus(evenement.lieu.nom+u","+evenement.lieu.rue+u","+evenement.lieu.ville.nom)
         linkurl += u"&amp;DESC="+http.urlquote_plus(evenement.type.nom+" : "+resume(evenement.description, 150) +" ")+settings.NOM_DOMAINE+reverse('event-details', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
-        imgurl =  "/static/img/evenements/40x40/yahoo-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/yahoo-icon-40x40.png")
         imgalt = "Agenda Yahoo"
         return self.setLink(imgurl,linkurl,imgalt)
 
@@ -73,7 +73,7 @@ class IcalEventLink(EventLink):
     def getLink(self,evenement):
         self.text += u" Ical"
         linkurl = reverse('event-details-ics', kwargs={'slug': evenement.cadre_evenement.slug, 'evenement_slug': evenement.slug})
-        imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/ical-icon-40x40.png")
         imgalt = "Agenda Ical"
         return self.setLink(imgurl,linkurl,imgalt)
 

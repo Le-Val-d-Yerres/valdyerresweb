@@ -146,12 +146,11 @@ class Command(NoArgsCommand):
                             maseance.version_vo = True
                         else:
                             maseance.version_vo = False
-                        
-                        
+
                         maseance.date_debut = datetime.strptime(thedate+" "+thetime['$'],"%Y-%m-%d %H:%M")
                         maseance.date_debut = myTimezone.localize(maseance.date_debut)
-                        delta = timedelta(seconds = monfilm.duree)
-                        maseance.date_fin =  maseance.date_debut + delta 
+                        delta = timedelta(seconds=monfilm.duree)
+                        maseance.date_fin = maseance.date_debut + delta
                         maseance.film = monfilm
                         maseance.cinema = cinema
                         maseance.save()

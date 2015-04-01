@@ -56,12 +56,11 @@ class HorairesAdmin(admin.ModelAdmin):
             
     class Media:
         js = (
-            'admin/js/admin/horaires_admin.js',
+            'admin/js/horaires_admin.js',
         )
         
         
-        
-            
+
 class PeriodeAdmin(admin.ModelAdmin):
     list_display = ('nom','date_debut','date_fin')
     

@@ -20,10 +20,10 @@ utcTZ = timezone("UTC")
 myTimezone = timezone(settings.TIME_ZONE)
 
 ListeMois = ['janvier', u'février', 'mars', 'avril', 'mai', 'juin', 'juillet', u'août', 'septembre', 'octobre', 'novembre', u'décembre']
-ListeJours = ['dimanche','lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi']    
+ListeJours = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']
 
 #compatibilité datetime
-WeekDay = ['lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi','dimanche']    
+WeekDay = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
 
 
 

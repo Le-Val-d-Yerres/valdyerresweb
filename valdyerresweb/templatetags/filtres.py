@@ -7,7 +7,8 @@ from aide.models import  Aide
 import re , os.path
 from pytz import timezone
 from django.conf import settings
-from PIL import Image, ImageOps , ImageFilter ,ImageChops
+from PIL import Image, ImageOps, ImageFilter, ImageChops
+from django.templatetags.static import static
 
 import datetime
 import valdyerresweb
@@ -163,13 +164,14 @@ def resizeandcrop(img, box, fit):
 
 @register.filter(is_safe=True)   
 def resize(myfile, size='100x100x1'):
+    print('resize')
     try:
         logo = False 
         try:
             path = myfile.path.replace(settings.MEDIA_ROOT,"") #TODO: trouver pkoi Image et Filebrowsefield renvoient des chemins différents
             path = settings.MEDIA_ROOT+path
         except AttributeError:
-            path = settings.STATIC_ROOT+settings.LOGO_ORGANISATION
+            path = settings.LOGO_ORGANISATION
             logo = True
     
         x, y, ratio = [int(x) for x in size.split('x')]
@@ -189,7 +191,7 @@ def resize(myfile, size='100x100x1'):
         miniature_filename = os.path.join(filehead, miniature)
         miniature_url = filehead + '/' + miniature
         
-        if os.path.exists(miniature_filename) and os.path.getmtime(filename)>os.path.getmtime(miniature_filename):
+        if os.path.exists(miniature_filename) and os.path.getmtime(filename) > os.path.getmtime(miniature_filename):
             os.unlink(miniature_filename)
     
         if not os.path.exists(miniature_filename):
@@ -290,20 +292,11 @@ def generateMenu():
         
 @register.filter(is_safe=True) 
 def twitter(url,txt):
-    lien = "<a href=\"https://www.twitter.com/share?text="+http.urlquote_plus(txt)+"&amp;url="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img alt=\"twitter\" src=\"/static/img/reseaux-sociaux/twitter-share.png\"> Partager sur Twitter</a>"
+    lien = "<a href=\"https://www.twitter.com/share?text="+http.urlquote_plus(txt)+"&amp;url="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img alt=\"twitter\" src=\""+static("valdyerresweb/img/reseaux-sociaux/twitter-share.png")+"\"> Partager sur Twitter</a>"
     return lien
         
 @register.filter(is_safe=True) 
 def facebook(url,txt):
-    lien = "<a href=\"https://www.facebook.com/sharer.php?t="+http.urlquote_plus(txt)+"&amp;u="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img alt=\"facebook\" src=\"/static/img/reseaux-sociaux/facebook-share.png\"> Partager sur Facebook</a>"
+    lien = "<a href=\"https://www.facebook.com/sharer.php?t="+http.urlquote_plus(txt)+"&amp;u="+valdyerresweb.settings.NOM_DOMAINE+url+"\"><img alt=\"facebook\" src=\""+static("valdyerresweb/img/reseaux-sociaux/facebook-share.png")+"\"> Partager sur Facebook</a>"
     return lien
 
-@register.filter(is_safe=True) 
-def googleplus(url,txt):
-    lien = "<a href=\"https://plus.google.com/share?url="+http.urlquote_plus(valdyerresweb.settings.NOM_DOMAINE+url)+"\"><img alt=\"google plus\" src=\"/static/img/reseaux-sociaux/google-plus-share.png\"> Partager sur Google+</a>"
-    return lien
-
-    
-    
-    
-    

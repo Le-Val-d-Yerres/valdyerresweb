@@ -6,6 +6,7 @@
 {% load aidefilters%}
 {% load tz %}
 
+
 {% block title %}Communauté d'Agglomération du Val d'Yerres {% endblock %}
 
 {% block meta-description %}Le site de la Communauté d'Agglomération du Val d'Yerres dans le département de l'Essonne{% endblock %}
@@ -228,12 +229,14 @@
 
 </div>
 
-{% endblock%}
+{% endblock %}
 
-{% block jsload%}
-<script src="/static/js/jquery/jquery-1.8.1.min.js"></script>
-<script src="/static/bootstrap/js/bootstrap.js"></script>
-<script src="/static/js/mailjet/mailjet.js"></script>
+{% block jsload %}
+
+{% include "include/jquery-bootstrap.html" %}
+{% include "include/mailjet.html" %}
+
+
 <script>
 	$(document).ready(function() {
 
@@ -275,4 +278,4 @@
 		}
 	}); 
 </script>
-{% endblock%}
+{% endblock %}
