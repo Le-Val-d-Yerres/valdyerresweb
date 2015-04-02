@@ -192,8 +192,8 @@ def resize(myfile, size='100x100x1'):
         
         if os.path.exists(miniature_filename) and os.path.getmtime(filename) > os.path.getmtime(miniature_filename):
             os.unlink(miniature_filename)
-    
-        if not os.path.exists(miniature_filename):
+        test = os.path.isfile(miniature_filename)
+        if not os.path.isfile(miniature_filename):
            
             image = ImageOps.fit(Image.open(filename), (x,y), Image.ANTIALIAS)
               
