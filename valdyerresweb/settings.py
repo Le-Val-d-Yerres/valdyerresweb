@@ -13,6 +13,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['*']
 SITE_ID = 1
+USE_X_FORWARDED_HOST = True
 
 DATABASES = {
     'default': {
