@@ -8,4 +8,5 @@ media/
 *~
 *.js~
 *.css~
+*.*~
 static/
