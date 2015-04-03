@@ -212,6 +212,11 @@ class ManageBibEvenement(admin.ModelAdmin):
         DateLieuEvenementInline, PrixInline, DocumentAttacheInline,
     ]
 
+    class Media:
+        js = [
+            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+            '/static/grappelli/tinymce_setup/tinymce_setup.js',
+        ]
 
 admin.site.register(Evenement, EvenementAdmin)
 admin.site.register(EvenementBib, ManageBibEvenement)
