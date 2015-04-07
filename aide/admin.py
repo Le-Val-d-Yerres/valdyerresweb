@@ -11,9 +11,9 @@ class AideAdmin(admin.ModelAdmin):
 
     class Media:
         js = [
-            'js/tinymce/tiny_mce.js',
-            'js/tinymce/tinymce_setup.js',
-            'filebrowser/js/TinyMCEAdmin.js',
+            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+            '/static/grappelli/tinymce_setup/tinymce_setup.js',
+
         ]
         
 admin.site.register(Aide, AideAdmin)

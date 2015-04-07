@@ -15,9 +15,9 @@ class AdminService(admin.ModelAdmin):
     prepopulated_fields = {'slug':('nom',),}
     class Media:
         js = [
-            'js/tinymce/tiny_mce.js',
-            'js/tinymce/tinymce_setup.js',
-            'filebrowser/js/TinyMCEAdmin.js',
+            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+            '/static/grappelli/tinymce_setup/tinymce_setup.js',
+
         ]
         
     def save_model(self, request, obj, form, change):
@@ -41,9 +41,9 @@ class DocumentAttacheInline(admin.TabularInline):
     
     class Media:
         js = [
-            'js/tinymce/tiny_mce.js',
-            'js/tinymce/tinymce_setup.js',
-            'filebrowser/js/TinyMCEAdmin.js',
+            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+            '/static/grappelli/tinymce_setup/tinymce_setup.js',
+
         ]
 
 class AdminPageStatiqueService(admin.ModelAdmin):

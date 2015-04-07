@@ -26,7 +26,7 @@ tinyMCE.init({
     
     // Init
 
-    language:'en',
+    language:'fr_FR',
     mode: 'textareas',
     theme: 'advanced',
     skin: 'grappelli',
