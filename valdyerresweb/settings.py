@@ -218,6 +218,7 @@ AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 PICTO_LIEU = 'uploads/picto/lieu.png'
 
 NOM_ORGANISATION = "Le Val d'Yerres"
+GRAPPELLI_ADMIN_TITLE = NOM_ORGANISATION
 
 
 LOGO_ORGANISATION = os.path.join(BASE_DIR,"static/valdyerresweb/img/logo/logo-val-d-yerres-carre.png")

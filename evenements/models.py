@@ -71,6 +71,14 @@ class TypeEvenement(models.Model):
         return self.nom
 
 
+EVENEMENT_CATEGORIES = (
+    ('bib', u'Bibliothèques/Médiatèques'),
+    ('crd', u'Conservatoires'),
+    ('sty', u'Sothevy'),
+    ('aut', u'Autres'),
+)
+
+
 class Evenement(models.Model):
     nom = models.CharField(max_length=255)
     meta_description = models.CharField(max_length=200)
@@ -83,6 +91,7 @@ class Evenement(models.Model):
     url = models.URLField("Un lien vers plus d'infos: (facultatif)", blank=True, null=True)
     url_reservation = models.URLField(
         "Un lien vers la page de reservation: (facultatif, annule le lien vers plus d'infos) ", blank=True, null=True)
+    categorisation = models.CharField(max_length=3, choices=EVENEMENT_CATEGORIES, default='aut')
     cadre_evenement = models.ForeignKey(Saison)
     type = models.ForeignKey(TypeEvenement)
     lieu = models.ForeignKey(Lieu)
@@ -135,18 +144,18 @@ class DocumentAttache(models.Model):
     reference = models.ForeignKey(Evenement)
 
 
-class DateLieuEvenementBibManager(models.Manager):
+class EvenementBibManager(models.Manager):
     def get_queryset(self):
-        return super(DateLieuEvenementBibManager, self).get_queryset().filter(lieu__fonction_slug='bibliotheque')
+        return super(EvenementBib, self).get_queryset().filter(
+            categorisation='bib')
 
-
-class DateLieuEvenementBib(DateLieuEvenement):
-    class Meta:
-        proxy=True
 
 class EvenementBib(Evenement):
+    objects = EvenementBibManager()
+
     class Meta:
         proxy = True
-        verbose_name_plural = u"Événements Bibliothèques "
-        verbose_name = u"Événement Bibliothèque "
+        verbose_name_plural = u"Événements Bibliothèques"
+        verbose_name = u"Événement Bibliothèque"
+
 
