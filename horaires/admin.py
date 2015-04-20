@@ -52,6 +52,7 @@ class HorairesAdmin(admin.ModelAdmin):
         functions.expire_page(path)
         
         obj.save()
+
         
             
     class Media:

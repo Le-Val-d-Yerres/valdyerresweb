@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, DocumentAttache, DateLieuEvenement, EvenementBib
+from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, DocumentAttache
+#DateLieuEvenement, EvenementBib
 from equipements.models import Equipement
 from valdyerresweb.utils.functions import pdftojpg
 from django.contrib import admin
@@ -21,9 +22,9 @@ class DocumentAttacheInline(admin.TabularInline):
     extra = 2
     max_num = 15
 
-class DateLieuEvenementInline(admin.TabularInline):
-    model = DateLieuEvenement
-    extra = 1
+# class DateLieuEvenementInline(admin.TabularInline):
+#     model = DateLieuEvenement
+#     extra = 1
 
 
     
@@ -32,6 +33,7 @@ class EvenementAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
         ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url', 'url_reservation']}),
+        ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
         ('Option de publication', {'fields': ['publish','complet','page_accueil']}),
     ]
     search_fields = ['nom']
@@ -39,7 +41,8 @@ class EvenementAdmin(admin.ModelAdmin):
     filter_horizontal = ("organisateur",)
 
     inlines = [
-        DateLieuEvenementInline, PrixInline, DocumentAttacheInline,
+        #DateLieuEvenementInline,
+        PrixInline, DocumentAttacheInline,
     ]
     class Media:
         js = [
@@ -196,30 +199,30 @@ class SaisonCulturelleAdmin(admin.ModelAdmin):
 
 
 
-class ManageBibEvenement(admin.ModelAdmin):
-    list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
-    fieldsets = [
-        ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
-        ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url', 'url_reservation']}),
-
-        ('Option de publication', {'fields': ['publish','complet','page_accueil']}),
-    ]
-    search_fields = ['nom']
-    list_filter = ['publish']
-    filter_horizontal = ("organisateur",)
-
-    inlines = [
-        DateLieuEvenementInline, PrixInline, DocumentAttacheInline,
-    ]
-
-    class Media:
-        js = [
-            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-            '/static/grappelli/tinymce_setup/tinymce_setup.js',
-        ]
+# class ManageBibEvenement(admin.ModelAdmin):
+#     list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
+#     fieldsets = [
+#         ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
+#         ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url', 'url_reservation']}),
+#
+#         ('Option de publication', {'fields': ['publish','complet','page_accueil']}),
+#     ]
+#     search_fields = ['nom']
+#     list_filter = ['publish']
+#     filter_horizontal = ("organisateur",)
+#
+#     inlines = [
+#         DateLieuEvenementInline, PrixInline, DocumentAttacheInline,
+#     ]
+#
+#     class Media:
+#         js = [
+#             '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+#             '/static/grappelli/tinymce_setup/tinymce_setup.js',
+#         ]
 
 admin.site.register(Evenement, EvenementAdmin)
-admin.site.register(EvenementBib, ManageBibEvenement)
+#admin.site.register(EvenementBib, ManageBibEvenement)
 admin.site.register(Organisateur, OrganisateurAdmin)
 admin.site.register(SaisonCulturelle, SaisonCulturelleAdmin)
 admin.site.register(TypeEvenement,TypeEvenementAdmin)

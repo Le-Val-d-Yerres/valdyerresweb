@@ -146,7 +146,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'debug_toolbar'
+    'debug_toolbar',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -219,6 +219,8 @@ PICTO_LIEU = 'uploads/picto/lieu.png'
 
 NOM_ORGANISATION = "Le Val d'Yerres"
 GRAPPELLI_ADMIN_TITLE = NOM_ORGANISATION
+
+USE_X_FORWARDED_HOST = True
 
 
 LOGO_ORGANISATION = os.path.join(BASE_DIR,"static/valdyerresweb/img/logo/logo-val-d-yerres-carre.png")

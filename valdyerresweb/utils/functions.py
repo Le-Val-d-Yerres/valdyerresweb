@@ -2,7 +2,7 @@
 import os, subprocess, shlex, cStringIO
 import qrcode , base64, StringIO, pickle
 from django.conf import settings
-from django.core.cache import cache
+from django.core.cache import caches
 from django.http import HttpRequest
 from django.utils.cache import get_cache_key
 from PIL import Image , ImageFile
@@ -62,12 +62,16 @@ def pdftojpg(pdfFilePath, subpath = "/img/"):
 
 # beau snippet source : http://djangosnippets.org/snippets/936/
 def expire_page(path):
-    request = HttpRequest()
-    request.path = path
-    key = get_cache_key(request)
-    print key
-    if cache.has_key(key):
-        cache.delete(key)
+    #mechant patch en attendant que le problème soit regle.
+    cache = caches['default']
+    cache.clear()
+
+    # request = HttpRequest()
+    # request.path = path
+    # key = get_cache_key(request)
+    # print key
+    # if cache.has_key(key):
+    #     cache.delete(key)
         
 def resetEphemerideCache(debut):
     today = datetime.datetime.utcnow().replace(tzinfo=utc)
