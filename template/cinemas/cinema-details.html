@@ -1,4 +1,5 @@
 {% extends "include/main.html" %}
+{% load staticfiles %}
 {% load filtres %}
 {% load aidefilters %}
 {% load cinemasfilters %}
@@ -66,7 +67,7 @@
 							<li>
 								{{jour.grouper|queljour|safe}} à
 								{% for seance in jour.list%}
-							 		<a href="{% url cinemas.views.SeanceAddAgenda seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}					 		
+							 		<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
 								{%endfor%}
 							</li>
 							{%endfor%}
@@ -96,7 +97,7 @@
 		<div class="span4">
 
 			<br/>
-			<img style="float:left;" src="/static/img/cinemas/cinema.png"/>
+			<img style="float:left;" src="{% static "valdyerresweb/img/cinemas/cinema.png" %}"/>
 			<address>
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 					<strong>{{ cinema.nom }}</strong>
@@ -200,8 +201,8 @@
 					var myMarker = Object(); 
 				    myMarker['longitude'] ={{cinema.longitude|toFloatjs}}; 
 					myMarker['latitude'] ={{cinema.latitude|toFloatjs}}; 
-					myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ cinema.nom }}" src="{{  cinema.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url cinemas.views.CinemaLieu cinema_slug=cinema.slug %}">{{ cinema.nom }}</a><br  \>{{  cinema.rue }}<br  \>{{  cinema.ville.code_postal }}<br  \>{{  cinema.ville.nom }}</p></div></div>';
-					myMarker['marker'] = 'uploads/picto/equipements/cinema.png';
+					myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ cinema.nom }}" src="{{  cinema.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=cinema.slug %}">{{ cinema.nom }}</a><br  \>{{  cinema.rue }}<br  \>{{  cinema.ville.code_postal }}<br  \>{{  cinema.ville.nom }}</p></div></div>';
+					myMarker['marker'] = 'uploads/picto/equipements/lieu.png';
 					tabEquipement.push(myMarker);
 					setMarkers(tabEquipement);
 					map_init();
@@ -230,6 +231,6 @@
 	
 		});		
 		</script>
-		
+		{% include "include/maps-ressources.html" %}
 		{%block mapload%}{% endblock %}
 	{% endblock %}
