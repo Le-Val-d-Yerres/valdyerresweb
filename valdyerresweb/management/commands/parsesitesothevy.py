@@ -13,6 +13,7 @@ from evenements.models import Evenement, Organisateur, TypeEvenement
 from pytz import timezone
 from valdyerresweb import settings
 from localisations.models import Lieu
+import codecs
 
 
 mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre', u'octobre', u'novembre' ,u'décembre']
@@ -22,7 +23,7 @@ types = [u'MUSIQUE CLASSIQUE', u'HUMOUR',u'DANSE', u'CHANSON',u'THÉÂTRE',u'COM
 id_salles_spectacles = {u'BOUSSY-SAINT-ANTOINE': 5, u'YERRES': 6, u'BRUNOY': 8, u'CROSNE': 9, u'EPINAY-SOUS-SENART': 24, u'QUINCY-SOUS-SENART': 10}
 
 liste_themes = {
-    u'Chanson / Spectacles': u'http://spectacles.levaldyerres.fr/fr/spectacles/recital.html',
+    u'Chanson': u'http://spectacles.levaldyerres.fr/fr/spectacles/recital.html',
     u'Humour': u'http://spectacles.levaldyerres.fr/fr/spectacles/copy_opera.html',
     u'Théâtre': u'http://spectacles.levaldyerres.fr/fr/spectacles/copy_theatre.html',
     u'Danse': u'http://spectacles.levaldyerres.fr/fr/spectacles/copy_danse.html',
@@ -50,7 +51,8 @@ def parse_page(url):
     data_html = r.text
     soup = BeautifulSoup(data_html)
 
-    nom = str(soup.find("h1").string.encode("utf-8")).strip()
+    nom = soup.find("h1").string
+    nom = unicode(nom)
 
     dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next
     dateevt, heure = dateheureville.split("|")
@@ -113,23 +115,31 @@ def parse_page(url):
 
     bloc = soup.findAll("div", {"class": "twelve columns top-1 bottom-3"})[1]
 
-    tabtxt = bloc.get_text().encode("utf-8").strip().split("\n")
+    tabtxt = bloc.get_text().strip().split("\n")
+
 
     tabtxtclean = [txt for txt in tabtxt if txt.strip() is not u""]
 
     desc = str()
     for txt in tabtxtclean[3:]:
-        desc = desc + txt+"<br>"
+        desc = desc + txt+u"<br>"
 
     if soup.find("iframe") is not None:
         desc += str(soup.find("iframe"))
 
-    evt.nom = nom
+    desc = desc.encode("utf-8")
+    desc = desc.replace("ᵉ","ème")
+    desc = desc.replace(codecs.BOM_UTF8,"")
+
+    evt.nom = nom.encode("utf-8").strip()
     evt.debut = dateevt
     evt.fin = heure_fin
+    if u"CEC" in ville:
+        ville = u"YERRES"
     evt.lieu = ville
     evt.description = desc
     evt.image = urlimage
+
     return evt
 
 
@@ -183,14 +193,21 @@ def corresp(eventlist):
 
         type = TypeEvenement.objects.get(slug=defaultfilters.slugify(event.type))
         evenement.nom = event.nom
+        print evenement.nom
         evenement.description = event.description
+
         evenement.debut = myTimezone.localize(event.debut)
         evenement.fin = myTimezone.localize(event.fin)
         evenement.cadre_evenement_id = 14
         evenement.lieu_id = id_salles_spectacles[event.lieu]
-        meta_description = evenement.nom + evenement.description[0:75]
-        print meta_description
-        evenement.meta_description = meta_description[0:198]
+        meta_description = evenement.nom.decode('utf-8') +u" "+ evenement.description.decode("utf-8")
+        meta_description = meta_description.replace("<br>",'')
+        meta_description = meta_description[0:198]
+        meta_description = meta_description.encode("utf-8")
+
+
+
+        evenement.meta_description = meta_description
         evenement.image = os.path.join(imgpath, evenement.slug +".jpg")
         evenement.type = type
         evenement.publish = True
@@ -217,6 +234,7 @@ class Command(NoArgsCommand):
         liste_evenements = list()
         liste_evenements = proceed()
         corresp(liste_evenements)
+        #parse_page("http://spectacles.levaldyerres.fr/fr/robin-des-bois...-la-legende-ou-presque.html?cmp_id=77&news_id=424&vID=80")
 
-#parse_page("http://spectacles.levaldyerres.fr/fr/jean-luc-lemoine.html?cmp_id=77&news_id=447&vID=61")
+
 #<iframe width="560" height="315" src="https://www.youtube.com/embed/ZnuwB35GYMY" frameborder="0" allowfullscreen></iframe>
