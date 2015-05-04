@@ -91,7 +91,6 @@ class Evenement(models.Model):
     url = models.URLField("Un lien vers plus d'infos: (facultatif)", blank=True, null=True)
     url_reservation = models.URLField(
         "Un lien vers la page de reservation: (facultatif, annule le lien vers plus d'infos) ", blank=True, null=True)
-    #categorisation = models.CharField(max_length=3, choices=EVENEMENT_CATEGORIES, default='aut')
     cadre_evenement = models.ForeignKey(Saison)
     type = models.ForeignKey(TypeEvenement)
     lieu = models.ForeignKey(Lieu)
@@ -117,15 +116,15 @@ class Evenement(models.Model):
         return ('event-details', (), {'slug': self.cadre_evenement.slug, 'evenement_slug': self.slug})
 
 
-# class DateLieuEvenement(models.Model):
-#     debut = models.DateTimeField("Date de début")
-#     fin = models.DateTimeField("Date de fin")
-#     lieu = models.ForeignKey(Lieu)
-#     evenement = models.ForeignKey(Evenement)
-#
-#     class Meta:
-#         verbose_name_plural = u"Dates et Lieux"
-#         verbose_name = u"Date et Lieu"
+class DateLieuEvenement(models.Model):
+    debut = models.DateTimeField("Date de début")
+    fin = models.DateTimeField("Date de fin")
+    lieu = models.ForeignKey(Lieu)
+    evenement = models.ForeignKey(Evenement)
+
+    class Meta:
+        verbose_name_plural = u"Dates et Lieux"
+        verbose_name = u"Date et Lieu"
 
 
 class Prix(models.Model):
