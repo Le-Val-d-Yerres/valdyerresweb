@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response , redirect , get_object_or_404,\
     get_list_or_404
 from editorial.models import Magazine,RapportActivite,Actualite, DocumentAttache, PageBase, PageStatique
 from cinemas.models import Seance
-from evenements.models import Evenement
+from evenements.models import Evenement, DateLieuEvenement
 from equipements.models import Equipement
 from horaires.models import Horaires, Periode,Jour
 from pytz import timezone, tzinfo
@@ -35,7 +35,9 @@ def Home(request):
     enddate = enddate.replace(tzinfo=utcTZ)
     
     actualites = Actualite.objects.filter(publie=True,page_accueil=True).order_by('-date_publication')[0:4]
-    evenements_une_lg1 = Evenement.objects.filter(page_accueil=False,publish=True,fin__gt = startdate).order_by('debut')[0:3]
+    #evt = Evenement.objects.filter(page_accueil=False,publish=True)[0:3]
+    evenements_une_lg1 = Evenement.objects.filter(page_accueil=False,publish=True,datelieuevenement__fin__gt = startdate).order_by('debut')[0:3]
+    #evenements_une_lg1 = Evenement.objects.filter(page_accueil=False,publish=True,fin__gt = startdate).order_by('debut')[0:3]
     evenements_une_lg2 = Evenement.objects.filter(page_accueil=True,publish=True,fin__gt = startdate).order_by('debut')[0:3]
     carroussel = PageBase.objects.filter(publie=True,carroussel=True).select_subclasses().order_by('index_carroussel')
     

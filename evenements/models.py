@@ -7,6 +7,7 @@ from services.models import Service
 from equipements.models import Equipement
 from localisations.models import Ville
 from django.db.models import permalink
+from django.template import defaultfilters
 
 
 class Organisateur(models.Model):
@@ -24,7 +25,7 @@ class Organisateur(models.Model):
     ville = models.ForeignKey(Ville)
 
     # Un choix de design pas très beau, mais fonctionellement les équipements, services, communes de la
-    #    communauté d'agglo peuvent organiser des evènements ainsi que d'autres entités exterieures alors ...
+    # communauté d'agglo peuvent organiser des evènements ainsi que d'autres entités exterieures alors ...
 
     orga_service = models.ForeignKey(Service, blank=True, null=True)
     orga_equipement = models.ForeignKey(Equipement, blank=True, null=True)
@@ -83,17 +84,18 @@ class Evenement(models.Model):
     nom = models.CharField(max_length=255)
     meta_description = models.CharField(max_length=200)
     description = models.TextField()
-    debut = models.DateTimeField("Date de début")
-    fin = models.DateTimeField("Date de fin")
+    debut = models.DateTimeField("Date de début", blank=True, null=True)
+    fin = models.DateTimeField("Date de fin", blank=True, null=True)
     organisateur = models.ManyToManyField(Organisateur)
     image = FileBrowseField("Image", max_length=255, directory="evenements",
                             extensions=[".jpg", ".png", ".gif", ".jpeg", ".pdf"], blank=True, null=True)
     url = models.URLField("Un lien vers plus d'infos: (facultatif)", blank=True, null=True)
     url_reservation = models.URLField(
         "Un lien vers la page de reservation: (facultatif, annule le lien vers plus d'infos) ", blank=True, null=True)
+    categorisation = models.CharField(max_length=3, choices=EVENEMENT_CATEGORIES, default='aut')
     cadre_evenement = models.ForeignKey(Saison)
     type = models.ForeignKey(TypeEvenement)
-    lieu = models.ForeignKey(Lieu)
+    lieu = models.ForeignKey(Lieu, blank=True, null=True)
     publish = models.BooleanField("Publié", default=False)
     page_accueil = models.BooleanField("Page d'accueil", default=False)
     complet = models.BooleanField("Ce spectacle est complet", default=False)
@@ -105,6 +107,10 @@ class Evenement(models.Model):
     def Organisateurs(self):
         return "\n;\n".join([s.nom for s in self.organisateur.all()])
 
+    def dates(self):
+        return "\n;\n".join([s.debut.strftime('%d-%m-%Y %H:%M') for s in self.datelieuevenement_set.all().order_by('fin')])
+
+
     def __unicode__(self):
         return self.nom
 
@@ -114,6 +120,8 @@ class Evenement(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('event-details', (), {'slug': self.cadre_evenement.slug, 'evenement_slug': self.slug})
+
+
 
 
 class DateLieuEvenement(models.Model):
@@ -143,18 +151,21 @@ class DocumentAttache(models.Model):
     reference = models.ForeignKey(Evenement)
 
 
-# class EvenementBibManager(models.Manager):
-#     def get_queryset(self):
-#         return super(EvenementBibManager, self).get_queryset().filter(
-#             categorisation='bib')
-#
-#
-# class EvenementBib(Evenement):
-#     objects = EvenementBibManager()
-#
-#     class Meta:
-#         proxy = True
-#         verbose_name_plural = u"Événements Bibliothèques"
-#         verbose_name = u"Événement Bibliothèque"
+class EvenementBibManager(models.Manager):
+    def get_queryset(self):
+        return super(EvenementBibManager, self).get_queryset().filter(
+            categorisation='bib')
 
+
+class EvenementBib(Evenement):
+    objects = EvenementBibManager()
+
+    class Meta:
+        proxy = True
+        verbose_name_plural = u"Événements Bibliothèques"
+        verbose_name = u"Événement Bibliothèque"
+
+    def save(self, *args, **kwargs):
+        self.categorisation = 'bib'
+        super(Evenement, self).save(*args, **kwargs)
 
