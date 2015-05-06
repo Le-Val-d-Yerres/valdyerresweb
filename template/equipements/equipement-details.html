@@ -292,8 +292,7 @@
 
 	{% block jsload%}
 	{% include "include/jquery-bootstrap.html" %}
-
-	<script src="/static/js/alertes/alertes.js"></script>
+    {% include "include/alertes.html" %}
 
 	<script>
 			function LoadMap() 
@@ -327,6 +326,7 @@
 				}
 			}); 
 		</script>
+        {% include "include/maps-ressources.html" %}
 
 
 	{% endblock %}

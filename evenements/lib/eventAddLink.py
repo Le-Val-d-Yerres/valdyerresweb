@@ -107,7 +107,7 @@ class ExcelLink(EventsLink):
         orgaslug = dictargs['orga_slug']
         self.text += u" Excel"
         linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'xls'})
-        imgurl = "/static/img/evenements/40x40/excel-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/excel-icon-40x40.png")
         imgalt = "icone excel"
         return self.setLink(imgurl,linkurl,imgalt)
 
@@ -119,7 +119,7 @@ class CSVLink(EventsLink):
         orgaslug = dictargs['orga_slug']
         self.text += u" CSV"
         linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'csv'})
-        imgurl = "/static/img/evenements/40x40/csv-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/csv-icon-40x40.png")
         imgalt = "icone CSV"
         return self.setLink(imgurl,linkurl,imgalt)
     
@@ -131,7 +131,7 @@ class ICSLink(EventsLink):
         orgaslug = dictargs['orga_slug']
         self.text += u" Ical"
         linkurl = reverse('export-agenda-type-period-orga', kwargs={'type_slug' :typeslug,'period' : period, 'orga_slug' : orgaslug , 'extension':'ics'})
-        imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/ical-icon-40x40.png")
         imgalt = "icone ICS"
         return self.setLink(imgurl,linkurl,imgalt)
     
@@ -161,7 +161,7 @@ class ExcelSaisonLink(EventsLink):
 
         self.text += u" Excel"
         linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'xls'})
-        imgurl = "/static/img/evenements/40x40/excel-icon-40x40.png"
+        imgurl = static("/valdyerresweb/img/evenements/40x40/excel-icon-40x40.png")
         imgalt = "icone Excel"
         return self.setLink(imgurl,linkurl,imgalt)
 
@@ -170,7 +170,7 @@ class CSVSaisonLink(EventsLink):
 
         self.text += u" CSV"
         linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'csv'})
-        imgurl = "/static/img/evenements/40x40/csv-icon-40x40.png"
+        imgurl = static("/valdyerresweb/img/evenements/40x40/csv-icon-40x40.png")
         imgalt = "icone CSV"
         return self.setLink(imgurl,linkurl,imgalt)
     
@@ -179,7 +179,7 @@ class ICSSaisonLink(EventsLink):
        
         self.text += u" Ical"
         linkurl = reverse('saison-details-export', kwargs={'slug' :saisonslug, 'extension':'ics'})
-        imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
+        imgurl = static("/valdyerresweb/img/evenements/40x40/ical-icon-40x40.png")
         imgalt = "icone ICS"
         return self.setLink(imgurl,linkurl,imgalt)
 

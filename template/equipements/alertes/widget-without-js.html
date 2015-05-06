@@ -86,7 +86,7 @@
 					</div>
 					
 					<div style="width: 60%;margin: auto;margin-top: 15px;margin-bottom: 15px;">
-						<a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
+						<a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}" class="btn">Retour</a>
 						<input style="margin-left: 40%;" type="submit" class="btn btn-primary" value="Envoyer">
 					</div>
 				</fieldset>
@@ -152,7 +152,7 @@
 					</div>
 					
 					<div style="width: 60%;margin: auto;margin-top: 15px;margin-bottom: 15px;">
-						<a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
+						<a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug  equipement_slug=equipement.slug %}" class="btn">Retour</a>
 						<input style="margin-left: 10%;" type="submit" class="btn btn-primary" value="Envoyer">
 					</div>
 				</fieldset>
