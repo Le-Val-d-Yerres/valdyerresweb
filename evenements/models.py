@@ -8,6 +8,7 @@ from equipements.models import Equipement
 from localisations.models import Ville
 from django.db.models import permalink
 from django.template import defaultfilters
+from django.utils.html import format_html
 
 
 class Organisateur(models.Model):
@@ -101,8 +102,7 @@ class Evenement(models.Model):
     complet = models.BooleanField("Ce spectacle est complet", default=False)
     slug = models.SlugField(max_length=255, unique=True)
 
-    class Meta:
-        ordering = ['-debut']
+
 
     def Organisateurs(self):
         return "\n;\n".join([s.nom for s in self.organisateur.all()])

@@ -37,7 +37,7 @@ class EvenementAdmin(admin.ModelAdmin):
     ]
     search_fields = ['nom']
     list_filter = ['publish']
-    filter_horizontal = ("organisateur",)
+
 
     inlines = [
         DateLieuEvenementInline,
@@ -94,15 +94,12 @@ class EvenementAdmin(admin.ModelAdmin):
         dlt = obj.datelieuevenement_set.all().order_by('fin')
         return dlt
 
-    def queryset(self, request):
-         dle = DateLieuEvenement.objects.all().order_by('fin')
-         evt = Evenement.objects.filter(id__in=dle)
+    def get_queryset(self, request):
 
-         ordering = self.get_ordering(request)
-         if ordering:
-            qs = evt.order_by(*ordering)
+        evt = Evenement.objects.all().order_by('-datelieuevenement__debut')
 
-         return evt
+
+        return evt
 
 
 class TypeEvenementAdmin(admin.ModelAdmin):

@@ -97,18 +97,18 @@
 
 				<div class="row-fluid">
 					<ul class="thumbnails">
-						{% for evenement in evenements_une_lg1 %}
+						{% for dle in evenements_une_lg1 %}
 						<li class="span4">
 							<div class="thumbnail">
-								<img alt="300x200"  src="{{evenement.image|resize:'225x200x1'}}">
+								<img alt="300x200"  src="{{dle.evenement.image|resize:'225x200x1'}}">
 								<div class="caption">
-									<h3><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
+									<h3><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=dle.evenement.cadre_evenement.slug evenement_slug=dle.evenement.slug %}">{{dle.evenement.nom|safe}}</a>
 									<br/>
-									<small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .</small></h3>
+									<small>Date : {{ dle.debut|dateCustom:dle.fin }} .</small></h3>
 
-									{{evenement.description|safe|resume:150}}
+									{{dle.evenement.description|safe|resume:150}}
 									<p style="text-align: right;" >
-										<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
+										<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=dle.evenement.cadre_evenement.slug evenement_slug=dle.evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
 									</p>
 								</div>
 							</div>

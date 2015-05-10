@@ -54,7 +54,7 @@ def dateCustom(debutUTC, finUTC):
         elif  deltanow.days == 1:
             text = u"demain à "+debut.strftime(u"%H:%M")
         else :    
-            text = jours[int(debut.strftime(u"%w"))]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+u" à "+debut.strftime(u"%H:%M")
+            text = jours[int(debut.strftime(u"%w"))]+u" "+debut.strftime(u"%d")+u" "+mois[int(debut.strftime(u"%m"))-1]+u" "+debut.strftime(u"%Y")+u" à "+debut.strftime(u"%H:%M")
     return text
 
 

@@ -35,8 +35,10 @@ def Home(request):
     enddate = enddate.replace(tzinfo=utcTZ)
     
     actualites = Actualite.objects.filter(publie=True,page_accueil=True).order_by('-date_publication')[0:4]
-    #evt = Evenement.objects.filter(page_accueil=False,publish=True)[0:3]
-    evenements_une_lg1 = Evenement.objects.filter(page_accueil=False,publish=True,datelieuevenement__fin__gt = startdate).order_by('debut')[0:3]
+
+    #evenements_une_lg1 = Evenement.objects.filter(page_accueil=False,publish=True,datelieuevenement__fin__gt = startdate).order_by('debut')[0:3]
+    evenements_une_lg1 = DateLieuEvenement.objects.filter(fin__gt=startdate,evenement__publish=True,evenement__page_accueil=False).order_by('debut')[0:3]
+
     #evenements_une_lg1 = Evenement.objects.filter(page_accueil=False,publish=True,fin__gt = startdate).order_by('debut')[0:3]
     evenements_une_lg2 = Evenement.objects.filter(page_accueil=True,publish=True,fin__gt = startdate).order_by('debut')[0:3]
     carroussel = PageBase.objects.filter(publie=True,carroussel=True).select_subclasses().order_by('index_carroussel')
