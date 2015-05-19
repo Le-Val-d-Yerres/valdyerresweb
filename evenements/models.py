@@ -117,17 +117,6 @@ class Evenement(models.Model):
         return ('event-details', (), {'slug': self.cadre_evenement.slug, 'evenement_slug': self.slug})
 
 
-# class DateLieuEvenement(models.Model):
-#     debut = models.DateTimeField("Date de début")
-#     fin = models.DateTimeField("Date de fin")
-#     lieu = models.ForeignKey(Lieu)
-#     evenement = models.ForeignKey(Evenement)
-#
-#     class Meta:
-#         verbose_name_plural = u"Dates et Lieux"
-#         verbose_name = u"Date et Lieu"
-
-
 class Prix(models.Model):
     intitule = models.CharField("Intitulé ", max_length=255, blank=False, null=False)
     prix = models.FloatField("Prix (séparateur point ex : 0.5 )", default=None, blank=False, null=True)
@@ -144,18 +133,16 @@ class DocumentAttache(models.Model):
     reference = models.ForeignKey(Evenement)
 
 
-# class EvenementBibManager(models.Manager):
-#     def get_queryset(self):
-#         return super(EvenementBibManager, self).get_queryset().filter(
-#             categorisation='bib')
-#
-#
-# class EvenementBib(Evenement):
-#     objects = EvenementBibManager()
-#
-#     class Meta:
-#         proxy = True
-#         verbose_name_plural = u"Événements Bibliothèques"
-#         verbose_name = u"Événement Bibliothèque"
+class EvenementBibManager(models.Manager):
+    def get_queryset(self):
+        return super(EvenementBibManager, self).get_queryset().filter(
+            categorisation='bib')
 
 
+class EvenementBib(Evenement):
+    objects = EvenementBibManager()
+
+    class Meta:
+        proxy = True
+        verbose_name_plural = u"Événements Bibliothèques"
+        verbose_name = u"Événement Bibliothèque"
