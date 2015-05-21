@@ -36,15 +36,15 @@ class EquipementFonction(models.Model):
         return self.nom
 
 
-# EQUIPEMENTS_TYPES = (
-#     ('bib', u'Bibliothèques/Médiatèques'),
-#     ('crd', u'Conservatoires'),
-#     ('aut', u'Autres'),
-# )
+EQUIPEMENTS_TYPES = (
+    ('bib', u'Bibliothèques/Médiatèques'),
+    ('crd', u'Conservatoires'),
+    ('aut', u'Autres'),
+)
 
 class Equipement(Lieu):
     fonction = models.ForeignKey(EquipementFonction)
-    # type = models.CharField(max_length=3, choices=EQUIPEMENTS_TYPES, default='aut')
+    type = models.CharField(max_length=3, choices=EQUIPEMENTS_TYPES, default='aut')
     email = models.EmailField("Mail (facultatif)", max_length=254, blank=True)
     telephone = models.CharField(max_length=25, blank=True)
     fax = models.CharField("Fax (facultatif)", max_length=25, blank=True, null=True)

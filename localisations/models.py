@@ -25,11 +25,11 @@ class Lieu(models.Model):
     objects = InheritanceManager()
     
     def __unicode__(self):
-        return self.nom+" / "+self.ville.nom
+        return self.ville.nom+" | "+self.nom
     
     
     class Meta:
         verbose_name_plural = "Lieux"
-        ordering = ['ville__nom']
+        ordering = ['ville__nom','nom']
     
     

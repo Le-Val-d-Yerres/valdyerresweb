@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, DocumentAttache,\
+from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, DocumentAttache, \
     EvenementBib
 from equipements.models import Equipement
 from valdyerresweb.utils.functions import pdftojpg
@@ -35,8 +35,10 @@ class DocumentAttacheInline(admin.TabularInline):
 class EvenementAdmin(admin.ModelAdmin):
     list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
     fieldsets = [
-        ('Description', {'fields': ['nom', 'type', 'meta_description', 'description', 'image']}),
-        ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur', 'url', 'url_reservation']}),
+        ('Description',
+         {'fields': ['nom', 'type', 'meta_description', 'description', 'image', 'url', 'url_reservation']}),
+        ('Saison Culturelle', {'fields': ['cadre_evenement', 'organisateur']}),
+        ('Classification', {'fields': ['categorie', 'public']}),
         ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
         ('Option de publication', {'fields': ['publish', 'complet', 'page_accueil']}),
     ]
@@ -72,7 +74,6 @@ class EvenementAdmin(admin.ModelAdmin):
             if imageextension == ".pdf":
                 abspath_image = pdftojpg(os.path.join(settings.MEDIA_ROOT, obj.image.path), subpath="")
                 obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
-        print obj.id
         if obj.id != None:
             evenementInfo = Evenement.objects.select_related().get(slug=obj.slug)
 
@@ -213,38 +214,114 @@ class SaisonCulturelleAdmin(admin.ModelAdmin):
 
 
 class BibForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(BibForm, self).__init__(*args, **kwargs)
         self.fields['lieu'].queryset = Equipement.objects.filter(type="bib")
 
-# class ManageBibEvenement(admin.ModelAdmin):
-#     list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
-#     fieldsets = [
-#         ('Description', {'fields': ['nom', 'type', 'description', 'image']}),
-#         ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
-#         ('Saison Culturelle', {'fields': ['cadre_evenement', 'url']}),
-#         ('Option de publication', {'fields': ['publish', 'complet']}),
-#     ]
-#     search_fields = ['nom']
-#     list_filter = ['publish']
-#     filter_horizontal = ("organisateur",)
-#
-#     inlines = [
-#         PrixInline, DocumentAttacheInline,
-#     ]
-#
-#     class Media:
-#         js = [
-#             '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-#             '/static/grappelli/tinymce_setup/tinymce_setup.js',
-#         ]
-#     form = BibForm
+
+class ManageBibEvenement(admin.ModelAdmin):
+    list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
+    fieldsets = [
+        ('Description', {'fields': ['nom', 'type', 'description', 'image', 'url']}),
+        ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
+        ('Classification', {'fields': ['public']}),
+        ('Option de publication', {'fields': ['publish', 'complet']}),
+    ]
+    search_fields = ['nom']
+    list_filter = ['publish']
+    filter_horizontal = ("organisateur",)
+
+    inlines = [
+        PrixInline, DocumentAttacheInline,
+    ]
+
+    class Media:
+        js = [
+            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+            '/static/grappelli/tinymce_setup/tinymce_setup.js',
+        ]
+
+    form = BibForm
+
+    def save_model(self, request, obj, form, change):
+        monslug = defaultfilters.slugify(obj.nom)
+        user = request.user
+
+        year = datetime.datetime.now().year
+        currentmonth = datetime.datetime.now().month
+        if currentmonth in [1, 2, 3, 4, 5, 6, 7, 8]:
+            year = year-1
+        nomsaison = u"Bibliothèques, Médiathèques saison "+str(year)+u"-"+str(year+1)
+        slugsaison = defaultfilters.slugify(nomsaison)
+        saisonculturelle = None
+        try:
+            saisonculturelle = SaisonCulturelle.objects.get(slug=slugsaison)
+        except:
+            saisonculturelle = SaisonCulturelle()
+            saisonculturelle.nom = nomsaison
+            saisonculturelle.slug = slugsaison
+            premsept = datetime.date(year, 9, 1)
+            dernaout = datetime.date(year+1, 8, 31)
+            saisonculturelle.debut = premsept
+            saisonculturelle.fin = dernaout
+            saisonculturelle.description = "Les évenements organisés dans les bibliothèques et mediathèques."
+            saisonculturelle.save()
+
+        obj.cadre_evenement = saisonculturelle
+
+        if obj.slug == "":
+            listevenement = Evenement.objects.filter(slug__startswith=monslug)
+            listsize = len(listevenement)
+            if listsize > 0:
+                monslug = monslug + '-' + str(listsize + 1)
+            obj.slug = monslug
+        if obj.image != "":
+            pouet, imageextension = os.path.splitext(obj.image.path)
+            imageextension = imageextension.lower()
+            if imageextension == ".pdf":
+                abspath_image = pdftojpg(os.path.join(settings.MEDIA_ROOT, obj.image.path), subpath="")
+                obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
+
+        if obj.id != None:
+            evenementinfo = Evenement.objects.select_related().get(slug=obj.slug)
+
+            equipements = Equipement.objects.filter(lieu_ptr_id=evenementinfo.lieu.id)
+
+            nbrequipement = len(equipements)
+            if nbrequipement > 0:
+                for equipement in equipements:
+                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                                   kwargs={'fonction_slug': equipement.fonction.slug,
+                                           'equipement_slug': equipement.slug})
+                    functions.expire_page(path)
+
+            equipements = Equipement.objects.filter(lieu_ptr_id=obj.lieu.id)
+
+            nbrequipement = len(equipements)
+            if nbrequipement > 0:
+                for equipement in equipements:
+                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                                   kwargs={'fonction_slug': equipement.fonction.slug,
+                                           'equipement_slug': equipement.slug})
+                    functions.expire_page(path)
+
+            functions.resetEphemerideCache(obj.debut)
+
+        obj.save()
+        obj.organisateur.add(user.organisateur)
+        obj.save()
+
+        path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.cadre_evenement.slug})
+        functions.expire_page(path)
+
+        path = reverse('evenements.views.EvenementDetailsHtml',
+                       kwargs={'slug': obj.cadre_evenement.slug, 'evenement_slug': obj.slug})
+        functions.expire_page(path)
 
 
 
 admin.site.register(Evenement, EvenementAdmin)
-# admin.site.register(EvenementBib, ManageBibEvenement)
+admin.site.register(EvenementBib, ManageBibEvenement)
 admin.site.register(Organisateur, OrganisateurAdmin)
 admin.site.register(SaisonCulturelle, SaisonCulturelleAdmin)
 admin.site.register(TypeEvenement, TypeEvenementAdmin)

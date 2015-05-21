@@ -78,6 +78,13 @@ EVENEMENT_CATEGORIES = (
     ('aut', u'Autres'),
 )
 
+EVENEMENT_PUBLIC = (
+    ('adt', u'Adulte'),
+    ('enf', u'Enfant'),
+    ('pub', u'Tout public'),
+
+)
+
 
 class Evenement(models.Model):
     nom = models.CharField(max_length=255)
@@ -91,7 +98,8 @@ class Evenement(models.Model):
     url = models.URLField("Un lien vers plus d'infos: (facultatif)", blank=True, null=True)
     url_reservation = models.URLField(
         "Un lien vers la page de reservation: (facultatif, annule le lien vers plus d'infos) ", blank=True, null=True)
-    #categorisation = models.CharField(max_length=3, choices=EVENEMENT_CATEGORIES, default='aut')
+    categorie = models.CharField(max_length=3, choices=EVENEMENT_CATEGORIES, default='aut')
+    public = models.CharField(max_length=3, choices=EVENEMENT_PUBLIC, default='pub')
     cadre_evenement = models.ForeignKey(Saison)
     type = models.ForeignKey(TypeEvenement)
     lieu = models.ForeignKey(Lieu)
@@ -135,8 +143,7 @@ class DocumentAttache(models.Model):
 
 class EvenementBibManager(models.Manager):
     def get_queryset(self):
-        return super(EvenementBibManager, self).get_queryset().filter(
-            categorisation='bib')
+        return super(EvenementBibManager, self).get_queryset().filter(categorie='bib')
 
 
 class EvenementBib(Evenement):
