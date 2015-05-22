@@ -547,7 +547,7 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
 
 
 def EvenementDetailsICS(request, slug, evenement_slug, festival_slug = None):
-    evenement = get_object_or_404(Evenement.objects.select_related(depth=1), slug=evenement_slug)
+    evenement = get_object_or_404(Evenement.objects.select_related(), slug=evenement_slug)
     myText = EvenementDetailsIcalendar(evenement)
 
     return HttpResponse(myText,content_type="text/calendar")

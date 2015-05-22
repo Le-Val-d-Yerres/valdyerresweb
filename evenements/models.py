@@ -70,6 +70,9 @@ class TypeEvenement(models.Model):
     def __unicode__(self):
         return self.nom
 
+    class Meta:
+        ordering = ['nom']
+
 
 EVENEMENT_CATEGORIES = (
     ('bib', u'Bibliothèques/Médiatèques'),
@@ -93,7 +96,7 @@ class Evenement(models.Model):
     debut = models.DateTimeField("Date de début")
     fin = models.DateTimeField("Date de fin")
     organisateur = models.ManyToManyField(Organisateur)
-    image = FileBrowseField("Image", max_length=255, directory="evenements",
+    image = FileBrowseField("Image (facultatif)", max_length=255, directory="evenements",
                             extensions=[".jpg", ".png", ".gif", ".jpeg", ".pdf"], blank=True, null=True)
     url = models.URLField("Un lien vers plus d'infos: (facultatif)", blank=True, null=True)
     url_reservation = models.URLField(

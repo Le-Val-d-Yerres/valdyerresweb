@@ -12,6 +12,7 @@ from django.core.urlresolvers import reverse
 from django.utils.timezone import utc
 import datetime
 import os
+from django.forms import FileField
 
 
 class PrixInline(admin.TabularInline):
@@ -225,7 +226,7 @@ class ManageBibEvenement(admin.ModelAdmin):
         ('Description', {'fields': ['nom', 'type', 'description', 'image', 'url']}),
         ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
         ('Classification', {'fields': ['public']}),
-        ('Option de publication', {'fields': ['publish', 'complet']}),
+        ('Option de publication', {'fields': ['publish']}),
     ]
     search_fields = ['nom']
     list_filter = ['publish']
@@ -234,6 +235,10 @@ class ManageBibEvenement(admin.ModelAdmin):
     inlines = [
         PrixInline, DocumentAttacheInline,
     ]
+
+    formfield_overrides = {
+       Evenement.image: {'widget': FileField},
+    }
 
     class Media:
         js = [
@@ -244,8 +249,9 @@ class ManageBibEvenement(admin.ModelAdmin):
     form = BibForm
 
     def save_model(self, request, obj, form, change):
+        obj.categorie = 'bib'
         monslug = defaultfilters.slugify(obj.nom)
-        user = request.user
+        userprofile = request.user.userprofile
 
         year = datetime.datetime.now().year
         currentmonth = datetime.datetime.now().month
@@ -264,7 +270,7 @@ class ManageBibEvenement(admin.ModelAdmin):
             dernaout = datetime.date(year+1, 8, 31)
             saisonculturelle.debut = premsept
             saisonculturelle.fin = dernaout
-            saisonculturelle.description = "Les évenements organisés dans les bibliothèques et mediathèques."
+            saisonculturelle.description = "Les évenements organisés dans les bibliothèques et médiathèques."
             saisonculturelle.save()
 
         obj.cadre_evenement = saisonculturelle
@@ -308,7 +314,7 @@ class ManageBibEvenement(admin.ModelAdmin):
             functions.resetEphemerideCache(obj.debut)
 
         obj.save()
-        obj.organisateur.add(user.organisateur)
+        obj.organisateur.add(userprofile.organisateur)
         obj.save()
 
         path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.cadre_evenement.slug})
