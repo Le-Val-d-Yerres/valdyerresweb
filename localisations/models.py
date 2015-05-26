@@ -26,10 +26,7 @@ class Lieu(models.Model):
     
     def __unicode__(self):
         return self.ville.nom+" | "+self.nom
-    
-    
+
     class Meta:
         verbose_name_plural = "Lieux"
         ordering = ['ville__nom','nom']
-    
-    

@@ -156,3 +156,17 @@ class EvenementBib(Evenement):
         proxy = True
         verbose_name_plural = u"Événements Bibliothèques"
         verbose_name = u"Événement Bibliothèque"
+
+
+class EvenementCrdManager(models.Manager):
+    def get_queryset(self):
+        return super(EvenementCrdManager, self).get_queryset().filter(categorie='crd')
+
+
+class EvenementCrd(Evenement):
+    objects = EvenementCrdManager()
+
+    class Meta:
+        proxy = True
+        verbose_name_plural = u"Événements Conservatoires"
+        verbose_name = u"Événement Conservatoire"
