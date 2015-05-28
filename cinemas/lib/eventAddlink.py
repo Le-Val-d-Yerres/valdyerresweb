@@ -73,7 +73,7 @@ class IcalEventLink(EventLink):
         self.text += u" Ical"
         linkurl = reverse('seanceics', kwargs={'seance_id': seance.id})
         imgurl = static("valdyerresweb/img/evenements/40x40/ical-icon-40x40.png")
-        return self.setLink(imgurl,linkurl)
+        return self.setLink(imgurl, linkurl)
 
 
 def getLinkList(seance):
