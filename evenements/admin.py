@@ -320,10 +320,10 @@ class ManageBibEvenement(admin.ModelAdmin):
         functions.expire_page(path)
 
 
-class CrdForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CrdForm, self).__init__(*args, **kwargs)
-        self.fields['lieu'].queryset = Equipement.objects.filter(type="crd")
+# class CrdForm(forms.ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super(CrdForm, self).__init__(*args, **kwargs)
+#         self.fields['lieu'].queryset = Equipement.objects.filter(type="crd")
 
 
 class ManageCrdEvenement(admin.ModelAdmin):
@@ -347,7 +347,7 @@ class ManageCrdEvenement(admin.ModelAdmin):
             '/static/grappelli/tinymce_setup/tinymce_setup.js',
         ]
 
-    form = CrdForm
+    #form = CrdForm
 
     def save_model(self, request, obj, form, change):
         obj.categorie = 'crd'

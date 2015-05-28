@@ -9,6 +9,8 @@ import valdyerresweb.templatetags.filtres as filtres
 from StringIO import StringIO
 from django.http import HttpResponse
 from django.template import Context,loader
+from django.templatetags.static import static
+
 
 
 
@@ -25,7 +27,7 @@ class OutlookEventLink(EventLink):
     def getLink(self,seance):
         self.text += u" Outlook"
         linkurl = reverse('seanceics', kwargs={'seance_id': seance.id})
-        imgurl = "/static/img/evenements/40x40/outlook-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/outlook-icon-40x40.png")
         return self.setLink(imgurl,linkurl)
     
 class GoogleEventLink(EventLink):
@@ -44,7 +46,7 @@ class GoogleEventLink(EventLink):
         linkurl += u"&sprop=name:"+settings.NOM_ORGANISATION
         linkurl += u"&location="+seance.cinema.nom+u","+seance.cinema.rue+u","+seance.cinema.ville.nom
         linkurl += u"&details=Projection du film : "+seance.film.titre
-        imgurl =  "/static/img/evenements/40x40/gmail-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/gmail-icon-40x40.png")
         
         return self.setLink(imgurl,linkurl)
         
@@ -62,7 +64,7 @@ class YahooEventLink(EventLink):
         linkurl += u"&URL:"+settings.NOM_DOMAINE+reverse('seances')
         linkurl += u"&in_loc="+seance.cinema.nom+u","+seance.cinema.rue+u","+seance.cinema.ville.nom
         linkurl += u"&DESC=Projection du film : "+seance.film.titre
-        imgurl =  "/static/img/evenements/40x40/yahoo-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/yahoo-icon-40x40.png")
         
         return self.setLink(imgurl,linkurl)
 
@@ -70,7 +72,7 @@ class IcalEventLink(EventLink):
     def getLink(self,seance):
         self.text += u" Ical"
         linkurl = reverse('seanceics', kwargs={'seance_id': seance.id})
-        imgurl = "/static/img/evenements/40x40/ical-icon-40x40.png"
+        imgurl = static("valdyerresweb/img/evenements/40x40/ical-icon-40x40.png")
         return self.setLink(imgurl,linkurl)
 
 
