@@ -248,8 +248,8 @@ class ManageBibEvenement(admin.ModelAdmin):
         monslug = defaultfilters.slugify(obj.nom)
         userprofile = request.user.userprofile
 
-        year = datetime.datetime.now().year
-        currentmonth = datetime.datetime.now().month
+        year = obj.debut.year
+        currentmonth = obj.debut.month
         if currentmonth in [1, 2, 3, 4, 5, 6, 7, 8]:
             year = year - 1
         nomsaison = u"Bibliothèques, Médiathèques saison " + str(year) + u"-" + str(year + 1)
@@ -354,8 +354,8 @@ class ManageCrdEvenement(admin.ModelAdmin):
         monslug = defaultfilters.slugify(obj.nom)
         userprofile = request.user.userprofile
 
-        year = datetime.datetime.now().year
-        currentmonth = datetime.datetime.now().month
+        year = obj.debut.year
+        currentmonth = obj.debut.month
         if currentmonth in [1, 2, 3, 4, 5, 6, 7, 8]:
             year = year - 1
         nomsaison = u"Conservatoires saison " + str(year) + u"-" + str(year + 1)
