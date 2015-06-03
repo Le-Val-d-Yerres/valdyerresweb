@@ -235,6 +235,11 @@ class ManageBibEvenement(admin.ModelAdmin):
         Evenement.image: {'widget': FileField},
     }
 
+    inlines = [
+        # DateLieuEvenementInline,
+        PrixInline, DocumentAttacheInline,
+    ]
+
     class Media:
         js = [
             '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
@@ -340,6 +345,11 @@ class ManageCrdEvenement(admin.ModelAdmin):
     formfield_overrides = {
         Evenement.image: {'widget': FileField},
     }
+
+    inlines = [
+        # DateLieuEvenementInline,
+        PrixInline, DocumentAttacheInline,
+    ]
 
     class Media:
         js = [
