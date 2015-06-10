@@ -14,4 +14,6 @@ urlpatterns = patterns('editorial.views',
     url(r'^rapports/(?P<page>[^\/]+)$', 'Rapports' , name="rapports"),
     url(r'^ephemeride/(?P<jour>[^\/]+).html$', 'Ephemeride', name="ephemeride"),
     url(r'^ephemeride/$', 'Ephemeride', name="ephemeride"),
+    url(r'^newsletters/', 'newsletterbiblist', name="newsletterbiblist"),
+    url(r'^newsletters/(?P<equipement_slug>[^\/]+).html$','newsletterbibhtml', name='newsletterbibhtml')
 )
