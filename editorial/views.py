@@ -279,14 +279,14 @@ def newsletterbiblist(request):
 def newsletterbibhtml(request, equipement_slug):
     bib = Equipement.objects.get(slug=equipement_slug)
     newsletter = NewsletterBib.objects.all().order_by('maj')[0]
-    activites_enfants = Evenement.objects.all().filter(type='bib', public='enf',
-                                                       date_debut__gte=newsletter.evenement_debut,
-                                                       date_fin__lte=newsletter.evenement_fin)
-    activites_adultes = Evenement.objects.all().filter(type='bib', public='adt',
-                                                       date_debut__gte=newsletter.evenement_debut,
-                                                       date_fin__lte=newsletter.evenement_fin)
-    activites_ttpublic = Evenement.objects.all().filter(type='bib', public='pub',
-                                                       date_debut__gte=newsletter.evenement_debut,
-                                                       date_fin__lte=newsletter.evenement_fin)
+    activites_enfants = Evenement.objects.all().filter(categorie='bib', public='enf',
+                                                       debut__gte=newsletter.evenement_debut,
+                                                       fin__lte=newsletter.evenement_fin)
+    activites_adultes = Evenement.objects.all().filter(categorie='bib', public='adt',
+                                                       debut__gte=newsletter.evenement_debut,
+                                                       fin__lte=newsletter.evenement_fin)
+    activites_ttpublic = Evenement.objects.all().filter(categorie='bib', public='pub',
+                                                       debut__gte=newsletter.evenement_debut,
+                                                       fin__lte=newsletter.evenement_fin)
 
-    return render_to_response('editorial/newsletter/newsletter.html'), {'news': None}
+    return render_to_response('editorial/newsletters/newsletter.html', {'bib': bib})

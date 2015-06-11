@@ -74,4 +74,4 @@ class NewsletterBib(models.Model):
 
     @permalink
     def get_absolute_url(self):
-        return ('newsletterbibhtml', (), {'slug': self.bib})
+        return ('newsletterbibhtml', (), {'equipement_slug': self.bib.slug})
