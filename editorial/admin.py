@@ -20,6 +20,7 @@ class DocumentAttacheInline(admin.TabularInline):
 
 
 class AdminActualite(admin.ModelAdmin):
+    search_fields = ['titre']
     list_display = ['titre', 'date_publication', 'publie', 'carroussel']
     prepopulated_fields = {'slug': ('titre',), }
     fieldsets = [

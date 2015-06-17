@@ -289,4 +289,8 @@ def newsletterbibhtml(request, equipement_slug):
                                                        debut__gte=newsletter.evenement_debut,
                                                        fin__lte=newsletter.evenement_fin)
 
-    return render_to_response('editorial/newsletters/newsletter.html', {'bib': bib})
+    return render_to_response('editorial/newsletters/newsletter.html', {'bib': bib,
+                                                                        'activites_enfants': activites_enfants,
+                                                                        'activites_adultes': activites_adultes,
+                                                                        'activites_ttpublic': activites_ttpublic
+                                                                        })

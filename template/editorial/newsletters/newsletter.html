@@ -19,8 +19,8 @@
                     <td>
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td width="144"><a href="http://yourlink" target="_blank"><img
-                                        src="images/cavy_logo.png" width="200" height="98" border="0" alt=""/></a></td>
+                                <td width="144"><a href="http://www.levaldyerres.fr/" target="_blank"><img
+                                        src="http://www.levaldyerres.fr/media/uploads/editorial/cavy_logo.png" width="200" height="98" border="0" alt=""/></a></td>
                                 <td width="393" align="center"
                                     style="font-family:'Myriad Pro', Helvetica, Arial, sans-serif; color:#68696a; font-size:14px; text-transform:uppercase">
                                   {{bib.nom}}<br>
@@ -32,7 +32,7 @@
                 </tr>
 
                 <tr>
-                    <td align="center"><a href="http://yourlink" target="_blank"><img alt="{{ bib.nom }}" src="{{ bib.image|resize:'598x260x1' }}"></a></td>
+                    <td align="center"><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=bib.fonction.slug equipement_slug=bib.slug %}" target="_blank"><img alt="{{ bib.nom }}" src="{{ bib.image|resize:'598x260x1' }}"></a></td>
                 </tr>
 
                 <tr>
@@ -60,13 +60,14 @@
                                                         <td width="100%">
                                                             <table width="100%" border="0" cellspacing="0"
                                                                    cellpadding="0">
+                                                                {% if activites_enfants|length > 0 %}
                                                                 <tr>
                                                                     <td>
                                                                         <table width="100%" border="0" cellspacing="0"
                                                                                cellpadding="0">
                                                                             <tr>
                                                                                 <td height="10"
-                                                                                    style="border-top:1px solid #d0d1d3;border-bottom:1px solid #d0d1d3; font-family: Georgia, 'Times New Roman', Times, serif; color:#7bb40f; font-size:20px"><em> Pour les enfants</em></td>
+                                                                                    style="border-top:1px solid #d0d1d3;border-bottom:1px solid #d0d1d3; font-family: Georgia, 'Times New Roman', Times, serif; color:#7bb40f; font-size:20px"><em>Pour les enfants</em></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td height="10"></td>
@@ -74,7 +75,7 @@
                                                                         </table>
                                                                     </td>
                                                                 </tr>
-
+                                                                    {% for item in activites_enfants %}
                                                                 <tr>
                                                                     <td>
                                                                         <table width="100%" border="0" cellspacing="0"
@@ -83,16 +84,13 @@
 
                                                                                 <td width="20%"
                                                                                     style="font-family:'Myriad Pro', Helvetica, Arial, sans-serif; color:#68696a; font-size:14px;">
-                                                                                    Samedi 9 Mai <br>16h -17h30
+                                                                                    {{ item.debut|dateCustom:item.fin }} <br>{{ item.debut|dateCustom:item.fin }}
                                                                                 </td>
 
                                                                                 <td width="50%" align="left"
                                                                                     valign="top"><font
-                                                                                        style="font-family: Georgia, 'Times New Roman', Times, serif; color:#7bb40f; font-size:20px"><strong><em>L’Atelier
-                                                                                    de Sophie</em></strong></font> <br/>
-                                                                                    <font style="font-family: Verdana, Geneva, sans-serif; color:#000000; font-size:13px; line-height:21px">Atelier
-                                                                                        créatif pour les 6 / 8 ans « Je
-                                                                                        fabrique un jeu rigolo»</font>
+                                                                                        style="font-family: Georgia, 'Times New Roman', Times, serif; color:#7bb40f; font-size:20px"><strong><em>{{ item.nom }}</em></strong></font> <br/>
+                                                                                    <font style="font-family: Verdana, Geneva, sans-serif; color:#000000; font-size:13px; line-height:21px">{{item.description|safe }}</font>
                                                                                     <br>
                                                                                     <font style="font-family: Verdana, Geneva, sans-serif; color:#000000; font-size:11px; line-height:21px">Gratuit
                                                                                         – sur inscription</font>
@@ -102,7 +100,7 @@
                                                                         </table>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                         <tr>
                                                                     <td>
                                                                         <table width="100%" border="0" cellspacing="0"
                                                                                cellpadding="0">
@@ -116,6 +114,9 @@
                                                                         </table>
                                                                     </td>
                                                                 </tr>
+                                                                    {% endfor %}
+                                                                {% endif %}
+
                                                                 <tr>
                                                                     <td>
                                                                         <table width="100%" border="0" cellspacing="0"
@@ -332,8 +333,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><img src="images/PROMO-GREEN2_07.jpg" width="598" height="7" style="display:block" border="0"
-                             alt=""/></td>
+                   <td height="5" bgcolor="7cb544"></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
