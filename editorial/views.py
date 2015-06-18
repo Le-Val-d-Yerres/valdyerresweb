@@ -278,19 +278,22 @@ def newsletterbiblist(request):
 
 def newsletterbibhtml(request, equipement_slug):
     bib = Equipement.objects.get(slug=equipement_slug)
-    newsletter = NewsletterBib.objects.all().order_by('maj')[0]
-    activites_enfants = Evenement.objects.all().filter(categorie='bib', public='enf',
+    newsletter = NewsletterBib.objects.all().filter(bib=bib).order_by('maj')[0]
+    activites_enfants = Evenement.objects.all().filter(categorie='bib', public='enf', lieu=bib,
                                                        debut__gte=newsletter.evenement_debut,
-                                                       fin__lte=newsletter.evenement_fin)
-    activites_adultes = Evenement.objects.all().filter(categorie='bib', public='adt',
+                                                       fin__lte=newsletter.evenement_fin,
+                                                       ).order_by('debut')
+    activites_adultes = Evenement.objects.all().filter(categorie='bib', public='adt', lieu=bib,
                                                        debut__gte=newsletter.evenement_debut,
-                                                       fin__lte=newsletter.evenement_fin)
-    activites_ttpublic = Evenement.objects.all().filter(categorie='bib', public='pub',
+                                                       fin__lte=newsletter.evenement_fin).order_by('debut')
+    activites_ttpublic = Evenement.objects.all().filter(categorie='bib', public='pub', lieu=bib,
                                                        debut__gte=newsletter.evenement_debut,
-                                                       fin__lte=newsletter.evenement_fin)
+                                                       fin__lte=newsletter.evenement_fin).order_by('debut')
 
     return render_to_response('editorial/newsletters/newsletter.html', {'bib': bib,
+                                                                        'request':request,
                                                                         'activites_enfants': activites_enfants,
                                                                         'activites_adultes': activites_adultes,
-                                                                        'activites_ttpublic': activites_ttpublic
+                                                                        'activites_ttpublic': activites_ttpublic,
+                                                                        'edito': newsletter.edito
                                                                         })
