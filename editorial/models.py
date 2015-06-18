@@ -4,8 +4,12 @@ from django.db import models
 from filebrowser.fields import FileBrowseField
 from model_utils.managers import InheritanceManager
 from django.db.models import permalink
+from django.db import models
+
 
 # Create your models here.
+from equipements.models import Equipement
+
 
 class PageBase(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
@@ -60,3 +64,14 @@ class RapportActivite(models.Model):
     document = FileBrowseField("Document PDF", max_length=200, directory="rapports", extensions=[".pdf"])
     image = models.ImageField(upload_to="rapports/img") 
     publie = models.BooleanField(verbose_name="Publié", default=False)
+
+class NewsletterBib(models.Model):
+    maj = models.DateField(auto_now=True, auto_now_add=True, verbose_name='Date de mise à jour')
+    edito = models.TextField(verbose_name="Edito")
+    evenement_debut = models.DateField("Date de Début des événements")
+    evenement_fin = models.DateField("Date de fin des événements")
+    bib = models.ForeignKey(Equipement)
+
+    @permalink
+    def get_absolute_url(self):
+        return ('newsletterbibhtml', (), {'equipement_slug': self.bib.slug})

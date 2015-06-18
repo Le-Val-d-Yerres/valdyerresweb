@@ -1,0 +1,105 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters%}
+{% load hoursfilters%}
+{% load tz %}
+
+	{% block title %}{{ fonction.pluriel }}{% endblock %}
+	
+	{% block menu %}{% getmenu %}{% endblock %}
+	
+	{% block meta-description %}{{fonction.pluriel}} du Val d'Yerres{% endblock %}
+	
+
+
+{% block contenu %}	
+<div class="container" style="margin-top:60px;">
+	
+<div class="row-fluid">
+		<div class="span12">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">Accueil</a><span class="divider">/</span>
+				</li>
+				<li>
+					<a href="{% url 'editorial.views.newsletterbiblist' %}">Les newsletters des équipements du Val d'Yerres</a><span class="divider">/</span>
+				</li>
+				<li class="active">
+					{{ fonction.pluriel }}
+				</li>
+			</ul>
+		</div>
+		
+		<div class="span11 hidden-phone">
+
+		
+		
+	    
+	    	<table class="table table-striped" align="center">
+	    		<thead>
+    				<tr>
+      					<th></th>
+      					<th>Nom</th>
+      					<th>Ville</th>
+
+      					<th></th>
+
+      					<th></th>
+    				</tr>
+  				</thead>
+			{% for equipement in equipements %}
+			<tr>
+				 
+				<td><img class="img-polaroid" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
+				<td><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td> <td> {{equipement.ville.nom}} </td>
+
+				<td><a class="btn  btn-primary" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">Générer newsletter</a></td>
+			</tr>
+			{% endfor %}
+			</table>
+		
+		</div>
+		<div class="span12 visible-phone">
+
+			{% for equipement in equipements %}
+			<p>
+			<ul>
+				 
+				
+				<li><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a> à {{equipement.ville.nom}}</li>
+				{% if listhoraires|length != 0 %}
+				Horaires: aujourd'hui, {%nom_jour_aujourdhui%} :
+				<ul>
+					
+				{% for horaires in listhoraires %}
+					{% for horaire in horaires %}
+					
+						{% if horaire.equipement.id == equipement.id %}
+							
+							<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</li>
+							
+						{% endif %}
+					
+					{%endfor%}
+				{% endfor %}
+				</ul>
+				{% endif %}
+				
+				<div style="text-align: right;"><a class="btn btn-primary" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">Générer newsletter</a></div>
+				
+			</ul>
+			</p>
+			<hr/>
+			{% endfor %}
+		</div>
+</div>
+
+	
+{% endblock %}
+
+
+
+
