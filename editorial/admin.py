@@ -161,6 +161,12 @@ class AdminNewsletterBib(admin.ModelAdmin):
 
         ]
 
+    def save_model(self, request, obj, form, change):
+        obj.save()
+        path = reverse('editorial.views.newsletterbibhtml', kwargs={'equipement_slug': obj.bib.slug})
+        functions.expire_page(path)
+
+
 admin.site.register(Actualite, AdminActualite)
 admin.site.register(PageStatique, AdminPageStatique)
 admin.site.register(Magazine, AdminMagazine)
