@@ -278,7 +278,7 @@ def newsletterbiblist(request):
 
 def newsletterbibhtml(request, equipement_slug):
     bib = Equipement.objects.get(slug=equipement_slug)
-    newsletter = NewsletterBib.objects.all().filter(bib=bib).order_by('maj')[0]
+    newsletter = NewsletterBib.objects.all().filter(bib=bib).order_by('-maj')[0]
     activites_enfants = Evenement.objects.all().filter(categorie='bib', public='enf', lieu=bib,
                                                        debut__gte=newsletter.evenement_debut,
                                                        fin__lte=newsletter.evenement_fin,
