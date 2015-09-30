@@ -26,8 +26,97 @@
 		<div class="span11">
 		<h1><a href="">Formulaire Stage musique et danse</a></h1>
 		</div>
-		<div class="span7">
+		<div class="span11">
+            <form class="form-horizontal" action="" method="post">
+      <div class="control-group">
+          <legend>Nom et Prénom</legend>
+        <label class="control-label" for="inputEmail">Nom</label>
+        <div class="controls">
+          <input name="nom" type="text" id="inputEmail" placeholder="Nom">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputPassword">Prénom</label>
+        <div class="controls">
+          <input name="prenom" type="text" id="prenom" placeholder="Prénom">
+        </div>
+      </div>
+      <div class="control-group">
+      <legend>Disciplines souhaitées pour le stage (par ordre de préférence).</legend>
+        <label class="control-label" for="choix-1">Choix 1</label>
+        <div class="controls">
+          <select name="choix_1">
+              {% for discipline in disciplines  %}
+                  <option value="{{ discipline.id }}" >{{ discipline.nom }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div><div class="control-group">
+        <label class="control-label" for="choix-2">Choix 2</label>
+        <div class="controls">
+          <select name="choix_2">
+              {% for discipline in disciplines  %}
+                  <option value="{{ discipline.id }}" >{{ discipline.nom }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="choix-3">Choix 3</label>
+        <div class="controls">
+          <select name="choix_3">
+              {% for discipline in disciplines  %}
+                  <option value="{{ discipline.id }}" >{{ discipline.nom }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
 
+      <div class="control-group">
+      <legend>Dans le tableau ci-dessous, veuillez-cocher les propositions de stages susceptibles de vous intéresser à la période qui vous conviendrait le mieux :</legend>
+
+      <table class="table table-striped">
+          <thead>
+          <tr>
+          <th width="15%">Stages proposés</th>
+          <th width="15%">durée</th>
+          <th colspan="8" width="70%">Période souhaitée</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr><td></td><td></td> <td colspan="2">Toussaint</td>  <td colspan="2">Hiver</td><td colspan="2">Pâques</td><td colspan="2">Été</td></tr>
+          <tr><td></td><td></td> <td>Semaine 1</td> <td>Semaine 2</td><td>Semaine 1</td> <td>Semaine 2</td><td>Semaine 1</td> <td>Semaine 2</td><td>Semaine 1</td> <td>Semaine 2</td><td>Pas de souhait</td></tr>
+            {% for intitule in intitules %}
+                 <tr>
+                     <td>{{ intitule.nom }}</td>
+                     <td>{{ intitule.duree }}</td>
+                     <td><input type="radio" name="stage_{{ intitule.id }}" value="toussaint_1" /></td>
+                     <td><input type="radio" name="stage_{{ intitule.id }}" value="toussaint_2" /></td>
+                     <td><input type="radio" name="stage_{{ intitule.id }}" value="hiver_1" /></td>
+                     <td><input type="radio" name="stage_{{ intitule.id }}" value="hiver_2" /></td>
+                     <td><input type="radio" name="stage_{{ intitule.id }}" value="paques_1" /></td>
+                     <td><input type="radio" name="stage_{{ intitule.id }}" value="paques_2" /></td>
+                     <td><input type="radio" name="stage_{{ intitule.id }}" value="ete_1" /></td>
+                     <td><input type="radio" name="stage_{{ intitule.id }}" value="ete_2" /></td>
+                    <td><input type="radio" name="stage-{{ intitule.id }}" value="na" /></td>
+                 </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+        <div class="control-group">
+      <legend>Commentaires (lieu, moment dans la journée, durée, tarifs, etc.)</legend>
+        <label class="control-label" for="choix-1">Commentaires</label>
+        <div class="controls">
+         <textarea style="width: 500px; height: 100px;" name="commentaire"></textarea>
+        </div>
+            </div>
+      <div class="control-group">
+        <div class="controls">
+
+          <button type="submit" class="btn btn-large btn-primary">Valider</button>
+        </div>
+      </div>
+    </form>
         </div>
 		
 

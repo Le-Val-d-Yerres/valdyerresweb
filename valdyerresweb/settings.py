@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'filebrowser',
     'cinemas',
     'model_utils',
+    'forms',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
