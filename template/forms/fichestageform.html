@@ -6,7 +6,7 @@
 {% load aidefilters%}
 {% load tz %}
 
-	{% block title %}{{page.titre}}{% endblock %}
+	{% block title %}Formulaire Stage musique et danse{% endblock %}
 	{% block menu %}{% getmenu %}{% endblock %}
 	
 	{% block meta-description %}{{page.meta_description}}{% endblock %}
@@ -32,20 +32,20 @@
           <legend>Nom et Prénom</legend>
         <label class="control-label" for="inputEmail">Nom</label>
         <div class="controls">
-          <input name="nom" type="text" id="inputEmail" placeholder="Nom">
+          <input  autocomplete="off" name="nom" type="text" id="inputEmail" placeholder="Nom" required>
         </div>
       </div>
       <div class="control-group">
         <label class="control-label" for="inputPassword">Prénom</label>
         <div class="controls">
-          <input name="prenom" type="text" id="prenom" placeholder="Prénom">
+          <input  autocomplete="off" name="prenom" type="text" id="prenom" placeholder="Prénom" required>
         </div>
       </div>
       <div class="control-group">
       <legend>Disciplines souhaitées pour le stage (par ordre de préférence).</legend>
         <label class="control-label" for="choix-1">Choix 1</label>
         <div class="controls">
-          <select name="choix_1">
+          <select  autocomplete="off" name="choix_1">
               {% for discipline in disciplines  %}
                   <option value="{{ discipline.id }}" >{{ discipline.nom }}</option>
               {% endfor %}
@@ -54,7 +54,7 @@
       </div><div class="control-group">
         <label class="control-label" for="choix-2">Choix 2</label>
         <div class="controls">
-          <select name="choix_2">
+          <select   autocomplete="off" name="choix_2">
               {% for discipline in disciplines  %}
                   <option value="{{ discipline.id }}" >{{ discipline.nom }}</option>
               {% endfor %}
@@ -64,7 +64,7 @@
       <div class="control-group">
         <label class="control-label" for="choix-3">Choix 3</label>
         <div class="controls">
-          <select name="choix_3">
+          <select  autocomplete="off" name="choix_3">
               {% for discipline in disciplines  %}
                   <option value="{{ discipline.id }}" >{{ discipline.nom }}</option>
               {% endfor %}
@@ -90,15 +90,15 @@
                  <tr>
                      <td>{{ intitule.nom }}</td>
                      <td>{{ intitule.duree }}</td>
-                     <td><input type="radio" name="stage_{{ intitule.id }}" value="toussaint_1" /></td>
-                     <td><input type="radio" name="stage_{{ intitule.id }}" value="toussaint_2" /></td>
-                     <td><input type="radio" name="stage_{{ intitule.id }}" value="hiver_1" /></td>
-                     <td><input type="radio" name="stage_{{ intitule.id }}" value="hiver_2" /></td>
-                     <td><input type="radio" name="stage_{{ intitule.id }}" value="paques_1" /></td>
-                     <td><input type="radio" name="stage_{{ intitule.id }}" value="paques_2" /></td>
-                     <td><input type="radio" name="stage_{{ intitule.id }}" value="ete_1" /></td>
-                     <td><input type="radio" name="stage_{{ intitule.id }}" value="ete_2" /></td>
-                    <td><input type="radio" name="stage-{{ intitule.id }}" value="na" /></td>
+                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="toussaint_1" /></td>
+                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="toussaint_2" /></td>
+                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="hiver_1" /></td>
+                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="hiver_2" /></td>
+                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="paques_1" /></td>
+                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="paques_2" /></td>
+                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="ete_1" /></td>
+                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="ete_2" /></td>
+                    <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}"  checked="checked" value="na" /></td>
                  </tr>
             {% endfor %}
           </tbody>

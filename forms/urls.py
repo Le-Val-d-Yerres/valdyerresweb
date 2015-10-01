@@ -4,4 +4,6 @@ urlpatterns = patterns('forms.views',
 
                        url(r'^form-crd.html$', 'formfichestage', name="formfichestage"),
                        url(r'^merci.html$', 'merci', name="merci"),
+                        url(r'^export-crd.csv$', 'exportcrd', name="exportcrd"),
+
                        )
