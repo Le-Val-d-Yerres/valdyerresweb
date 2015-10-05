@@ -13,6 +13,7 @@ class FicheStageAdmin(admin.ModelAdmin):
     search_fields = ['nom']
     inlines = [StageInline]
 
+
 class DisciplinestagecrdAdmin(admin.ModelAdmin):
     list_display = ['nom', 'index']
 

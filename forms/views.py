@@ -88,7 +88,7 @@ def exportcrd(request):
                 for key in vacances:
                     if getattr(stage, key) is True:
                         check = True
-                        myvalue = myvalue+key+"\n"
+                        myvalue = myvalue + key
                         myrowpar2 = myrowpar2 + (myvalue,)
                 if check is False:
                         myrowpar2 = myrowpar2 + ("na",)
