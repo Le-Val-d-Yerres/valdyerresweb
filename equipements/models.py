@@ -7,7 +7,6 @@ from django.core.urlresolvers import reverse
 from django.db.models import permalink
 from model_utils.managers import InheritanceManager
 from django.contrib.auth.models import User
-from localflavor.fr.forms import FRPhoneNumberField
 
 
 class Alerte(models.Model):
