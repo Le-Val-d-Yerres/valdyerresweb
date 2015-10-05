@@ -3,6 +3,8 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from models import Fichestagecrd, Stage, Disciplinestagecrd, Intitulestage
+from django.views.decorators.cache import never_cache
+from django.contrib.auth.decorators import login_required
 from random import random
 from django.forms.models import inlineformset_factory
 import csv
@@ -22,9 +24,6 @@ def formfichestage(request):
         choix_3 = request.POST['choix_3']
         commentaire = request.POST['commentaire']
         fiche = Fichestagecrd()
-
-
-
         fiche.nom = nom
         fiche.prenom = prenom
         fiche.choix_1 = Disciplinestagecrd.objects.get(id=choix_1)
@@ -50,21 +49,19 @@ def formfichestage(request):
 
         return HttpResponseRedirect('merci.html')
 
-
     params = {}
     intitules = Intitulestage.objects.all()
     params.update({'intitules': intitules})
     disciplines = Disciplinestagecrd.objects.all()
     params.update({'disciplines': disciplines})
-
-
-
-
     return render_to_response('forms/fichestageform.html', params)
+
 
 def merci(request):
     return render_to_response('forms/merci.html')
 
+@never_cache
+@login_required(login_url='/admin/login/')
 def exportcrd(request):
     myfile = StringIO()
     file_type = 'application/csv'
