@@ -78,6 +78,7 @@ EVENEMENT_CATEGORIES = (
     ('bib', u'Bibliothèques/Médiatèques'),
     ('crd', u'Conservatoires'),
     ('sty', u'Sothevy'),
+    ('eco', u'Développement Économique'),
     ('aut', u'Autres'),
 )
 
@@ -170,3 +171,17 @@ class EvenementCrd(Evenement):
         proxy = True
         verbose_name_plural = u"Événements Conservatoires"
         verbose_name = u"Événement Conservatoire"
+
+
+class EvenementDevEcoManager(models.Manager):
+    def get_queryset(self):
+        return super(EvenementDevEcoManager, self).get_queryset().filter(categorie='eco')
+
+
+class EvenementDevEco(Evenement):
+    objects = EvenementDevEcoManager()
+
+    class Meta:
+        proxy = True
+        verbose_name_plural = u"Événements Dev Eco"
+        verbose_name = u"Événement Dev Eco"

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from evenements.models import Evenement, Organisateur, SaisonCulturelle, TypeEvenement, Festival, Prix, DocumentAttache, \
-    EvenementBib, EvenementCrd
+    EvenementBib, EvenementCrd, EvenementDevEco
 from equipements.models import Equipement
 from valdyerresweb.utils.functions import pdftojpg
 from django.contrib import admin
@@ -436,9 +436,112 @@ class ManageCrdEvenement(admin.ModelAdmin):
         functions.expire_page(path)
 
 
+class ManageDevEcoEvenement(admin.ModelAdmin):
+    list_display = ['nom', 'Organisateurs', 'lieu', 'debut', 'publish']
+    fieldsets = [
+        ('Description', {'fields': ['nom', 'type', 'description', 'image', 'url']}),
+        ('Date et Lieu', {'fields': ['debut', 'fin', 'lieu']}),
+        ('Classification', {'fields': ['public']}),
+        ('Option de publication', {'fields': ['publish']}),
+    ]
+    search_fields = ['nom']
+    list_filter = ['publish', 'debut']
+
+    formfield_overrides = {
+        Evenement.image: {'widget': FileField},
+    }
+
+    inlines = [
+        PrixInline, DocumentAttacheInline,
+    ]
+
+    class Media:
+        js = [
+            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+            '/static/grappelli/tinymce_setup/tinymce_setup.js',
+        ]
+
+    def save_model(self, request, obj, form, change):
+        obj.categorie = 'eco'
+        monslug = defaultfilters.slugify(obj.nom)
+        userprofile = request.user.userprofile
+
+        year = obj.debut.year
+        currentmonth = obj.debut.month
+        if currentmonth in [1, 2, 3, 4, 5, 6, 7, 8]:
+            year = year - 1
+        nomsaison = u"Développement économique " + str(year) + u"-" + str(year + 1)
+        slugsaison = defaultfilters.slugify(nomsaison)
+        saisonculturelle = None
+        try:
+            saisonculturelle = SaisonCulturelle.objects.get(slug=slugsaison)
+        except:
+            saisonculturelle = SaisonCulturelle()
+            saisonculturelle.nom = nomsaison
+            saisonculturelle.slug = slugsaison
+            premsept = datetime.date(year, 9, 1)
+            dernaout = datetime.date(year + 1, 8, 31)
+            saisonculturelle.debut = premsept
+            saisonculturelle.fin = dernaout
+            saisonculturelle.description = "Les évenements «développement économique»"
+            saisonculturelle.save()
+
+        obj.cadre_evenement = saisonculturelle
+
+        if obj.slug == "":
+            listevenement = Evenement.objects.filter(slug__startswith=monslug)
+            listsize = len(listevenement)
+            if listsize > 0:
+                monslug = monslug + '-' + str(listsize + 1)
+            obj.slug = monslug
+        if obj.image != "":
+            pouet, imageextension = os.path.splitext(obj.image.path)
+            imageextension = imageextension.lower()
+            if imageextension == ".pdf":
+                abspath_image = pdftojpg(os.path.join(settings.MEDIA_ROOT, obj.image.path), subpath="")
+                obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
+
+        if obj.id != None:
+            evenementinfo = Evenement.objects.select_related().get(slug=obj.slug)
+
+            equipements = Equipement.objects.filter(lieu_ptr_id=evenementinfo.lieu.id)
+
+            nbrequipement = len(equipements)
+            if nbrequipement > 0:
+                for equipement in equipements:
+                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                                   kwargs={'fonction_slug': equipement.fonction.slug,
+                                           'equipement_slug': equipement.slug})
+                    functions.expire_page(path)
+
+            equipements = Equipement.objects.filter(lieu_ptr_id=obj.lieu.id)
+
+            nbrequipement = len(equipements)
+            if nbrequipement > 0:
+                for equipement in equipements:
+                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                                   kwargs={'fonction_slug': equipement.fonction.slug,
+                                           'equipement_slug': equipement.slug})
+                    functions.expire_page(path)
+
+            functions.resetEphemerideCache(obj.debut)
+
+        obj.save()
+        obj.organisateur.add(userprofile.organisateur)
+        obj.save()
+
+        path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.cadre_evenement.slug})
+        functions.expire_page(path)
+
+        path = reverse('evenements.views.EvenementDetailsHtml',
+                       kwargs={'slug': obj.cadre_evenement.slug, 'evenement_slug': obj.slug})
+        functions.expire_page(path)
+
+
 admin.site.register(Evenement, EvenementAdmin)
 admin.site.register(EvenementBib, ManageBibEvenement)
 admin.site.register(EvenementCrd, ManageCrdEvenement)
+admin.site.register(EvenementDevEco, ManageDevEcoEvenement)
 admin.site.register(Organisateur, OrganisateurAdmin)
 admin.site.register(SaisonCulturelle, SaisonCulturelleAdmin)
 admin.site.register(TypeEvenement, TypeEvenementAdmin)
