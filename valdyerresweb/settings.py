@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'cinemas',
     'model_utils',
     'forms',
+    'deveco',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
