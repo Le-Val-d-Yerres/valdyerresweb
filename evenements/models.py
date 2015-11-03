@@ -86,6 +86,7 @@ EVENEMENT_PUBLIC = (
     ('adt', u'Adulte'),
     ('enf', u'Enfant'),
     ('pub', u'Tout public'),
+    ('ent', u'Entreprises'),
 
 )
 
