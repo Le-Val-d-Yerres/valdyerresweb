@@ -34,17 +34,22 @@ def formfichestage(request):
 
         intitules = Intitulestage.objects.all()
         for intitule in intitules:
-            try:
-                monintitule = request.POST["stage_"+str(intitule.id)]
-                print(monintitule)
-            except Exception:
-                pass
+            for i in range(1, 9):
+                try:
+                    monintitule = request.POST["stage_"+str(intitule.id)+"-"+str(i)]
+                    monintitule = monintitule.split("-")[0]
+                    print(monintitule)
+                except Exception:
+                    continue
+                try:
+                    monstage = Stage.objects.get(fiche=fiche, intitule=intitule)
+                except Stage.DoesNotExist:
+                    monstage = Stage()
+                    monstage.intitule = intitule
+                    monstage.fiche = fiche
 
-            if monintitule is not "na":
-                monstage = Stage()
                 setattr(monstage, monintitule, True)
-                monstage.intitule = intitule
-                monstage.fiche = fiche
+
                 monstage.save()
 
         return HttpResponseRedirect('merci.html')
@@ -69,24 +74,24 @@ def exportcrd(request):
     mycsv = csv.writer(myfile, delimiter=';', quotechar='"')
     intitules = Intitulestage.objects.all().order_by('index')
     stagesnom = tuple(intitule.nom.encode('UTF-8') for intitule in intitules)
-    headers = (u"nom",u"prenom",u'commentaire',u"choix 1", u"choix 2", u"choix 3")
+    headers = (u"nom", u"prenom", u'commentaire', u"choix 1", u"choix 2", u"choix 3")
     headers = headers+stagesnom
     mycsv.writerow(headers)
     fiches = Fichestagecrd.objects.all().order_by('nom', 'prenom')
     for fiche in fiches:
-        myrow = (fiche.nom.encode('UTF-8'), fiche.prenom.encode('UTF-8'), fiche.commentaires.encode('UTF-8'),fiche.choix_1.nom.encode('UTF-8'), fiche.choix_2.nom.encode('UTF-8'), fiche.choix_3.nom.encode('UTF-8') )
+        myrow = (fiche.nom.encode('UTF-8'), fiche.prenom.encode('UTF-8'), fiche.commentaires.encode('UTF-8'), fiche.choix_1.nom.encode('UTF-8'), fiche.choix_2.nom.encode('UTF-8'), fiche.choix_3.nom.encode('UTF-8'))
         myrowpar2 = tuple()
         for intitule in intitules:
             myvalue = ""
-            nbstage = Stage.objects.all().filter(fiche=fiche,intitule=intitule).count()
+            nbstage = Stage.objects.all().filter(fiche=fiche, intitule=intitule).count()
             if nbstage is 1:
-                stage = Stage.objects.get(fiche=fiche,intitule=intitule)
+                stage = Stage.objects.get(fiche=fiche, intitule=intitule)
                 check = False
                 for key in vacances:
                     if getattr(stage, key) is True:
                         check = True
-                        myvalue = myvalue + key
-                        myrowpar2 = myrowpar2 + (myvalue,)
+                        myvalue = myvalue + key + " "
+                        myrowpar2 = myrowpar2 +(myvalue,)
                 if check is False:
                         myrowpar2 = myrowpar2 + ("na",)
             if nbstage is 0:

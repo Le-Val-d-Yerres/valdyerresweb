@@ -85,20 +85,19 @@
           </thead>
           <tbody>
           <tr><td></td><td></td> <td colspan="2">Toussaint</td>  <td colspan="2">Hiver</td><td colspan="2">Pâques</td><td colspan="2">Été</td></tr>
-          <tr><td></td><td></td> <td>Semaine 1</td> <td>Semaine 2</td><td>Semaine 1</td> <td>Semaine 2</td><td>Semaine 1</td> <td>Semaine 2</td><td>Semaine 1</td> <td>Semaine 2</td><td>Pas de souhait</td></tr>
+          <tr><td></td><td></td> <td>Semaine 1</td> <td>Semaine 2</td><td>Semaine 1</td> <td>Semaine 2</td><td>Semaine 1</td> <td>Semaine 2</td><td>Juillet</td> <td>Août</td></tr>
             {% for intitule in intitules %}
                  <tr>
                      <td>{{ intitule.nom }}</td>
                      <td>{{ intitule.duree }}</td>
-                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="toussaint_1" /></td>
-                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="toussaint_2" /></td>
-                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="hiver_1" /></td>
-                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="hiver_2" /></td>
-                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="paques_1" /></td>
-                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="paques_2" /></td>
-                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="ete_1" /></td>
-                     <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}" value="ete_2" /></td>
-                    <td><input  autocomplete="off" type="radio" name="stage_{{ intitule.id }}"  checked="checked" value="na" /></td>
+                     <td><input  autocomplete="off" type="checkbox" name="stage_{{ intitule.id }}-1" value="toussaint_1" /></td>
+                     <td><input  autocomplete="off" type="checkbox" name="stage_{{ intitule.id }}-2" value="toussaint_2" /></td>
+                     <td><input  autocomplete="off" type="checkbox" name="stage_{{ intitule.id }}-3" value="hiver_1" /></td>
+                     <td><input  autocomplete="off" type="checkbox" name="stage_{{ intitule.id }}-4" value="hiver_2" /></td>
+                     <td><input  autocomplete="off" type="checkbox" name="stage_{{ intitule.id }}-5" value="paques_1" /></td>
+                     <td><input  autocomplete="off" type="checkbox" name="stage_{{ intitule.id }}-6" value="paques_2" /></td>
+                     <td><input  autocomplete="off" type="checkbox" name="stage_{{ intitule.id }}-7" value="ete_1" /></td>
+                     <td><input  autocomplete="off" type="checkbox" name="stage_{{ intitule.id }}-8" value="ete_2" /></td>
                  </tr>
             {% endfor %}
           </tbody>
