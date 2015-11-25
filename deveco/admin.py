@@ -34,7 +34,7 @@ class AdminEntreprise(admin.ModelAdmin):
     list_display = ['nom', 'ville', 'publie',]
     prepopulated_fields = {'slug': ('nom',), }
     fieldsets = [
-        ('Entreprise', {'fields': ['nom', 'slug', 'meta_description', 'image', 'presentation', ]}),
+        ('Entreprise', {'fields': ['nom', 'slug', 'meta_description', 'image', 'presentation','telephone' ]}),
         ('Lieu', {'fields': ['rue', 'ville', 'latitude', 'longitude']}),
         ('Internet', {'fields': ['site_internet', 'email']}),
         ('Publication', {'fields': ['publie']})
