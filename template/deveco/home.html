@@ -31,33 +31,30 @@
 
             <div class="span11">
 
-                <h1><a href="{% url 'editorial.views.Rapports' %}">Actualités</a></h1>
+                <h1><a href="{% url 'deveco.views.home' %}">Liste des membres du club d'entreprise du Val d'Yerres</a></h1>
             </div>
 
 
             <div class="span11">
 
                 <br/>
-                {% for page in pages %}
+                {% for entreprise in entreprises %}
                     <div class="row bkgd-white">
-                        <div class="offset1 span3"><img class="img-polaroid" src="{{ page.image|resize:'300x225x1' }}">
+                        <div class="offset1 span3"><img class="img-polaroid" src="{{ entreprise.image|resize:'300x225x1' }}">
                         </div>
                         <div class="span6">
 
                             <h2>
-                                <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                                <a href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}">{{ entreprise.nom }}</a>
                             </h2>
 
-                            <p>
-                                <small>Publié le {{ page.date_publication|dateSimple }}.</small>
-                            </p>
                             <p>
                                 {{ page.contenu|resume:200|safe }}
                             </p>
 
                             <p style="text-align: right;">
                                 <a class="btn btn-primary"
-                                   href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                                   href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}">Lire la
                                     suite</a>
                             </p>
                         </div>
