@@ -31,7 +31,26 @@
 
             <div class="span11">
 
-                <h1><a href="{% url 'deveco.views.home' %}">Liste des membres du club d'entreprise du Val d'Yerres</a></h1>
+                <h1><a href="{% url 'deveco.views.home' %}">Liste des membres du club d'entreprise du Val d'Yerres</a>
+                </h1>
+            </div>
+
+            <div class="span4">
+
+                <script>
+                    (function () {
+                        var cx = '009448632773803032568:owwdrkixkha';
+                        var gcse = document.createElement('script');
+                        gcse.type = 'text/javascript';
+                        gcse.async = true;
+                        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                '//cse.google.com/cse.js?cx=' + cx;
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(gcse, s);
+                    })();
+                </script>
+                <gcse:search></gcse:search>
+
             </div>
 
 
@@ -40,7 +59,9 @@
                 <br/>
                 {% for entreprise in entreprises %}
                     <div class="row bkgd-white">
-                        <div class="offset1 span3"><img class="img-polaroid" src="{{ entreprise.image|resize:'300x225x1' }}">
+                        <div class="offset1 span2">
+                            <img width="150" height="200" class="img-polaroid"
+                                 src="{{ entreprise.image|resize:'200x150x1' }}">
                         </div>
                         <div class="span6">
 
@@ -52,7 +73,7 @@
                                 {{ page.contenu|resume:200|safe }}
                             </p>
 
-                            <p style="text-align: right;">
+                            <p>
                                 <a class="btn btn-primary"
                                    href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}">Lire la
                                     suite</a>

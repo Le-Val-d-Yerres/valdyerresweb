@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+SOURCE:{% url 'deveco.views.entreprisevcard' slug=entreprise.slug %}
+NAME:{{ entreprise.nom }}
+N:;;;;
+FN;LANGUAGE=fr;CHARSET=utf-8:{{ entreprise.nom|safe }}
+ORG;CHARSET=utf-8:{{settings.NOM_ORGANISATION|safe  }}
+{% if entreprise.site_internet %}
+URL:{{ entreprise.site_internet }}
+{% endif %}
+{% if entreprise.email %}EMAIL:{{ entreprise.email }}{% endif %}
+ADR;LANGUAGE=fr;CHARSET=utf-8:;;{{ entreprise.rue }};{{ entreprise.ville.code_postal }};;{{ entreprise.ville.nom }}; 
+{% if entreprise.presentation %}TEL;TYPE=WORK;VOICE:{{ entreprise.telephone }}
+GEO:{{ entreprise.latitude }};{{ entreprise.longitude }}{% endif %}
+END:VCARD
