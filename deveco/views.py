@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response , redirect , get_object_or_404
 from models import Entreprise
 from valdyerresweb.utils.functions import GenerationQrCode
 from django.template import Context, loader
+from django.http import Http404, HttpResponse
 
 
 def home(request):
@@ -20,20 +21,17 @@ def entreprise(request, slug):
     params.update({"entreprise": monentreprise})
     return render_to_response("deveco/entreprise.html", params)
 
+
 def genentreprisevcard(slug):
     monentreprise = get_object_or_404(Entreprise, slug=slug)
-    params = {}
-    params.update({"entreprise": monentreprise})
+    mycontext = Context({"entreprise": monentreprise})
     mytemplate = loader.get_template('deveco/entreprise.vcard.html')
-    return mytemplate.render(params)
+    return mytemplate.render(mycontext)
 
 
 def entreprisevcard(request, slug):
-    monentreprise = get_object_or_404(Entreprise, slug=slug)
-    params = {}
-    params.update({"entreprise": monentreprise})
-    mytemplate = loader.get_template('deveco/entreprise.vcard.html')
-    return mytemplate.render(params)
+    vcard = genentreprisevcard(slug)
+    return HttpResponse(vcard, content_type="text/vcard")
 
 
 def home3(request):
