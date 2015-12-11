@@ -19,6 +19,8 @@ def entreprise(request, slug):
     qr_code_vcard = GenerationQrCode(genentreprisevcard(monentreprise.slug))
     params = {}
     params.update({"entreprise": monentreprise})
+    params.update({"qr_code_geo": qr_code_geo})
+    params.update({"qr_code_vcard": qr_code_vcard})
     return render_to_response("deveco/entreprise.html", params)
 
 

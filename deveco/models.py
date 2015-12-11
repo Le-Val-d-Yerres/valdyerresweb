@@ -20,15 +20,20 @@ class Entreprise(models.Model):
     site_internet = models.URLField(blank=True, null=True)
     publie = models.BooleanField(verbose_name="Publié", default=False)
 
+    def __str__(self):
+        return self.nom
+
 
 class Dirigeant(models.Model):
     nom = models.CharField(max_length=255)
     prenom = models.CharField(max_length=255)
-    image = FileBrowseField("Photo du dirigeant", max_length=200, directory="deveco/entreprises", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"], blank=True, null=True)
+    image = FileBrowseField("Photo du dirigeant", max_length=200, directory="deveco/entreprises", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     presentation = models.TextField(blank=True, null=True)
     entreprise = models.ForeignKey(Entreprise)
 
+    def __str__(self):
+        return self.nom
 
 class ActualiteDevEco(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
@@ -40,8 +45,14 @@ class ActualiteDevEco(models.Model):
     date_mise_a_jour = models.DateTimeField()
     date_publication = models.DateTimeField()
 
+    def __str__(self):
+        return self.titre
+
 
 class DocumentAttacheDevEco(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom")
     document = FileBrowseField("Document", max_length=200, directory="deveco/docs", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
     reference = models.ForeignKey(ActualiteDevEco)
+
+    def __str__(self):
+        return self.nom
