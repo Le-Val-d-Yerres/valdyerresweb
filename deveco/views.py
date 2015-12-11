@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response , redirect , get_object_or_404
-from models import Entreprise
+from models import Entreprise, Dirigeant
 from valdyerresweb.utils.functions import GenerationQrCode
 from django.template import Context, loader
 from django.http import Http404, HttpResponse
@@ -14,12 +14,14 @@ def home(request):
 
 
 def entreprise(request, slug):
-    monentreprise = get_object_or_404(Entreprise, slug=slug)
-    qr_code_geo = GenerationQrCode("geo:" + str(monentreprise.latitude) + "," + str(monentreprise.longitude))
-    qr_code_vcard = GenerationQrCode(genentreprisevcard(monentreprise.slug))
     params = {}
+    monentreprise = get_object_or_404(Entreprise, slug=slug, publie=True)
     params.update({"entreprise": monentreprise})
+    dirigeants = Dirigeant.objects.filter(entreprise=monentreprise)
+    params.update({"dirigeants": dirigeants})
+    qr_code_geo = GenerationQrCode("geo:" + str(monentreprise.latitude) + "," + str(monentreprise.longitude))
     params.update({"qr_code_geo": qr_code_geo})
+    qr_code_vcard = GenerationQrCode(genentreprisevcard(monentreprise.slug))
     params.update({"qr_code_vcard": qr_code_vcard})
     return render_to_response("deveco/entreprise.html", params)
 

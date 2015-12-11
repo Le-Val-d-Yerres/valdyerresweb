@@ -28,7 +28,7 @@
 					<a href="{% url 'deveco.views.home' %}">Les membres du club d'entreprise</a><span class="divider">/</span>
 				</li>
 				<li class="active">
-					{{ entreprise.nom}} , {{entrprise.ville.nom }}
+					{{ entreprise.nom}} , {{entreprise.ville.nom }}
 				</li>
 			</ul>
 		</div>
@@ -39,9 +39,25 @@
 			{% endif %}</div>
             <div class="span8">
 			<h1><a itemprop="url" href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}"><span itemprop="name">{{ entreprise.nom }}</span></a></h1>
+                {{ entreprise.presentation|safe }}
             </div>
             </div>
-			{{ entreprise.presentation|safe }}
+
+        {% for dirigeant in dirigeants %}
+            <div class="row">
+             <div class="span3">
+             </div>
+                <div class="span8">
+                    <hr>
+
+            <h3>{{ dirigeant.prenom }} {{ dirigeant.nom }}</h3>
+            <img style="float:right; margin-left:20px;margin-bottom: 20px; " alt="{{ dirigeant.nom }} {{ dirigeant.prenom }}" src="{{ dirigeant.image|resize:'130x100x1' }}">
+            {{ dirigeant.presentation|safe }}
+                </div>
+            </div>
+        {% endfor %}
+
+
 		</div>
 		<div class="span4">
 
@@ -65,9 +81,9 @@
 						Courriel : <a href="mailto:{{ entreprise.email }}">{{ entreprise.email }}</a>
 					</p>
 					{% endif %}
-					{% if entreprise.url %}
+					{% if entreprise.site_internet %}
 					<p>
-						Site Web : <a href="{{entreprise.site_internet}}">{{ entreprise.nom }}</a>
+						Site Web : <a href="{{entreprise.site_internet}}">{{entreprise.site_internet}}</a>
 					</p>
 					{% endif %}
 				</div>
@@ -81,7 +97,7 @@
 			<hr class="hidden-phone" />
 			<div class="hidden-phone" style="text-align: center;">
 
-				Ajouter cet équipement à vos contacts
+				Ajouter cette entreprise à vos contacts
 				<br/>
 				(Format QR Code) :
 				<br/>
@@ -296,7 +312,7 @@
 			}
 			
 			$(window).resize(function () {
-    			var h =$('#map_canvas').parent().width();
+    			var h = $('#map_canvas').parent().width();
     			$('#map_canvas').css('height', (h));
     			$('#map_canvas').css('width', (h));
 				}).resize();		
