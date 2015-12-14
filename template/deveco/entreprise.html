@@ -11,10 +11,6 @@
 	{% block meta-description %}{{ entreprise.nom }}, {{entreprise.meta_description}}, {% if evenements %}événements à venir: {% for item in evenements|slice:":4" %} {{item.type.nom}} «{{item.nom}}»{% if forloop.last%}. {% else %}, {%endif%}{% endfor %}{% endif %}{{ entreprise.fonction.nom }}, {{entreprise.ville.nom }}.{% endblock %}
 	
 	{% block menu %}{% getmenu %}{% endblock %}
-	
-	
-	
-
 
 {% block contenu %}	
 <div itemscope itemtype="http://schema.org/Place" class="container" style="margin-top:60px;">
@@ -155,9 +151,6 @@
 					</tr>
 				{% endfor %}
 			</table>
-				
-				
-			
 			<br/>
 			<p>
 				<a href="{% url 'entreprises.views.entrepriseHoraires' entreprise_slug=entreprise.slug%}">Voir tous les horaires et toutes les périodes</a>

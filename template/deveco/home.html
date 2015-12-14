@@ -24,7 +24,7 @@
                         <span class="divider">/</span>
                     </li>
                     <li class="active">
-                        Le club des entreprises du Val d'Yerres
+                        Les membres du club d'entreprise
                     <li>
                 </ul>
             </div>
@@ -60,8 +60,10 @@
                 {% for entreprise in entreprises %}
                     <div class="row bkgd-white">
                         <div class="offset1 span2">
+                            <a href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}">
                             <img width="150" height="200" class="img-polaroid"
                                  src="{{ entreprise.image|resize:'200x150x1' }}">
+                                </a>
                         </div>
                         <div class="span6">
 
@@ -87,63 +89,6 @@
 
             </div>
 
-            <div class="span11">
-                <div class="pagination pagination-large pagination-centered">
-                    <ul>
-                        {% if pages.has_previous %}
-                            <li>
-                                <a href="?page={{ pages.previous_page_number }}">« précédent</a>
-                            </li>
-                        {% endif %}
-
-                        {% if pages.paginator.num_pages > 10 %}
-                            {% if pages.number > 1 %}
-                                <li class="enabled">
-                                    <a href="{% url 'editorial.views.ActuList' %}?page=1">1</a>
-                                </li>
-                                <li class="disabled">
-                                    <a href=".">...</a>
-                                </li>
-                            {% endif %}
-                            <li class="disabled">
-                                <a href="{% url 'editorial.views.ActuList' %}?page={{ pages.number }}">{{ pages.number }}</a>
-                            </li>
-                            {% if pages.number < pages.paginator.num_pages %}
-                                <li class="disabled">
-                                    <a href=".">...</a>
-                                </li>
-                                <li class="enabled">
-                                    <a href="{% url 'editorial.views.ActuList' %}?page={{ pages.paginator.num_pages }}">{{ pages.paginator.num_pages }}</a>
-                                </li>
-                            {% endif %}
-
-                        {% else %}
-
-                            {% for page in pages.paginator.page_range %}
-
-                                {% if pages.number == page %}
-                                    <li class="disabled">
-                                        <a href=".">{{ page }}</a>
-                                    </li>
-                                {% else %}
-                                    <li class="enabled">
-                                        <a href="{% url 'editorial.views.ActuList' %}?page={{ page }}">{{ page }}</a>
-                                    </li>
-                                {% endif %}
-
-                            {% endfor %}
-
-                        {% endif %}
-
-                        {% if pages.has_next %}
-                            <li>
-                                <a href="?page={{ pages.next_page_number }}">suivant »</a>
-                            </li>
-                        {% endif %}
-
-                    </ul>
-                </div>
-            </div>
         </div>
     </div>
 
