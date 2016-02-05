@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render_to_response , redirect , get_object_or_404
 from models import Entreprise, Dirigeant
 from valdyerresweb.utils.functions import GenerationQrCode

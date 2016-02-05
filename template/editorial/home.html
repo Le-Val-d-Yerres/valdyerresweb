@@ -3,279 +3,397 @@
 {% load aidefilters %}
 {% load eventfilters %}
 {% load menufilters %}
-{% load aidefilters%}
+{% load aidefilters %}
 {% load tz %}
 
 
-{% block title %}Communauté d'Agglomération du Val d'Yerres {% endblock %}
 
-{% block meta-description %}Le site de la Communauté d'Agglomération du Val d'Yerres dans le département de l'Essonne{% endblock %}
+
+{% block meta-description %}Le site de la Communauté d'Agglomération du Val d'Yerres Val de Seine VYVS dans le
+    département de l'Essonne{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
-<div class="container" style="padding-top:60px;">
-	<div class="row">
-		<div class="span12" style="padding-top:15px;">
-			<div class="span8">
-				<div id="myCarousel" class="carousel slide">
-					<div class="carousel-inner">
-						{% for item in carroussel %}
-						<div class="item {%if forloop.first %}active{%endif%}" >
-							<img class="carouselbkgd" alt="Fond flou : {{item.titre}}" src={{item.image|resize:'770x400x1'}}>
-							<div class="carousel-caption-large visible-desktop ">
+    <div class="container" style="padding-top:60px;">
+        <div class="row">
+            <div class="span12" style="padding-top:15px;">
+                <div class="span8">
+                    <div id="myCarousel" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% for item in carroussel %}
+                                <div class="item {% if forloop.first %}active{% endif %}">
+                                    <img class="carouselbkgd" alt="Fond flou : {{ item.titre }}"
+                                         src={{ item.image|resize:'770x400x1' }}>
+                                    <div class="carousel-caption-large visible-desktop ">
 
-						
-								<h2><a href="{{item.get_absolute_url}}">{{item.titre}}</a></h2>
-								<p>
-									{{item.contenu|resume:250|safe}}
-								</p>
-								<br/>
-								<br/>
-								<p>
-									<a style="float: right" class ="btn btn-primary" href="{{item.get_absolute_url}}">+ d'infos</a>
-								</p>
-							</div>
-							<div class="carousel-caption visible-phone visible-tablet ">
 
-								<p>
-									<a href="{{item.get_absolute_url}}">{{item.titre}}</a>
-									<br/>
-									{{item.contenu|resume:250|safe}}
-									<br/>
-									<a href="{{item.get_absolute_url}}">Lire la suite</a>
-								</p>
+                                        <h2><a href="{{ item.get_absolute_url }}">{{ item.titre }}</a></h2>
+                                        <p>
+                                            {{ item.contenu|resume:250|safe }}
+                                        </p>
+                                        <br/>
+                                        <br/>
+                                        <p>
+                                            <a style="float: right" class="btn btn-primary"
+                                               href="{{ item.get_absolute_url }}">+ d'infos</a>
+                                        </p>
+                                    </div>
+                                    <div class="carousel-caption visible-phone visible-tablet ">
 
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-					<div id="paginators" class="pagination pagination-caroussel">
-						<ul class ="carousel-links">
-							{% for item in carroussel %}
+                                        <p>
+                                            <a href="{{ item.get_absolute_url }}">{{ item.titre }}</a>
+                                            <br/>
+                                            {{ item.contenu|resume:250|safe }}
+                                            <br/>
+                                            <a href="{{ item.get_absolute_url }}">Lire la suite</a>
+                                        </p>
 
-							<li id="paginator-{{forloop.counter0}}" class='paginator {%if forloop.first %}active{%endif%}'>
-								<a  href="#">{{forloop.counter}}</a>
-							</li>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div id="paginators" class="pagination pagination-caroussel">
+                            <ul class="carousel-links">
+                                {% for item in carroussel %}
 
-							{% endfor %}
-						</ul>
-					</div>
-					<a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
-					<a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
-				</div>
-				<h2><a href="{% url 'editorial.views.ActuList'  %}">Les actualités du Val d'Yerres :</a></h2>
+                                    <li id="paginator-{{ forloop.counter0 }}"
+                                        class='paginator {% if forloop.first %}active{% endif %}'>
+                                        <a href="#">{{ forloop.counter }}</a>
+                                    </li>
 
-				{% for page in actualites %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
+                        <a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
+                    </div>
+                    <h2><a href="{% url 'editorial.views.ActuList' %}">Les actualités du Val d'Yerres :</a></h2>
 
-				<div class="row">
-					<div class="span3"><img  alt="Illustration : {{page.titre}}" class="img-polaroid" src="{{page.image|resize:'300x225x1'}}">
-					</div>
-					<div class="span5">
+                    {% for page in actualites %}
 
-						<h3><a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}">{{page.titre|safe}}</a>
-						<br/>
-						<small>Publié le {{page.date_publication|dateSimple}}. </small></h3>
+                        <div class="row">
+                            <div class="span3"><img alt="Illustration : {{ page.titre }}" class="img-polaroid"
+                                                    src="{{ page.image|resize:'300x225x1' }}">
+                            </div>
+                            <div class="span5">
 
-						<p>
-							{{page.contenu|resume:200|safe}}
-						</p>
-						<p style="text-align: right;" >
-							<a class="btn btn-primary" href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}">Lire la suite</a>
-						</p>
+                                <h3>
+                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                                    <br/>
+                                    <small>Publié le {{ page.date_publication|dateSimple }}.</small>
+                                </h3>
 
-					</div>
-				</div>
-				<hr/>
+                                <p>
+                                    {{ page.contenu|resume:200|safe }}
+                                </p>
+                                <p style="text-align: right;">
+                                    <a class="btn btn-primary"
+                                       href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                                        suite</a>
+                                </p>
 
-				{% endfor %}
-				<p style="text-align: right;" >
-					<a class="btn btn-primary" href="{% url 'editorial.views.ActuList'  %}">Voir toutes les actualités</a>
-				</p>
-				{%if evenements_une_lg1%}
-				<h2><a href="{% url 'evenements.views.AgendaGlobal'  %}">Prochains événements :</a></h2>
+                            </div>
+                        </div>
+                        <hr/>
 
-				<div class="row-fluid">
-					<ul class="thumbnails">
-						{% for evenement in evenements_une_lg1 %}
-						<li class="span4">
-							<div class="thumbnail">
-								<img alt="300x200"  src="{{evenement.image|resize:'225x200x1'}}">
-								<div class="caption">
-									<h3><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
-									<br/>
-									<small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .</small></h3>
+                    {% endfor %}
+                    <p style="text-align: right;">
+                        <a class="btn btn-primary" href="{% url 'editorial.views.ActuList' %}">Voir toutes les
+                            actualités</a>
+                    </p>
+                    {% if evenements_une_lg1 %}
+                        <h2><a href="{% url 'evenements.views.AgendaGlobal' %}">Prochains événements :</a></h2>
 
-									{{evenement.description|safe|resume:150}}
-									<p style="text-align: right;" >
-										<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
-									</p>
-								</div>
-							</div>
-						</li>
-						{%endfor%}
-					</ul>
-					<p style="text-align: right;" >
-						<a class="btn btn-primary" href="{% url 'evenements.views.AgendaGlobal'  %}">Voir tous les événements à venir</a>
-					</p>
-				</div>
-				{%endif%}
-				{%if evenements_une_lg2%}
-				<h2><a href="{% url 'evenements.views.AgendaGlobal'  %}">A ne pas manquer:</a></h2>
-				<div class="row-fluid">
-					<ul class="thumbnails">
-						{% for evenement in evenements_une_lg2 %}
-						<li class="span4">
-							<div class="thumbnail">
-								<img alt="{{evenement.nom|safe}}"  src="{{evenement.image|resize:'225x200x1'}}">
-								<div class="caption">
-									<h3><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a>
-									<br/>
-									<small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .</small></h3>
+                        <div class="row-fluid">
+                            <ul class="thumbnails">
+                                {% for evenement in evenements_une_lg1 %}
+                                    <li class="span4">
+                                        <div class="thumbnail">
+                                            <img alt="300x200" src="{{ evenement.image|resize:'225x200x1' }}">
+                                            <div class="caption">
+                                                <h3>
+                                                    <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom|safe }}</a>
+                                                    <br/>
+                                                    <small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .
+                                                    </small>
+                                                </h3>
 
-									{{evenement.description|safe|resume:150}}
-									<p style="text-align: right;" >
-										<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary">+ d'infos</a>
-									</p>
-								</div>
-							</div>
-						</li>
-						{%endfor%}
-					</ul>
-				</div>
-				{%endif%}
-			</div>
-			<div class="span3">
-				<div class="row ">
-					<div class="span3 box-right" id="mailBox">
-						<h3><a href="#">Lettre d'informations</a></h3>
-						<p id="newsletter">Abonnez-vous à la lettre d'informations du Val d'Yerres </p>
-						<div id="mailAjax" class="hide">
-							<input type="hidden" id="csrftoken" name="csrftoken" value="">
-							<label for="mail">Votre courriel :</label>
-							<input type="email" name="email" id="mail" required><br>
-							<div class="btn btn-info" onclick="mailjet();">S'abonner</div>
-							<div style="margin-top: 8px;text-align: center;" id="lettreErreur"></div>
-						</div>
-						<p style="text-align: center;">
-							<a href="/mail/" id="mailPost" class="btn btn-info">S'abonner</a>
-						</p>
-					</div>
-					<div class="span3 box-right">
-						<h3><a href="{% url 'editorial.views.Ephemeride' %}">Aujourd'hui
-						<br/>
-						dans le Val d'Yerres</a></h3>
-						<ul style="list-style: none;">
-							{% if cinema_count > 0  %}
-							<li>
-								<a href="{% url 'editorial.views.Ephemeride' %}#cinemas" class="circle-btn">{{cinema_count|deuxchiffres}}</a><a href="{% url 'editorial.views.Ephemeride' %}#cinemas">séance{{cinema_count|pluralize}} de cinéma à 6 &euro;</a>
-							</li>
+                                                {{ evenement.description|safe|resume:150 }}
+                                                <p style="text-align: right;">
+                                                    <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"
+                                                       class="btn btn-primary">+ d'infos</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <p style="text-align: right;">
+                                <a class="btn btn-primary" href="{% url 'evenements.views.AgendaGlobal' %}">Voir tous
+                                    les événements à venir</a>
+                            </p>
+                        </div>
+                    {% endif %}
+                    {% if evenements_une_lg2 %}
+                        <h2><a href="{% url 'evenements.views.AgendaGlobal' %}">A ne pas manquer:</a></h2>
+                        <div class="row-fluid">
+                            <ul class="thumbnails">
+                                {% for evenement in evenements_une_lg2 %}
+                                    <li class="span4">
+                                        <div class="thumbnail">
+                                            <img alt="{{ evenement.nom|safe }}"
+                                                 src="{{ evenement.image|resize:'225x200x1' }}">
+                                            <div class="caption">
+                                                <h3>
+                                                    <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom|safe }}</a>
+                                                    <br/>
+                                                    <small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .
+                                                    </small>
+                                                </h3>
 
-							{% endif %}
-							{% if evenements_count > 0  %}
-							<li>
-								<a href="{% url 'editorial.views.Ephemeride' %}#evenements" class="circle-btn">{{evenements_count|deuxchiffres}}</a><a href="{% url 'editorial.views.Ephemeride' %}#evenements"> événement{{evenements_count|pluralize}}</a>
-							</li>
-							{% endif %}
-							{% if equipements_count > 0  %}
-							<li>
-								<a href="{% url 'editorial.views.Ephemeride' %}#equipements" class="circle-btn">{{equipements_count|deuxchiffres}}</a><a href="{% url 'editorial.views.Ephemeride' %}#equipements">équipement{{equipements_count|pluralize}}  ouvert{{equipements_count|pluralize}}</a>
-							</li>
-							{% endif %}
-						</ul>
-					</div>
-					<div class="span3 box-right">
-						<h3><a href="{% url 'editorial.views.Magazines' %}">Le Magazine</a></h3>
+                                                {{ evenement.description|safe|resume:150 }}
+                                                <p style="text-align: right;">
+                                                    <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"
+                                                       class="btn btn-primary">+ d'infos</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="span3">
+                    <div class="row ">
+                        <div class="span3 box-right" id="mailBox">
+                            <h3><a href="#">Lettre d'informations</a></h3>
+                            <p id="newsletter">Abonnez-vous à la lettre d'informations du Val d'Yerres </p>
+                            <div id="mailAjax" class="hide">
+                                <input type="hidden" id="csrftoken" name="csrftoken" value="">
+                                <label for="mail">Votre courriel :</label>
+                                <input type="email" name="email" id="mail" required><br>
+                                <div class="btn btn-info" onclick="mailjet();">S'abonner</div>
+                                <div style="margin-top: 8px;text-align: center;" id="lettreErreur"></div>
+                            </div>
+                            <p style="text-align: center;">
+                                <a href="/mail/" id="mailPost" class="btn btn-info">S'abonner</a>
+                            </p>
+                        </div>
+                        <div class="span3 box-right">
+                            <h3><a href="{% url 'editorial.views.Ephemeride' %}">Aujourd'hui
+                                <br/>
+                                dans le Val d'Yerres</a></h3>
+                            <ul style="list-style: none;">
+                                {% if cinema_count > 0 %}
+                                    <li>
+                                        <a href="{% url 'editorial.views.Ephemeride' %}#cinemas"
+                                           class="circle-btn">{{ cinema_count|deuxchiffres }}</a><a
+                                            href="{% url 'editorial.views.Ephemeride' %}#cinemas">séance{{ cinema_count|pluralize }}
+                                        de cinéma à 6 &euro;</a>
+                                    </li>
 
-						<h4><a href="{% url 'editorial.views.Magazines' %}">{{magazine.date_parution|moisannee}}</a></h4>
-						<a href="{% url 'editorial.views.Magazines' %}"><img class="img-polaroid" style="max-width:90%" src="{{magazine.image|resize:'225x300x1'}}" alt="{{magazine.titre|safe}}"></a>
-						<p>
-							Dossier : {{magazine.titre|safe}}
-						</p>
-					</div>
-					{% if annoncesemploi %}
-					<div class="span3 box-right">
-						<h3><a href="{% url 'annoncesemploi.views.AnnoncesList' %}">Emploi</a></h3>
-						{% regroup annoncesemploi by service as annonceslists%}
+                                {% endif %}
+                                {% if evenements_count > 0 %}
+                                    <li>
+                                        <a href="{% url 'editorial.views.Ephemeride' %}#evenements"
+                                           class="circle-btn">{{ evenements_count|deuxchiffres }}</a><a
+                                            href="{% url 'editorial.views.Ephemeride' %}#evenements">
+                                        événement{{ evenements_count|pluralize }}</a>
+                                    </li>
+                                {% endif %}
+                                {% if equipements_count > 0 %}
+                                    <li>
+                                        <a href="{% url 'editorial.views.Ephemeride' %}#equipements"
+                                           class="circle-btn">{{ equipements_count|deuxchiffres }}</a><a
+                                            href="{% url 'editorial.views.Ephemeride' %}#equipements">équipement{{ equipements_count|pluralize }}
+                                        ouvert{{ equipements_count|pluralize }}</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <div class="span3 box-right">
+                            <h3><a href="{% url 'editorial.views.Magazines' %}">Le Magazine</a></h3>
 
-						<ul style="list-style: none;" >
-							{% for annonces in annonceslists %}
-							<li>
-								<a href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}" class="circle-btn">{{annonces.list|length|deuxchiffres}}</a><a href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}"> annonces {{annonces.grouper}}</a>
-							</li>
-							{% endfor%}
-						</ul>
+                            <h4>
+                                <a href="{% url 'editorial.views.Magazines' %}">{{ magazine.date_parution|moisannee }}</a>
+                            </h4>
+                            <a href="{% url 'editorial.views.Magazines' %}"><img class="img-polaroid"
+                                                                                 style="max-width:90%"
+                                                                                 src="{{ magazine.image|resize:'225x300x1' }}"
+                                                                                 alt="{{ magazine.titre|safe }}"></a>
+                            <p>
+                                Dossier : {{ magazine.titre|safe }}
+                            </p>
+                        </div>
+                        {% if annoncesemploi %}
+                            <div class="span3 box-right">
+                                <h3><a href="{% url 'annoncesemploi.views.AnnoncesList' %}">Emploi</a></h3>
+                                {% regroup annoncesemploi by service as annonceslists %}
 
-					</div>
-					{% endif %}
-					{% if notes %}
-					<div class="span3 box-right">
-						<h3><a href="#noubliezpas">N'oubliez pas ...</a></h3>
-						<ul style="list-style: square">
-							{% for note in notes %}
-							<li>
-								<a href="{% url 'editorial.views.PageDetail' page_slug=note.slug %}">{{ note.titre }}</a>
-							</li>
-							{% endfor%}
-						</ul>
-					</div>
-					{% endif %}
+                                <ul style="list-style: none;">
+                                    {% for annonces in annonceslists %}
+                                        <li>
+                                            <a href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}"
+                                               class="circle-btn">{{ annonces.list|length|deuxchiffres }}</a><a
+                                                href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}">
+                                            annonces {{ annonces.grouper }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
 
-				</div>
-			</div>
+                            </div>
+                        {% endif %}
+                        {% if notes %}
+                            <div class="span3 box-right">
+                                <h3><a href="#noubliezpas">N'oubliez pas ...</a></h3>
+                                <ul style="list-style: square">
+                                    {% for note in notes %}
+                                        <li>
+                                            <a href="{% url 'editorial.views.PageDetail' page_slug=note.slug %}">{{ note.titre }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
 
-		</div>
-	</div>
+                    </div>
+                </div>
 
-</div>
+            </div>
+            <div class="modal hide " id="myModal-alerte" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h3>Fusion des agglomérations</h3>
+                </div>
+                <div class="modal-body" style="text-align:left;">
+
+                    Bonjour, pendant la période de transition les sites du Val d'Yerres et du Val de Seine restent
+                    actifs.<br/>
+
+                    Pour les habitants de :
+                    <table>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>Draveil</li>
+                                    <li>Vigneux</li>
+                                    <li>Montgeron</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Boussy Saint-Antoine</li>
+                                    <li>Brunoy</li>
+                                    <li>Crosne</li>
+                                    <li>Epinay-sur-Sénart</li>
+                                    <li>Quinçy-sous-Sénart</li>
+                                    <li>Yerres</li>
+
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> Rendez-vous sur : <a href=" http://www.casvs.org/">http://www.casvs.org/</a></td>
+
+
+                            <td>Rendez-vous sur : <a data-dismiss="modal" aria-hidden="true" href="#">http://www.levaldyerres.fr/</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 
 {% endblock %}
 
 {% block jsload %}
 
-{% include "include/jquery-bootstrap.html" %}
-{% include "include/mailjet.html" %}
+    {% include "include/jquery-bootstrap.html" %}
+    {% include "include/mailjet.html" %}
+    <script>
+
+        function createCookie(name, value, days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                var expires = "; expires=" + date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function eraseCookie(name) {
+            createCookie(name, "", -1);
+        }
 
 
-<script>
-	$(document).ready(function() {
+        $(document).ready(function () {
+            var modale = readCookie("modale");
+            if (!modale)
+            {
+                $('#myModal-alerte').modal('show');
+                createCookie("modale",true,666);
+            }
+            createCookie("modale",false,666);
 
-		$("#newsiframe").attr('frameBorder', '0');
-		$("#newsiframe").attr('scrolling', 'no');
+            $("#newsiframe").attr('frameBorder', '0');
+            $("#newsiframe").attr('scrolling', 'no');
 
-		var myCarousel = $('.carousel');
-		myCarousel.carousel({
-			interval : 5000,
-			pause : false
-		});
+            var myCarousel = $('.carousel');
+            myCarousel.carousel({
+                interval: 5000,
+                pause: false
+            });
 
-		$('.carousel').bind('slid', function(e) {
+            $('.carousel').bind('slid', function (e) {
 
-			index = $('.carousel .active').index('.carousel .item');
-			$('#paginators .active').removeClass('active');
-			$('#paginator-' + index).addClass('active');
-		});
+                index = $('.carousel .active').index('.carousel .item');
+                $('#paginators .active').removeClass('active');
+                $('#paginator-' + index).addClass('active');
+            });
 
-		$('.paginator').bind('click', function(e) {
-			myCarousel.carousel($(this).index());
+            $('.paginator').bind('click', function (e) {
+                myCarousel.carousel($(this).index());
 
-		});
+            });
 
-		$('.carousel-control').bind('click', function(e) {
-			if ($(this).attr('data-slide') == 'prev') {
-				myCarousel.carousel('prev');
-			} else {
-				myCarousel.carousel('next');
-			}
-		});
+            $('.carousel-control').bind('click', function (e) {
+                if ($(this).attr('data-slide') == 'prev') {
+                    myCarousel.carousel('prev');
+                } else {
+                    myCarousel.carousel('next');
+                }
+            });
 
-		if (getXMLHttpRequest() != null)
-		{
-			document.getElementById('mailAjax').className = "";
-			document.getElementById('mailPost').style.display = "none";
-			
-			setCSRFToken();
-		}
-	}); 
-</script>
+            if (getXMLHttpRequest() != null) {
+                document.getElementById('mailAjax').className = "";
+                document.getElementById('mailPost').style.display = "none";
+
+                setCSRFToken();
+            }
+        });
+    </script>
 {% endblock %}
