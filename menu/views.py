@@ -8,13 +8,13 @@ def getChilds(items , subitems, menutxt ="" , sub = False):
     if sub:
         menutxt = "<ul class=\"dropdown-menu\" aria-labelledby=\"drop1\" role=\"menu\">\n"
     else :
-        menutxt = "<ul role=menubar  class=\"nav\">\n"
+        menutxt = "<ul role=menubar  class=\"navbar-nav nav\">\n"
     for item in items:
-        menutxt += "<li role=menuitem #item-"+str(item.id)+" ><a #item-link"+str(item.id)+" href=\""+item.chemin+"\">"+item.nom+"#caret-"+str(item.id)+" </a>\n"
+        menutxt += "<li role=menuitem #item-"+str(item.id)+" ><a #item-link"+str(item.id)+" href=\""+item.chemin+"\">"+item.nom+" </a>\n"
         try:
             sublist = subitems[item.id]
             if len(sublist) ==0:
-                menutxt = menutxt.replace("#caret-"+str(item.id), "")
+
                 menutxt = menutxt.replace("#item-"+str(item.id), "")
                 menutxt = menutxt.replace("#item-link"+str(item.id), "")
                 menutxt += "</li>"
@@ -23,7 +23,7 @@ def getChilds(items , subitems, menutxt ="" , sub = False):
                 menutxt = menutxt.replace("#caret-"+str(item.id), "")
                 menutxt = menutxt.replace("#item-"+str(item.id), "class=\"dropdown-submenu\"")  
             else:
-                menutxt = menutxt.replace("#caret-"+str(item.id), "<b class=\"caret\"></b>")
+
                 menutxt = menutxt.replace("#item-"+str(item.id), "class=\"dropdown\"")
                 
             menutxt = menutxt.replace("#item-link"+str(item.id), "id=\"drop"+str(item.id)+"\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\"")

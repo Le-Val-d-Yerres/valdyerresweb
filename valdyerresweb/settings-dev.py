@@ -6,7 +6,7 @@ PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
 SUPPROJECT_PATH = os.path.split(PROJECT_PATH)[0]
 
 
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 

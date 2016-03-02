@@ -115,8 +115,13 @@ ROOT_URLCONF = 'valdyerresweb.urls'
 WSGI_APPLICATION = 'valdyerresweb.wsgi.application'
 
 TEMPLATE_DIRS = (
-    SUPPROJECT_PATH+'/template',
+    SUPPROJECT_PATH+'/templates',
     SUPPROJECT_PATH+'/debug_toolbar/templates',
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader'
 )
 
 INSTALLED_APPS = (
