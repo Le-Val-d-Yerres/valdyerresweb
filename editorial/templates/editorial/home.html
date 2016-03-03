@@ -5,6 +5,7 @@
 {% load menufilters %}
 {% load aidefilters %}
 {% load tz %}
+{% load staticfiles %}
 
 
 
@@ -14,131 +15,29 @@
 
 {% block menu %}{% getmenu %}{% endblock %}
 
+{% block import-css %}{% include "include/master-slider-css.html" %}{% endblock %}
 {% block contenu %}
-<div style="position: relative;" class="blog-ms-v1 content-sm bg-color-darker margin-bottom-60">
-		<div style="visibility: visible; opacity: 1; margin: 0px;" class="master-slider ms-skin-default ms-moz ms-layout-partialview" id="masterslider"><div class="ms-container"><div style="max-width: 850px;" class="ms-inner-controls-cont"><div style="width: 850px; height: 400px;" class="ms-view ms-fade-wave-view ms-grab-cursor"><div style="transform-style: preserve-3d; transform: translateX(-2580px) translateZ(0px);" class="ms-slide-container"><div style="width: 850px; height: 400px; left: 2580px; opacity: 1; transform: scale(1) rotateY(0.01deg); z-index: 4;" class="ms-slide blog-slider ms-sl-selected">
-
-				<span class="blog-slider-badge">Travel</span>
-
+<!-- Master Slider -->
+	<div class="blog-ms-v1 content-sm bg-color-white margin-bottom-60">
+		<div class="master-slider ms-skin-default" id="masterslider">
+            {% for item in carroussel %}
+			<div class="ms-slide blog-slider">
+				<img src="{% static 'valdyerresweb/assets/plugins/master-slider/masterslider/style/blank.gif'%}" data-src="{{ item.image|resize:'770x400x1' }}" alt="lorem ipsum dolor sit"/>
+				<div class="ms-info"></div>
 				<div class="blog-slider-title">
-					<span class="blog-slider-posted">Mar 6, 2015</span>
-					<h2><a href="#">Must be visited places in the world</a></h2>
+					<h2><a href="{{ item.get_absolute_url }}">{{ item.titre }}</a></h2>
 				</div>
-			<div style="height: 100%; opacity: 1;" class="ms-slide-bgcont"><img style="width: 850px; height: 537.256px; margin-top: -68.5px; margin-left: 0px;" src="assets/img/blog/img41.jpg" alt="lorem ipsum dolor sit"></div></div><div style="width: 850px; height: 400px; left: 3440px; opacity: 0.666667; transform: scale(0.875) rotateY(0.01deg); z-index: 4; margin-top: 0.1px;" class="ms-slide blog-slider">
-
-				<span class="blog-slider-badge">Health</span>
-
-				<div class="blog-slider-title">
-					<span class="blog-slider-posted">Mar 6, 2015</span>
-					<h2><a href="#">5 Facts about Coca-Cola</a></h2>
-				</div>
-			<div style="height: 100%; opacity: 1;" class="ms-slide-bgcont"><img style="width: 850px; height: 537.256px; margin-top: -68.5px; margin-left: 0px;" src="assets/img/blog/img48.jpg" alt="lorem ipsum dolor sit"></div></div><div style="width: 850px; height: 400px; left: 4300px; opacity: 0.666667; transform: scale(0.875) rotateY(0.01deg); z-index: 3; margin-top: 0.1px;" class="ms-slide blog-slider">
-
-				<span class="blog-slider-badge">Community</span>
-
-				<div class="blog-slider-title">
-					<span class="blog-slider-posted">Mar 6, 2015</span>
-					<h2><a href="#">Minimalism gives way to embroidery and crystals</a></h2>
-				</div>
-			<div style="height: 100%; opacity: 1;" class="ms-slide-bgcont"><img style="width: 850px; height: 537.256px; margin-top: -68.5px; margin-left: 0px;" src="assets/img/blog/img53.jpg" alt="lorem ipsum dolor sit"></div></div><div style="width: 850px; height: 400px; left: 5160px; opacity: 0.666667; transform: scale(0.875) rotateY(0.01deg); z-index: 2; margin-top: 0.1px;" class="ms-slide blog-slider">
-
-				<span class="blog-slider-badge">Fashion</span>
-
-				<div class="blog-slider-title">
-					<span class="blog-slider-posted">Mar 6, 2015</span>
-					<h2><a href="#">Is this the end for fashion police?</a></h2>
-				</div>
-			<div style="height: 100%; opacity: 1;" class="ms-slide-bgcont"><img style="width: 850px; height: 537.256px; margin-top: -68.5px; margin-left: 0px;" src="assets/img/blog/img9.jpg" alt="lorem ipsum dolor sit"></div></div><div style="width: 850px; height: 400px; left: 6020px; opacity: 0.666667; transform: scale(0.875) rotateY(0.01deg); z-index: 1; margin-top: 0.1px;" class="ms-slide blog-slider">
-
-				<span class="blog-slider-badge">Hi-Tech</span>
-
-				<div class="blog-slider-title">
-					<span class="blog-slider-posted">Mar 6, 2015</span>
-					<h2><a href="#">Learning as you're earning: The alternative to a degree</a></h2>
-				</div>
-			<div style="height: 100%; opacity: 1;" class="ms-slide-bgcont"><img style="width: 850px; height: 537.256px; margin-top: -68.5px; margin-left: 0px;" src="assets/img/blog/img52.jpg" alt="lorem ipsum dolor sit"></div></div><div style="width: 850px; height: 400px; margin-top: 0.1px; left: 0px; opacity: 0.666667; transform: scale(0.875) rotateY(0.01deg); z-index: 1;" class="ms-slide blog-slider">
-
-				<span class="blog-slider-badge">Sport</span>
-
-				<div class="blog-slider-title">
-					<span class="blog-slider-posted">Mar 6, 2015</span>
-					<h2><a href="#">Brady handed his place in history</a></h2>
-				</div>
-			<div style="height: 100%; opacity: 1;" class="ms-slide-bgcont"><img style="width: 850px; height: 537.256px; margin-top: -68.5px; margin-left: 0px;" src="assets/img/blog/img5.jpg" alt="lorem ipsum dolor sit"></div></div><div style="width: 850px; height: 400px; margin-top: 0.1px; left: 860px; opacity: 0.666667; transform: scale(0.875) rotateY(0.01deg); z-index: 2;" class="ms-slide blog-slider">
-
-				<span class="blog-slider-badge">Fashion</span>
-
-				<div class="blog-slider-title">
-					<span class="blog-slider-posted">Mar 6, 2015</span>
-					<h2><a href="#">Nadège Vanhee-Cybulski makes Hermès debut</a></h2>
-				</div>
-			<div style="height: 100%; opacity: 1;" class="ms-slide-bgcont"><img style="width: 850px; height: 537.256px; margin-top: -68.5px; margin-left: 0px;" src="assets/img/blog/img16.jpg" alt="lorem ipsum dolor sit"></div></div><div style="width: 850px; height: 400px; margin-top: 0.1px; left: 1720px; opacity: 0.666667; transform: scale(0.875) rotateY(0.01deg); z-index: 3;" class="ms-slide blog-slider">
-
-
-				<span class="blog-slider-badge">Travel</span>
-
-				<div class="blog-slider-title">
-					<span class="blog-slider-posted">Mar 6, 2015</span>
-					<h2><a href="#">Our favourite images of the week</a></h2>
-				</div>
-			<div style="height: 100%; opacity: 1;" class="ms-slide-bgcont"><img style="width: 850px; height: 537.256px; margin-top: -68.5px; margin-left: 0px;" src="assets/img/blog/img35.jpg" alt="lorem ipsum dolor sit"></div><iframe allowfullscreen="true" src="about:blank" style="width: 100%; height: 100%; display: none;" class="ms-slide-video"></iframe><div class="ms-slide-vpbtn"></div><div style="display: none;" class="ms-slide-vcbtn"></div></div></div></div><div style="opacity: 0;" class="ms-nav-next ms-ctrl-hide"></div><div style="opacity: 0;" class="ms-nav-prev ms-ctrl-hide"></div><div class="ms-ctimer"><canvas height="17" width="17" class="ms-ctimer-canvas"></canvas><div class="ms-ctimer-bullet"></div></div></div></div>
-
+			</div>
+            {% endfor %}
 		</div>
 	</div>
+	<!-- End Master Slider -->
 
 <div class="container content-md">
     <div class="row">
             <div class="span12">
                 <div class="span8">
-                    <div id="myCarousel" class="carousel slide">
-                        <div class="carousel-inner">
-                            {% for item in carroussel %}
-                                <div class="item {% if forloop.first %}active{% endif %}">
-                                    <img class="carouselbkgd" alt="Fond flou : {{ item.titre }}"
-                                         src={{ item.image|resize:'770x400x1' }}>
-                                    <div class="carousel-caption-large visible-desktop ">
 
-
-                                        <h2><a href="{{ item.get_absolute_url }}">{{ item.titre }}</a></h2>
-                                        <p>
-                                            {{ item.contenu|resume:250|safe }}
-                                        </p>
-                                        <br/>
-                                        <br/>
-                                        <p>
-                                            <a style="float: right" class="btn btn-primary"
-                                               href="{{ item.get_absolute_url }}">+ d'infos</a>
-                                        </p>
-                                    </div>
-                                    <div class="carousel-caption visible-phone visible-tablet ">
-
-                                        <p>
-                                            <a href="{{ item.get_absolute_url }}">{{ item.titre }}</a>
-                                            <br/>
-                                            {{ item.contenu|resume:250|safe }}
-                                            <br/>
-                                            <a href="{{ item.get_absolute_url }}">Lire la suite</a>
-                                        </p>
-
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div id="paginators" class="pagination pagination-caroussel">
-                            <ul class="carousel-links">
-                                {% for item in carroussel %}
-
-                                    <li id="paginator-{{ forloop.counter0 }}"
-                                        class='paginator {% if forloop.first %}active{% endif %}'>
-                                        <a href="#">{{ forloop.counter }}</a>
-                                    </li>
-
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <a class="carousel-control left" href="#" data-slide="prev">&lsaquo;</a>
-                        <a class="carousel-control right" href="#" data-slide="next">&rsaquo;</a>
-                    </div>
                     <h2><a href="{% url 'editorial.views.ActuList' %}">Les actualités du Val d'Yerres :</a></h2>
 
                     {% for page in actualites %}
@@ -415,10 +314,11 @@
 {% endblock %}
 
 {% block jsload %}
-    {% include "include/master-slider.html" %}
     {% include "include/jquery-bootstrap.html" %}
+    {% include "include/master-slider.html" %}
     {% include "include/mailjet.html" %}
     <script>
+
 
         function createCookie(name, value, days) {
             if (days) {
@@ -447,6 +347,24 @@
 
 
         $(document).ready(function () {
+
+            var slider = new MasterSlider();
+
+			slider.control('arrows');
+			slider.control('slideinfo',{insertTo:"#partial-view-1" , autohide:false, align:'bottom', size:0});
+			slider.control('circletimer' , {color:"#fff" , stroke:9});
+            slider.control('bullets' , {autohide:false  , dir:"h", align:"bottom", margin:'0'});
+			slider.setup('masterslider' , {
+				width:850,
+				height:400,
+				space:10,
+		        speed: 40,
+				loop:true,
+				view:'fadeWave',
+				layout:'partialview'
+			});
+
+
             var modale = readCookie("modale");
             if (!modale)
             {

@@ -1,1 +1,30 @@
 /* Add here all your css styles (customizations) */
+/*Blog Slider Title*/
+.blog-slider .blog-slider-title {
+	left: 0;
+	z-index: 1;
+	bottom: 20px;
+	padding: 0 20px;
+	position: absolute !important;
+    background: rgba(0,0,0,0.6) ;
+
+}
+
+.blog-slider .blog-slider-title h2 {
+	margin: 0;
+	color: #fff;
+	font-size: 38px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.blog-slider .blog-slider-title h2 a {
+	color: #fff;
+}
+
+.blog-slider .blog-slider-title span.blog-slider-posted {
+	color: #fff;
+	display: block;
+	font-size: 12px;
+	text-transform: uppercase;
+}
