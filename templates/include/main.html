@@ -1,7 +1,6 @@
 {% load staticfiles %}<!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- {% now "jS F Y H:i:s" %} -->
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} Communauté d'Agglomération du Val d'Yerres Val de Seine </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,176 +12,31 @@
         <!-- Web Fonts -->
         <link rel="shortcut" type="text/css"
               href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600&subset=cyrillic,latin">
-
-        <!-- CSS Global Compulsory -->
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/plugins/bootstrap/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/css/style.css' %}">
-
-        <!-- CSS Header and Footer -->
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/css/headers/header-v3.css' %}">
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/css/footers/footer-v1.css' %}">
-
-        <!-- CSS Implementing Plugins -->
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/plugins/animate.css' %}">
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/plugins/line-icons/line-icons.css' %}">
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/plugins/font-awesome/css/font-awesome.css' %}">
-
-        <!-- CSS Theme -->
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/css/theme-colors/default.css' %}" id="style_color">
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/css/theme-skins/dark.css'%}">
-
-        <!-- CSS Customization -->
-        <link rel="stylesheet" href="{% static 'valdyerresweb/assets/css/custom.css' %}">
-
     {% endblock %}
-    {% block import-css %}{% endblock %}
+
+    {% block import-css %}
+        {% include "include/import-css.html" %}
+    {% endblock %}
 
 </head>
 
-<body class="header-fixed">
+<body class="boxed-layout container">
 
 <div class="wrapper">
-    <div class="header-v3 header-sticky">
-        <div class="container container-space">
 
-            <div class="navbar navbar-default mega-menu" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                                data-target=".navbar-responsive-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="fa fa-bars"></span>
-                        </button>
-                        <a class="navbar-brand" href="/">
-                            <img id="logo-header" width="125px" src="{% static 'valdyerresweb/assets/img/logo-mini-vyvs.png' %}" alt="Logo">
-                        </a>
-                    </div>
-
-
-                    <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
-                        <div class="container">
-                        {% block menu %}{% endblock %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
+        {%  block header %}
+            {% include "include/header.html" %}
+        {% endblock %}
 
 
         {% block contenu %}{% endblock %}
 
-        <div id="footer" class="footer">
+        {% block footer %}
+            {% include "include/footer.html" %}
+        {% endblock %}
 
-            <div class="wrap">
-                <div class="container">
-                    <div class="row">
-                        <div class="span3">
-                            <h3>Le Val d'Yerres</h3>
-                            <hr/>
-                            <ul>
-                                <li>
-                                    <a href="/ephemeride/aujourd-hui.html">Aujourd'hui</a>
-                                </li>
-                                <li>
-                                    <a href="/agenda/">L'agenda</a>
-                                </li>
-                                <li>
-                                    <a href="/equipements/">Les équipements</a>
-                                </li>
-                                <li>
-                                    <a href="/annoncesemploi/">Emploi</a>
-                                </li>
-                                <li>
-                                    <a href="/services/developpement-economique/">Développement économique</a>
-                                </li>
-                                <li>
-                                    <a href="/services/transports/">Transports</a>
-                                </li>
-                            </ul>
+</div>
 
-                        </div>
-                        <div class="span3">
-                            <h3>Les villes</h3>
-                            <hr/>
-                            <ul>
-                                <li>
-                                    <a href="/page/boussy-saint-antoine.html">Boussy-Saint-Antoine</a>
-                                </li>
-                                <li>
-                                    <a href="/page/brunoy.html">Brunoy</a>
-                                </li>
-                                <li>
-                                    <a href="/page/crosne.html">Crosne</a>
-                                </li>
-                                <li>
-                                    <a href="/page/epinay-sous-senart.html">Epinay-sous-Sénart</a>
-                                </li>
-                                <li>
-                                    <a href="/page/quincy-sous-senart.html">Quincy-sous-Sénart</a>
-                                </li>
-                                <li>
-                                    <a href="/page/yerres.html">Yerres</a>
-                                </li>
-                            </ul>
-
-                        </div>
-                        <div class="span3">
-                            <h3>Réseaux sociaux</h3>
-                            <hr/>
-                            <table>
-                                <tr>
-                                    <td>
-                                        <a href="http://www.facebook.com/pages/Communaute-dAgglomeration-du-Val-dYerres/171201942911202?v=wall"><img
-                                                alt="facebook"
-                                                src={% static 'valdyerresweb/img/reseaux-sociaux/facebook.png' %}>
-                                            <br/>
-                                            facebook</a></td>
-                                    <td><a href="https://twitter.com/ValdYerres"><img alt="twitter"
-                                                                                      src="{% static 'valdyerresweb/img/reseaux-sociaux/twitter.png' %}">
-                                        <br/>
-                                        twitter</a></td>
-
-                                </tr>
-                            </table>
-
-                        </div>
-                        <div class="span3">
-                            <h3>Contact</h3>
-                            <hr/>
-                            <address>
-
-
-                                <strong><a href="http://www.levaldyerres.fr">Le Val d'Yerres
-                                    <br/>
-                                    Communauté d'Agglomération</a></strong>
-                                <br>
-                                <div>
-                                    <span>78 Route Nationale 6-BP 103</span>
-                                    <br>
-                                    <span>91800</span> <span>Brunoy</span>
-                                    <br>
-                                    <span><abbr title="Téléphone">Tel</abbr>: <span>01 60 47 94 20</span></span>
-                                    <br/>
-                                    <span><abbr title="Télécopie">Fax</abbr>:  01 60 47 94 39</span>
-                                    <br>
-
-                                </div>
-
-                            </address>
-
-                        </div>
-                        <p style="text-align: right">
-                            <a href="/page/mentions-legales.html">Mentions légales</a> - <a
-                                href="/page/marches-publics.html">Marchés publics</a> - <a
-                                href="/services/ressources-humaines/">Recrutements</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     {% block jsload %}{% endblock %}
 
     {% block mapload %}{% endblock %}
