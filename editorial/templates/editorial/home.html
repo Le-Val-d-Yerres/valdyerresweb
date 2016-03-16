@@ -24,7 +24,8 @@
                             <div class="item {% if forloop.first %}active{% endif %}">
                                 <img alt="" src="{{ item.image|resize:'847x400x1' }}">
                                 <div class="carousel-caption">
-                                    <h2><a style="color:white;" href="{{ item.get_absolute_url }}">{{ item.titre }}</a></h2>
+                                    <h2><a style="color:white;" href="{{ item.get_absolute_url }}">{{ item.titre }}</a>
+                                    </h2>
                                 </div>
                             </div>
                         {% endfor %}
@@ -43,64 +44,170 @@
                 <div class="magazine-news">
                     <div class="row">
                         {% for page in actualites|slice:":2" %}
-                        <div class="col-md-6">
-                            <div class="magazine-news-img">
-                                <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}"><img class="img-responsive" src="{{page.image|resize:'973x615x1'}}" alt=""></a>
+                            <div class="col-md-6">
+                                <div class="magazine-news-img">
+                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
+                                            class="img-responsive" src="{{ page.image|resize:'973x615x1' }}" alt=""></a>
+                                </div>
+                                <h3>
+                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                                </h3>
+                                <div class="by-author">
+                                    <span>Publié le {{ page.date_publication|dateSimple }}.</span>
+                                </div>
+                                <p>{{ page.contenu|resume:220|safe }}</p>
+                                <p style="text-align: right;">
+                                    <a class="btn btn-primary"
+                                       href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                                        suite</a>
+                                </p>
                             </div>
-                            <h3><a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}">{{ page.titre|safe }}</a></h3>
-                            <div class="by-author">
-                                <span>Publié le {{page.date_publication|dateSimple}}.</span>
-                            </div>
-                            <p>{{page.contenu|resume:220|safe}}</p>
-                            <p style="text-align: right;" >
-							<a class="btn btn-primary" href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}">Lire la suite</a>
-						</p>
-                        </div>
                         {% endfor %}
                     </div>
                 </div>
-            <div class="margin-bottom-35"><hr class="hr-md"></div>
-             <div class="magazine-news">
+                <div class="margin-bottom-35">
+                    <hr class="hr-md">
+                </div>
+                <div class="magazine-news">
                     <div class="row">
                         {% for page in actualites|slice:"2:4" %}
-                        <div class="col-md-6">
-                            <div class="magazine-news-img">
-                                <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}"><img class="img-responsive" src="{{page.image|resize:'973x615x1'}}" alt=""></a>
+                            <div class="col-md-6">
+                                <div class="magazine-news-img">
+                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
+                                            class="img-responsive" src="{{ page.image|resize:'973x615x1' }}" alt=""></a>
+                                </div>
+                                <h3>
+                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                                </h3>
+                                <div class="by-author">
+                                    <span>Publié le {{ page.date_publication|dateSimple }}.</span>
+                                </div>
+                                <p>{{ page.contenu|resume:220|safe }}</p>
+                                <p style="text-align: right;">
+                                    <a class="btn btn-primary"
+                                       href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                                        suite</a>
+                                </p>
                             </div>
-                            <h3><a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}">{{ page.titre|safe }}</a></h3>
-                            <div class="by-author">
-                                <span>Publié le {{page.date_publication|dateSimple}}.</span>
-                            </div>
-                            <p>{{page.contenu|resume:220|safe}}</p>
-                            <p style="text-align: right;" >
-							<a class="btn btn-primary" href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug   %}">Lire la suite</a>
-						</p>
-                        </div>
                         {% endfor %}
                     </div>
                 </div>
-            </div>
-        <!-- Right Sidebar -->
-				<div class="col-md-3 magazine-page">
-                    {%if evenements_une_lg1%}
+                {% if evenements_une_lg1 %}
+                    <div class="margin-bottom-35">
+                    <hr class="hr-md">
+                </div>
+                    <div class="magazine-news">
+                        <h2><a href="{% url 'evenements.views.AgendaGlobal' %}">Prochains événements :</a></h2>
+                        <div class="row-fluid">
+                            <ul class="thumbnails">
+                                {% for evenement in evenements_une_lg1 %}
+                                    <li class="span4">
+                                        <div class="thumbnail">
+                                            <img alt="300x200" src="{{ evenement.image|resize:'225x200x1' }}">
+                                            <div class="caption">
+                                                <h3>
+                                                    <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom|safe }}</a>
+                                                    <br/>
+                                                    <small>Date : {{ evenement.debut|dateCustom:evenement.fin }} .
+                                                    </small>
+                                                </h3>
 
-                    <!-- Posts -->
-					<div class="posts margin-bottom-40">
-						<div class="headline headline-md"><h2>Prochains événements</h2></div>
-                        {% for evenement in evenements_une_lg1 %}
-						<dl class="dl-horizontal">
-							<dt><a href="#"><img src="{{evenement.image|resize:'200x200x1'}}" alt="" /></a></dt>
-							<dd>
-								<p><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{evenement.nom|safe}}</a></p>
-                                <p><i class="fa fa-calendar"></i> {{ evenement.debut|dateCustom:evenement.fin }}</p>
-							</dd>
-						</dl>
-                    {% endfor %}
-
-					</div><!--/posts-->
-
-                    {% endif %}
+                                                {{ evenement.description|safe|resume:150 }}
+                                                <p style="text-align: right;">
+                                                    <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"
+                                                       class="btn btn-primary">+ d'infos</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <p style="text-align: right;">
+                                <a class="btn btn-primary" href="{% url 'evenements.views.AgendaGlobal' %}">Voir tous
+                                    les événements à venir</a>
+                            </p>
+                        </div>
                     </div>
+                {% endif %}
+            </div>
+            <!-- Right Sidebar -->
+            <div class="col-md-3 magazine-page">
+
+                <div class="posts margin-bottom-40">
+                    <div class="headline headline-md"><h2>Aujourd'hui</h2></div>
+                    <div class="row">
+                        <ul class="list-unstyled col-md-12">
+                            {% if cinema_count > 0 %}
+                                <li><a href="{% url 'editorial.views.Ephemeride' %}#cinemas"
+                                       class=" circle-btn  ">{{ cinema_count|deuxchiffres }}</a>
+                                    scéance{{ cinema_count|pluralize }} de cinéma à 6€</a></li>
+                            {% endif %}
+                            {% if evenements_count > 0 %}
+                                <li><a href="{% url 'editorial.views.Ephemeride' %}#evenements"
+                                       class=" circle-btn  ">{{ evenements_count|deuxchiffres }}</a> <a href="#">événement{{ evenements_count|pluralize }}</a>
+                                </li>
+                            {% endif %}
+                            {% if equipements_count > 0 %}
+                                <li><a href="{% url 'editorial.views.Ephemeride' %}#equipements"
+                                       class=" circle-btn ">{{ equipements_count|deuxchiffres }}</a> <a href="">
+                                    équipement{{ equipements_count|pluralize }}
+                                    ouvert{{ equipements_count|pluralize }}</a></li>
+                            {% endif %}
+                        </ul>
+
+                    </div>
+                </div>
+                {% if evenements_une_lg1 %}
+                    <!-- Posts -->
+                    <div class="posts margin-bottom-40">
+                        <div class="headline headline-md"><h2>Prochains événements</h2></div>
+                        {% for evenement in evenements_une_lg1 %}
+                            <dl class="dl-horizontal">
+                                <dt><a href="#"><img src="{{ evenement.image|resize:'200x200x1' }}" alt=""/></a></dt>
+                                <dd>
+                                    <p>
+                                        <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom|safe }}</a>
+                                    </p>
+                                    <p><i class="fa fa-calendar"></i> {{ evenement.debut|dateCustom:evenement.fin }}</p>
+                                </dd>
+                            </dl>
+                        {% endfor %}
+
+                    </div><!--/posts-->
+                {% endif %}
+                <!-- Posts -->
+                <div class="posts margin-bottom-40">
+                    <div class="headline headline-md"><h2>Le Magazine</h2></div>
+
+                    <h4><a href="{% url 'editorial.views.Magazines' %}">{{ magazine.date_parution|moisannee }}</a></h4>
+                    <a href="{% url 'editorial.views.Magazines' %}"><img class="img-polaroid" style="max-width:90%"
+                                                                         src="{{ magazine.image|resize:'225x300x1' }}"
+                                                                         alt="{{ magazine.titre|safe }}"></a>
+                    <p>
+                        Dossier : {{ magazine.titre|safe }}
+                    </p>
+                </div>
+                <!--/posts-->
+                {% if annoncesemploi %}
+                    <div class="posts margin-bottom-40">
+                        <div class="headline headline-md"><h2>Emploi</h2></div>
+                        {% regroup annoncesemploi by service as annonceslists %}
+                        <div class="row">
+                            <ul class="list-unstyled col-md-12">
+                                {% for annonces in annonceslists %}
+                                    <li>
+                                        <a href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}"
+                                           class="circle-btn">{{ annonces.list|length|deuxchiffres }}</a><a
+                                            href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}">
+                                        annonce{{ annonces.list|length|pluralize }} {{ annonces.grouper }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
