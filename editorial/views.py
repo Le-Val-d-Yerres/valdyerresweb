@@ -103,7 +103,7 @@ def Home(request):
 def ActuList(request):
     pages = get_list_or_404(Actualite.objects.order_by('-date_publication'))
 
-    paginator = Paginator(pages, 5)
+    paginator = Paginator(pages, 6)
     page = request.GET.get('page')
 
     try:
