@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="news-v3 bg-color-white margin-bottom-30">
-                    {% if page.image %}
+                {% if page.image %}
                         {% if page.image.width >= page.image.height %}
                             <img class="img-responsive full-width" alt="{{ page.nom }}"
                                  src="{{ page.image|resize:'670x375x1' }}">
@@ -37,7 +37,7 @@
                             </div>
                         {% endif %}
                     {% endif %}
-                    <div class="news-v3-in">
+                    <div class="news-v3-in-sm">
                         <h2><a href="">{{ page.titre }}</a></h2>
                         <p>
                             <small>Publié le {{ page.date_publication|dateSimple }}.</small>
@@ -46,20 +46,21 @@
                         <hr/>
                     </div>
                 </div>
+            </div>
                 <div class="col-md-4">
-                    <div>
-                        <ul>
-                            <li>{{ page.get_absolute_url|facebook:page.titre|safe }}</li>
-                            <li>{{ page.get_absolute_url|twitter:page.titre|safe }}</li>
+                    <div class="post margin-bottom-25">
+                        <dl class="headline headline-md">
+                            {{ page.get_absolute_url|facebook:page.titre|safe }}
+                        </dl>
+                        <dl class="headline headline-md">{{ page.get_absolute_url|twitter:page.titre|safe }}</dl>
 
-                        </ul>
                     </div>
                 </div>
                 {% if documentattache|length > 0 %}
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         {% with total=documentattache|length %}
                             <p>{{ total }} document{{ total|pluralize }} attaché{{ total|pluralize }} :</p>
-                            <ul class="nav nav-tabs nav-stacked">
+                            <ul class="">
                                 {% for doc in documentattache %}
                                     <li><a href="{{ doc.document.url }}">{{ doc.nom }},
                                         ({{ doc.document.filesize|filesizeformat }}).</a></li>
