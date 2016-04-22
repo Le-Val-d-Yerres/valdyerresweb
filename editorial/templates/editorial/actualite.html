@@ -44,20 +44,8 @@
                         </p>
                         {{ page.contenu|safe }}
                         <hr/>
-                    </div>
-                </div>
-            </div>
-                <div class="col-md-4">
-                    <div class="post margin-bottom-25">
-                        <dl class="headline headline-md">
-                            {{ page.get_absolute_url|facebook:page.titre|safe }}
-                        </dl>
-                        <dl class="headline headline-md">{{ page.get_absolute_url|twitter:page.titre|safe }}</dl>
+                        {% if documentattache|length > 0 %}
 
-                    </div>
-                </div>
-                {% if documentattache|length > 0 %}
-                    <div class="col-md-3">
                         {% with total=documentattache|length %}
                             <p>{{ total }} document{{ total|pluralize }} attaché{{ total|pluralize }} :</p>
                             <ul class="">
@@ -67,8 +55,22 @@
                                 {% endfor %}
                             </ul>
                         {% endwith %}
-                    </div>
+
                 {% endif %}
+                    </div>
+                </div>
+
+            </div>
+                <div class="col-md-4">
+                    <div class="post margin-bottom-25">
+                        <dl class="dl-horizontal">
+                            {{ page.get_absolute_url|facebook:page.titre|safe }}
+                        </dl>
+                        <dl class="dl-horizontal">{{ page.get_absolute_url|twitter:page.titre|safe }}</dl>
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

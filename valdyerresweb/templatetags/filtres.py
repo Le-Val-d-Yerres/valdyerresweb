@@ -326,7 +326,7 @@ def generateMenu():
 @register.filter(is_safe=True)
 def twitter(url, txt):
     lien = "<a href=\"https://www.twitter.com/share?text=" + http.urlquote_plus(
-        txt) + "&amp;url=" + valdyerresweb.settings.NOM_DOMAINE + url + "\"><img alt=\"twitter\" src=\"" + static(
+        txt) + "&amp;url=" + valdyerresweb.settings.NOM_DOMAINE + url + "\"> <img alt=\"twitter\" src=\"" + static(
         "valdyerresweb/img/reseaux-sociaux/twitter-share.png") + "\"> Partager sur Twitter</a>"
     return lien
 
@@ -334,6 +334,6 @@ def twitter(url, txt):
 @register.filter(is_safe=True)
 def facebook(url, txt):
     lien = "<a href=\"https://www.facebook.com/sharer.php?t=" + http.urlquote_plus(
-        txt) + "&amp;u=" + valdyerresweb.settings.NOM_DOMAINE + url + "\"><img alt=\"facebook\" src=\"" + static(
+        txt) + "&amp;u=" + valdyerresweb.settings.NOM_DOMAINE + url + "\"> <img alt=\"facebook\" src=\"" + static(
         "valdyerresweb/img/reseaux-sociaux/facebook-share.png") + "\"> Partager sur Facebook</a>"
     return lien
