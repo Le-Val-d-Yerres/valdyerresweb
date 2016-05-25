@@ -123,7 +123,7 @@
                         <a href="{% url 'editorial.views.ActuList' %}?page={{ pages.number }}">{{ pages.number }}</a>
                     </li>
                     {% if pages.number < pages.paginator.num_pages %}
-                        <li>
+                        <li  class="disabled">
                             <a href=".">...</a>
                         </li>
                         <li>

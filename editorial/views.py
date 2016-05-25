@@ -78,10 +78,8 @@ def Home(request):
 
     magazine = Magazine.objects.filter(publie=True).order_by('-date_parution')[0]
 
-
     # nb annonces emploi
     annoncesemploi = Annonce.objects.select_related().filter(publie=True).order_by('service')
-
 
     # noubliez-pas
 
@@ -287,11 +285,11 @@ def newsletterbibhtml(request, equipement_slug):
                                                        debut__gte=newsletter.evenement_debut,
                                                        fin__lte=newsletter.evenement_fin).order_by('debut')
     activites_ttpublic = Evenement.objects.all().filter(categorie='bib', public='pub', lieu=bib,
-                                                       debut__gte=newsletter.evenement_debut,
-                                                       fin__lte=newsletter.evenement_fin).order_by('debut')
+                                                        debut__gte=newsletter.evenement_debut,
+                                                        fin__lte=newsletter.evenement_fin).order_by('debut')
 
     return render_to_response('editorial/newsletters/newsletter.html', {'bib': bib,
-                                                                        'request':request,
+                                                                        'request': request,
                                                                         'activites_enfants': activites_enfants,
                                                                         'activites_adultes': activites_adultes,
                                                                         'activites_ttpublic': activites_ttpublic,

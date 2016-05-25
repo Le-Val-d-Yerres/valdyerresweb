@@ -15,21 +15,21 @@
 
 
 {% block contenu %}
-<div class="container" style="margin-top:60px;">
+<div class="container">
 
 	<div class="row-fluid">
-		<div class="span12">
+		 <div class="col-md-12">
 			<ul class="breadcrumb">
 				<li>
 					<a href="/">Accueil</a><span class="divider">/</span>
 				</li>
 				<li class="active">
-					{{datepage|queljour|safe}} dans le Val d'Yerres
+					{{datepage|queljour|safe}} dans l'agglo
 				</li>
 			</ul>
 		</div>
 
-		<div class="span11 hidden-phone" >
+		<div class="col-md-11 hidden-phone" >
 			<ul class="pager">
 				{% if precedent %}
 				<li class="previous">
@@ -42,16 +42,11 @@
 				</li>
 				{% endif %}
 			</ul>
-			<h1>{{datepage|queljour|safe}} dans le Val d'Yerres</h1>
+			<h1>{{datepage|queljour|safe}} dans l'agglo</h1>
 
 			<hr/>
 			<h2 id="cinemas">Les séances de cinéma:</h2>
 			{% if seances|length > 0 %}
-			<div class="alert  alert alert-info">
-				<p style="text-align: center;">
-					Toutes les séances sont à 6€ pour les habitants du Val d'Yerres.
-				</p>
-			</div>
 			<table class="table table-striped" align="center">
 				<thead>
 					<tr>
@@ -146,7 +141,7 @@
 				{% for equipement in fonction.list %}
 				<tr>
 
-					<td><img class="img-polaroid" alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
+					<td><img class="img-polaroid" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
 					<td><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td><td> {{equipement.ville.nom}} </td>
 
 					<td> {% for horaires in listhoraires %}
@@ -155,7 +150,7 @@
 					{% if horaire.equipement.id == equipement.id %}
 					<ul>
 						<li>
-							{{horaire.nom}} : {{num_jour|horaires_journee:horaire}}</br>
+							{{horaire.nom}} : {{num_jour|horaires_journee:horaire}} <br>
 						</li>
 
 					</ul> {% endif %}
@@ -167,126 +162,6 @@
 				</tr>
 				{%endfor%}
 			</table>
-
-			{% endfor %}
-			<ul class="pager">
-				{% if precedent %}
-				<li class="previous">
-					<a href="{{precedent}}.html">&larr; {{precedent_date|queljour|safe}}</a>
-				</li>
-				{% endif %}
-				{% if suivant %}
-				<li class="next">
-					<a href="{{suivant}}.html">{{suivant_date|queljour|safe}} &rarr;</a>
-				</li>
-				{% endif %}
-			</ul>
-		</div>
-		
-		<div class="span12 hidden-tablet hidden-desktop ">
-			<ul class="pager">
-				{% if precedent %}
-				<li class="previous">
-					<a href="{{precedent}}.html">&larr; {{precedent_date|queljour|safe}}</a>
-				</li>
-				{% endif %}
-				{% if suivant %}
-				<li class="next">
-					<a href="{{suivant}}.html">{{suivant_date|queljour|safe}} &rarr;</a>
-				</li>
-				{% endif %}
-			</ul>
-			<h1>{{datepage|queljour|safe}} dans le Val d'Yerres</h1>
-
-			<hr/>
-			<h2>Les séances de cinéma:</h2>
-			{% if seances|length > 0 %}
-			
-				{% regroup seances by cinema as screenings %}
-				{% for item in screenings%}
-				
-					<h3><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></h3>
-					<p>
-					{{item.grouper.ville.nom}}
-					{% regroup item.list by film as thefilm %}
-					<ul>
-						{% for seances in thefilm %}
-						<li>
-							{{seances.grouper}}:
-
-							{% for seance in seances.list %}
-							<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
-							{% endfor%}
-						</li>
-
-						{% endfor %}
-					</ul>
-					</p>
-				{% endfor %}
-			
-
-			{% else %}
-			<div class="alert  alert-error">
-				<p>
-					Désolé.
-					<br/>
-					Les séances ne nous ont pas encore été communiquées.
-				</p>
-			</div>
-
-			{% endif%}
-
-			{% if evenements|length > 0 %}
-			<hr/>
-			<h2>Les événements :</h2>
-			<ul>
-				{% for evenement in evenements %}
-					<li>
-					<p>
-					{{evenement.lieu.nom}}
-					{{evenement.lieu.ville.nom}}
-					<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }}
-					</p>
-					<p style="text-align:right;">
-					<a class="btn  btn-primary" href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a>
-					</p>
-					</li>
-				{% endfor %}
-			</ul>
-			{% endif %}
-			<hr/>
-			<h2>Horaires des équipements :</h2>
-			{%regroup equipements by fonction as fonctions%}
-
-			{% for fonction in fonctions %}
-			<h3>{{fonction.grouper.pluriel}} :</h3>
-			
-				{% for equipement in fonction.list %}
-				<p>
-
-					<img class="img-polaroid" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'200x100x0' }}"/><br/>
-					<h4><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></h4>
-					{{equipement.ville.nom}}
-
-					{% for horaires in listhoraires %}
-					{% for horaire in horaires %}
-
-					{% if horaire.equipement.id == equipement.id %}
-					<ul>
-						<li>
-							{{horaire.nom}} : {{ num_jour|horaires_journee:horaire }} </br>
-						</li>
-
-					</ul> {% endif %}
-
-					{%endfor%}
-					{% endfor %}
-					<p style="text-align:right;">
-					<a class="btn  btn-primary" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a>
-					</p>
-				<hr/>
-				{%endfor%}
-			
 
 			{% endfor %}
 			<ul class="pager">
