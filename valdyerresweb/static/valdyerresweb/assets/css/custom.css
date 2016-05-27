@@ -45,3 +45,11 @@
     background: #439BC6;
     color: #FFFFFF;
 }
+
+.nav-tabs.nav-stacked > li > a {
+  border: 1px solid #ddd;
+  -webkit-border-radius: 0;
+     -moz-border-radius: 0;
+          border-radius: 0;
+}
+

@@ -47,7 +47,8 @@ class DocumentAttache(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom") 
     document = FileBrowseField("Document", max_length=200, directory="editorial/docs", extensions=[".pdf", ".doc", ".odt", ".docx", ".txt"])
     reference = models.ForeignKey(PageBase)
-    
+
+
 class Magazine(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
     slug = models.SlugField(max_length=255)
