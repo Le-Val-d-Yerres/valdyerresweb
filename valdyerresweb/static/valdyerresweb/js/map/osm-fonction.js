@@ -12,10 +12,10 @@ for (var j = 0; j <= 20; j++)
 }
 
 
-// Corrdonnées GPS du centre géographique de l'agglo (gare RER de Brunoy)
+// Corrdonnées GPS du centre géographique de l'agglo (Buste du général de Gaulle à Montgeron)
 var aggloGPS = [];
-aggloGPS['longitude'] = 2.50706;
-aggloGPS['latitude'] = 48.698867;
+aggloGPS['longitude'] = 2.461008;
+aggloGPS['latitude'] = 48.697573;
 
 var feature = [];
     
