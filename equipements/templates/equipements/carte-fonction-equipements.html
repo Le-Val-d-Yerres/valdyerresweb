@@ -16,16 +16,16 @@
 
 
 {% block contenu %}	
-<div class="container" style="margin-top:60px;">
+<div class="container">
 	
 <div class="row-fluid">
-		<div class="span12">
+		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li>
-					<a href="/">Accueil</a><span class="divider">/</span>
+					<a href="/">Accueil</a>
 				</li>
 				<li>
-					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a><span class="divider">/</span>
+					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a>
 				</li>
 				<li class="active">
 					{{ fonction.pluriel }}
@@ -33,7 +33,7 @@
 			</ul>
 		</div>
 		
-		<div class="span11 hidden-phone">
+		<div class="col-md-12 hidden-xs hidden-sm">
 		<h1><a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=fonction.slug %}">{{ fonction.pluriel }}</a></h1>
 		
 		
@@ -45,7 +45,7 @@
       					<th>Nom</th>
       					<th>Ville</th>
       					{% if listhoraires|length != 0 %}
-      					<th>Horaires pour aujourd'hui <br/> {%nom_jour_aujourdhui%}</th>
+      					<th>Horaires pour aujourd'hui : {%nom_jour_aujourdhui%}</th>
       					{% endif %}
       					<th></th>
     				</tr>
@@ -62,7 +62,7 @@
 					
 						{% if horaire.equipement.id == equipement.id %}
 							<ul>
-							<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}}</br></li>
+							<li>{{horaire.nom}} : {{horaire|horaires_aujourdhui}} </br></li>
 							</ul>
 						{% endif %}
 					
@@ -74,9 +74,9 @@
 			</tr>
 			{% endfor %}
 			</table>
-		
+
 		</div>
-		<div class="span12 visible-phone">
+		<div class="visible-xs-12 visible-sm-12 hidden-md hidden-lg">
 			<h1><a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=fonction.slug %}">{{ fonction.pluriel }}</a></h1>
 			{% for equipement in equipements %}
 			<p>
@@ -111,7 +111,7 @@
 		</div>
 </div>
 <div class="row-fluid">
-	<div class="span12">
+	<div class="col-md-12">
 		<div id="map_canvas" style="width:980px; height:800px"></div>
 	</div>
 </div>

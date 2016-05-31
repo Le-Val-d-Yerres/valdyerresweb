@@ -3,6 +3,8 @@
 <small><a class="visible-phone text-error" href="{% url 'equipements.views.AlertesSansJs' equipement_slug=alerte.equipement.slug %}">{{ alerte.lien|safe }}</a></small>
 
 <div style="text-align: left;width: 700px;margin-left: -350px;" id="widgetAlertes" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h3>{{ alerte.nom }}</h3>
@@ -78,5 +80,7 @@
 				<div class="btn btn-primary" onclick="envoiAlerte();">Envoyer</div>
 			</span>
 		</div>
-	</form>
+
 </div>
+    </div>
+    </div>
