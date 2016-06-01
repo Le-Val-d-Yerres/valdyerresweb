@@ -136,7 +136,7 @@ function envoiAlerte()
 	if (nom == "")
 	{
 		valide = false;
-		document.getElementById('nomErreur').className = "control-group error";
+		document.getElementById('nomErreur').className = "control-group has-error";
 	}
 	else
 	{
@@ -147,7 +147,7 @@ function envoiAlerte()
 	if (prenom == "")
 	{
 		valide = false;
-		document.getElementById('prenomErreur').className = "control-group error";
+		document.getElementById('prenomErreur').className = "control-group has-error";
 	}
 	else
 	{
@@ -158,7 +158,7 @@ function envoiAlerte()
 	if (rue == "")
 	{
 		valide = false;
-		document.getElementById('rueErreur').className = "control-group error";
+		document.getElementById('rueErreur').className = "control-group has-error";
 	}
 	else
 	{
@@ -169,7 +169,7 @@ function envoiAlerte()
 	if (codePostal == "")
 	{
 		valide = false;
-		document.getElementById('codepostalErreur').className = "control-group error";
+		document.getElementById('codepostalErreur').className = "control-group has-error";
 	}
 	else
 	{
@@ -180,7 +180,7 @@ function envoiAlerte()
 	if (ville == "")
 	{
 		valide = false;
-		document.getElementById('villeErreur').className = "control-group error";
+		document.getElementById('villeErreur').className = "control-group has-error";
 	}
 	else
 	{
@@ -191,7 +191,7 @@ function envoiAlerte()
 	if (tel == "")
 	{
 		valide = false;
-		document.getElementById('telErreur').className = "control-group error";
+		document.getElementById('telErreur').className = "control-group has-error";
 	}
 	else
 	{
@@ -202,7 +202,7 @@ function envoiAlerte()
 	if (mail == "")
 	{
 		valide = false;
-		document.getElementById('mailErreur').className = "control-group error";
+		document.getElementById('mailErreur').className = "control-group has-error";
 	}
 	else
 	{
@@ -213,7 +213,7 @@ function envoiAlerte()
 	if (msg == "")
 	{
 		valide = false;
-		document.getElementById('msgErreur').className = "control-group error";
+		document.getElementById('msgErreur').className = "control-group has-error";
 	}
 	else
 	{
