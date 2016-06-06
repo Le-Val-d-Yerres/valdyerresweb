@@ -174,7 +174,7 @@ function envoiAlerte()
 	else
 	{
 		document.getElementById('codepostalErreur').className = "control-group";
-	}
+	} 
 	
 	var ville = encodeURIComponent(document.getElementById('alerteVille').value);
 	if (ville == "")
