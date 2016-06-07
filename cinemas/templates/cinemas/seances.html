@@ -1,0 +1,126 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load cinemasfilters %}
+{% load menufilters %}
+{% load tz %}
+
+{% block title %}Toutes les séances à venir dans les cinémas {% endblock %}
+{% block meta-description %}Les séances à venir dans les cinémas du Val d'Yerres {% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+
+    {% regroup seances by film as eventlist %}
+    <div class="container">
+    <div class="row-fluid">
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a href="/">Accueil</a></li>
+                <li class="active">Les cinémas</li>
+            </ul>
+        </div>
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>Les séances à venir dans les cinémas du Val d'Yerres : <br/></h1>
+            </div>
+            {% if seances|length > 0 %}
+                <div class="row-fluid">
+                    <div class="col-md-4">
+                        <div class="well">
+                            <ul class="nav nav-list">
+                                <li class="nav-header">Le{{ eventlist|pluralize }} film{{ eventlist|pluralize }}</li>
+
+                                {% for film in eventlist %}
+                                    <li><a href="#{{ film.grouper.slug }}">{{ film.grouper.titre }} :</a></li>
+
+                                    Prochaine séance :
+                                    <a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=film.list.0.cinema.slug %}">
+                                        «{{ film.list.0.cinema.nom }}»</a>,<br/>
+                                    {{ film.list.0.date_debut.date|queljour|safe }} à
+                                    {{ film.list.0.date_debut|quelleheure }}<br/>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <table class="table  table-striped">
+                            {% for film in eventlist %}
+                                <tr id="{{ film.grouper.slug }}">
+                                <td><img class="img-responsive" src="{{ film.grouper.image|resize:'240x320x1' }}"></td>
+                                <td><h3>{{ film.grouper.titre }}</h3>Durée : {{ film.grouper.duree|dureesec }}.<br/>
+                                    <a href="http://www.allocine.fr/film/fichefilm_gen_cfilm={{ film.grouper.id_allocine_film }}.html">Fiche
+                                        du film sur allocine.fr</a>.<br/>
+                                    {% regroup film.list by cinema as cinemalist %}
+                                    {% for cinema in cinemalist %}
+
+                                        <h4>Au cinéma <a
+                                                href="{% url 'cinemas.views.CinemaLieu' cinema_slug=cinema.grouper.slug %}">«{{ cinema.grouper.nom }}»</a>
+                                            à {{ cinema.grouper.ville.nom }} :</h4>
+                                        <ul>
+                                            {% regroup cinema.list by date_debut.date as seances %}
+                                            {% for jour in seances %}
+                                                <li>
+                                                    {{ jour.grouper|queljour|safe }} à
+                                                    {% for seance in jour.list %}
+                                                        <a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}"
+                                                           data-toggle="ajaxmodal">
+                                                            {{ seance.date_debut|quelleheure }}{% if seance.format %} (
+                                                                {{ seance.format }}){% endif %}
+                                                            {% if seance.version_vo %}
+                                                                {% ifnotequal seance.version_lang "Français" %} en VO (
+                                                                    {{ seance.version_lang }})
+                                                                {% endifnotequal %}{% endif %}</a>
+                                                        {% if not forloop.last %},{% else %}.{% endif %}
+                                                    {% endfor %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endfor %}
+                                </td>
+                            {% endfor %}
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row-fluid">
+                <div class="col-md-12">
+                    <div class="alert  alert-error">
+                        <p>Désolé.<br/>
+                            Les séances ne nous ont pas encore été communiquées.</p>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jsload %}
+    {% include "include/jquery-bootstrap.html" %}
+
+    <script>
+        $(document).ready(function () {
+            // Support for AJAX loaded modal window.
+            // Focuses on first input textbox after it loads the window.
+            $('[data-toggle="ajaxmodal"]').click(function (e) {
+                e.preventDefault();
+
+                var url = $(this).attr('href');
+                if (url.indexOf('#') == 0) {
+                    $(url).modal('open');
+                } else {
+                    $.get(url, function (data) {
+                        $('<div class="modal" id="ajaxmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' + data + '</div>').modal();
+                    }).success(function () {
+                        $('input:text:visible:first').focus();
+                    });
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

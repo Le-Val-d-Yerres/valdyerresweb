@@ -16,18 +16,20 @@ def calendaraddlinklist(evenement):
         
 @register.filter(is_safe=True)
 def calendarexportlinklist(dictargs):
-    text = u"<ul class=\"linklist\" >\n"
+    text = ""
     for line in getEventsLinkList(dictargs):
-        text += u"<li>"+line+"</li>\n"
-    text += u"</ul>\n"
+        text += u"<dl class=\"linklist\" >\n"
+        text += line+"\n"
+        text += u"</dl>\n"
     return text
 
 @register.filter(is_safe=True)
 def saisonexportlinklist(saisonslug):
-    text = u"<ul class=\"linklist\" >\n"
+    text = ""
     for line in getSaisonLinkList(saisonslug):
-        text += u"<li>"+line+"</li>\n"
-    text += u"</ul>\n"
+        text += u"<dl class=\"linklist\" >\n"
+        text += line+"\n"
+        text += u"</dl>\n"
     return text
         
 @register.filter(is_safe=True)

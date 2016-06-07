@@ -104,16 +104,16 @@
                             {% if cinema_count > 0 %}
                                 <li><a href="{% url 'editorial.views.Ephemeride' %}#cinemas"
                                        class=" circle-btn  ">{{ cinema_count|deuxchiffres }}</a>
-                                    scéance{{ cinema_count|pluralize }} de cinéma à 6€</a></li>
+                                    <a href="{% url 'editorial.views.Ephemeride' %}#cinemas">scéance{{ cinema_count|pluralize }} de cinéma</a></li>
                             {% endif %}
                             {% if evenements_count > 0 %}
                                 <li><a href="{% url 'editorial.views.Ephemeride' %}#evenements"
-                                       class=" circle-btn  ">{{ evenements_count|deuxchiffres }}</a> <a href="#">événement{{ evenements_count|pluralize }}</a>
+                                       class=" circle-btn  ">{{ evenements_count|deuxchiffres }}</a> <a <a href="{% url 'editorial.views.Ephemeride' %}#evenements">événement{{ evenements_count|pluralize }}</a>
                                 </li>
                             {% endif %}
                             {% if equipements_count > 0 %}
                                 <li><a href="{% url 'editorial.views.Ephemeride' %}#equipements"
-                                       class=" circle-btn ">{{ equipements_count|deuxchiffres }}</a> <a href="">
+                                       class=" circle-btn ">{{ equipements_count|deuxchiffres }}</a> <a href="{% url 'editorial.views.Ephemeride' %}#equipements">
                                     équipement{{ equipements_count|pluralize }}
                                     ouvert{{ equipements_count|pluralize }}</a></li>
                             {% endif %}

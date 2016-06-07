@@ -47,7 +47,7 @@
 				<table class="table  table-striped">
 				{% for film in eventlist%}
 				<tr id="{{film.grouper.slug}}">
-					<td><img class="img-polaroid" src="{{film.grouper.image|resize:'240x320x1'}}"></td>
+					<td><img class="img-responsive" src="{{film.grouper.image|resize:'240x320x1'}}"></td>
 				<td><h3>{{film.grouper.titre}}</h3>Durée : {{film.grouper.duree|dureesec}}.<br/>
 					<p>
 					<a href = "http://www.allocine.fr/film/fichefilm_gen_cfilm={{film.grouper.id_allocine_film}}.html">Fiche du film sur allocine.fr</a>.<br/>
@@ -62,7 +62,7 @@
 							<li>
 								{{jour.grouper|queljour|safe}} à
 								{% for seance in jour.list%}
-							 		<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
+							 		<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="ajaxmodal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
 								{%endfor%}
 							</li>
 							{%endfor%}
@@ -96,11 +96,11 @@
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 					<strong>{{ cinema.nom }}</strong>
 					<br/>
-					<span>{{ cinema.rue }}</span>
+					<span>{{cinema.rue}}</span>
 					<br/>
-					<span>{{ cinema.ville.code_postal }}</span> <span itemprop="addressLocality">{{ cinema.ville.nom }}</span>
+					<span>{{cinema.ville.code_postal}}</span> <span itemprop="addressLocality">{{ cinema.ville.nom }}</span>
 					<br/>
-					<span><abbr title="Téléphone">Tel</abbr>: {{ cinema.telephone }}</span>
+					<span><abbr title="Téléphone">Tel</abbr>: {{cinema.telephone }}</span>
 					<br/>
 					{% if cinema.url %}
 					<p>
@@ -110,7 +110,7 @@
 					
 					{% if cinema.fax %}
 					<p>
-						Fax : {{ cinema.fax }}
+						Fax : {{cinema.fax}}
 					</p>
 					{% endif %}
 
@@ -208,23 +208,24 @@
     			$('#map_canvas').css('width', (h*2/3));
 				}).resize();
 		$(document).ready(function() {
-	
+
 		// Support for AJAX loaded modal window.
 		// Focuses on first input textbox after it loads the window.
-		$('[data-toggle="modal"]').click(function(e) {
+		$('[data-toggle="ajaxmodal"]').click(function(e) {
 			e.preventDefault();
+
 			var url = $(this).attr('href');
 			if (url.indexOf('#') == 0) {
 				$(url).modal('open');
 			} else {
 			$.get(url, function(data) {
-				$('<div class="modal hide">' + data + '</div>').modal();
+				$('<div class="modal" id="ajaxmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">' + data + '</div>').modal();
 			}).success(function() { $('input:text:visible:first').focus(); });
 			}
 			});
-	
-		});		
-		</script>
+
+		});
+        </script>
 		{% include "include/maps-ressources.html" %}
 		{%block mapload%}{% endblock %}
 	{% endblock %}

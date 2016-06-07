@@ -55,6 +55,6 @@ def quelleheure(thedate):
 def seanceaddlinklist(seance):
     text = u"<ul style=\"list-style:none;\" >\n"
     for line in getLinkList(seance):
-        text += u"<li>"+line+"</li>\n"
+        text += u"<li style=\"margin-top:5px;\">"+line+"</li>\n"
     text += u"</ul>\n"
     return text

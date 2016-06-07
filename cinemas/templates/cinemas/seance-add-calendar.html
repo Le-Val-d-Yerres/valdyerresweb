@@ -1,0 +1,44 @@
+{% load filtres %}
+{% load aidefilters %}
+{% load cinemasfilters %}
+{% load menufilters %}
+{% load tz %}
+
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{seance.film.titre}}.{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}
+	<br/>
+	<small>Au cinéma <a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=seance.cinema.slug %}">«{{seance.cinema.nom}}»</a>, {{seance.date_debut.date|queljour|safe}} de {{seance.date_debut|quelleheure}} à {{seance.date_fin|quelleheure}}.<br/>
+
+	</small></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                {{seance|seanceaddlinklist|safe}}
+                </p>
+            </div>
+			<div class="col-md-6">
+            <p style="text-align: center">
+			<span style="float: right" >Ajouter cette séance à votre agenda: <br/>(Format QR Code) : <br/><img alt="QrCode: {{ seance.film.titre }}" src="data:image/png;base64,{{ qr_code_calendar }}"/></span>
+
+
+
+			</p>
+            </div>
+
+
+	    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+
+      </div>
+    </div>
+  </div>
+
+
