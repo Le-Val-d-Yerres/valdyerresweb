@@ -8,10 +8,11 @@ from datetime import timedelta
 
 @register.filter(is_safe=True)
 def calendaraddlinklist(evenement):
-    text = u"<ul class=\"linklist\" >\n"
+    text =""
     for line in getLinkList(evenement):
-        text += u"<li>"+line+"</li>\n"
-    text += u"</ul>\n"
+        text += u"<dl class=\"linklist\" >\n"
+        text += line+"\n"
+        text += u"</dl>\n"
     return text
         
 @register.filter(is_safe=True)
@@ -46,10 +47,9 @@ def duree(debut,fin):
             txttemps += " jour"
         if delta.days > 1:
             txttemps += " jours"
-    if heures > 0 :
-        txttemps+=" "+str(heures)+"H"
-    if minutes > 0 :    
-        txttemps+= " "+str(minutes)+"min"
+    if heures > 0:
+        txttemps += " "+str(heures)+"H"
+    if minutes > 0:
+        txttemps += " "+str(minutes)+"min"
     return txttemps
-    
-    
+

@@ -127,7 +127,7 @@
                         <div class="headline headline-md"><h2>Prochains événements</h2></div>
                         {% for evenement in evenements_une_lg1 %}
                             <dl class="dl-horizontal">
-                                <dt><a href="#"><img src="{{ evenement.image|resize:'200x200x1' }}" alt=""/></a></dt>
+                                <dt><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><img src="{{ evenement.image|resize:'200x200x1' }}" alt=""/></a></dt>
                                 <dd>
                                     <p>
                                         <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom|safe }}</a>

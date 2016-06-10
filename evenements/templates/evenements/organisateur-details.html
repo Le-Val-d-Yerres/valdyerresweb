@@ -16,19 +16,19 @@
 
 {% block contenu %}
 
-<div itemscope itemtype="http://schema.org/Organization" class="container"style="margin-top: 60px;">
+<div itemscope itemtype="http://schema.org/Organization" class="container">
 	<div  class="row-fluid">
-			<div class="span12">
+			<div class="col-md-12">
 			<ul class="breadcrumb">
 					<li><a href="/">Accueil</a></li> 
-					<li><span class="divider">/</span></li>
-					<li><a href="{% url 'evenements.views.AgendaGlobal' %}">Agenda</a> <span class="divider">/</span></li>
-					<li><a href="">Organisateurs</a> <span class="divider">/</span></li>
+
+					<li><a href="{% url 'evenements.views.AgendaGlobal' %}">Agenda</a></li>
+					<li><a href="">Organisateurs</a></li>
 					<li class="active">{{ organisateur.nom }}</li> 
 						
 			</ul>	
 			</div>	
-			<div class="span7">
+			<div class="col-md-8">
 				
 				
 				
@@ -36,7 +36,7 @@
 				
 				
 				{% if organisateur.logo %}
-				<img class="img-polaroid" alt="{{ organisateur.nom }}" src="{{ organisateur.logo|resize:'670x375x1' }}">
+				<img class="img-responsive" alt="{{ organisateur.nom }}" src="{{ organisateur.logo|resize:'670x375x1' }}">
 				{% endif %}
 	
 					<div itemprop="description">
@@ -50,7 +50,7 @@
 				{% endif %}
 				
 			</div>
-			<div class="span4">
+			<div class="col-md-4">
 				<br/>
 				<address>
 					<div itemprop="location" itemscope itemtype="http://schema.org/Place">

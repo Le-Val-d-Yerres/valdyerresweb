@@ -35,14 +35,16 @@
                 </li>
                 <li>
                     <a href="{% url 'evenements.views.AgendaGlobal' %}">Agenda</a>
-                <li>
+                </li>
                     {% if festival %}
                         <li>
                             <a href="{% url 'evenements.views.SaisonDetailsHtml' slug=saison.slug %}">{{ saison.nom }}</a>
                         </li>
                         <li class="active">{{ festival.nom }}</li>
+
                         <li class="active">{{ evenement.nom }}</li>
                     {% else %}
+
                         <li class="active">{{ saison.nom }}</li>
                     {% endif %}
             </ul>
@@ -77,7 +79,7 @@
             </div>
             {% if evenements %}
                 <div class="row-fluid">
-                    <div class="col-md-6 col-md-pre">
+                    <div class="col-md-7">
 
                         <h2>Les événements à venir : </h2>
 
@@ -126,7 +128,7 @@
             {% endif %}
             {% if evenementspasses %}
                 <div class="row-fluid">
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <h2>Les événements passés: </h2>
                         <div style="border:1px solid #ccc;">
                             {% if flash %}
