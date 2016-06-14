@@ -138,6 +138,30 @@ class Tarif(models.Model):
         ordering = ['categorie__index', 'index']
 
 
+class TarifSpecifique(models.Model):
+    designation = models.CharField(max_length=255, verbose_name="Désignation : (ex: \"Entrée Adulte \")")
+    info_additionelle = models.CharField(max_length=255, verbose_name="Infos additionelles : (facultatif)", blank=True,
+                                         null=True)
+    index = models.IntegerField("Ordre d'apparition (0 = en haut de liste)")
+    categorie = models.ForeignKey(TarifCategorie)
+    equipement = models.ForeignKey(Equipement)
+    prix_residents = models.FloatField("Tarif résidents ( 0 = gratuit  )")
+    prix_non_residents = models.FloatField("Tarif non résidents ( 0 = gratuit  )")
+
+    def __unicode__(self):
+        return self.designation
+
+    def equipements_specifiques(self):
+        equipements = list()
+        Tarifs = TarifSpecifique.objects.all()
+
+
+
+    class Meta:
+        verbose_name_plural = "Tarifs Spécifiques"
+        ordering = ['categorie__index', 'index']
+
+
 class AlertesReponses(models.Model):
     alerte = models.ForeignKey(Alerte)
     equipement = models.ForeignKey(Equipement)

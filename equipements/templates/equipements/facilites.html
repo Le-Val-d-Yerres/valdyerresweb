@@ -12,23 +12,19 @@
 {% block meta-description %}Liste des facilités et service en Val d'Yerres : {% for item in facilite_geo%}{{item.nom}}{% if forloop.last %}.{% else %}, {%endif%}{%endfor%}{% endblock %}
 
 {% block contenu %}
-<div class="container" style="margin-top:60px;">
+<div class="container">
 
 	<div class="row-fluid">
-		<div class="span11">
+		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li>
 					<a href="/">Accueil</a>
 				</li>
-				<li>
-					<span class="divider">/</span>
-				</li>
+
 				<li>
 					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a>
 				</li>
-				<li>
-					<span class="divider">/</span>
-				</li>
+
 				<li class="active">
 					Facilités et services
 				</li>

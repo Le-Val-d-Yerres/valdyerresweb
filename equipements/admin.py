@@ -121,6 +121,15 @@ class TarifAdmin(admin.ModelAdmin):
         obj.save()
         path = reverse('equipements.views.EquipementTarifs', kwargs={})
         functions.expire_page(path)
+
+
+class TarifSpecifiqueAdmin(admin.ModelAdmin):
+    list_display = ['designation', 'equipement', 'categorie', 'prix_residents', 'prix_non_residents', 'index']
+
+    def save_model(self, request, obj, form, change):
+        obj.save()
+        path = reverse('equipements.views.EquipementTarifs', kwargs={})
+        functions.expire_page(path)
         
 class AlerteAdmin(admin.ModelAdmin):
     list_display = ['nom', 'texte_lien']
@@ -137,5 +146,6 @@ admin.site.register(Facilites, FacilitesAdmin)
 admin.site.register(Facilite, FaciliteAdmin)
 admin.site.register(TarifCategorie, TarifCategorieAdmin)
 admin.site.register(Tarif, TarifAdmin)
+admin.site.register(TarifSpecifique, TarifSpecifiqueAdmin)
 admin.site.register(Alerte, AlerteAdmin)
 admin.site.register(AlertesReponses, AlertesReponsesAdmin)

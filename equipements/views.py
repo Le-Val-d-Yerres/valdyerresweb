@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response , redirect , get_object_or_404, get_list_or_404
-from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites, Facilite, AlertesReponses, Alerte
+from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites, Facilite, AlertesReponses, Alerte, \
+    TarifSpecifique
 from evenements.models import Evenement, Organisateur
 from localisations.models import Lieu
 from horaires.models import Horaires, Periode
@@ -20,7 +21,8 @@ from lettreinformations import settings as conf
 
 from django.core.cache import cache
 from django.views.decorators.cache import never_cache
-import md5
+from collections import namedtuple
+from hashlib import md5
 
 utcTZ = timezone("UTC")
 
@@ -78,25 +80,33 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     now = datetime.datetime.now(utcTZ)
     equipement = get_object_or_404(Equipement.objects.select_related().filter(fonction__slug=fonction_slug), slug=equipement_slug)
     
-    tarif_categorie_principale = TarifCategorie.objects.select_related().filter(equipement_fonction = equipement.fonction,index=0 ) 
-    tarifs_principaux = Tarif.objects.select_related().filter(categorie= tarif_categorie_principale )
+    tarif_categorie_principale = TarifCategorie.objects.select_related().filter(equipement_fonction=equipement.fonction,
+                                                                                index=0)
+    tarifs_principaux = Tarif.objects.select_related().filter(categorie=tarif_categorie_principale)
+
+    tarifs_specifiques = TarifSpecifique.objects.select_related().filter(equipement=equipement)
+
+    if len(tarifs_specifiques) > 0:
+        tarifs_principaux = tarifs_specifiques
+
         
     facilites = Facilites.objects.filter(equipement_id=equipement.id)
     
     evenements = None
+
     try:
         organisateur = Organisateur.objects.get(orga_equipement = equipement.id)
         evenements = Evenement.objects.select_related().filter(Q(organisateur = organisateur.id) | Q(lieu_id=equipement.id) , fin__gt=now , publish=True).order_by('debut')
     except Organisateur.DoesNotExist:
-        evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id , fin__gt=now , publish=True).order_by('debut')
+        evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id, fin__gt=now , publish=True).order_by('debut')
         
     
-    #<trash>
+    # <trash>
     try:
         facilites = facilites[0]
     except:
         facilites = None
-    #</trash>
+    # </trash>
         
     today = datetime.date.today()
     horaires = None
@@ -169,18 +179,25 @@ def EquipementHoraires(request, equipement_slug):
     
     if len(horaires) == 0:
         raise Http404
-    
-    
+
     return render_to_response('equipements/equipement-horaires.html', {'equipement':equipement,'horaires':horaires, 'periodes':periodes})
 
 
 def EquipementFonctionTarifs(request, equipement_fonction_slug):
     fonction = get_object_or_404(EquipementFonction.objects, slug=equipement_fonction_slug)
     tarifs = Tarif.objects.select_related().filter(categorie__equipement_fonction__slug = equipement_fonction_slug)
+    tarifs_specifiques = list()
+    equipements_specifiques = list()
     equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
+
+    for item in equipements:
+        tarif = TarifSpecifique.objects.select_related().filter(equipement=item)
+        if len(tarif) > 0:
+            tarifs_specifiques.append(tarif)
+            equipements_specifiques.append(item)
+
             
-    return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs,'equipements':equipements})
-    
+    return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs, 'equipements':equipements, 'tatifs_pecifiques':tarifs_specifiques, 'equipements_specifiques':equipements_specifiques})
 
 
 def FonctionDetailsHtml(request, fonction_slug):
@@ -207,24 +224,31 @@ def EquipementVCF(request, slug):
 
     return HttpResponse(myText, content_type="text/vcard")
 
+
 def EquipementVcard(equipement):
     myTemplate = loader.get_template('equipements/equipement.vcf.html')
     myContext = Context({"equipement": equipement, "settings": settings})
     return myTemplate.render(myContext)
 
+
 def EquipementTarifs(request):
-    tarifs = Tarif.objects.select_related().order_by('categorie__equipement_fonction__nom').filter(categorie__index=0)
-    
-    listeEquipements = []
-    
-    for each in tarifs:
-        if each.categorie.equipement_fonction not in listeEquipements:
-            listeEquipements.append(each.categorie.equipement_fonction)
-            
-    if len(listeEquipements) == 0:
-            raise Http404
+    fonctions = EquipementFonction.objects.all().order_by('nom')
+
+    Fonction = namedtuple('Fonction', ['nom', 'tarifs', 'tarifs_specifiques'])
+    fonctionlist = list()
+    tarifs = list()
+    for fonction in fonctions:
+
+        tarif = Tarif.objects.select_related().filter(categorie__equipement_fonction_id=fonction.id)
+        tarifs_specifiques = TarifSpecifique.objects.select_related().filter(categorie__equipement_fonction_id=fonction.id)
+        myfonction = Fonction(fonction.nom, tarif, tarifs_specifiques)
+
+    tarifs_specifiques = list()
+    equipements_specifiques = list()
+    equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
         
     return render_to_response('equipements/equipement-tarifs-complet.html', {'tarifs':tarifs, 'listeEquipements':listeEquipements})
+
 
 def HorairesTousEquipements(request):
     horaires = Horaires.objects.all()
