@@ -196,8 +196,11 @@ def EquipementFonctionTarifs(request, equipement_fonction_slug):
             tarifs_specifiques.append(tarif)
             equipements_specifiques.append(item)
 
+    equipements_non_specifiques = [item for item in equipements if item not in equipements_specifiques]
+
+
             
-    return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs, 'equipements':equipements, 'tatifs_pecifiques':tarifs_specifiques, 'equipements_specifiques':equipements_specifiques})
+    return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs, 'equipements':equipements_non_specifiques, 'tatifs_specifiques':tarifs_specifiques, 'equipements_specifiques':equipements_specifiques})
 
 
 def FonctionDetailsHtml(request, fonction_slug):

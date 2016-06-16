@@ -66,13 +66,11 @@ def AgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes', orga_
         raise Http404
     
     if period == "cette-semaine":
-        print 'hello\n'
         endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()) )
         if startDate.weekday() == 6:
             endDate = startDate + datetime.timedelta(days=(6-startDate.weekday()-1), weeks=1 )
         endDate = datetime.datetime.combine(endDate.date(),midnight)
         endDate.replace(tzinfo=utcTZ)
-        print startDate + datetime.timedelta(days=(6-startDate.weekday()) )
     
     if period == "ce-week-end":
         startDate = startDate + datetime.timedelta(days=(4-startDate.weekday()) )

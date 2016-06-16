@@ -41,6 +41,7 @@
 		<div class="col-md-6">
 			{%for each in cat%}
 			<h2>{{each.grouper}}</h2>
+            <p>Ce tarif concerne les équipements suivant : {% for equipement in equipements %} <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
 			<table class="table table-striped" align="center">
 				<thead>
 					<tr>
@@ -59,6 +60,32 @@
 				</tr>
 				{% endfor %}
 			
+			</table>
+			{% endfor %}
+
+		</div>
+    <div class="col-md-6">
+			{%for each in cat_spec%}
+			<h2>{{each.grouper}}</h2>
+            <p>Ce tarif concerne les équipements suivant : {% for equipement in equipements %} <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
+			<table class="table table-striped" align="center">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Résidents</th>
+						<th>Non-Résidents</th>
+					</tr>
+				</thead>
+				{% for item in each.list %}
+				<tr>
+					<td>{{item.designation}}
+					<br/>
+					<small>{{item.info_additionelle}}</small></td>
+					<td>{{item.prix_residents|monnaie}}</td>
+					<td>{{item.prix_non_residents|monnaie}}</td>
+				</tr>
+				{% endfor %}
+
 			</table>
 			{% endfor %}
 
