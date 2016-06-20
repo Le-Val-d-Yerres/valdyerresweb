@@ -38,10 +38,10 @@
 			<h1><a href="{% url 'equipements.views.EquipementFonctionTarifs' equipement_fonction_slug=tarifs.0.categorie.equipement_fonction.slug  %}">{{tarifs.0.categorie.equipement_fonction.pluriel}} : tarif{{tarifs|pluralize}}</a></h1>
 			<hr/>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-7">
 			{%for each in cat%}
 			<h2>{{each.grouper}}</h2>
-            <p>Ce tarif concerne les équipements suivant : {% for equipement in equipements %} <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
+            <p>Ce tarif concerne l{{nb_equipements|pluralize:"’,es"}} équipement{{ nb_equipements|pluralize }} suivant : {% for equipement in equipements %} <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
 			<table class="table table-striped" align="center">
 				<thead>
 					<tr>
@@ -64,10 +64,12 @@
 			{% endfor %}
 
 		</div>
-    <div class="col-md-6">
-			{%for each in cat_spec%}
-			<h2>{{each.grouper}}</h2>
-            <p>Ce tarif concerne les équipements suivant : {% for equipement in equipements %} <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
+
+    <div class="col-md-7">
+    <hr/>
+			{%for each in equipements_specifiques%}
+			<h2>{{each.equipement.nom}}</h2>
+            <p>Ce tarif concerne uniquement l'équipement suivant : <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=each.equipement.fonction.slug equipement_slug=each.equipement.slug%}">{{each.equipement.nom }}</a>.</p>
 			<table class="table table-striped" align="center">
 				<thead>
 					<tr>
@@ -76,7 +78,7 @@
 						<th>Non-Résidents</th>
 					</tr>
 				</thead>
-				{% for item in each.list %}
+				{% for item in each.tarifs %}
 				<tr>
 					<td>{{item.designation}}
 					<br/>

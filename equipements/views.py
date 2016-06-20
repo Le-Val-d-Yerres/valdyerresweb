@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.http import Http404, HttpResponse
-from django.shortcuts import render_to_response , redirect , get_object_or_404, get_list_or_404
-from equipements.models import Equipement,EquipementFonction,TarifCategorie,Tarif , Facilites, Facilite, AlertesReponses, Alerte, \
+from django.shortcuts import render_to_response, redirect, get_object_or_404, get_list_or_404
+from equipements.models import Equipement, EquipementFonction, TarifCategorie, Tarif, Facilites, Facilite, \
+    AlertesReponses, Alerte, \
     TarifSpecifique
 from evenements.models import Evenement, Organisateur
 from localisations.models import Lieu
@@ -26,60 +27,59 @@ from hashlib import md5
 
 utcTZ = timezone("UTC")
 
+
 def EquipementsCarte(request):
-      
     equipements = Equipement.objects.select_related().all().order_by('fonction__nom', 'ville__nom')
 
-    return render_to_response('equipements/carte-equipements.html', {'equipements': equipements, 'mediaDir': settings.MEDIA_DIR_NAME})
+    return render_to_response('equipements/carte-equipements.html',
+                              {'equipements': equipements, 'mediaDir': settings.MEDIA_DIR_NAME})
 
-def FaciliteCarte(request,slug):
-    
+
+def FaciliteCarte(request, slug):
     facilite = get_object_or_404(Facilite.objects.filter(slug=slug))
-    
+
     facilites = Facilites.objects.prefetch_related().select_related().filter(facilites=facilite.id)
-    
-    
-    
+
     dict_lieux = {}
     lieux = Lieu.objects.all().select_related().select_subclasses()
     for lieu in lieux:
         dict_lieux[lieu.id] = lieu
-    
-    
+
     list_facilites = list()
-    
-    
-    
+
     for item in facilites:
         item.equipement = dict_lieux[item.equipement.id]
         list_facilites.append(item)
 
-    
-    return render_to_response('equipements/carte-facilites.html', {'lieux':lieux,'facilite': facilite,'facilites': list_facilites, 'mediaDir': settings.MEDIA_DIR_NAME})
+    return render_to_response('equipements/carte-facilites.html',
+                              {'lieux': lieux, 'facilite': facilite, 'facilites': list_facilites,
+                               'mediaDir': settings.MEDIA_DIR_NAME})
+
 
 def FaciliteListe(request):
     equipements = Equipement.objects.select_related().all()
     facilites = Facilites.objects.select_related().all()
-    facilite_geo = Facilite.objects.filter(importance__lt = 10)
-    
+    facilite_geo = Facilite.objects.filter(importance__lt=10)
+
     dict_equipements = {}
     for equipement in equipements:
-        dict_equipements[equipement.id]=equipement
-    
+        dict_equipements[equipement.id] = equipement
+
     list_facilites = list()
     for item in facilites:
         item.equipement = dict_equipements[item.equipement.pk]
         list_facilites.append(item)
-    
-    list_facilites = reversed(sorted(list_facilites, key= lambda facilite: facilite.equipement.fonction.id ))
-    
-    return render_to_response('equipements/facilites.html',{'facilites':list_facilites,'facilite_geo':facilite_geo})
+
+    list_facilites = reversed(sorted(list_facilites, key=lambda facilite: facilite.equipement.fonction.id))
+
+    return render_to_response('equipements/facilites.html', {'facilites': list_facilites, 'facilite_geo': facilite_geo})
+
 
 def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
-
     now = datetime.datetime.now(utcTZ)
-    equipement = get_object_or_404(Equipement.objects.select_related().filter(fonction__slug=fonction_slug), slug=equipement_slug)
-    
+    equipement = get_object_or_404(Equipement.objects.select_related().filter(fonction__slug=fonction_slug),
+                                   slug=equipement_slug)
+
     tarif_categorie_principale = TarifCategorie.objects.select_related().filter(equipement_fonction=equipement.fonction,
                                                                                 index=0)
     tarifs_principaux = Tarif.objects.select_related().filter(categorie=tarif_categorie_principale)
@@ -89,72 +89,79 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     if len(tarifs_specifiques) > 0:
         tarifs_principaux = tarifs_specifiques
 
-        
     facilites = Facilites.objects.filter(equipement_id=equipement.id)
-    
+
     evenements = None
 
     try:
-        organisateur = Organisateur.objects.get(orga_equipement = equipement.id)
-        evenements = Evenement.objects.select_related().filter(Q(organisateur = organisateur.id) | Q(lieu_id=equipement.id) , fin__gt=now , publish=True).order_by('debut')
+        organisateur = Organisateur.objects.get(orga_equipement=equipement.id)
+        evenements = Evenement.objects.select_related().filter(
+            Q(organisateur=organisateur.id) | Q(lieu_id=equipement.id), fin__gt=now, publish=True).order_by('debut')
     except Organisateur.DoesNotExist:
-        evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id, fin__gt=now , publish=True).order_by('debut')
-        
-    
+        evenements = Evenement.objects.select_related().filter(lieu_id=equipement.id, fin__gt=now,
+                                                               publish=True).order_by('debut')
+
     # <trash>
     try:
         facilites = facilites[0]
     except:
         facilites = None
     # </trash>
-        
+
     today = datetime.date.today()
     horaires = None
-    periodes = Periode.objects.filter(date_debut__lte=today , date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+    periodes = Periode.objects.filter(date_debut__lte=today, date_fin__gte=today).filter(
+        horaires__equipement=equipement.id).order_by('date_debut')
     periodes.query.group_by = ['periode_id']
     if len(periodes) >= 1:
         periode_active = periodes[len(periodes) - 1]
-        horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id).filter(periodes__id=periode_active.id)
+        horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id).filter(
+            periodes__id=periode_active.id)
     else:
         periode_active = None
-        
+
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     horaires_demain = None
-    periodes_demain = Periode.objects.filter(date_debut__lte=tomorrow , date_fin__gte=tomorrow).filter(horaires__equipement=equipement.id).order_by('date_debut')
+    periodes_demain = Periode.objects.filter(date_debut__lte=tomorrow, date_fin__gte=tomorrow).filter(
+        horaires__equipement=equipement.id).order_by('date_debut')
     periodes_demain.query.group_by = ['periode_id']
     if len(periodes_demain) >= 1:
         periode_active_demain = periodes[len(periodes) - 1]
-        horaires_demain = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id).filter(periodes__id=periode_active_demain.id)
+        horaires_demain = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id).filter(
+            periodes__id=periode_active_demain.id)
     else:
         periode_active_demain = None
-        
-        
-    autres_periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+
+    autres_periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by(
+        'date_debut')
     autres_periodes.query.group_by = ['periode_id']
-    
+
     horaires_plus_7 = list()
-    
-    for index in range(1,8):
+
+    for index in range(1, 8):
         day = datetime.date.today() + datetime.timedelta(days=index)
         horaires_jour = None
-        periodes_jour = Periode.objects.filter(date_debut__lte=day , date_fin__gte=day).filter(horaires__equipement=equipement.id).order_by('date_debut')
+        periodes_jour = Periode.objects.filter(date_debut__lte=day, date_fin__gte=day).filter(
+            horaires__equipement=equipement.id).order_by('date_debut')
         periodes_jour.query.group_by = ['periode_id']
         if len(periodes_jour) >= 1:
             periode_active_jour = periodes_jour[len(periodes_jour) - 1]
-            horaires_jour = Horaires.objects.filter(equipement=equipement.id).filter(periodes__id=periode_active_jour.id)
+            horaires_jour = Horaires.objects.filter(equipement=equipement.id).filter(
+                periodes__id=periode_active_jour.id)
             horaires_plus_7.append(horaires_jour)
         else:
             periode_active_jour = None
-         
+
     qr_code_geo = GenerationQrCode("geo:" + str(equipement.latitude) + "," + str(equipement.longitude))
     qr_code_vcard = GenerationQrCode(EquipementVcard(equipement))
-    
+
     tokenCSRF = uuid.uuid1()
 
     if equipement.alerte != None:
         alerte = {
             'nom': equipement.alerte.nom,
-            'cible': '<img src="'+filtres.resize(equipement.image, '100x100x1')+'" style="float:left;margin-right: 10px;" class="img-polaroid"><address style="width: 500px;"><strong>'+equipement.nom+'</strong><br \>'+equipement.rue+'<br \>'+equipement.ville.code_postal+' '+equipement.ville.nom+'<br \>'+equipement.telephone+'</address>',
+            'cible': '<img src="' + filtres.resize(equipement.image,
+                                                   '100x100x1') + '" style="float:left;margin-right: 10px;" class="img-polaroid"><address style="width: 500px;"><strong>' + equipement.nom + '</strong><br \>' + equipement.rue + '<br \>' + equipement.ville.code_postal + ' ' + equipement.ville.nom + '<br \>' + equipement.telephone + '</address>',
             'id': equipement.alerte.id,
             'token': tokenCSRF,
             'equipement': equipement,
@@ -162,67 +169,84 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         }
     else:
         alerte = None
-        
-    reponse = render_to_response('equipements/equipement-details.html', {'alerte': alerte, 'equipement': equipement, 'qr_code_geo': qr_code_geo, 'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements, 'horaires':horaires, 'periode_active':periode_active, 'autres_periodes':autres_periodes, 'horaires_demain':horaires_demain, 'periode_active_demain':periode_active_demain , 'horaires_plus_7': horaires_plus_7, 'tarifs_principaux':tarifs_principaux })
-    reponse.set_cookie("csrftoken", tokenCSRF, 60*60*5)
-    
+
+    reponse = render_to_response('equipements/equipement-details.html',
+                                 {'alerte': alerte, 'equipement': equipement, 'qr_code_geo': qr_code_geo,
+                                  'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements,
+                                  'horaires': horaires, 'periode_active': periode_active,
+                                  'autres_periodes': autres_periodes, 'horaires_demain': horaires_demain,
+                                  'periode_active_demain': periode_active_demain, 'horaires_plus_7': horaires_plus_7,
+                                  'tarifs_principaux': tarifs_principaux})
+    reponse.set_cookie("csrftoken", tokenCSRF, 60 * 60 * 5)
+
     return reponse
 
+
 def EquipementHoraires(request, equipement_slug):
-    equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
+    equipement = get_object_or_404(Equipement.objects.select_related(), slug=equipement_slug)
     today = datetime.date.today()
-    periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+    periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by(
+        'date_debut')
     periodes.query.group_by = ['periode_id']
     horaires = Horaires.objects.prefetch_related('periodes').select_related().filter(equipement=equipement.id)
     for periode in periodes:
-        horaires.filter(periodes__id = periode.id)
-    
+        horaires.filter(periodes__id=periode.id)
+
     if len(horaires) == 0:
         raise Http404
 
-    return render_to_response('equipements/equipement-horaires.html', {'equipement':equipement,'horaires':horaires, 'periodes':periodes})
+    return render_to_response('equipements/equipement-horaires.html',
+                              {'equipement': equipement, 'horaires': horaires, 'periodes': periodes})
 
 
 def EquipementFonctionTarifs(request, equipement_fonction_slug):
     fonction = get_object_or_404(EquipementFonction.objects, slug=equipement_fonction_slug)
-    tarifs = Tarif.objects.select_related().filter(categorie__equipement_fonction__slug = equipement_fonction_slug)
-    tarifs_specifiques = list()
+    tarifs = Tarif.objects.select_related().filter(categorie__equipement_fonction__slug=equipement_fonction_slug)
     equipements_specifiques = list()
+    equipement_spec_list = list()
+    EquipementSpec = namedtuple('EquipementSpec', ('equipement', 'tarifs'))
     equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
-
     for item in equipements:
         tarif = TarifSpecifique.objects.select_related().filter(equipement=item)
         if len(tarif) > 0:
-            tarifs_specifiques.append(tarif)
-            equipements_specifiques.append(item)
+            equipements_specifiques.append(EquipementSpec(item, tarif))
+            equipement_spec_list.append(item)
+    equipements_non_specifiques = [item for item in equipements if item not in equipement_spec_list]
 
-    equipements_non_specifiques = [item for item in equipements if item not in equipements_specifiques]
+    nb_equipements = len(equipements_non_specifiques)
+    nb_equipements_spec = len(equipements_specifiques)
 
-
-            
-    return render_to_response('equipements/equipement-tarifs.html', {'tarifs':tarifs, 'equipements':equipements_non_specifiques, 'tatifs_specifiques':tarifs_specifiques, 'equipements_specifiques':equipements_specifiques})
+    return render_to_response('equipements/equipement-tarifs.html',
+                              {'tarifs': tarifs, 'equipements': equipements_non_specifiques,
+                               'equipements_specifiques': equipements_specifiques,
+                               'nb_equipements': nb_equipements,
+                               'nb_equipements_spec': nb_equipements_spec})
 
 
 def FonctionDetailsHtml(request, fonction_slug):
     fonction = get_object_or_404(EquipementFonction.objects, slug=fonction_slug)
     equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
-        
+
     today = datetime.date.today()
     listhoraires = list()
-    
+
     for equipement in equipements:
-        periodes = Periode.objects.filter(date_debut__lte=today , date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+        periodes = Periode.objects.filter(date_debut__lte=today, date_fin__gte=today).filter(
+            horaires__equipement=equipement.id).order_by('date_debut')
         if len(periodes) >= 1:
             periodes.query.group_by = ['periode_id']
             periode_active = periodes[len(periodes) - 1]
-            horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(periodes__id=periode_active.id)
+            horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(
+                periodes__id=periode_active.id)
             listhoraires.append(horaires)
 
-    return render_to_response('equipements/carte-fonction-equipements.html', {'equipements': equipements, 'fonction': fonction, 'listhoraires': listhoraires})
+    return render_to_response('equipements/carte-fonction-equipements.html',
+                              {'equipements': equipements, 'fonction': fonction, 'listhoraires': listhoraires})
+
 
 def EquipementVCF(request, slug):
     lieu = get_object_or_404(Lieu.objects.select_related().select_subclasses(), slug=slug)
-    
+
     myText = EquipementVcard(lieu)
 
     return HttpResponse(myText, content_type="text/vcard")
@@ -235,59 +259,67 @@ def EquipementVcard(equipement):
 
 
 def EquipementTarifs(request):
-    fonctions = EquipementFonction.objects.all().order_by('nom')
-
-    Fonction = namedtuple('Fonction', ['nom', 'tarifs', 'tarifs_specifiques'])
-    fonctionlist = list()
-    tarifs = list()
+    fonctions = EquipementFonction.objects.all()
+    liste_fonctions = list()
+    StructFonction = namedtuple('StructFonction', ('tarif_generiques','nb_equipements_generiques','equipements_specifiques'))
     for fonction in fonctions:
+        tarifs = Tarif.objects.select_related().filter(categorie__equipement_fonction__slug=fonction.slug)
+        equipements_specifiques = list()
+        equipement_spec_list = list()
+        EquipementSpec = namedtuple('EquipementSpec', ('equipement', 'tarifs'))
+        equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
+        for item in equipements:
+            tarif = TarifSpecifique.objects.select_related().filter(equipement=item)
+            if len(tarif) > 0:
+                equipements_specifiques.append(EquipementSpec(item, tarif))
+                equipement_spec_list.append(item)
+        equipements_non_specifiques = [item for item in equipements if item not in equipement_spec_list]
 
-        tarif = Tarif.objects.select_related().filter(categorie__equipement_fonction_id=fonction.id)
-        tarifs_specifiques = TarifSpecifique.objects.select_related().filter(categorie__equipement_fonction_id=fonction.id)
-        myfonction = Fonction(fonction.nom, tarif, tarifs_specifiques)
+        nb_equipements = len(equipements_non_specifiques)
+        nb_equipements_spec = len(equipements_specifiques)
 
-    tarifs_specifiques = list()
-    equipements_specifiques = list()
-    equipements = Equipement.objects.select_related().filter(fonction_id=fonction.id).order_by('ville__nom')
-        
-    return render_to_response('equipements/equipement-tarifs-complet.html', {'tarifs':tarifs, 'listeEquipements':listeEquipements})
+
+    return render_to_response('equipements/equipement-tarifs-complet.html',
+                              {'tarifs': tarifs})
 
 
 def HorairesTousEquipements(request):
     horaires = Horaires.objects.all()
-    
+
     listeEquipements = []
-    
+
     for each in horaires:
         if each.equipement not in listeEquipements:
             listeEquipements.append(each.equipement)
 
     if len(listeEquipements) == 0:
-            raise Http404
-    
+        raise Http404
+
     for each in listeEquipements:
-        equipement = get_object_or_404(Equipement.objects.select_related() , slug=each.slug)
+        equipement = get_object_or_404(Equipement.objects.select_related(), slug=each.slug)
         today = datetime.date.today()
-        periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by('date_debut')
+        periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by(
+            'date_debut')
         periodes.query.group_by = ['periode_id']
         each.periodes = periodes
         horaires = Horaires.objects.prefetch_related('periodes').select_related().filter(equipement=equipement.id)
         for periode in periodes:
-            horaires.filter(periodes__id = periode.id)
-        
+            horaires.filter(periodes__id=periode.id)
+
         each.periodes.horaires = horaires
-        
-    return render_to_response('equipements/tous-equipement-horaires.html', {'listeEquipements':listeEquipements})
+
+    return render_to_response('equipements/tous-equipement-horaires.html', {'listeEquipements': listeEquipements})
+
 
 def AlertesAjax(request):
     if settings.NOM_DOMAINE in request.META['HTTP_REFERER']:
-        key = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
+        key = md5.new("alerteToken" + request.META['HTTP_X_REAL_IP'] + request.META['HTTP_USER_AGENT']).hexdigest()
         if not cache.has_key(key):
             if request.COOKIES.has_key('csrftoken'):
                 if request.COOKIES['csrftoken'] == request.POST['csrftoken']:
                     result = re.match('^[0-9 ]+$', request.POST['tel'])
                     longueur = len(request.POST['tel'])
-                    if result and (longueur == 10 or longueur == 14):     
+                    if result and (longueur == 10 or longueur == 14):
                         if validateEmail(request.POST['mail']):
                             alerte = AlertesReponses()
                             alerte.nom = request.POST['nom']
@@ -301,58 +333,62 @@ def AlertesAjax(request):
                             alerte.ip = request.META['HTTP_X_REAL_IP']
                             alerte.etat = False
                             alerte.date = datetime.datetime.now(utcTZ)
-                            
-                            alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId']).prefetch_related('users')
-                    
+
+                            alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId']).prefetch_related(
+                                'users')
+
                             equipement = Equipement.objects.filter(id=request.POST['equipementId'])
-                            
+
                             if len(alerteTemplate) == 0 or len(equipement) == 0:
                                 return HttpResponse("2", content_type="text/plain")
                             else:
                                 alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId'])[0]
-                    
+
                                 equipement = Equipement.objects.filter(id=request.POST['equipementId'])[0]
-                            
+
                                 alerte.equipement = equipement
                                 alerte.alerte = alerteTemplate
-                            
+
                             alerte.save()
-                            
+
                             users = alerteTemplate.users.all()
-                            
+
                             for mail in users:
                                 if mail.email != "":
                                     msg = MIMEMultipart('alternative')
-                                            
-                                    msg['Subject'] = u"Avis sur "+equipement.nom
+
+                                    msg['Subject'] = u"Avis sur " + equipement.nom
                                     msg['From'] = 'levaldyerres@levaldyerres.fr'
                                     msg['To'] = mail.email
-                                    
+
                                     myTemplate = loader.get_template('equipements/alertes/mail-html.html')
-                                    myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': settings.NOM_DOMAINE})
+                                    myContext = Context({'equipement': equipement.nom, 'signaleur': alerte,
+                                                         'domaine': settings.NOM_DOMAINE})
                                     html = myTemplate.render(myContext)
-                                    
+
                                     myTemplate = loader.get_template('equipements/alertes/mail-txt.html')
-                                    myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': settings.NOM_DOMAINE})
+                                    myContext = Context({'equipement': equipement.nom, 'signaleur': alerte,
+                                                         'domaine': settings.NOM_DOMAINE})
                                     text = myTemplate.render(myContext)
-                                    
+
                                     text = text.encode('utf-8')
                                     html = html.encode('utf-8')
-                                    
+
                                     part1 = MIMEText(text, 'plain', "utf-8")
                                     part2 = MIMEText(html, 'html', "utf-8")
-                                    
+
                                     # Attach parts into message container.
                                     # According to RFC 2046, the last part of a multipart message, in this case
                                     # the HTML message, is best and preferred.
                                     msg.attach(part1)
                                     msg.attach(part2)
-                                    
+
                                     reponse = envoiMail(mail.email, msg)
-            
-                            hash = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
+
+                            hash = md5.new("alerteToken" + request.META['HTTP_X_REAL_IP'] + request.META[
+                                'HTTP_USER_AGENT']).hexdigest()
                             cache.set(hash, 'alerteToken', 60)
-                            
+
                             return HttpResponse(str(reponse), content_type="text/plain")
                         else:
                             # Adresse mail non valide
@@ -373,19 +409,20 @@ def AlertesAjax(request):
         # Http refere non valide
         return HttpResponse("2", content_type="text/plain")
 
+
 @never_cache
 def AlertesSansJs(request, equipement_slug):
     if request.META['REQUEST_METHOD'] == "POST":
         equipement = Equipement.objects.filter(id=request.POST['equipementId'])
-        
+
         if settings.NOM_DOMAINE in request.META['HTTP_REFERER']:
-            key = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
+            key = md5.new("alerteToken" + request.META['HTTP_X_REAL_IP'] + request.META['HTTP_USER_AGENT']).hexdigest()
             if not cache.has_key(key):
                 if request.COOKIES.has_key('csrftoken'):
                     if request.COOKIES['csrftoken'] == request.POST['tokenCsrf']:
                         result = re.match('^[0-9 ]+$', request.POST['tel'])
                         longueur = len(request.POST['tel'])
-                        if result and (longueur == 10 or longueur == 14):     
+                        if result and (longueur == 10 or longueur == 14):
                             if validateEmail(request.POST['mail']):
                                 alerte = AlertesReponses()
                                 alerte.nom = request.POST['nom']
@@ -399,56 +436,60 @@ def AlertesSansJs(request, equipement_slug):
                                 alerte.ip = request.META['HTTP_X_REAL_IP']
                                 alerte.etat = False
                                 alerte.date = datetime.datetime.now(utcTZ)
-                                
-                                alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId']).prefetch_related('users')
-                                
+
+                                alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId']).prefetch_related(
+                                    'users')
+
                                 if len(alerteTemplate) == 0 or len(equipement) == 0:
                                     return HttpResponse("2", content_type="text/plain")
                                 else:
                                     alerteTemplate = Alerte.objects.filter(id=request.POST['alerteId'])[0]
-                        
+
                                     equipement = Equipement.objects.filter(id=request.POST['equipementId'])[0]
-                                
+
                                     alerte.equipement = equipement
                                     alerte.alerte = alerteTemplate
-                                
+
                                 alerte.save()
-                                
+
                                 users = alerteTemplate.users.all()
-                                
+
                                 for mail in users:
                                     if mail.email != "":
                                         msg = MIMEMultipart('alternative')
-                                                
-                                        msg['Subject'] = u"Avis sur "+equipement.nom
+
+                                        msg['Subject'] = u"Avis sur " + equipement.nom
                                         msg['From'] = 'levaldyerres@levaldyerres.fr'
                                         msg['To'] = mail.email
-                                        
+
                                         myTemplate = loader.get_template('equipements/alertes/mail-html.html')
-                                        myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': settings.NOM_DOMAINE})
+                                        myContext = Context({'equipement': equipement.nom, 'signaleur': alerte,
+                                                             'domaine': settings.NOM_DOMAINE})
                                         html = myTemplate.render(myContext)
-                                        
+
                                         myTemplate = loader.get_template('equipements/alertes/mail-txt.html')
-                                        myContext = Context({'equipement': equipement.nom, 'signaleur':alerte, 'domaine': settings.NOM_DOMAINE})
+                                        myContext = Context({'equipement': equipement.nom, 'signaleur': alerte,
+                                                             'domaine': settings.NOM_DOMAINE})
                                         text = myTemplate.render(myContext)
-                                        
+
                                         text = text.encode('utf-8')
                                         html = html.encode('utf-8')
-                                        
+
                                         part1 = MIMEText(text, 'plain', "utf-8")
                                         part2 = MIMEText(html, 'html', "utf-8")
-                                        
+
                                         # Attach parts into message container.
                                         # According to RFC 2046, the last part of a multipart message, in this case
                                         # the HTML message, is best and preferred.
                                         msg.attach(part1)
                                         msg.attach(part2)
-                                        
+
                                         reponse = envoiMail(mail.email, msg)
-                
-                                hash = md5.new("alerteToken"+request.META['HTTP_X_REAL_IP']+request.META['HTTP_USER_AGENT']).hexdigest()
+
+                                hash = md5.new("alerteToken" + request.META['HTTP_X_REAL_IP'] + request.META[
+                                    'HTTP_USER_AGENT']).hexdigest()
                                 cache.set(hash, 'alerteToken', 60)
-                                
+
                                 return redirect('alertes-reponse', reponse=str(reponse), equipement=equipement_slug)
                             else:
                                 # Adresse mail non valide
@@ -469,19 +510,22 @@ def AlertesSansJs(request, equipement_slug):
             # Http refere non valide
             return redirect('alertes-reponse', reponse="2", equipement=equipement.slug)
     else:
-        equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement_slug)
-        
+        equipement = get_object_or_404(Equipement.objects.select_related(), slug=equipement_slug)
+
         if equipement.alerte == None:
             raise Http404
         else:
-            equipement.alerte.cible = '<img src="'+filtres.resize(equipement.image, '100x100x1')+'" style="float:left;margin-right: 10px;" class="img-polaroid"><address style="width: 500px;"><strong>'+equipement.nom+'</strong><br \>'+equipement.rue+'<br \>'+equipement.ville.code_postal+' '+equipement.ville.nom+'<br \>'+equipement.telephone+'</address>'
-        
+            equipement.alerte.cible = '<img src="' + filtres.resize(equipement.image,
+                                                                    '100x100x1') + '" style="float:left;margin-right: 10px;" class="img-polaroid"><address style="width: 500px;"><strong>' + equipement.nom + '</strong><br \>' + equipement.rue + '<br \>' + equipement.ville.code_postal + ' ' + equipement.ville.nom + '<br \>' + equipement.telephone + '</address>'
+
         tokenCSRF = uuid.uuid1()
-        
-        reponse = render_to_response('equipements/alertes/widget-without-js.html', {'token': tokenCSRF, 'equipement': equipement})
-        reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
-        
+
+        reponse = render_to_response('equipements/alertes/widget-without-js.html',
+                                     {'token': tokenCSRF, 'equipement': equipement})
+        reponse.set_cookie("csrftoken", tokenCSRF, 60 * 5)
+
         return reponse
+
 
 @never_cache
 def AlertesReponse(request, reponse, equipement):
@@ -489,20 +533,20 @@ def AlertesReponse(request, reponse, equipement):
     reponse = int(reponse)
     if reponse not in listeRep:
         raise Http404
-    
-    equipement = get_object_or_404(Equipement.objects.select_related() , slug=equipement)
-        
+
+    equipement = get_object_or_404(Equipement.objects.select_related(), slug=equipement)
+
     if equipement.alerte == None:
         raise Http404
-    
-    
-    return render_to_response('equipements/alertes/alerte-reponse.html', {'reponse':reponse, 'equipement': equipement})
+
+    return render_to_response('equipements/alertes/alerte-reponse.html', {'reponse': reponse, 'equipement': equipement})
+
 
 @never_cache
 def AlertesGetToken(request):
     tokenCSRF = uuid.uuid1()
 
     reponse = HttpResponse(str(tokenCSRF), content_type="text/plain")
-    reponse.set_cookie("csrftoken", tokenCSRF, 60*60*5)
-    
+    reponse.set_cookie("csrftoken", tokenCSRF, 60 * 60 * 5)
+
     return reponse
