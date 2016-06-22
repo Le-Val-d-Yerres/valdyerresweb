@@ -261,7 +261,7 @@ def EquipementVcard(equipement):
 def EquipementTarifs(request):
     fonctions = EquipementFonction.objects.all()
     liste_fonctions = list()
-    StructFonction = namedtuple('StructFonction', ('tarif_generiques','nb_equipements_generiques','equipements_specifiques'))
+    StructFonction = namedtuple('StructFonction', ('fonction', 'tarif_generiques', 'equipements_generiques', 'nb_equipements_generiques', 'equipements_specifiques'))
     for fonction in fonctions:
         tarifs = Tarif.objects.select_related().filter(categorie__equipement_fonction__slug=fonction.slug)
         equipements_specifiques = list()
@@ -273,14 +273,16 @@ def EquipementTarifs(request):
             if len(tarif) > 0:
                 equipements_specifiques.append(EquipementSpec(item, tarif))
                 equipement_spec_list.append(item)
-        equipements_non_specifiques = [item for item in equipements if item not in equipement_spec_list]
-
-        nb_equipements = len(equipements_non_specifiques)
-        nb_equipements_spec = len(equipements_specifiques)
-
+        if len(tarifs) is 0:
+            if len(equipement_spec_list) is 0:
+                continue
+        equipements_generiques = [item for item in equipements if item not in equipement_spec_list]
+        nb_equipements = len(equipements_generiques)
+        struct_fonction = StructFonction(fonction, tarifs, equipements_generiques, nb_equipements, equipements_specifiques)
+        liste_fonctions.append(struct_fonction)
 
     return render_to_response('equipements/equipement-tarifs-complet.html',
-                              {'tarifs': tarifs})
+                              {'fonctions': liste_fonctions})
 
 
 def HorairesTousEquipements(request):

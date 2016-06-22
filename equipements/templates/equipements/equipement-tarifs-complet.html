@@ -15,7 +15,7 @@
 
 {% block contenu %}
 
-{%regroup tarifs by categorie as cat%}
+
 
 <div class="container">
 	<div class="row-fluid">
@@ -32,15 +32,17 @@
 				</li>
 			</ul>
 		</div>
-		{% for fonction in listeEquipements %}
+		{% for fonction in fonctions %}
 		<div class="col-md-12">
-			<h1><a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=fonction.slug %}">{{fonction.pluriel}}</a></h1>
+			<h1><a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=fonction.fonction.slug %}">{{fonction.fonction.pluriel}}</a></h1>
 			<hr/>
 		</div>
 		<div class="col-md-6">
+            {%regroup fonction.tarif_generiques by categorie as cat%}
 			{%for each in cat%}
-			{% if each.list.0.categorie.equipement_fonction.slug == fonction.slug %}
+			{% if each.list.0.categorie.equipement_fonction.slug == fonction.fonction.slug %}
 			<h2>{{each.grouper}}</h2>
+            <p>Ce tarif concerne l{{fonction.nb_equipements_generiques|pluralize:"’,es"}} équipement{{ fonction.nb_equipements_generiques|pluralize }} suivant : {% for equipement in fonction.equipements_generiques %} <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
 			<table class="table table-striped" align="center">
 				<thead>
 					<tr>
@@ -62,9 +64,34 @@
 			</table>
 			{% endif %}
 			{% endfor %}
-			<a href="{% url 'equipements.views.EquipementFonctionTarifs' equipement_fonction_slug=fonction.slug %}">Voir tous les tarifs</a>
+			<a href="{% url 'equipements.views.EquipementFonctionTarifs' equipement_fonction_slug=fonction.fonction.slug %}">Voir tous les tarifs des {{ fonction. }}</a>
 		</div>
-		{% endfor %}
+        {% for equipement in fonction.equipements_specifiques %}
+        <div class="col-md-6">
+
+			<h2>{{each.grouper}}</h2>
+            <p>Ce tarif concerne l{{fonction.nb_equipements_generiques|pluralize:"’,es"}} équipement{{ fonction.nb_equipements_generiques|pluralize }} suivant : {% for equipement in fonction.equipements_generiques %} <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
+			<table class="table table-striped" align="center">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Résidents</th>
+						<th>Non-Résidents</th>
+					</tr>
+				</thead>
+				{% for item in each.list %}
+				<tr>
+					<td>{{item.designation}}
+					<br/>
+					<small>{{item.info_additionelle}}</small></td>
+					<td>{{item.prix_residents|monnaie}}</td>
+					<td>{{item.prix_non_residents|monnaie}}</td>
+				</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+        {% endfor %}
 	</div>
 </div>
 {% endblock %}
