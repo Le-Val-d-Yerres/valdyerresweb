@@ -53,7 +53,7 @@ def parse_page(url):
 
     nom = soup.find("h1").string
     nom = unicode(nom)
-    print(nom)
+
 
     dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next
     dateevt, heure = dateheureville.split("|")
