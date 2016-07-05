@@ -7,11 +7,11 @@
 {% load hoursfilters%}
 {% load tz %}
 
-{% block title %}Tarification des équipements du Val d'Yerres{% endblock %}
+{% block title %}Tarification des équipements du Val d'Yerres Val de Seine{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
-{% block meta-description %}Tarification des équipements du Val d'Yerres{% endblock %}
+{% block meta-description %}Tarification des équipements du Val d'Yerres Val de Seine{% endblock %}
 
 {% block contenu %}
 
@@ -25,7 +25,7 @@
 					<a href="/">Accueil</a>
 				</li>
 				<li>
-					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a>
+					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements Val d'Yerres Val de Seine</a>
 				</li>
 				<li class="active">
 					<a href="{% url 'equipements.views.EquipementTarifs' %}">Tarifs</a>

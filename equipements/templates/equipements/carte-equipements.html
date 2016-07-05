@@ -9,7 +9,7 @@
 {% block title %}Les équipements du Val d'Yerres{% endblock %}
 {% block menu %}{% getmenu %}{% endblock %}
 
-{% block meta-description %}Liste des équipements du Val d'Yerres{% endblock %}
+{% block meta-description %}Liste des équipements du Val d'Yerres Val de Seine{% endblock %}
 
 {% block contenu %}
 <div class="container">
@@ -17,14 +17,14 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li>
-					<a href="/">Accueil</a><span class="divider">/</span>
+					<a href="/">Accueil</a>
 				</li>
 				<li class="active">
 					Les équipements du Val d'Yerres
 				</li>
 			</ul>
 
-			<h1><a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a></h1>
+			<h1><a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements de l'agglo Val d'Yerres Val de Seine</a></h1>
 			
 			
 			{% regroup equipements by fonction as fonctionlist %}

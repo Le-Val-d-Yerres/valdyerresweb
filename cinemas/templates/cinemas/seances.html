@@ -6,7 +6,7 @@
 {% load tz %}
 
 {% block title %}Toutes les séances à venir dans les cinémas {% endblock %}
-{% block meta-description %}Les séances à venir dans les cinémas du Val d'Yerres {% endblock %}
+{% block meta-description %}Les séances à venir dans les cinémas{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
@@ -23,7 +23,7 @@
         </div>
         <div class="col-md-12">
             <div class="page-header">
-                <h1>Les séances à venir dans les cinémas du Val d'Yerres : <br/></h1>
+                <h1>Les séances à venir dans les cinémas: <br/></h1>
             </div>
             {% if seances|length > 0 %}
                 <div class="row-fluid">

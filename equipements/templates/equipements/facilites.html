@@ -9,7 +9,7 @@
 {% block title %}Les équipements du Val d'Yerres{% endblock %}
 {% block menu %}{% getmenu %}{% endblock %}
 
-{% block meta-description %}Liste des facilités et service en Val d'Yerres : {% for item in facilite_geo%}{{item.nom}}{% if forloop.last %}.{% else %}, {%endif%}{%endfor%}{% endblock %}
+{% block meta-description %}Liste des facilités et service en Val d'Yerres Val de Seine : {% for item in facilite_geo%}{{item.nom}}{% if forloop.last %}.{% else %}, {%endif%}{%endfor%}{% endblock %}
 
 {% block contenu %}
 <div class="container">
@@ -22,7 +22,7 @@
 				</li>
 
 				<li>
-					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements du Val d'Yerres</a>
+					<a href="{% url 'equipements.views.EquipementsCarte' %}">Les équipements Val d'Yerres Val de Seine</a>
 				</li>
 
 				<li class="active">
