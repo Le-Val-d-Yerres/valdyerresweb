@@ -20,7 +20,7 @@ mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet',
 jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
 types = [u'MUSIQUE CLASSIQUE', u'HUMOUR',u'DANSE', u'CHANSON',u'THÉÂTRE',u'COMÉDIE MUSICALE', u'SPECTACLE MUSICAL',
          u'CONTE MUSICAL', u'GRAND SPECTACLE', u'GRAND SPECTACLE / CABARET',u'THÉÂTRE / HUMOUR',u"THÉÂTRE CLASSIQUE"]
-id_salles_spectacles = {u'BOUSSY-SAINT-ANTOINE': 5, u'YERRES': 6, u'BRUNOY': 8, u'CROSNE': 9, u'EPINAY-SOUS-SENART': 24, u'QUINCY-SOUS-SENART': 10}
+id_salles_spectacles = {u'BOUSSY-SAINT-ANTOINE': 5, u'YERRES': 6, u'BRUNOY': 8, u'CROSNE': 9, u'EPINAY-SOUS-SENART': 24, u'QUINCY-SOUS-SENART': 10, u"VIGNEUX-SUR-SEINE":83}
 
 liste_themes = {
     u'Chanson': u'http://spectacles.levaldyerres.fr/fr/spectacles/recital.html',
@@ -53,6 +53,7 @@ def parse_page(url):
 
     nom = soup.find("h1").string
     nom = unicode(nom)
+    print(nom)
 
     dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next
     dateevt, heure = dateheureville.split("|")
@@ -69,9 +70,9 @@ def parse_page(url):
             nummois = int(i)+1
             break
 
-    numannee = 2016
+    numannee = 2017
     if nummois > 6:
-        numannee = 2015
+        numannee = 2016
 
     dateevt = date(numannee, nummois, numjour)
 
@@ -90,6 +91,7 @@ def parse_page(url):
     dateevt = datetime.combine(dateevt, heure_debut)
 
     ville = dateheureville.next.next
+
     ville = ville.strip()
 
     duree = soup.find("ul", {"class": "arrow-list job bottom-2"})
@@ -104,7 +106,10 @@ def parse_page(url):
     if duree_minute == "":
         duree_minute = 0
     else:
-        duree_minute = int(duree_minute)
+        try:
+            duree_minute = int(duree_minute.split(" ")[0])
+        except:
+            duree_minute = 0
 
     duree = time(duree_heure,duree_minute)
 
@@ -194,11 +199,13 @@ def corresp(eventlist):
         type = TypeEvenement.objects.get(slug=defaultfilters.slugify(event.type))
         evenement.nom = event.nom
         print evenement.nom
+        if evenement.nom == "La Traviata":
+            continue
         evenement.description = event.description
 
         evenement.debut = myTimezone.localize(event.debut)
         evenement.fin = myTimezone.localize(event.fin)
-        evenement.cadre_evenement_id = 14
+        evenement.cadre_evenement_id = 21
         evenement.lieu_id = id_salles_spectacles[event.lieu]
         meta_description = evenement.nom.decode('utf-8') +u" "+ evenement.description.decode("utf-8")
         meta_description = meta_description.replace("<br>",'')
