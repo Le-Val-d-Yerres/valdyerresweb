@@ -33,8 +33,10 @@ class Command(NoArgsCommand):
         
         
         cinemas = Cinema.objects.all()
+
         cinemas.order_by('nom')
-        
+        print(cinemas)
+        exit()
         for cinema in cinemas:
             url_parameters = []
             url_parameters.append(('partner', partner_key))
