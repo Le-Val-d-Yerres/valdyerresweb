@@ -14,26 +14,26 @@
 
 {% block contenu %}	
 <div itemscope itemtype="http://schema.org/Place" class="container" style="margin-top:60px;">
-	<div class="row-fluid">
-		<div class="span12">
+	<div class="row">
+		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li>
-					<a href="/">Accueil</a><span class="divider">/</span>
+					<a href="/">Accueil</a>
 				</li>
 				<li>
-					<a href="{% url 'deveco.views.home' %}">Les membres du club d'entreprise</a><span class="divider">/</span>
+					<a href="{% url 'deveco.views.home' %}">Les membres du club d'entreprise</a>
 				</li>
 				<li class="active">
 					{{ entreprise.nom}} , {{entreprise.ville.nom }}
 				</li>
 			</ul>
 		</div>
-		<div class="span7" >
+		<div class="col-md-8" >
             <div class="row">
-            <div class="span3">{% if entreprise.image %}
-			<img class="img-polaroid-fix"  alt="{{ entreprise.nom }}" src="{{ entreprise.image|resize:'130x100x1' }}">
+            <div class="col-md-3">{% if entreprise.image %}
+			<img class="img-responsive"  alt="{{ entreprise.nom }}" src="{{ entreprise.image|resize:'130x100x1' }}">
 			{% endif %}</div>
-            <div class="span8">
+            <div class="col-md-7">
 			<h1><a itemprop="url" href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}"><span itemprop="name">{{ entreprise.nom }}</span></a></h1>
                 {{ entreprise.presentation|safe }}
             </div>
@@ -41,9 +41,9 @@
 
         {% for dirigeant in dirigeants %}
             <div class="row">
-             <div class="span3">
+             <div class="col-md-3">
              </div>
-                <div class="span8">
+                <div class="col-md-8">
                     <hr>
 
             <h3>{{ dirigeant.prenom }} {{ dirigeant.nom }}</h3>
@@ -55,7 +55,7 @@
 
 
 		</div>
-		<div class="span4">
+		<div class="col-md-4">
 
 			<br/>
 			
@@ -74,7 +74,7 @@
 
 					{% if entreprise.email %}
 					<p>
-						Courriel : <a href="mailto:{{ entreprise.email }}">{{ entreprise.email }}</a>
+						Courriel : <a href="mailto:{{entreprise.email}}">{{entreprise.email}}</a>
 					</p>
 					{% endif %}
 					{% if entreprise.site_internet %}
@@ -90,8 +90,8 @@
 				<br \><br \>
 				{{"vcard"|aide}}
 			</div>
-			<hr class="hidden-phone" />
-			<div class="hidden-phone" style="text-align: center;">
+			<hr>
+			<div style="text-align: center;">
 
 				Ajouter cette entreprise à vos contacts
 				<br/>
@@ -110,146 +110,18 @@
 		</div>
 
 	</div>
-	
-	{% if horaires %}
-	<div class="row-fluid">
-		<div class="span7">
-			<hr/>
-			<h2>Horaires:</h2>
-			<h3>Aujourd'hui :</h3>
-			<table class="table table-striped" align="center">
-				<tr>
-					<td><b>{%nom_jour_aujourdhui%}</b></td>
-					<td>
-						<ul>
-							{% for horaire in horaires %}
-								<li>{{horaire.nom}} : <b>{{horaire|horaires_aujourdhui}}</b></li>
-							{%endfor%}
-						</ul>
-					</td>
-				</tr>
-			</table>
-			<h3>Les 7 prochains jours : </h3>
-			<table class="table table-striped" align="center">
-	    		<thead>
-    				<tr>
-      					<th>Jour</th>
-      					<th>Horaire</th>
-      					    				</tr>
-  				</thead>
-			
-				{% for horaires in horaires_plus_7 %}
-					<tr>
-					<td><b>{{forloop.counter|nom_jour_index}}</b></td>
-					<td>
-						<ul>
-					{% for horaire in horaires %}
-					<li>{{horaire.nom}} : <b>{{forloop.parentloop.counter|horaire_journee_timedelta:horaire}}</b></li>
-					{% endfor %}
-						</ul>
-					</td>
-					</tr>
-				{% endfor %}
-			</table>
-			<br/>
-			<p>
-				<a href="{% url 'entreprises.views.entrepriseHoraires' entreprise_slug=entreprise.slug%}">Voir tous les horaires et toutes les périodes</a>
-			</p>
-		</div>
-	</div>
-	{%endif%}
-	{% if tarifs_principaux %}
-	<div class="row-fluid">
-		<div class="span7">
-			<hr/>
-			<h2>Principaux tarifs : </h2>
-			<table class="table table-striped" align="center">
-	    		<thead>
-    				<tr>
-      					<th></th>
-      					<th>Résidents</th>
-      					<th>Non-Résidents</th>
-    				</tr>
-  				</thead>
-  			{% for item in tarifs_principaux %}
-  				<tr>
-  				<td>{{item.designation}}<br/><small>{{item.info_additionelle}}</small></td>
-  				<td>{{item.prix_residents|monnaie}}</td>
-  				<td>{{item.prix_non_residents|monnaie}}</td>
-  				</tr>
-  			{% endfor %}
-  			</table>
-			<br/>
-			<p>
-				<a href="{% url 'entreprises.views.entrepriseFonctionTarifs' entreprise_fonction_slug=entreprise.fonction.slug %}">Voir tous les tarifs</a>
-			</p>
-		</div>
-		
-	</div>
-	
-	{% endif %}
-	{% if evenements %}
-	<div class="row-fluid">
-		<div class="span7">
-			<hr/>
-			<h2>Les prochains événements:</h2>
-			
-				{% regroup evenements by monthyeardebut as eventlist %}
-				
-				{% for eventmonth in eventlist %}
-					<table class=" table table-striped">
-					<thead><tr><th>{{eventmonth.grouper|grouperToString}}</th></tr></thead>	
-					
-					{% for each in eventmonth.list %}
-					
-					<tr itemscope itemtype="http://schema.org/Event">
-						<td>{{ each.type.nom }} : &laquo;
-						<a itemprop="url" href="{% url 'evenements.views.EvenementDetailsHtml' slug=each.cadre_evenement.slug evenement_slug=each.slug %}"><span itemprop="name" >{{ each.nom }}</span></a>&raquo;
-						</td> 
-						<td style="text-align:right;">
-						<time itemprop="startDate" datetime=“{{each.debut|dateSEO}}”>
-						{{ each.debut|dateCustom:each.fin }}
-						</time>
-						</td>
-					</tr>
-				{% endfor %}
-					</table>
-				{% endfor %}
-			
 
-		</div>
-	</div>
-	{% endif %}
 	
-	{% if facilites %}
-	<div class="row-fluid">
-		<div class="span7">
-			<hr/>
-			<h2>Dans cet équipement:</h2>
-			<ul>
-				{% for facilite in facilites.facilites.all %}
-				<li style="margin-top:5px;list-style: none;"><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}
-				{% if facilite.importance < 10 %}
-				(<a href="{% url 'entreprises.views.FaciliteCarte' slug=facilite.slug %}">Voir tous</a>)
-				{% endif %}
-				</li>
-				{% endfor %}
-			</ul>
-		</div>
-	</div>
+	<div class="row">
 
-	{% endif %}
-	
-	<div class="row-fluid">
-
-		<div class="span7">
+		<div class="col-md-8">
 			<hr/>
 			<h2>Géolocalisation: <br/><small>{{entreprise.rue}}, {{entreprise.ville.code_postal}} {{entreprise.ville.nom}}</small></h2>
 
 			<div id="map_canvas" style="text-align:center;margin-left:auto;margin-right:auto;"></div>
 
 		</div>
-		<div style="text-align:center;" class="span4" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+		<div style="text-align:center;" class="col-md-4" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
 			<hr/>
 			<p>
 				 Les coordonnées GPS : 
