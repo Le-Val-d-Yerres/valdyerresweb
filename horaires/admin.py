@@ -8,6 +8,8 @@ from django.core.urlresolvers import reverse
 
 class HorairesAdmin(admin.ModelAdmin):
     list_display = ['nom', 'equipement', 'List_Periods']
+    search_fields = ['equipement']
+
     fieldsets= (
                 ("Infos", 
                     { 'fields' : ('nom','equipement','periodes', )
@@ -64,6 +66,8 @@ class HorairesAdmin(admin.ModelAdmin):
 
 class PeriodeAdmin(admin.ModelAdmin):
     list_display = ('nom','date_debut','date_fin')
+    search_fields = ['nom']
+
     
     def save_model(self, request, obj, form, change):
         horaires = Horaires.objects.filter(periodes__id = obj.id)
