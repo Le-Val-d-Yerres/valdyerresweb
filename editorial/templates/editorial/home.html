@@ -47,7 +47,7 @@
                             <div class="col-md-6">
                                 <div class="magazine-news-img">
                                     <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
-                                            class="img-responsive" src="{{ page.image|resize:'973x615x1' }}" alt=""></a>
+                                            class="img-responsive" src="{{ page.image|resize:'400x255x1' }}" alt=""></a>
                                 </div>
                                 <h3>
                                     <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
@@ -74,7 +74,7 @@
                             <div class="col-md-6">
                                 <div class="magazine-news-img">
                                     <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
-                                            class="img-responsive" src="{{ page.image|resize:'973x615x1' }}" alt=""></a>
+                                            class="img-responsive" src="{{ page.image|resize:'400x255x1' }}" alt=""></a>
                                 </div>
                                 <h3>
                                     <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>

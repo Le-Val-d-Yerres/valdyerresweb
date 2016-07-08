@@ -52,7 +52,7 @@ class Equipement(Lieu):
     meta_description = models.CharField(max_length=200)
     alerte = models.ForeignKey(Alerte, blank=True, null=True, default=None)
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements",
-                            extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
+                            extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, null=True)
 
     def __unicode__(self):
         return self.ville.nom + " - " + self.nom

@@ -231,9 +231,9 @@ def resize(myfile, size='100x100x1'):
             image = ImageOps.fit(Image.open(filename), (x, y), Image.ANTIALIAS)
 
             try:
-                image.save(miniature_filename, "JPEG", quality=90, optimize=True, progressive=True)
+                image.save(miniature_filename, "JPEG", quality=85, optimize=True, progressive=True)
             except:
-                image.save(miniature_filename, "JPEG", quality=90)
+                image.save(miniature_filename, "JPEG", quality=85)
 
         if logo is True:
             return miniature_url.replace(settings.STATIC_ROOT, settings.STATIC_URL)
