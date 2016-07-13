@@ -53,7 +53,7 @@
 			{% for equipement in equipements %}
 			<tr>
 				 
-				<td><img class="img-polaroid" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
+				<td><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}"><img class="img-responsive" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'100x100x0' }}"/></a></td>
 				<td><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td> <td> {{equipement.ville.nom}} </td>
 				{% if listhoraires|length != 0 %}
 				<td>
