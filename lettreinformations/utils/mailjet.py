@@ -22,8 +22,6 @@ def addContact(mail, mailListId):
     except Timeout:
         return 2 # Erreur lors de la tentative d'ajout
 
-    print rep.status_code
-
     if rep.status_code == 304:
         return 3  # Email déjà ajouté
     elif rep.status_code != 200:
@@ -44,7 +42,6 @@ def isContactInList(mail, mailListId):
 
     try:
         rep = requests.get("http://api.mailjet.com/0.1/contactInfos", params=getData, auth=(settings.MAILJET_API_KEY, settings.MAILJET_SECRET_KEY), timeout=2)
-        print(rep)
     except socket.timeout:
         return 2
 
