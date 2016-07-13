@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
+from requests import Timeout
 import smtplib
 import socket
 from lettreinformations import settings
@@ -17,6 +18,7 @@ def addContact(mail, mailListId):
 
     try:
         rep = requests.post("http://api.mailjet.com/0.1/listsAddcontact", params=getData, data=postData, auth=(settings.MAILJET_API_KEY, settings.MAILJET_SECRET_KEY), timeout=2)
+
     except Timeout:
         return 2 # Erreur lors de la tentative d'ajout
 
@@ -42,6 +44,7 @@ def isContactInList(mail, mailListId):
 
     try:
         rep = requests.get("http://api.mailjet.com/0.1/contactInfos", params=getData, auth=(settings.MAILJET_API_KEY, settings.MAILJET_SECRET_KEY), timeout=2)
+        print(rep)
     except socket.timeout:
         return 2
 

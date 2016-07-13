@@ -14,19 +14,19 @@
 {% block contenu %}
 <div class="container" style="margin-top:60px;">
 <div  class="row-fluid">
-	<div class="span12">
+	<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li>
-					<a href="/">Retourner à l'accueil du site</a><span class="divider">/</span>
+					<a href="/">Retourner à l'accueil du site</a>
 				</li>
 			</ul>
 	</div>
-			<div class="span7">
+			<div class="col-md-6 margin-bottom-25">
 				<h1>Lettre d'informations</h1>
 				<p>
 					<form method="post" action="/mail/mailjet-post.html" id="mailJetForm"><input type="hidden" name="csrftoken" value="{{ token }}">
 						<label for="mail">Votre courriel :</label>
-						<input type="email" name="email" id="mail"><br \>
+						<input class="form-control" type="email" name="email" id="mail"><br \>
 						<input id="mailPost" type="submit" class="btn btn-primary" value="S'abonner">
 					</form>
 				</p>

@@ -94,7 +94,7 @@ def mailJetAjax(request):
 
 @never_cache
 def mailJetPost(request):
-    if request.COOKIES.has_key('csrftoken'):
+    if 'csrftoken' in request.COOKIES:
         if request.COOKIES['csrftoken'] == request.POST['csrftoken']:
             mail = request.POST['email']
             
