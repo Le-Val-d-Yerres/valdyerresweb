@@ -55,7 +55,7 @@ def mailJetAjax(request):
                     msg = MIMEMultipart('alternative')
                     
                     msg['Subject'] = u"Veuillez confirmer votre abonnement à la lettre d'informations"
-                    msg['From'] = 'levaldyerres@levaldyerres.fr'
+                    msg['From'] = 'accueil@vyvs.fr'
                     msg['To'] = mail
                     
                     myTemplate = loader.get_template('lettreinformations/mail-validation-html.html')
@@ -105,7 +105,7 @@ def mailJetPost(request):
                 msg = MIMEMultipart('alternative')
                 
                 msg['Subject'] = u"Veuillez confirmer votre abonnement à la lettre d'informations"
-                msg['From'] = 'levaldyerres@levaldyerres.fr'
+                msg['From'] = 'accueil@vyvs.fr'
                 msg['To'] = mail
                 
                 rep = mailjet.isContactInList(mail, conf.MAIL_LIST_ID)
