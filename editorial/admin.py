@@ -25,7 +25,7 @@ class AdminActualite(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('titre',), }
     fieldsets = [
         ('Page', {'fields': ['titre', 'slug', 'meta_description', 'contenu', 'image', 'publie']}),
-        ('Date et Lieu', {'fields': ['date_publication']}),
+        ('Date', {'fields': ['date_publication']}),
         ('Carrousel et accueil', {
 
             'fields': ['carroussel', 'index_carroussel', 'page_accueil'],

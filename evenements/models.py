@@ -55,6 +55,9 @@ class SaisonCulturelle(Saison):
     def __unicode__(self):
         return self.nom
 
+    class Meta:
+        ordering = ['-debut']
+
 
 class Festival(Saison):
     saison_culture = models.ForeignKey(SaisonCulturelle)

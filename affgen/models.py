@@ -7,7 +7,7 @@ from localisations.models import Ville
 SEXE = (
     ('ind', u'Indeterminé'),
     ('homme', u'Homme'),
-    ('femme', u'femme')
+    ('femme', u'Femme')
 )
 
 

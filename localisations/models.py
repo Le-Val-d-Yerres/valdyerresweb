@@ -14,6 +14,10 @@ class Ville(models.Model):
     def __unicode__(self):
         return self.nom
 
+    class Meta:
+        verbose_name_plural = "Lieux"
+        ordering = ['nom']
+
 class Lieu(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom")
     rue = models.CharField(max_length=255)
