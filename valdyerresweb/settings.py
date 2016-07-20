@@ -127,6 +127,7 @@ TEMPLATE_LOADERS = (
 INSTALLED_APPS = (
     'valdyerresweb',              
     'grappelli.dashboard',
+    'lettreinformations',
     'equipements',
     'localisations',
     'evenements',

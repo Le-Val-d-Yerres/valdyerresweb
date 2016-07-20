@@ -16,11 +16,15 @@ from django.views.decorators.cache import never_cache
 @never_cache
 def mailForm(request):
     tokenCSRF = uuid.uuid1()
-    
-    reponse = render_to_response('lettreinformations/mail-form.html', {'token':tokenCSRF})
-    reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
 
-    return reponse
+    myTemplate = loader.get_template('lettreinformations/mail-form.html')
+    myContext = Context({'token':tokenCSRF})
+    
+    reponse = myTemplate.render(myContext)
+    httpresp = HttpResponse(reponse)
+    httpresp.set_cookie("csrftoken", tokenCSRF, 60*5)
+
+    return httpresp
     
 def mailValidation(request, hash):
     if cache.has_key(hash):
@@ -34,10 +38,12 @@ def mailValidation(request, hash):
         rep = 4
 
     tokenCSRF = uuid.uuid1()
-    
-    reponse = render_to_response('lettreinformations/mail-validation-reponse.html', {'reponse': rep, 'token': tokenCSRF})
-    reponse.set_cookie("csrftoken", tokenCSRF, 60*5)
-    return reponse
+    myTemplate = loader.get_template('lettreinformations/mail-validation-reponse.html')
+    myContext = Context({'reponse': rep, 'token': tokenCSRF})
+    reponse = myTemplate.render(myContext)
+    httpresp = HttpResponse(reponse)
+    httpresp.set_cookie("csrftoken", tokenCSRF, 60*5)
+    return httpresp
             
 def mailJetAjax(request):
     if request.COOKIES.has_key('csrftoken'):
@@ -150,8 +156,14 @@ def mailJetReponse(request, reponse):
     reponse = int(reponse)
     if reponse not in listeRep:
         raise Http404
+
+    myTemplate = loader.get_template('lettreinformations/mail-form.html')
+    myContext = Context({'reponse':reponse})
+
+    reponse = myTemplate.render(myContext)
+    httpresp = HttpResponse(reponse)
     
-    return render_to_response('lettreinformations/mailjet-reponse.html', {'reponse':reponse})
+    return httpresp
 
 @never_cache
 def mailJetGetToken(request):
