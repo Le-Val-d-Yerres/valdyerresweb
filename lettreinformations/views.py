@@ -157,11 +157,11 @@ def mailJetReponse(request, reponse):
     if reponse not in listeRep:
         raise Http404
 
-    myTemplate = loader.get_template('lettreinformations/mail-form.html')
-    myContext = Context({'reponse':reponse})
+    myTemplate = loader.get_template('lettreinformations/mailjet-reponse.html')
+    myContext = Context({'reponse': reponse})
 
-    reponse = myTemplate.render(myContext)
-    httpresp = HttpResponse(reponse)
+    rep = myTemplate.render(myContext)
+    httpresp = HttpResponse(rep)
     
     return httpresp
 
