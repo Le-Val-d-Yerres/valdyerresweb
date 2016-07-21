@@ -16,5 +16,6 @@ urlpatterns = patterns('editorial.views',
     url(r'^ephemeride/$', 'Ephemeride', name="ephemeride"),
     url(r'^newsletters/(?P<equipement_slug>[^\/]+).html$','newsletterbibhtml', name='newsletterbibhtml'),
     url(r'^newsletters/', 'newsletterbiblist', name="newsletterbiblist"),
+    url(r'^elus/', 'elus', name='elus')
 
 )

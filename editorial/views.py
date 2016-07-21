@@ -4,6 +4,7 @@ from django.core.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response, redirect, get_object_or_404, \
     get_list_or_404
+from affgen.models import Elu, MandatAgglo,QualifMandat,TitreHorsAgglo
 from editorial.models import Magazine, RapportActivite, Actualite, DocumentAttache, PageBase, PageStatique, \
     NewsletterBib
 from cinemas.models import Seance
@@ -295,3 +296,24 @@ def newsletterbibhtml(request, equipement_slug):
                                                                         'activites_ttpublic': activites_ttpublic,
                                                                         'edito': newsletter.edito
                                                                         })
+
+def elus(request):
+    mandats = QualifMandat.objects.all().order_by('index')
+    elusst = list()
+    elusnd = list()
+
+    for mandat in mandats[:3]:
+        leselus =Elu.objects.filter(publie=True, mandatagglo__qualif_id=mandat.id).order_by('mandatagglo__index').select_related()
+        for elu in leselus:
+            elusst.append(elu)
+
+    for mandat in mandats[3:]:
+        leselus = Elu.objects.filter(publie=True, mandatagglo__qualif_id=mandat.id).order_by(
+            'ville','mandatagglo__index').select_related()
+        for elu in leselus:
+            elusnd.append(elu)
+
+
+    return render_to_response('editorial/elus/liste_elus.html', {'elusst': elusst,'elusnd':elusnd} )
+
+
