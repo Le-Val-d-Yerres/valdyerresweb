@@ -15,6 +15,7 @@ from pytz import timezone, tzinfo
 from datetime import date
 from valdyerresweb import settings
 import datetime
+from collections import namedtuple
 from django.views.decorators.cache import cache_control, cache_page
 from annoncesemploi.models import Annonce
 from django import forms
@@ -302,10 +303,18 @@ def elus(request):
     elusst = list()
     elusnd = list()
 
+    MandatTuple = namedtuple('MandatTuple','mandat listeelus')
+
     for mandat in mandats[:3]:
+
+        elustmp = list()
         leselus =Elu.objects.filter(publie=True, mandatagglo__qualif_id=mandat.id).order_by('mandatagglo__index').select_related()
         for elu in leselus:
-            elusst.append(elu)
+            elustmp.append(elu)
+
+        mandatagglo = MandatTuple(mandat, elustmp)
+        elusst.append(mandatagglo)
+
 
     for mandat in mandats[3:]:
         leselus = Elu.objects.filter(publie=True, mandatagglo__qualif_id=mandat.id).order_by(

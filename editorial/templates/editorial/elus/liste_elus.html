@@ -3,12 +3,22 @@
 {% load aidefilters %}
 {% load eventfilters %}
 {% load menufilters %}
-{% load aidefilters%}
+{% load aidefilters %}
 {% load tz %}
 
-{% block title %}L'agenda du Val d'Yerres {%if orgaslug != "tous" %} les événements organisés par {% for item in orgalist %}{% if orgaslug == item.slug %}{{item.nom}}, {% endif %}{% endfor %}{%endif%}{% if period == "toutes" %}toutes périodes{% elif period == "cette-semaine" %}cette semaine{% elif period == "ce-week-end" %}ce week end{% elif period == "ce-mois" %}ce mois{%endif%}{% if typeslug == "tous" %}, tout type d'événements, {%else%} {% for item in typeslist %}{% if typeslug == item.slug %}, événement{{evenements|pluralize}} de type : {{item.nom}}{% endif %}{% endfor %}{% endif %}{% endblock %}
+{% block title %}L'agenda du Val d'Yerres {% if orgaslug != "tous" %} les événements organisés par
+    {% for item in orgalist %}{% if orgaslug == item.slug %}{{ item.nom }}, {% endif %}{% endfor %}{% endif %}
+{% if period == "toutes" %}toutes périodes{% elif period == "cette-semaine" %}cette semaine
+{% elif period == "ce-week-end" %}ce week end{% elif period == "ce-mois" %}ce mois{% endif %}{% if typeslug == "tous" %}
+    , tout type d'événements, {% else %}
+    {% for item in typeslist %}{% if typeslug == item.slug %}, événement{{ evenements|pluralize }} de type :
+        {{ item.nom }}{% endif %}{% endfor %}{% endif %}{% endblock %}
 
-{% block meta-description %}Agenda des spectacles et événements organisé par le Val d'Yerres et ses partenaires : {% if period == "toutes" %}toutes périodes{%endif%}{% if period == "cette-semaine" %}cette semaine{%endif%}{% if typeslug == "tous" %}, tout type d'événements, {%else%}{% for item in typeslist %}{% if typeslug == item.slug %}, événement{{evenements|pluralize}} de type : {{item.nom}}{% endif %}{% endfor %}{% endif %}{% endblock %}
+{% block meta-description %}Agenda des spectacles et événements organisé par le Val d'Yerres et ses partenaires :
+    {% if period == "toutes" %}toutes périodes{% endif %}{% if period == "cette-semaine" %}cette semaine{% endif %}
+{% if typeslug == "tous" %}, tout type d'événements,
+    {% else %}{% for item in typeslist %}{% if typeslug == item.slug %}, événement{{ evenements|pluralize }} de type :
+        {{ item.nom }}{% endif %}{% endfor %}{% endif %}{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
@@ -16,78 +26,85 @@
 
 
 
-<div class="container">
-	<div class="row-fluid">
-		<div class="col-md-12">
-			<ul class="breadcrumb">
-					<li><a href="/">Accueil</a></li>
-					<li class="active">Vos élus<li>
-			</ul>
-		</div>
-		<div class="col-md-12">
-				<h1>Vos élus </h1>
-
-
-						<table class="table  table-striped">
-							{% for elu in elusst %}
-							<tr>
-								<td><img alt="photo de {{ elu.nom }} {{ elu.prenom }}" class="img-responsive" src="{{ elu.photo |resize:'100x100x1' }}"></td>
-								<td>{{ elu.nom }} {{ elu.prenom }}</td>
+    <div class="container">
+        <div class="row-fluid">
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li><a href="/">Accueil</a></li>
+                    <li class="active">Vos élus
+                    <li>
+                </ul>
+            </div>
+            <div class="col-md-12">
+                <h1>Vos élus </h1>
+                {% for fonction in elusst %}
+                    <h3>Le{{ fonction.listeelus|length|pluralize }}
+                        {% with fonction.mandat.nom|splitwords as parts %}
+                            {% for word in parts %}
+                                {{ word }}{{ fonction.listeelus|length|pluralize }}
+                            {% endfor %}
+                            </h3>
+                        {% endwith %}
+                    <table class="table  table-striped">
+                        {% for elu in fonction.listeelus %}
+                            <tr>
+                                <td><img alt="photo de {{ elu.nom }} {{ elu.prenom }}" class="img-responsive"
+                                         src="{{ elu.photo |resize:'100x100x1' }}"></td>
+                                <td>{{ elu.nom }} {{ elu.prenom }}</td>
                                 <td>
                                     <p>
-                                 {% for titre in elu.mandatagglo_set.all %}
-                                    {{ titre.nom }}<br>
+                                        {% for titre in elu.mandatagglo_set.all %}
+                                            {{ titre.nom }}<br>
 
-                                 {% endfor %}
-                                    {% for titre in elu.titrehorsagglo_set.all %}
-                                        {{ titre.nom }}<br>
+                                        {% endfor %}
+                                        {% for titre in elu.titrehorsagglo_set.all %}
+                                            {{ titre.nom }}<br>
 
-                                    {% endfor %}
-								    </p>
+                                        {% endfor %}
+                                    </p>
                                 </td>
-
-
-
-							</tr>
-							{% endfor %}
-                        </table>
-                        {% regroup elusnd by ville.nom as villes_list  %}
-
-                        <h2>Les conseillers communautaires</h2>
-                        {% for ville in villes_list %}
-                            <h3>{{ ville.grouper }}</h3>
-                            <table class="table  table-striped">
-                        {% for elu in ville.list %}
-							<tr>
-								<td><img alt="photo de {{ elu.nom }} {{ elu.prenom }}" class="img-responsive" src="{{ elu.photo |resize:'100x100x1' }}"></td>
-								<td>{{ elu.nom }} {{ elu.prenom }}</td>
-                                <td>
-                                    <p>
-                                 {% for titre in elu.mandatagglo_set.all %}
-                                    {{ titre.nom }}<br>
-
-                                 {% endfor %}
-                                    {% for titre in elu.titrehorsagglo_set.all %}
-                                        {{ titre.nom }}<br>
-
-                                    {% endfor %}
-								    </p>
-                                </td>
-
-
-
-							</tr>
-							{% endfor %}
-                            </table>
+                            </tr>
                         {% endfor %}
-						</table>
+                    </table>
+                {% endfor %}
 
-			</div>
-		</div>
-	</div>
-</div>
-	{% endblock %}
+                {% regroup elusnd by ville.nom as villes_list %}
 
-{% block jsload%}
-{% include "include/jquery-bootstrap.html" %}
-{% endblock%}
+                <h2>Les conseillers communautaires</h2>
+                {% for ville in villes_list %}
+                    <h3>{{ ville.grouper }}</h3>
+                    <table class="table  table-striped">
+                        {% for elu in ville.list %}
+                            <tr>
+                                <td><img alt="photo de {{ elu.nom }} {{ elu.prenom }}" class="img-responsive"
+                                         src="{{ elu.photo |resize:'100x100x1' }}"></td>
+                                <td>{{ elu.nom }} {{ elu.prenom }}</td>
+                                <td>
+                                    <p>
+                                        {% for titre in elu.mandatagglo_set.all %}
+                                            {{ titre.nom }}<br>
+
+                                        {% endfor %}
+                                        {% for titre in elu.titrehorsagglo_set.all %}
+                                            {{ titre.nom }}<br>
+
+                                        {% endfor %}
+                                    </p>
+                                </td>
+
+
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endfor %}
+                </table>
+
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block jsload %}
+    {% include "include/jquery-bootstrap.html" %}
+{% endblock %}

@@ -22,6 +22,11 @@ mois_courts = [u'jan', u'fév', u'mars', u'avril', u'mai', u'juin', u'juil', u'a
 
 
 @register.filter(is_safe=True)
+def splitwords(txt):
+    txt = txt.split(u" ")
+    return txt
+
+@register.filter(is_safe=True)
 def deuxchiffres(nombre):
     if nombre < 10:
         return "0" + str(nombre)
