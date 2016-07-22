@@ -6,19 +6,9 @@
 {% load aidefilters %}
 {% load tz %}
 
-{% block title %}L'agenda du Val d'Yerres {% if orgaslug != "tous" %} les événements organisés par
-    {% for item in orgalist %}{% if orgaslug == item.slug %}{{ item.nom }}, {% endif %}{% endfor %}{% endif %}
-{% if period == "toutes" %}toutes périodes{% elif period == "cette-semaine" %}cette semaine
-{% elif period == "ce-week-end" %}ce week end{% elif period == "ce-mois" %}ce mois{% endif %}{% if typeslug == "tous" %}
-    , tout type d'événements, {% else %}
-    {% for item in typeslist %}{% if typeslug == item.slug %}, événement{{ evenements|pluralize }} de type :
-        {{ item.nom }}{% endif %}{% endfor %}{% endif %}{% endblock %}
+{% block title %}Les élus du Val d'Yerres Val de Seine{% endblock %}
 
-{% block meta-description %}Agenda des spectacles et événements organisé par le Val d'Yerres et ses partenaires :
-    {% if period == "toutes" %}toutes périodes{% endif %}{% if period == "cette-semaine" %}cette semaine{% endif %}
-{% if typeslug == "tous" %}, tout type d'événements,
-    {% else %}{% for item in typeslist %}{% if typeslug == item.slug %}, événement{{ evenements|pluralize }} de type :
-        {{ item.nom }}{% endif %}{% endfor %}{% endif %}{% endblock %}
+{% block meta-description %}Les élus de la communauté d'agglomération Val d'Yerres Val de Seine dans l'Essonne{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
@@ -38,7 +28,7 @@
             <div class="col-md-12">
                 <h1>Vos élus </h1>
                 {% for fonction in elusst %}
-                    <h3>Le{{ fonction.listeelus|length|pluralize }}
+                    <h3>Le{{fonction.listeelus|length|pluralize }}
                         {% with fonction.mandat.nom|splitwords as parts %}
                             {% for word in parts %}
                                 {{ word }}{{ fonction.listeelus|length|pluralize }}
