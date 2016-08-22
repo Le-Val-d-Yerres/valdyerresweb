@@ -40,7 +40,7 @@
                             <tr>
                                 <td><img alt="photo de {{ elu.nom }} {{ elu.prenom }}" class="img-responsive"
                                          src="{{ elu.photo |resize:'100x100x1' }}"></td>
-                                <td>{{ elu.nom }} {{ elu.prenom }}</td>
+                                <td>{{ elu.prenom }} {{ elu.nom }}</td>
                                 <td>
                                     <p>
                                         {% for titre in elu.mandatagglo_set.all %}
@@ -68,7 +68,7 @@
                             <tr>
                                 <td><img alt="photo de {{ elu.nom }} {{ elu.prenom }}" class="img-responsive"
                                          src="{{ elu.photo |resize:'100x100x1' }}"></td>
-                                <td>{{ elu.nom }} {{ elu.prenom }}</td>
+                                <td>{{ elu.prenom }} {{ elu.nom }}</td>
                                 <td>
                                     <p>
                                         {% for titre in elu.mandatagglo_set.all %}
