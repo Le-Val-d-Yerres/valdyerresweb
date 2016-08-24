@@ -9,7 +9,7 @@ import valdyerresweb.templatetags.filtres as filtres
 from StringIO import StringIO
 from django.http import HttpResponse
 from django.template import Context, loader
-from django.utils import http
+from django.utils import http, safestring
 from django.templatetags.static import static
 
 
@@ -214,19 +214,20 @@ def GenerateExcelFile(evenements):
         sheet.col(i).width = col_width
      
     for each in evenements:
-        sheet.write(line, 0, each.lieu.ville.nom,mystyle[line%2])
-        sheet.write(line, 1, each.nom,mystyle[line%2])
-        sheet.write(line, 2, filtres.dateCustom(each.debut,each.fin),mystyle[line%2])
-        sheet.write(line ,3, each.lieu.nom+" "+each.lieu.rue,mystyle[line%2])
+        sheet.write(line, 0, each.lieu.ville.nom,mystyle[line % 2])
+        sheet.write(line, 1, filtres.dateCustom(each.debut,each.fin),mystyle[line % 2])
+        sheet.write(line, 2, each.nom, mystyle[line % 2])
+        sheet.write(line, 3, safestring.mark_safe(resume(each.description,60)), mystyle[line % 2])
+        sheet.write(line, 4, each.lieu.nom+" "+each.lieu.rue, mystyle[line % 2])
         orgacelltxt = ""
         for orga in each.organisateur.all():
             orgacelltxt += orga.nom+" "
         
-        sheet.write(line ,4, orgacelltxt,mystyle[line%2])
+        sheet.write(line ,5, orgacelltxt,mystyle[line % 2])
         url = reverse('event-details', kwargs={'slug': each.cadre_evenement.slug , 'evenement_slug': each.slug})
         url = settings.NOM_DOMAINE+url
-        sheet.write(line ,5,url,mystyle[line%2])
-        line = line +1
+        sheet.write(line, 6, url, mystyle[line % 2])
+        line = line + 1
     wbk.save(myfile) 
     myfile.seek(0)     
     response = HttpResponse(myfile.read(), content_type=file_type)
