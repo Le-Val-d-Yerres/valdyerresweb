@@ -2,6 +2,7 @@
 
 from django.db import models
 from localisations.models import Ville
+from filebrowser.fields import FileBrowseField
 
 
 SEXE = (
@@ -59,3 +60,20 @@ class MandatAgglo(models.Model):
         verbose_name = u"Mandat dans l'agglo"
         verbose_name_plural = u"Mandats dans l'agglo"
 
+
+ENTITE = (
+    ('vyvs', u'Val d’Yerres Val de Seine'),
+    ('casvs', u'Val de Seine'),
+    ('cavt', u'Val d’Yerres')
+)
+
+
+class Cptrendu(models.Model):
+    date = models.DateField(verbose_name="Date du conseil")
+    entite = models.CharField(max_length=5, choices=ENTITE, default='vyvs')
+    document = FileBrowseField("Document PDF", max_length=200, directory="comptesrendus", extensions=[".pdf"])
+
+    class Meta:
+        ordering = ['date']
+        verbose_name = u"Mandat dans l'agglo"
+        verbose_name_plural = u"Mandats dans l'agglo"
