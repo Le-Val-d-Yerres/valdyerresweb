@@ -104,15 +104,15 @@ def festivalInfo(evenement_id, champ):
 
 
 @register.filter(is_safe=True)
-def resume(text, longeur):
+def resume(text, longueur):
     compile_obj = re.compile(r"""(<(/?[^\>]+\>))""")
     text = compile_obj.sub('', text)
 
-    if len(text) > longeur:
-        if text[longeur] == " " or text[longeur + 1] == " ":
-            textResult = text[0:longeur] + " [...]"
+    if len(text) > longueur + 1:
+        if text[longueur] == " " or text[longueur + 1] == " ":
+            textResult = text[0:longueur] + " [...]"
         else:
-            i = longeur
+            i = longueur
             while (text[i] != " " and i > 1):
                 i = i - 1
             textResult = text[0:i] + " [...]"

@@ -11,6 +11,8 @@ from django.http import HttpResponse
 from django.template import Context, loader
 from django.utils import http, safestring
 from django.templatetags.static import static
+from django.utils.html import strip_tags
+import bleach
 
 
 class EventLink(object):
@@ -217,7 +219,7 @@ def GenerateExcelFile(evenements):
         sheet.write(line, 0, each.lieu.ville.nom,mystyle[line % 2])
         sheet.write(line, 1, filtres.dateCustom(each.debut,each.fin),mystyle[line % 2])
         sheet.write(line, 2, each.nom, mystyle[line % 2])
-        sheet.write(line, 3, safestring.mark_safe(resume(each.description,60)), mystyle[line % 2])
+        sheet.write(line, 3, resume(bleach.clean(each.description, strip=True), 60), mystyle[line % 2])
         sheet.write(line, 4, each.lieu.nom+" "+each.lieu.rue, mystyle[line % 2])
         orgacelltxt = ""
         for orga in each.organisateur.all():
