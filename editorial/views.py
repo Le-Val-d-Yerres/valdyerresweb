@@ -39,7 +39,7 @@ def Home(request):
     plussept = startdate + datetime.timedelta(days=7)
 
     actualites = Actualite.objects.filter(publie=True, page_accueil=True).order_by('-date_publication')[0:4]
-    evenements_une_lg1 = Evenement.objects.filter(page_accueil=False, publish=True, fin__gt=startdate, fin__lte=plussept).order_by(
+    evenements_une_lg1 = Evenement.objects.filter(page_accueil=False, publish=True, fin__gte=startdate, fin__lte=plussept).order_by(
         'debut')
     evenements_une_lg2 = Evenement.objects.filter(page_accueil=True, publish=True, fin__gt=startdate).order_by('debut')[
                          0:3]
