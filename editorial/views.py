@@ -33,12 +33,14 @@ def Home(request):
     startdate = datetime.datetime.combine(today, datetime.time(00, 00, 01))
     enddate = datetime.datetime.combine(today, datetime.time(23, 59, 59))
 
+
     startdate = startdate.replace(tzinfo=utcTZ)
     enddate = enddate.replace(tzinfo=utcTZ)
+    plussept = startdate + datetime.timedelta(days=7)
 
     actualites = Actualite.objects.filter(publie=True, page_accueil=True).order_by('-date_publication')[0:4]
-    evenements_une_lg1 = Evenement.objects.filter(page_accueil=False, publish=True, fin__gt=startdate).order_by(
-        'debut')[0:5]
+    evenements_une_lg1 = Evenement.objects.filter(page_accueil=False, publish=True, fin__gt=startdate, fin__lte=plussept).order_by(
+        'debut')
     evenements_une_lg2 = Evenement.objects.filter(page_accueil=True, publish=True, fin__gt=startdate).order_by('debut')[
                          0:3]
     carroussel = PageBase.objects.filter(publie=True, carroussel=True).select_subclasses().order_by('index_carroussel')
