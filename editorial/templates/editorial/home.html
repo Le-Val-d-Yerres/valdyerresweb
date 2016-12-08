@@ -112,7 +112,7 @@
                             {% if cinema_count > 0 %}
                                 <li><a href="{% url 'editorial.views.Ephemeride' %}#cinemas"
                                        class=" circle-btn  ">{{ cinema_count|deuxchiffres }}</a>
-                                    <a href="{% url 'editorial.views.Ephemeride' %}#cinemas">scéance{{ cinema_count|pluralize }} de cinéma</a></li>
+                                    <a href="{% url 'editorial.views.Ephemeride' %}#cinemas">séance{{ cinema_count|pluralize }} de cinéma</a></li>
                             {% endif %}
                             {% if evenements_count > 0 %}
                                 <li><a href="{% url 'editorial.views.Ephemeride' %}#evenements"
