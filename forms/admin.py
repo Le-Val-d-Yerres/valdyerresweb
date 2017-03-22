@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Disciplinestagecrd, Stage, Fichestagecrd, Intitulestage
+from .models import Disciplinestagecrd, Stage, Fichestagecrd, Intitulestage
 
 
 class StageInline(admin.TabularInline):

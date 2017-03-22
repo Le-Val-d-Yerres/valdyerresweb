@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render,render_to_response
+from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
-from models import Fichestagecrd, Stage, Disciplinestagecrd, Intitulestage
+from .models import Fichestagecrd, Stage, Disciplinestagecrd, Intitulestage
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from random import random
 from django.forms.models import inlineformset_factory
 import csv
-from StringIO import StringIO
+import io
 
 vacances = ["toussaint_1", "toussaint_2", "hiver_1", "hiver_2", "paques_1", "paques_2", "ete_1", "ete_2"]
 
@@ -68,7 +68,7 @@ def merci(request):
 @never_cache
 @login_required(login_url='/admin/login/')
 def exportcrd(request):
-    myfile = StringIO()
+    myfile = io.BytesIO()
     file_type = 'application/csv'
     file_name = 'export.csv'
     mycsv = csv.writer(myfile, delimiter=';', quotechar='"')

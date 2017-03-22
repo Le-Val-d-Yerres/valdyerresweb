@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response , redirect , get_object_or_404,\
     get_list_or_404
 
-from models import Annonce    
+from .models import Annonce
 from valdyerresweb import settings
 from pytz import timezone, tzinfo
 from services.models import Service

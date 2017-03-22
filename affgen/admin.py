@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from models import Elu, TitreHorsAgglo, MandatAgglo, QualifMandat
+from .models import Elu, TitreHorsAgglo, MandatAgglo, QualifMandat
 
 # Register your models here.
 

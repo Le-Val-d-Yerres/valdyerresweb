@@ -6,7 +6,7 @@ from pytz import timezone
 from django.conf import settings
 from valdyerresweb.templatetags.filtres import resume
 import valdyerresweb.templatetags.filtres as filtres
-from StringIO import StringIO
+import io
 from django.http import HttpResponse
 from django.template import Context,loader
 from django.templatetags.static import static

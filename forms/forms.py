@@ -1,4 +1,4 @@
 from django.forms import ModelForm
-from models import Stage,Disciplinestagecrd,Fichestagecrd
+from .models import Stage,Disciplinestagecrd,Fichestagecrd
 
 

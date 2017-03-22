@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from models import DocumentAttacheDevEco, ActualiteDevEco, Dirigeant, Entreprise
+from .models import DocumentAttacheDevEco, ActualiteDevEco, Dirigeant, Entreprise
 
 
 # Register your models here.

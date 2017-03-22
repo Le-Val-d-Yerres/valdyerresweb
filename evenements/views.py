@@ -136,7 +136,7 @@ def ExportAgendaListTypePeriodOrga(request,type_slug = 'tous',period = 'toutes',
 
 def OrganisateurDetailsHtml(request,organisateur_slug):
     organisateur = get_object_or_404(Organisateur.objects.select_related(), slug=organisateur_slug)
-    print organisateur.orga_service
+
     
     if organisateur.orga_service != None:
         return redirect('/services/'+organisateur.orga_service.slug)

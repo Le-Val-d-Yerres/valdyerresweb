@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
-urlpatterns = patterns('deveco.views',
-                       url(r'^$', "home", name="home"),
-                       url(r'^entreprise/(?P<slug>[^\/]+).html$', 'entreprise', name='entreprise'),
-                       url(r'^entreprisevcard/(?P<slug>[^\/]+).vcf', 'entreprisevcard', name='entreprisevcard')
+from . import views
 
-                       )
+urlpatterns = [
+    url(r'^$', views.home, name="home"),
+    url(r'^entreprise/(?P<slug>[^\/]+).html$', views.entreprise, name='entreprise'),
+    url(r'^entreprisevcard/(?P<slug>[^\/]+).vcf', views.entreprisevcard, name='entreprisevcard')
+]

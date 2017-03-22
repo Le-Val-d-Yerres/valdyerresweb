@@ -1,9 +1,8 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
+from . import views
 
-urlpatterns = patterns('forms.views',
-
-                       url(r'^form-crd.html$', 'formfichestage', name="formfichestage"),
-                       url(r'^merci.html$', 'merci', name="merci"),
-                        url(r'^export-crd.csv$', 'exportcrd', name="exportcrd"),
-
-                       )
+urlpatterns = [
+    url(r'^form-crd.html$', views.formfichestage, name="formfichestage"),
+    url(r'^merci.html$', views.merci, name="merci"),
+    url(r'^export-crd.csv$', views.exportcrd, name="exportcrd"),
+]

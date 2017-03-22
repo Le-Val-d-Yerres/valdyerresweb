@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.views.decorators.cache import cache_page
 
-urlpatterns = patterns('editorial.views',
+from .import views
+
+urlpatterns = [
     url(r'^$', 'Home', name="home"),
     url(r'^actualite/$', 'ActuList', name="actu-list"),
     url(r'^actualite/(?P<actualite_slug>[^\/]+).html$', 'ActuDetail', name="actu-detail"),
@@ -17,5 +19,4 @@ urlpatterns = patterns('editorial.views',
     url(r'^newsletters/(?P<equipement_slug>[^\/]+).html$','newsletterbibhtml', name='newsletterbibhtml'),
     url(r'^newsletters/', 'newsletterbiblist', name="newsletterbiblist"),
     url(r'^elus/', 'elus', name='elus')
-
-)
+]

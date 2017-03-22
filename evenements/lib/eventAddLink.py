@@ -6,7 +6,7 @@ from django.conf import settings
 from valdyerresweb.templatetags.filtres import resume
 import xlwt,csv
 import valdyerresweb.templatetags.filtres as filtres
-from StringIO import StringIO
+import io
 from django.http import HttpResponse
 from django.template import Context, loader
 from django.utils import http, safestring
@@ -199,7 +199,7 @@ def getSaisonLinkList(saisonslug):
     
 
 def GenerateExcelFile(evenements):
-    myfile = StringIO()
+    myfile = io.BytesIO()
     file_type = 'application/ms-excel'
     file_name = 'export.xls'
     
@@ -238,7 +238,7 @@ def GenerateExcelFile(evenements):
     return response
     
 def GenerateCSVFile(evenements):
-    myfile = StringIO()
+    myfile = io.BytesIO()
     file_type = 'application/csv'
     file_name = 'export.csv'
     mycsv = csv.writer(myfile, delimiter=';', quotechar='"')

@@ -30,7 +30,7 @@ utcTZ = timezone("UTC")
 def Home(request):
     today = date.today()
 
-    startdate = datetime.datetime.combine(today, datetime.time(00, 00, 01))
+    startdate = datetime.datetime.combine(today, datetime.time(0, 0, 1))
     enddate = datetime.datetime.combine(today, datetime.time(23, 59, 59))
 
 
@@ -208,7 +208,7 @@ def Ephemeride(request, jour='aujourd-hui'):
     else:
         raise Http404
 
-    startdate = datetime.datetime.combine(datepage, datetime.time(00, 00, 01))
+    startdate = datetime.datetime.combine(datepage, datetime.time(0, 0, 1))
     enddate = datetime.datetime.combine(datepage, datetime.time(23, 59, 59))
 
     startdate = startdate.replace(tzinfo=utcTZ)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import os, subprocess, shlex, cStringIO
-import qrcode , base64, StringIO, pickle
+import os, subprocess, shlex, io
+import qrcode , base64, pickle
 from django.conf import settings
 from django.core.cache import caches
 from django.http import HttpRequest
@@ -19,7 +19,7 @@ ImageFile.MAXBLOCK = 2**20
 
 
 def GenerationQrCode(data):
-    img_io = StringIO.StringIO()
+    img_io = io.BytesIO()
     qr = qrcode.QRCode(
                           error_correction=qrcode.constants.ERROR_CORRECT_L,
                           box_size=3,
@@ -32,7 +32,7 @@ def GenerationQrCode(data):
     return base64.b64encode(img_io.getvalue())
 
 def serialize(item):
-    itemIO = StringIO.StringIO()
+    itemIO = io.BytesIO()
     pickle.dump(item,itemIO)
     itemIO.seek(0)
     return base64.b64encode(itemIO.read())
@@ -53,7 +53,8 @@ def pdftojpg(pdfFilePath, subpath = "/img/"):
     args = shlex.split(command_line)
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
     (out, err) = proc.communicate()
-    mystrimage = cStringIO.StringIO(out)
+    mystrimage = io.BytesIO(out)
+    mystrimage.seek(0)
     image = Image.open(mystrimage)
     image.save(outpoutejpg, "JPEG", quality=90, optimize=True, progressive=True)
     return outpoutejpg
