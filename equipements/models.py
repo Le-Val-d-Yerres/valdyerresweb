@@ -173,7 +173,7 @@ class AlertesReponses(models.Model):
     tel = models.CharField(max_length=255)
     mail = models.EmailField()
     message = models.TextField(blank=False)
-    ip = models.IPAddressField()
+    ip = models.GenericIPAddressField()
     date = models.DateTimeField()
     etat = models.BooleanField(default=False)
 

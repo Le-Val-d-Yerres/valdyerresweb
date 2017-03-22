@@ -67,7 +67,7 @@ class RapportActivite(models.Model):
     publie = models.BooleanField(verbose_name="Publié", default=False)
 
 class NewsletterBib(models.Model):
-    maj = models.DateField(auto_now=True, auto_now_add=True, verbose_name='Date de mise à jour')
+    maj = models.DateField(auto_now=True, verbose_name='Date de mise à jour')
     edito = models.TextField(verbose_name="Edito",blank=True)
     evenement_debut = models.DateField("Date de Début des événements")
     evenement_fin = models.DateField("Date de fin des événements")

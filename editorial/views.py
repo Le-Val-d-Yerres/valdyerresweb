@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.http import Http404, HttpResponse
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response, redirect, get_object_or_404, \
     get_list_or_404
