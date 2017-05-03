@@ -7,8 +7,8 @@ from .import views
 
 urlpatterns = [
     url(r'^$', views.Home, name="home"),
-    url(r'^actualite/$', views.ActuList, name="actu-list"),
-    url(r'^actualite/(?P<actualite_slug>[^\/]+).html$', views.ActuDetail, name="actu-detail"),
+    url(r'^actualite/$', views.ActuList, name="actulist"),
+    url(r'^actualite/(?P<actualite_slug>[^\/]+).html$', views.ActuDetail, name="actudetail"),
     url(r'^page/(?P<page_slug>[^\/]+).html$', views.PageDetail , name="page-detail"),
     url(r'^magazines/$', views.Magazines , name="magazines"),
     url(r'^magazines/(?P<page>[^\/]+)$', views.Magazines , name="magazines"),

@@ -46,11 +46,11 @@
                         {% for page in actualites|slice:":2" %}
                             <div class="col-md-6">
                                 <div class="magazine-news-img">
-                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
+                                    <a href="{% url "actudetail" actualite_slug=page.slug %}"><img
                                             class="img-responsive" src="{{ page.image|resize:'400x255x1' }}" alt=""></a>
                                 </div>
                                 <h3>
-                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                                    <a href="{% url "actudetail" actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                                 </h3>
                                 <div class="by-author">
                                     <span>Publié le {{ page.date_publication|dateSimple }}.</span>
@@ -58,7 +58,7 @@
                                 <p>{{ page.contenu|resume:220|safe }}</p>
                                 <p style="text-align: right;">
                                     <a class="btn btn-primary"
-                                       href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                                       href="{% url "actudetail" actualite_slug=page.slug %}">Lire la
                                         suite</a>
                                 </p>
                             </div>
@@ -73,11 +73,11 @@
                         {% for page in actualites|slice:"2:4" %}
                             <div class="col-md-6">
                                 <div class="magazine-news-img">
-                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
+                                    <a href="{% url "actudetail" actualite_slug=page.slug %}"><img
                                             class="img-responsive" src="{{ page.image|resize:'400x255x1' }}" alt=""></a>
                                 </div>
                                 <h3>
-                                    <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                                    <a href="{% url "actudetail" actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                                 </h3>
                                 <div class="by-author">
                                     <span>Publié le {{ page.date_publication|dateSimple }}.</span>
@@ -85,7 +85,7 @@
                                 <p>{{ page.contenu|resume:220|safe }}</p>
                                 <p style="text-align: right;">
                                     <a class="btn btn-primary"
-                                       href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                                       href="{% url "actudetail" actualite_slug=page.slug %}">Lire la
                                         suite</a>
                                 </p>
                             </div>
@@ -110,18 +110,18 @@
                     <div class="row">
                         <ul class="list-unstyled col-md-12">
                             {% if cinema_count > 0 %}
-                                <li><a href="{% url 'editorial.views.Ephemeride' %}#cinemas"
+                                <li><a href="{% url "ephemeride" %}#cinemas"
                                        class=" circle-btn  ">{{ cinema_count|deuxchiffres }}</a>
-                                    <a href="{% url 'editorial.views.Ephemeride' %}#cinemas">séance{{ cinema_count|pluralize }} de cinéma</a></li>
+                                    <a href="{% url "ephemeride" %}#cinemas">séance{{ cinema_count|pluralize }} de cinéma</a></li>
                             {% endif %}
                             {% if evenements_count > 0 %}
-                                <li><a href="{% url 'editorial.views.Ephemeride' %}#evenements"
-                                       class=" circle-btn  ">{{ evenements_count|deuxchiffres }}</a> <a <a href="{% url 'editorial.views.Ephemeride' %}#evenements">événement{{ evenements_count|pluralize }}</a>
+                                <li><a href="{% url "ephemeride" %}#evenements"
+                                       class=" circle-btn  ">{{ evenements_count|deuxchiffres }}</a> <a <a href="{% url "ephemeride" %}#evenements">événement{{ evenements_count|pluralize }}</a>
                                 </li>
                             {% endif %}
                             {% if equipements_count > 0 %}
-                                <li><a href="{% url 'editorial.views.Ephemeride' %}#equipements"
-                                       class=" circle-btn ">{{ equipements_count|deuxchiffres }}</a> <a href="{% url 'editorial.views.Ephemeride' %}#equipements">
+                                <li><a href="{% url "ephemeride" %}#equipements"
+                                       class=" circle-btn ">{{ equipements_count|deuxchiffres }}</a> <a href="{% url "ephemeride" %}#equipements">
                                     équipement{{ equipements_count|pluralize }}
                                     ouvert{{ equipements_count|pluralize }}</a></li>
                             {% endif %}
@@ -135,16 +135,16 @@
                         <div class="headline headline-md"><h2>Prochains événements</h2></div>
                         {% for evenement in evenements_une_lg1 %}
                             <dl class="dl-horizontal">
-                                <dt><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><img src="{{ evenement.image|resize:'200x200x1' }}" alt=""/></a></dt>
+                                <dt><a href="{% url "event-details" slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><img src="{{ evenement.image|resize:'200x200x1' }}" alt=""/></a></dt>
                                 <dd>
                                     <p>
-                                        <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom|safe }}</a>
+                                        <a href="{% url "event-details" slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}">{{ evenement.nom|safe }}</a>
                                     </p>
                                     <p><i class="fa fa-calendar"></i> {{ evenement.debut|dateCustom:evenement.fin }}</p>
                                 </dd>
                             </dl>
                         {% endfor %}
-<a class="btn btn-primary" href="{% url 'evenements.views.AgendaGlobal' %}">Voir tous
+<a class="btn btn-primary" href="{% url "agenda-global" %}">Voir tous
                                     les événements à venir</a>
                     </div><!--/posts-->
                 {% endif %}
@@ -152,8 +152,8 @@
                 <div class="posts margin-bottom-40">
                     <div class="headline headline-md"><h2>Le Magazine</h2></div>
 
-                    <h4><a href="{% url 'editorial.views.Magazines' %}">{{ magazine.date_parution|moisannee }}</a></h4>
-                    <a href="{% url 'editorial.views.Magazines' %}"><img class="img-polaroid" style="max-width:90%"
+                    <h4><a href="{% url "magazines" %}">{{ magazine.date_parution|moisannee }}</a></h4>
+                    <a href="{% url "magazines" %}"><img class="img-polaroid" style="max-width:90%"
                                                                          src="{{ magazine.image|resize:'225x300x1' }}"
                                                                          alt="{{ magazine.titre|safe }}"></a>
                     <p>
@@ -169,9 +169,9 @@
                             <ul class="list-unstyled col-md-12">
                                 {% for annonces in annonceslists %}
                                     <li>
-                                        <a href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}"
+                                        <a href="{% url "annonces-list-service" service_slug=annonces.grouper.slug %}"
                                            class="circle-btn">{{ annonces.list|length|deuxchiffres }}</a><a
-                                            href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=annonces.grouper.slug %}">
+                                            href="{% url "annonces-list-service" service_slug=annonces.grouper.slug %}">
                                         annonce{{ annonces.list|length|pluralize }} {{ annonces.grouper }}</a>
                                     </li>
                                 {% endfor %}

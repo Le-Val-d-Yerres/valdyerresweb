@@ -114,10 +114,24 @@ ROOT_URLCONF = 'valdyerresweb.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'valdyerresweb.wsgi.application'
 
-TEMPLATE_DIRS = (
-    SUPPROJECT_PATH+'/templates',
-    SUPPROJECT_PATH+'/debug_toolbar/templates',
-)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['templates',],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
