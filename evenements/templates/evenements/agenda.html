@@ -62,7 +62,7 @@
 							{% for evenement in eventmonth.list %}
 							<tr>
 								<td><img alt="image de l'événement : {{evenement.nom}}" class="img-responsive" src="{{evenement.image|resize:'100x100x1'}}"></td>
-								<td><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
+								<td><a href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{evenement.nom}}</strong></a>
 								<p>
 									Type : {{evenement.type}}.
 									<br/>
@@ -71,7 +71,7 @@
 									Lieu : {{evenement.lieu.nom}}, {{evenement.lieu.ville.nom}}. 
 								</p>
 								<p style="text-align:right;">
-									<a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
+									<a href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}" class="btn btn-primary" >+ d'infos</a>
 								</p></td>
 
 							</tr>

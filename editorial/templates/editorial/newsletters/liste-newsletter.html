@@ -54,9 +54,9 @@
 			<tr>
 				 
 				<td><img class="img-polaroid" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'100x100x0' }}"/></td>
-				<td><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td> <td> {{equipement.ville.nom}} </td>
+				<td><a href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td> <td> {{equipement.ville.nom}} </td>
 
-				<td><a class="btn  btn-primary" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">Générer newsletter</a></td>
+				<td><a class="btn  btn-primary" href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">Générer newsletter</a></td>
 			</tr>
 			{% endfor %}
 			</table>
@@ -69,7 +69,7 @@
 			<ul>
 				 
 				
-				<li><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a> à {{equipement.ville.nom}}</li>
+				<li><a href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a> à {{equipement.ville.nom}}</li>
 				{% if listhoraires|length != 0 %}
 				Horaires: aujourd'hui, {%nom_jour_aujourdhui%} :
 				<ul>
@@ -88,7 +88,7 @@
 				</ul>
 				{% endif %}
 				
-				<div style="text-align: right;"><a class="btn btn-primary" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">Générer newsletter</a></div>
+				<div style="text-align: right;"><a class="btn btn-primary" href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">Générer newsletter</a></div>
 				
 			</ul>
 			</p>

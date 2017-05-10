@@ -37,7 +37,7 @@
 		</div>
 		<div class="col-md-8" >
 
-			<h1><a itemprop="url" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}"><span itemprop="name">{{ equipement.nom }}</span></a></h1>
+			<h1><a itemprop="url" href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}"><span itemprop="name">{{ equipement.nom }}</span></a></h1>
 			{% if equipement.image %}
 			<img class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
 			{% endif %}
@@ -208,7 +208,7 @@
 					
 					<tr itemscope itemtype="http://schema.org/Event">
 						<td>{{ each.type.nom }} : &laquo;
-						<a itemprop="url" href="{% url 'evenements.views.EvenementDetailsHtml' slug=each.cadre_evenement.slug evenement_slug=each.slug %}"><span itemprop="name" >{{ each.nom }}</span></a>&raquo;
+						<a itemprop="url" href="{% url 'event-details' slug=each.cadre_evenement.slug evenement_slug=each.slug %}"><span itemprop="name" >{{ each.nom }}</span></a>&raquo;
 						</td> 
 						<td style="text-align:right;">
 						<time itemprop="startDate" datetime=“{{each.debut|dateSEO}}”>

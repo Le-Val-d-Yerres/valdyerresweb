@@ -36,7 +36,7 @@
 						<div class="alert alert-success">Votre message a bien été envoyé, nous vous répondrons dans les plus brefs délais.</div>
 					</p>
 					<div style="text-align: center;">
-						<a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
+						<a href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug, equipement_slug=equipement.slug %}" class="btn">Retour</a>
 					</div>
 				{% endif %}
 				{% if reponse == 2 %}

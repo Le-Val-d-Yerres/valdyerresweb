@@ -61,8 +61,8 @@
 				{% regroup seances by cinema as screenings %}
 				{% for item in screenings%}
 				<tr>
-					<td><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=item.grouper.cinema.slug %}"><img class="img-responsive" src="{{item.grouper.image|resize:'100x100x1'}}"></a></td>
-					<td><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></td>
+					<td><a href="{% url 'cinema' cinema_slug=item.grouper.cinema.slug %}"><img class="img-responsive" src="{{item.grouper.image|resize:'100x100x1'}}"></a></td>
+					<td><a href="{% url 'cinema' cinema_slug=item.grouper.cinema.slug %}">{{item.grouper.nom}}</a></td>
 					<td>{{item.grouper.ville.nom}}</td>
 					<td> {% regroup item.list by film as thefilm %}
 					<ul>
@@ -71,7 +71,7 @@
 							{{seances.grouper}}:
 
 							{% for seance in seances.list %}
-							<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
+							<a href="{% url 'seanceaddagenda' seance_id=seance.id %}" data-toggle="modal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
 							{% endfor%}
 						</li>
 
@@ -110,11 +110,11 @@
 				{% for evenement in evenements %}
 
 				<tr>
-					<td><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}"><img class="img-responsive" src="{{evenement.image|resize:'100x100x1'}}"></a></td>
+					<td><a href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}"><img class="img-responsive" src="{{evenement.image|resize:'100x100x1'}}"></a></td>
 					<td> {{evenement.lieu.nom}} </td>
 					<td>{{evenement.lieu.ville.nom}}</td>
-					<td><a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }} </td>
-					<td><td><a class="btn  btn-primary" href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a></td></td>
+					<td><a href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">{{evenement.nom}}</a> : {{ evenement.debut|dateCustom:evenement.fin }} </td>
+					<td><td><a class="btn  btn-primary" href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug%}">+&nbsp;d'infos</a></td></td>
 				</tr>
 
 				{% endfor %}
@@ -141,8 +141,8 @@
 				{% for equipement in fonction.list %}
 				<tr>
 
-					<td><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}"><img class="img-responsive" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'100x100x0' }}"/></a></td>
-					<td><a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td><td> {{equipement.ville.nom}} </td>
+					<td><a href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}"><img class="img-responsive" alt="{{equipement.nom}}" src="{{ equipement.image|resize:'100x100x0' }}"/></a></td>
+					<td><a href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{ equipement.nom }}</a></td><td> {{equipement.ville.nom}} </td>
 
 					<td> {% for horaires in listhoraires %}
 					{% for horaire in horaires %}
@@ -158,7 +158,7 @@
 					{%endfor%}
 					{% endfor %} </td>
 
-					<td><a class="btn  btn-primary" href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
+					<td><a class="btn  btn-primary" href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">+&nbsp;d'infos</a></td>
 				</tr>
 				{%endfor%}
 			</table>

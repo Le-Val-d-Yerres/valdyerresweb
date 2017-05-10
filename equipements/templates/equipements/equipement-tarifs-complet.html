@@ -39,7 +39,7 @@
 			{%for each in cat%}
 			{% if each.list.0.categorie.equipement_fonction.slug == fonction.fonction.slug %}
 			<h2>{{each.grouper}}</h2>
-            <p>Ces tarifs concerne l{{fonction.nb_equipements_generiques|pluralize:"’,es"}} équipement{{ fonction.nb_equipements_generiques|pluralize }} suivant : {% for equipement in fonction.equipements_generiques %} <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
+            <p>Ces tarifs concerne l{{fonction.nb_equipements_generiques|pluralize:"’,es"}} équipement{{ fonction.nb_equipements_generiques|pluralize }} suivant : {% for equipement in fonction.equipements_generiques %} <a href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{equipement.nom }}</a>{% if forloop.last %}.{% else %},{% endif %} {% endfor %}</p>
 			<table class="table table-striped" align="center">
 				<thead>
 					<tr>
@@ -67,7 +67,7 @@
         <div class="col-md-7">
 
 			<h2>{{equipement.equipement.nom }}</h2>
-            <p>Ces tarifs concerne l’équipement suivant : <a href="{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=equipement.equipement.fonction.slug equipement_slug=equipement.equipement.slug%}">{{equipement.equipement.nom }}</a></p>
+            <p>Ces tarifs concerne l’équipement suivant : <a href="{% url 'equipement-details' fonction_slug=equipement.equipement.fonction.slug equipement_slug=equipement.equipement.slug%}">{{equipement.equipement.nom }}</a></p>
 			<table class="table table-striped" align="center">
 				<thead>
 					<tr>

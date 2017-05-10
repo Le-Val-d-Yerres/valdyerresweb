@@ -104,7 +104,7 @@
                                             <td><img class="img-polaroid"
                                                      src="{{ evenement.image|resize:'100x100x1' }}"></td>
                                             <td>
-                                                <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{ evenement.nom }}</strong></a>
+                                                <a href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{ evenement.nom }}</strong></a>
                                                 <p>
                                                     Type : {{ evenement.type }}.
                                                     <br/>
@@ -113,7 +113,7 @@
                                                     Lieu : {{ evenement.lieu.nom }}, {{ evenement.lieu.ville.nom }}.
                                                 </p>
                                                 <p style="text-align:right;">
-                                                    <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"
+                                                    <a href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"
                                                        class="btn btn-primary" type="button">+ d'infos</a>
                                                 </p></td>
 
@@ -151,7 +151,7 @@
                                             <td><img class="img-polaroid"
                                                      src="{{ evenement.image|resize:'100x100x1' }}"></td>
                                             <td>
-                                                <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{ evenement.nom }}</strong></a>
+                                                <a href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"><strong>{{ evenement.nom }}</strong></a>
                                                 <p>
                                                     Type : {{ evenement.type }}.
                                                     <br/>
@@ -160,7 +160,7 @@
                                                     Lieu : {{ evenement.lieu.nom }}, {{ evenement.lieu.ville.nom }}.
                                                 </p>
                                                 <p style="text-align:right;">
-                                                    <a href="{% url 'evenements.views.EvenementDetailsHtml' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"
+                                                    <a href="{% url 'event-details' slug=evenement.cadre_evenement.slug evenement_slug=evenement.slug %}"
                                                        class="btn btn-primary" type="button">+ d'infos</a>
                                                 </p></td>
 

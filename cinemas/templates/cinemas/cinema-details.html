@@ -20,7 +20,7 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li>
-					<a href="{% url 'cinemas.views.Seances' %}">Les cinémas du Val d'Yerres Val de Seine</a>
+					<a href="{% url 'seances' %}">Les cinémas du Val d'Yerres Val de Seine</a>
 				</li>
 				<li class="active">
 					{{ cinema.nom}} , {{cinema.ville.nom }}
@@ -29,7 +29,7 @@
 		</div>
 		<div class="col-md-8" itemscope itemtype="http://schema.org/Place">
 
-			<h1 itemprop="name"><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=cinema.slug %}">{{ cinema.nom }}</a></h1>
+			<h1 itemprop="name"><a href="{% url 'cinema' cinema_slug=cinema.slug %}">{{ cinema.nom }}</a></h1>
 			{% if cinema.image %}
 			<img class="img-responsive"  alt="{{ cinema.nom }}" src="{{ cinema.image|resize:'670x375x1' }}">
 			{% endif %}
@@ -62,7 +62,7 @@
 							<li>
 								{{jour.grouper|queljour|safe}} à
 								{% for seance in jour.list%}
-							 		<a href="{% url 'cinemas.views.SeanceAddAgenda' seance_id=seance.id %}" data-toggle="ajaxmodal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
+							 		<a href="{% url 'seanceaddagenda' seance_id=seance.id %}" data-toggle="ajaxmodal">{{seance.date_debut|quelleheure}}{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}</a>{% if not forloop.last%},{%else %}.{%endif%}
 								{%endfor%}
 							</li>
 							{%endfor%}
@@ -123,7 +123,7 @@
 			</address>
 			<hr/>
 			<p style="text-align: center;">
-				<a class="btn btn-primary" href="{% url 'cinemas.views.CinemaVCF' cinema_slug=cinema.slug %}">Ajouter ce cinéma à vos contacts <b>(Vcard)</b></a>
+				<a class="btn btn-primary" href="{% url 'cinemavcf' cinema_slug=cinema.slug %}">Ajouter ce cinéma à vos contacts <b>(Vcard)</b></a>
 				<br/>
 				
 				{{"vcard"|aide}}
@@ -195,7 +195,7 @@
 					var myMarker = Object(); 
 				    myMarker['longitude'] ={{cinema.longitude|toFloatjs}}; 
 					myMarker['latitude'] ={{cinema.latitude|toFloatjs}}; 
-					myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ cinema.nom }}" src="{{  cinema.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=cinema.slug %}">{{ cinema.nom }}</a><br  \>{{  cinema.rue }}<br  \>{{  cinema.ville.code_postal }}<br  \>{{  cinema.ville.nom }}</p></div></div>';
+					myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{ cinema.nom }}" src="{{  cinema.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url 'cinema' cinema_slug=cinema.slug %}">{{ cinema.nom }}</a><br  \>{{  cinema.rue }}<br  \>{{  cinema.ville.code_postal }}<br  \>{{  cinema.ville.nom }}</p></div></div>';
 					myMarker['marker'] = 'uploads/picto/equipements/lieu.png';
 					tabEquipement.push(myMarker);
 					setMarkers(tabEquipement);
