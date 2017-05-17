@@ -234,7 +234,7 @@
 				{% for facilite in facilites.facilites.all %}
 				<li style="margin-top:5px;list-style: none;"><img alt="{{ facilite.nom }}"	title="{{ facilite.nom }}" src="/media/{{ facilite.picto }}"> {{ facilite.nom }}
 				{% if facilite.importance < 10 %}
-				(<a href="{% url 'equipements.views.FaciliteCarte' slug=facilite.slug %}">Voir tous</a>)
+				(<a href="{% url 'facilite-carte' slug=facilite.slug %}">Voir tous</a>)
 				{% endif %}
 				</li>
 				{% endfor %}

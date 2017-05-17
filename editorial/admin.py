@@ -100,7 +100,7 @@ class AdminPageStatique(admin.ModelAdmin):
         obj.date_mise_a_jour = datetime.datetime.utcnow()
         obj.save()
 
-        path = reverse('editorial.views.PageDetail', kwargs={'page_slug': obj.slug})
+        path = reverse('page-detail', kwargs={'page_slug': obj.slug})
         functions.expire_page(path)
 
 

@@ -27,7 +27,7 @@
 
 		<div class="col-md-11">
 
-			<h1><a href="{% url 'editorial.views.Rapports'  %}">Les rapports d'activité</a></h1>
+			<h1><a href="{% url 'rapports'  %}">Les rapports d'activité</a></h1>
 			<div class="col-md-11">
 				
 				<br/>
@@ -62,21 +62,21 @@
                 {% if rapports.paginator.num_rapports > 10 %}
                     {% if rapports.number > 1 %}
                         <li class="active">
-                            <a href="{% url 'editorial.views.Rapports' %}?page=1">1</a>
+                            <a href="{% url 'rapports' %}?page=1">1</a>
                         </li>
                         <li class="disabled">
                             <a href=".">...</a>
                         </li>
                     {% endif %}
                     <li class="disabled">
-                        <a href="{% url 'editorial.views.Rapports' %}?page={{ rapports.number }}">{{ rapports.number }}</a>
+                        <a href="{% url 'rapports' %}?page={{ rapports.number }}">{{ rapports.number }}</a>
                     </li>
                     {% if rapports.number < rapports.paginator.num_rapports %}
                         <li  class="disabled">
                             <a href=".">...</a>
                         </li>
                         <li>
-                            <a href="{% url 'editorial.views.Rapports' %}?page={{ rapports.paginator.num_rapports }}">{{ rapports.paginator.num_rapports }}</a>
+                            <a href="{% url 'rapports' %}?page={{ rapports.paginator.num_rapports }}">{{ rapports.paginator.num_rapports }}</a>
                         </li>
                     {% endif %}
 
@@ -90,7 +90,7 @@
                             </li>
                         {% else %}
                             <li>
-                                <a href="{% url 'editorial.views.Rapports' %}?page={{ page }}">{{ page }}</a>
+                                <a href="{% url 'rapports' %}?page={{ page }}">{{ page }}</a>
                             </li>
                         {% endif %}
 

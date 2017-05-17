@@ -31,11 +31,11 @@
                 {% for page in pages|slice:":2" %}
                     <div class="col-md-6">
                         <div class="magazine-news-img">
-                            <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
+                            <a href="{% url 'actudetail' actualite_slug=page.slug %}"><img
                                     class="img-responsive" src="{{ page.image|resize:'973x615x1' }}" alt=""></a>
                         </div>
                         <h3>
-                            <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                            <a href="{% url 'actudetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                         </h3>
                         <div class="by-author">
                             <span>Publié le {{ page.date_publication|dateSimple }}.</span>
@@ -43,7 +43,7 @@
                         <p>{{ page.contenu|resume:220|safe }}</p>
                         <p style="text-align: right;">
                             <a class="btn btn-primary"
-                               href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                               href="{% url 'actudetail' actualite_slug=page.slug %}">Lire la
                                 suite</a>
                         </p>
                     </div>
@@ -54,11 +54,11 @@
                 {% for page in pages|slice:"2:4" %}
                     <div class="col-md-6">
                         <div class="magazine-news-img">
-                            <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
+                            <a href="{% url 'actudetail' actualite_slug=page.slug %}"><img
                                     class="img-responsive" src="{{ page.image|resize:'973x615x1' }}" alt=""></a>
                         </div>
                         <h3>
-                            <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                            <a href="{% url 'actudetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                         </h3>
                         <div class="by-author">
                             <span>Publié le {{ page.date_publication|dateSimple }}.</span>
@@ -66,7 +66,7 @@
                         <p>{{ page.contenu|resume:220|safe }}</p>
                         <p style="text-align: right;">
                             <a class="btn btn-primary"
-                               href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                               href="{% url actudetail' actualite_slug=page.slug %}">Lire la
                                 suite</a>
                         </p>
                     </div>
@@ -77,11 +77,11 @@
                 {% for page in pages|slice:"4:6" %}
                     <div class="col-md-6">
                         <div class="magazine-news-img">
-                            <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}"><img
+                            <a href="{% url 'actudetail' actualite_slug=page.slug %}"><img
                                     class="img-responsive" src="{{ page.image|resize:'973x615x1' }}" alt=""></a>
                         </div>
                         <h3>
-                            <a href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                            <a href="{% url 'actudetail' actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                         </h3>
                         <div class="by-author">
                             <span>Publié le {{ page.date_publication|dateSimple }}.</span>
@@ -89,7 +89,7 @@
                         <p>{{ page.contenu|resume:220|safe }}</p>
                         <p style="text-align: right;">
                             <a class="btn btn-primary"
-                               href="{% url 'editorial.views.ActuDetail' actualite_slug=page.slug %}">Lire la
+                               href="{% url 'actudetail' actualite_slug=page.slug %}">Lire la
                                 suite</a>
                         </p>
                     </div>
@@ -113,21 +113,21 @@
                 {% if pages.paginator.num_pages > 10 %}
                     {% if pages.number > 1 %}
                         <li class="active">
-                            <a href="{% url 'editorial.views.ActuList' %}?page=1">1</a>
+                            <a href="{% url 'actulist' %}?page=1">1</a>
                         </li>
                         <li class="disabled">
                             <a href=".">...</a>
                         </li>
                     {% endif %}
                     <li class="disabled">
-                        <a href="{% url 'editorial.views.ActuList' %}?page={{ pages.number }}">{{ pages.number }}</a>
+                        <a href="{% url 'actulist' %}?page={{ pages.number }}">{{ pages.number }}</a>
                     </li>
                     {% if pages.number < pages.paginator.num_pages %}
                         <li  class="disabled">
                             <a href=".">...</a>
                         </li>
                         <li>
-                            <a href="{% url 'editorial.views.ActuList' %}?page={{ pages.paginator.num_pages }}">{{ pages.paginator.num_pages }}</a>
+                            <a href="{% url 'actulist' %}?page={{ pages.paginator.num_pages }}">{{ pages.paginator.num_pages }}</a>
                         </li>
                     {% endif %}
 
@@ -141,7 +141,7 @@
                             </li>
                         {% else %}
                             <li>
-                                <a href="{% url 'editorial.views.ActuList' %}?page={{ page }}">{{ page }}</a>
+                                <a href="{% url 'actulist' %}?page={{ page }}">{{ page }}</a>
                             </li>
                         {% endif %}
 

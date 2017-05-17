@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     url(r'^facilites/(?P<slug>[^\/]+).html$', views.FaciliteCarte, name="facilite-carte"),
-    url(r'^facilites/$',views.FaciliteListe),
+    url(r'^facilites/$', views.FaciliteListe, name="facilite-liste"),
     
     url(r'^tarifs/(?P<equipement_fonction_slug>[^\/]+).html$', views.EquipementFonctionTarifs , name='equipement-fonction-tarifs'),
     url(r'^tarifs/$', views.EquipementTarifs , name='equipement-tarifs'),

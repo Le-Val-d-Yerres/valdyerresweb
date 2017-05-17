@@ -37,7 +37,7 @@
 			<h2>Sur le territoire :</h2>
 			<ul>
 			{% for item in facilite_geo%}
-				<li><a href="{% url 'equipements.views.FaciliteCarte' slug=item.slug %}">{{item.nom}} (voir sur une carte)</a></li>
+				<li><a href="{% url 'facilite-carte' slug=item.slug %}">{{item.nom}} (voir sur une carte)</a></li>
 			{% endfor %}
 			</ul>
 			<h2>Dans les équipements :</h2>
