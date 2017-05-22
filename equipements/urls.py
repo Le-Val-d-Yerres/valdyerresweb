@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^alertes/alertes-post-(?P<equipement_slug>[^\/]+).html', views.AlertesSansJs, name="alertes-sans-js"),
     url(r'^alertes/alertes-reponse-(?P<reponse>[0-9])-(?P<equipement>[^\/]+).html', views.AlertesReponse, name="alertes-reponse"),
     
-    url(r'^$', views.EquipementsCarte),
+    url(r'^$', views.EquipementsCarte, name="equipements-carte"),
     url(r'^(?P<fonction_slug>[^\/]+)/(?P<equipement_slug>[^\/]+).html$', views.EquipementsDetailsHtml, name="equipement-details"),
     url(r'^(?P<fonction_slug>[^\/]+)/$', views.FonctionDetailsHtml),
     url(r'^(?P<slug>[^\/]+).vcf$', views.EquipementVCF),
