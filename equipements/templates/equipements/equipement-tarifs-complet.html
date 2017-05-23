@@ -31,7 +31,7 @@
 		</div>
 		{% for fonction in fonctions %}
 		<div class="col-md-12">
-			<h1><a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=fonction.fonction.slug %}">{{fonction.fonction.pluriel}}</a></h1>
+			<h1><a href="{% url 'fonction-details-html' fonction_slug=fonction.fonction.slug %}">{{fonction.fonction.pluriel}}</a></h1>
 			<hr/>
 		</div>
 		<div class="col-md-7">

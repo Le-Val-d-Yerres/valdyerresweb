@@ -35,7 +35,7 @@
 
                 <tr>
                     <td align="center"><a
-                            href="http://{{ request.get_host }}{% url 'equipements.views.EquipementsDetailsHtml' fonction_slug=bib.fonction.slug equipement_slug=bib.slug %}"
+                            href="http://{{ request.get_host }}{% url 'equipement-details' fonction_slug=bib.fonction.slug equipement_slug=bib.slug %}"
                             target="_blank"><img alt="{{ bib.nom }}" src="{{ bib.image|resize:'598x260x1' }}"></a></td>
                 </tr>
 

@@ -16,7 +16,7 @@
                 </ul>
             </div>
             <div class="col-md-12">
-                <h1><a href="{% url 'services.views.Services' %}">Les services</a></h1>
+                <h1><a href="{% url 'services' %}">Les services</a></h1>
 
             </div>
             <div class="col-md-8">
@@ -24,7 +24,7 @@
             <ul>
                 {% for service in services %}
                     <li>
-                        <h4><a href="{% url 'services.views.ServiceDetail' service_slug=service.slug %}">{{ service.nom }}</a></h4>
+                        <h4><a href="{% url 'service-detail' service_slug=service.slug %}">{{ service.nom }}</a></h4>
                     </li>
                 {% endfor %}
             </ul>

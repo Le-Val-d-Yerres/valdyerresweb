@@ -1,6 +1,6 @@
 BEGIN:VCARD
 VERSION:3.0
-SOURCE:{% url 'equipements.views.EquipementVCF' slug=equipement.slug %}
+SOURCE:{% url 'equipement-vcf' slug=equipement.slug %}
 NAME:{{ equipement.nom }}
 N:;;;;
 FN;LANGUAGE=fr;CHARSET=utf-8:{{ equipement.nom|safe }}

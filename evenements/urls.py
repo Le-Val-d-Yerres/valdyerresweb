@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.AgendaGlobal, name='agenda-global'),
     url(r'^mois.ics$', views.AgendaNowICS),
-    url(r'^organisateur/$', views.OrganisateurRedirect, name='organisateur_redirect'),
+    url(r'^organisateur/$', views.OrganisateurRedirect, name='organisateur-redirect'),
     url(r'^organisateur/(?P<organisateur_slug>[^\/]+).html$', views.OrganisateurDetailsHtml, name='organisateur_html'),
     url(r'^organisateur/(?P<organisateur_slug>[^\/]+).vcf$', views.OrganisateurVCF, name='organisateur_vcf'),
     # url(r'^(?P<annee>\d{4})/(?P<mois>\d{2})/$', 'AgendaMois', name="agenda-mois"),

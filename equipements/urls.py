@@ -18,6 +18,6 @@ urlpatterns = [
     
     url(r'^$', views.EquipementsCarte, name="equipements-carte"),
     url(r'^(?P<fonction_slug>[^\/]+)/(?P<equipement_slug>[^\/]+).html$', views.EquipementsDetailsHtml, name="equipement-details"),
-    url(r'^(?P<fonction_slug>[^\/]+)/$', views.FonctionDetailsHtml),
-    url(r'^(?P<slug>[^\/]+).vcf$', views.EquipementVCF),
+    url(r'^(?P<fonction_slug>[^\/]+)/$', views.FonctionDetailsHtml, name="fonction-details-html"),
+    url(r'^(?P<slug>[^\/]+).vcf$', views.EquipementVCF, name="equipement-vcf"),
 ]

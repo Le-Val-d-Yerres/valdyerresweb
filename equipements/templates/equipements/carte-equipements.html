@@ -31,7 +31,7 @@
 			<ul>
 			{% for func in fonctionlist %}
 			
-			<li><a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=func.grouper.slug %}">{{func.grouper.pluriel}}</a></li>
+			<li><a href="{% url 'fonction-details-html' fonction_slug=func.grouper.slug %}">{{func.grouper.pluriel}}</a></li>
 				<ul>
 					{%for equipement in func.list%}
 						<li><a href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug %}">{{equipement.nom}}</a> à {{equipement.ville.nom}}</li>

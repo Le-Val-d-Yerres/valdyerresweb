@@ -27,7 +27,7 @@
 					<a href="{% url 'equipements-carte' %}">Les équipements</a>
 				</li>
 				<li>
-					<a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=tarifs.0.categorie.equipement_fonction.slug %}">{{tarifs.0.categorie.equipement_fonction.pluriel}}</a>
+					<a href="{% url 'fonction-details-html' fonction_slug=tarifs.0.categorie.equipement_fonction.slug %}">{{tarifs.0.categorie.equipement_fonction.pluriel}}</a>
 				</li>
 				<li class="active">
 					Tarif{{tarifs|pluralize}}

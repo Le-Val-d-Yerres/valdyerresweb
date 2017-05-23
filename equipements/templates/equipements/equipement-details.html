@@ -28,7 +28,7 @@
 					<a href="{% url 'equipements-carte' %}">Les équipements Val d'Yerres Val de Seine</a>
 				</li>
 				<li>
-					<a href="{% url 'equipements.views.FonctionDetailsHtml' fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.pluriel }}</a>
+					<a href="{% url 'fonction-details-html' fonction_slug=equipement.fonction.slug %}">{{ equipement.fonction.pluriel }}</a>
 				</li>
 				<li class="active">
 					{{ equipement.nom}} , {{equipement.ville.nom }}
@@ -43,7 +43,7 @@
 			{% endif %}
 			{% if equipement.fonction.service %}
 			<p>
-				Cet équipement est géré par le service <a href="{% url 'services.views.ServiceDetail' service_slug=equipement.fonction.service.slug %}">{{equipement.fonction.service.nom}}</a>.
+				Cet équipement est géré par le service <a href="{% url 'service-detail' service_slug=equipement.fonction.service.slug %}">{{equipement.fonction.service.nom}}</a>.
 			</p>
 			{% endif %}
 			{{ equipement.presentation|safe }}
@@ -87,7 +87,7 @@
 			</address>
 			<hr/>
 			<div style="text-align: center;">
-				<a class="btn btn-primary" href="{% url 'equipements.views.EquipementVCF' slug=equipement.slug %}">Ajouter cet équipement à vos contacts <b>(Vcard)</b></a>
+				<a class="btn btn-primary" href="{% url 'equipement-vcf' slug=equipement.slug %}">Ajouter cet équipement à vos contacts <b>(Vcard)</b></a>
 				<br \><br \>
 				{{"vcard"|aide}}
 			</div>

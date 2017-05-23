@@ -24,21 +24,21 @@
 				</li>
 
 				<li>
-					<a href="{% url 'evenements.views.AgendaGlobal' %}">Agenda</a>
+					<a href="{% url 'agenda-global' %}">Agenda</a>
 				</li>
 				{% if festival %}
 				<li>
-					<a href="{% url 'evenements.views.SaisonDetailsHtml' slug=saison.slug %}">{{saison.nom}}</a>
+					<a href="{% url 'saison-details' slug=saison.slug %}">{{saison.nom}}</a>
 				</li>
 				<li class="active">
-					<a href="{%url 'evenements.views.SaisonDetailsHtml' slug=festival.slug %}">{{festival.nom}}</a>
+					<a href="{%url 'saison-details' slug=festival.slug %}">{{festival.nom}}</a>
 				</li>
 				<li class="active">
 					{{ evenement.nom }}
 				</li>
 				{% else %}
 				<li>
-					<a href="{% url 'evenements.views.SaisonDetailsHtml' slug=saison.slug %}">{{saison.nom}}</a>
+					<a href="{% url 'saison-details' slug=saison.slug %}">{{saison.nom}}</a>
 				</li>
 				<li class="active">
 					{{ evenement.nom }}
@@ -51,7 +51,7 @@
 			<div class="alert alert-danger" role="alert">
 				<strong>Cet événement est terminé.</strong>
 				<br/>
-				Pour les événements à venir consultez <a href="{% url 'evenements.views.AgendaGlobal' %}">l'agenda</a>.
+				Pour les événements à venir consultez <a href="{% url 'agenda-global' %}">l'agenda</a>.
 			</div>
 			{% endif %}
 			
