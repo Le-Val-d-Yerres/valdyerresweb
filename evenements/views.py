@@ -15,20 +15,14 @@ from evenements.lib.eventAddLink import GenerateExcelFile, GenerateCSVFile, Gene
 from django.views.decorators.cache import cache_page
 
 
-
 utcTZ = timezone("UTC")
 myTimezone = timezone(settings.TIME_ZONE)
 
 ListeMois = ['janvier', u'février', 'mars', 'avril', 'mai', 'juin', 'juillet', u'août', 'septembre', 'octobre', 'novembre', u'décembre']
 ListeJours = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']
-
-#compatibilité datetime
+# compatibilité datetime
 WeekDay = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
 
-
-
-        
-    
 
 def AgendaGlobal(request, type_slug = 'tous',period = 'toutes', orga_slug = 'tous'):
     now = datetime.datetime.now(utcTZ)
@@ -158,7 +152,7 @@ def OrganisateurVCF(request, organisateur_slug):
 
 def OrganisateurVcard(organisateur):
     myTemplate = loader.get_template('evenements/organisateur.vcf.html')
-    myContext = Context({"organisateur": organisateur, "settings": settings})
+    myContext = {"organisateur": organisateur, "settings": settings}
     return myTemplate.render(myContext)
 
 def SaisonDetailsHtml(request,slug):
@@ -183,6 +177,7 @@ def SaisonDetailsHtml(request,slug):
         evenementspasses = QevenementsPast.order_by('debut').filter(filtre)
         
     return render_to_response('evenements/agenda-saison.html', {'saison' : saison ,'evenements':evenements , 'evenementspasses':evenementspasses ,'festival':festival })
+
 
 def SaisonDetailsHtmlExport(request,slug,extension):
     saison = get_object_or_404(Saison.objects.select_related().select_subclasses() , slug = slug)
@@ -422,7 +417,6 @@ def AgendaNow(request):
     else:
         annee_prec = str(year)
         mois_prec = entierAvecZero(month-1)
-        
 
     if month == 12:
         mois_suiv = '01'
@@ -505,35 +499,32 @@ def SaisonDetailsICS(request, slug):
 
 def EvenementDetailsIcalendar(evenement):
     myTemplate = loader.get_template('evenements/evenement-details.ics.html')
-    myContext = Context({"evenement": evenement, "settings": settings})
+    myContext = {"evenement": evenement, "settings": settings}
     return myTemplate.render(myContext)
 
 def MultiEvenementsDetailsIcalendar(evenements):
     myTemplate = loader.get_template('evenements/multi-evenement-details.ics.html')
-    myContext = Context({"liste_evenement": evenements, "settings": settings})
+    myContext = {"liste_evenement": evenements, "settings": settings}
     return myTemplate.render(myContext)
     
     
 def EvenementDetailsHtml(request, slug, evenement_slug):
     evenement = get_object_or_404(Evenement.objects.select_related().prefetch_related('organisateur'), slug=evenement_slug)
     saison = get_object_or_404(Saison.objects.select_related().select_subclasses(), slug=slug)
-    
     if evenement.cadre_evenement.id != saison.id:
         raise Http404
     
     evenement_qr = GenerationQrCode(EvenementDetailsIcalendar(evenement))
     evenement.lieu = Lieu.objects.select_subclasses().get(id=evenement.lieu.id)
     tarification = Prix.objects.filter(evenement = evenement.id).order_by('prix')
-    documentattache =  DocumentAttache.objects.filter(reference = evenement.id)
-    
+    documentattache = DocumentAttache.objects.filter(reference = evenement.id)
     festival = None
     if type(saison) == Festival:
         festival = saison
         saison = festival.saison_culture
 
     localisation_qr = GenerationQrCode("geo:"+str(evenement.lieu.latitude)+","+str(evenement.lieu.longitude))
-
-    #calcul événement passé
+# calcul événement passé
     a_venir = False
     maintenant = datetime.datetime.utcnow()
     maintenant = maintenant.replace(tzinfo=utcTZ)
@@ -543,21 +534,23 @@ def EvenementDetailsHtml(request, slug, evenement_slug):
     return render_to_response('evenements/evenement-details.html', {'evenement': evenement, 'saison': saison, 'festival':festival ,'tarification':tarification,'documentattache':documentattache, 'evenement_qr': evenement_qr, 'localisation_qr': localisation_qr, 'a_venir':a_venir })
 
 
-
 def EvenementDetailsICS(request, slug, evenement_slug, festival_slug = None):
     evenement = get_object_or_404(Evenement.objects.select_related(), slug=evenement_slug)
     myText = EvenementDetailsIcalendar(evenement)
+    return HttpResponse(myText, content_type="text/calendar")
 
-    return HttpResponse(myText,content_type="text/calendar")
 
 def OrganisateurRedirect(request):
     return redirect('agenda-global')
 
+
 def AgendaTypeRedirect(request):
     return redirect('agenda-global')
 
+
 def AgendaPeriodRedirect(request, type_slug):
     return redirect('agenda-type-period-orga', type_slug=type_slug, period='toutes')
+
 
 def AgendaOrgaRedirect(request, type_slug, period):
     return redirect('agenda-type-period-orga', type_slug=type_slug, period=period, orga_slug='tous')

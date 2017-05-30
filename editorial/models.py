@@ -40,7 +40,7 @@ class Actualite(PageBase):
     
     @permalink
     def get_absolute_url(self):
-        return ('actu-detail',(),{'actualite_slug':self.slug})
+        return ('actudetail',(),{'actualite_slug':self.slug})
    
     
 class DocumentAttache(models.Model):

@@ -30,7 +30,7 @@ def entreprise(request, slug):
 
 def genentreprisevcard(slug):
     monentreprise = get_object_or_404(Entreprise, slug=slug)
-    mycontext = Context({"entreprise": monentreprise})
+    mycontext = {"entreprise": monentreprise}
     mytemplate = loader.get_template('deveco/entreprise.vcard.html')
     return mytemplate.render(mycontext)
 

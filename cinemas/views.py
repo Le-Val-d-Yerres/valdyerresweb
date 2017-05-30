@@ -29,7 +29,7 @@ def CinemaLieu(request,cinema_slug):
 
 def CinemaVcard(cinema):
     myTemplate = loader.get_template('cinemas/cinema.vcf.html')
-    myContext = Context({"cinema": cinema, "settings": settings})
+    myContext = {"cinema": cinema, "settings": settings}
     return myTemplate.render(myContext)
 
 def CinemaVCF(request,cinema_slug):
@@ -39,7 +39,7 @@ def CinemaVCF(request,cinema_slug):
 
 def SeanceIcalendar(seance):
     myTemplate = loader.get_template('cinemas/seance.ics.html')
-    myContext = Context({"seance": seance, "settings": settings})
+    myContext = {"seance": seance, "settings": settings}
     return myTemplate.render(myContext)
 
 def SeanceICS(request,seance_id):
@@ -53,7 +53,7 @@ def SeanceAddAgenda(request,seance_id):
     except Seance.DoesNotExist:
         myTemplate = loader.get_template("410.html")
         message = "Cette séance de cinéma n'est plus disponible "
-        myContext = Context({"message":message})
+        myContext = {"message":message}
         return HttpResponse(myTemplate.render(myContext),status=410)
     qr_code_geo = GenerationQrCode("geo:" + str(seance.cinema.latitude) + "," + str(seance.cinema.longitude))
     qr_code_calendar = GenerationQrCode(SeanceIcalendar(seance))

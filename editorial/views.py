@@ -60,7 +60,7 @@ def Home(request):
         periodes = Periode.objects.filter(date_debut__lte=today, date_fin__gte=today).filter(
             horaires__equipement=equipement.id).order_by('date_debut')
         if len(periodes) >= 1:
-            periodes.query.group_by = ['periode_id']
+            periodes.query.group_by = ['id']
             periode_active = periodes[len(periodes) - 1]
             horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(
                 periodes__id=periode_active.id)
@@ -238,7 +238,7 @@ def Ephemeride(request, jour='aujourd-hui'):
         periodes = Periode.objects.filter(date_debut__lte=datepage, date_fin__gte=datepage).filter(
             horaires__equipement=equipement.id).order_by('date_debut')
         if len(periodes) >= 1:
-            periodes.query.group_by = ['periode_id']
+            periodes.query.group_by = ['id']
             periode_active = periodes[len(periodes) - 1]
             horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(
                 periodes__id=periode_active.id)

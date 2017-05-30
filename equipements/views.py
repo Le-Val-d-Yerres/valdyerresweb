@@ -112,7 +112,8 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     horaires = None
     periodes = Periode.objects.filter(date_debut__lte=today, date_fin__gte=today).filter(
         horaires__equipement=equipement.id).order_by('date_debut')
-    periodes.query.group_by = ['periode_id']
+    print(periodes[0])
+    periodes.query.group_by = ['id']
     if len(periodes) >= 1:
         periode_active = periodes[len(periodes) - 1]
         horaires = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id).filter(
@@ -124,7 +125,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     horaires_demain = None
     periodes_demain = Periode.objects.filter(date_debut__lte=tomorrow, date_fin__gte=tomorrow).filter(
         horaires__equipement=equipement.id).order_by('date_debut')
-    periodes_demain.query.group_by = ['periode_id']
+    periodes_demain.query.group_by = ['id']
     if len(periodes_demain) >= 1:
         periode_active_demain = periodes[len(periodes) - 1]
         horaires_demain = Horaires.objects.prefetch_related('periodes').filter(equipement=equipement.id).filter(
@@ -134,7 +135,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
 
     autres_periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by(
         'date_debut')
-    autres_periodes.query.group_by = ['periode_id']
+    autres_periodes.query.group_by = ['id']
 
     horaires_plus_7 = list()
 
@@ -143,7 +144,7 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
         horaires_jour = None
         periodes_jour = Periode.objects.filter(date_debut__lte=day, date_fin__gte=day).filter(
             horaires__equipement=equipement.id).order_by('date_debut')
-        periodes_jour.query.group_by = ['periode_id']
+        periodes_jour.query.group_by = ['id']
         if len(periodes_jour) >= 1:
             periode_active_jour = periodes_jour[len(periodes_jour) - 1]
             horaires_jour = Horaires.objects.filter(equipement=equipement.id).filter(
@@ -187,7 +188,7 @@ def EquipementHoraires(request, equipement_slug):
     today = datetime.date.today()
     periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by(
         'date_debut')
-    periodes.query.group_by = ['periode_id']
+    periodes.query.group_by = ['id']
     horaires = Horaires.objects.prefetch_related('periodes').select_related().filter(equipement=equipement.id)
     for periode in periodes:
         horaires.filter(periodes__id=periode.id)
@@ -234,7 +235,7 @@ def FonctionDetailsHtml(request, fonction_slug):
         periodes = Periode.objects.filter(date_debut__lte=today, date_fin__gte=today).filter(
             horaires__equipement=equipement.id).order_by('date_debut')
         if len(periodes) >= 1:
-            periodes.query.group_by = ['periode_id']
+            periodes.query.group_by = ['id']
             periode_active = periodes[len(periodes) - 1]
             horaires = Horaires.objects.select_related().filter(equipement=equipement.id).filter(
                 periodes__id=periode_active.id)
@@ -254,7 +255,7 @@ def EquipementVCF(request, slug):
 
 def EquipementVcard(equipement):
     myTemplate = loader.get_template('equipements/equipement.vcf.html')
-    myContext = Context({"equipement": equipement, "settings": settings})
+    myContext = {"equipement": equipement, "settings": settings}
     return myTemplate.render(myContext)
 
 
@@ -302,7 +303,7 @@ def HorairesTousEquipements(request):
         today = datetime.date.today()
         periodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by(
             'date_debut')
-        periodes.query.group_by = ['periode_id']
+        periodes.query.group_by = ['id']
         each.periodes = periodes
         horaires = Horaires.objects.prefetch_related('periodes').select_related().filter(equipement=equipement.id)
         for periode in periodes:
@@ -364,13 +365,13 @@ def AlertesAjax(request):
                                     msg['To'] = mail.email
 
                                     myTemplate = loader.get_template('equipements/alertes/mail-html.html')
-                                    myContext = Context({'equipement': equipement.nom, 'signaleur': alerte,
-                                                         'domaine': settings.NOM_DOMAINE})
+                                    myContext ={'equipement': equipement.nom, 'signaleur': alerte,
+                                                         'domaine': settings.NOM_DOMAINE}
                                     html = myTemplate.render(myContext)
 
                                     myTemplate = loader.get_template('equipements/alertes/mail-txt.html')
-                                    myContext = Context({'equipement': equipement.nom, 'signaleur': alerte,
-                                                         'domaine': settings.NOM_DOMAINE})
+                                    myContext = {'equipement': equipement.nom, 'signaleur': alerte,
+                                                         'domaine': settings.NOM_DOMAINE}
                                     text = myTemplate.render(myContext)
 
                                     text = text.encode('utf-8')
@@ -465,13 +466,13 @@ def AlertesSansJs(request, equipement_slug):
                                         msg['To'] = mail.email
 
                                         myTemplate = loader.get_template('equipements/alertes/mail-html.html')
-                                        myContext = Context({'equipement': equipement.nom, 'signaleur': alerte,
-                                                             'domaine': settings.NOM_DOMAINE})
+                                        myContext = {'equipement': equipement.nom, 'signaleur': alerte,
+                                                             'domaine': settings.NOM_DOMAINE}
                                         html = myTemplate.render(myContext)
 
                                         myTemplate = loader.get_template('equipements/alertes/mail-txt.html')
-                                        myContext = Context({'equipement': equipement.nom, 'signaleur': alerte,
-                                                             'domaine': settings.NOM_DOMAINE})
+                                        myContext = {'equipement': equipement.nom, 'signaleur': alerte,
+                                                             'domaine': settings.NOM_DOMAINE}
                                         text = myTemplate.render(myContext)
 
                                         text = text.encode('utf-8')

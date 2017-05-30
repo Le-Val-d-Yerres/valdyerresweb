@@ -6,5 +6,5 @@ from django.views.decorators.cache import cache_page
 
 def renderModal(aide):
     myTemplate = loader.get_template('aide/aidemodal.html')
-    myContext = Context({"aide": aide})
+    myContext = {"aide": aide}
     return myTemplate.render(myContext)

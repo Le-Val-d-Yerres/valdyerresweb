@@ -1,6 +1,6 @@
 BEGIN:VCARD
 VERSION:3.0
-SOURCE:{% url 'deveco.views.entreprisevcard' slug=entreprise.slug %}
+SOURCE:{% url 'entreprisevcard' slug=entreprise.slug %}
 NAME:{{ entreprise.nom }}
 N:;;;;
 FN;LANGUAGE=fr;CHARSET=utf-8:{{ entreprise.nom|safe }}

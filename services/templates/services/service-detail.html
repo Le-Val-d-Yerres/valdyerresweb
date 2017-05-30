@@ -45,7 +45,7 @@
 		Il y a {{nb_annonces}} annonce{{nb_annonces|pluralize}} emploi publié{{nb_annonces|pluralize:"es"}} par le service «{{service.nom}}»:
 		</p>
 		<p style="text-align:right;" >
-		<a class="btn btn-primary" href="{% url 'annoncesemploi.views.AnnoncesListService' service_slug=service.slug %}">Voir l{{nb_annonces|pluralize:"',es"}} annonce{{nb_annonces|pluralize}}</a>
+		<a class="btn btn-primary" href="{% url 'annonces-list-service' service_slug=service.slug %}">Voir l{{nb_annonces|pluralize:"',es"}} annonce{{nb_annonces|pluralize}}</a>
 		</p>
 		<hr/>
 		</div>

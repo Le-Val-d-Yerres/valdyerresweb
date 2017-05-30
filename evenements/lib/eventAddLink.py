@@ -265,7 +265,7 @@ def GenerateICSFile(evenements):
     file_type = 'text/calendar'
     file_name = 'export.ics'
     myTemplate = loader.get_template('evenements/multi-evenement-details.ics.html')
-    myContext = Context({"liste_evenement": evenements, "settings": settings})
+    myContext = {"liste_evenement": evenements, "settings": settings}
     text = myTemplate.render(myContext)
     response = HttpResponse(text, content_type=file_type)
     response['Content-Disposition'] = 'attachment; filename='+file_name

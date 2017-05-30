@@ -28,7 +28,7 @@
 
             <div class="col-md-8">
 
-                <h1><a href="{% url 'deveco.views.home' %}">Liste des membres du club «Entreprendre entre Yerres et Seine»</a>
+                <h1><a href="{% url 'homedeveco' %}">Liste des membres du club «Entreprendre entre Yerres et Seine»</a>
                 </h1>
             </div>
 
@@ -57,7 +57,7 @@
                 {% for entreprise in entreprises %}
                     <div class="row bkgd-white">
                         <div class="col-md-2">
-                            <a href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}">
+                            <a href="{% url 'entreprise' slug=entreprise.slug %}">
                             <img width="150" height="200" class="img-responsive"
                                  src="{{ entreprise.image|resize:'200x150x1' }}">
                                 </a>
@@ -65,7 +65,7 @@
                         <div class="col-md-8">
 
                             <h2>
-                                <a href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}">{{ entreprise.nom }}</a>
+                                <a href="{% url 'entreprise' slug=entreprise.slug %}">{{ entreprise.nom }}</a>
                             </h2>
 
                             <p>
@@ -74,7 +74,7 @@
 
                             <p>
                                 <a class="btn btn-primary"
-                                   href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}">Lire la
+                                   href="{% url 'entreprise' slug=entreprise.slug %}">Lire la
                                     suite</a>
                             </p>
                         </div>

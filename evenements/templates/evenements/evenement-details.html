@@ -67,7 +67,7 @@
 				<ul>
 					{% for each in evenement.organisateur.all %}
 					<li>
-						<a href="{% url 'event-details' organisateur_slug=each.slug%}"> {{ each.nom }}</a>
+						<a href="{% url 'organisateur_html' organisateur_slug=each.slug%}"> {{ each.nom }}</a>
 					</li>
 					{% endfor %}
 				</ul>

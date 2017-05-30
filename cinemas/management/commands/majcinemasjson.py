@@ -76,8 +76,8 @@ class Command(NoArgsCommand):
                     filepath = filepath.replace(".jpg","*")
                     for filename in glob.glob(filepath):
                         os.remove(filename)
-                except Exception,e:
-                    print e
+                except Exception as e:
+                    print(e)
                 movie.delete()
             
             seances_to_delete.delete()

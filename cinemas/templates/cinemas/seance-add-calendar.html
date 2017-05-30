@@ -11,7 +11,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">{{seance.film.titre}}.{%if seance.format %} ({{seance.format}}){%endif%}{%if seance.version_vo %}{%ifnotequal seance.version_lang "Français" %} en VO ({{seance.version_lang}}){%endifnotequal%}{%endif%}
 	<br/>
-	<small>Au cinéma <a href="{% url 'cinemas.views.CinemaLieu' cinema_slug=seance.cinema.slug %}">«{{seance.cinema.nom}}»</a>, {{seance.date_debut.date|queljour|safe}} de {{seance.date_debut|quelleheure}} à {{seance.date_fin|quelleheure}}.<br/>
+	<small>Au cinéma <a href="{% url 'cinema' cinema_slug=seance.cinema.slug %}">«{{seance.cinema.nom}}»</a>, {{seance.date_debut.date|queljour|safe}} de {{seance.date_debut|quelleheure}} à {{seance.date_fin|quelleheure}}.<br/>
 
 	</small></h4>
       </div>

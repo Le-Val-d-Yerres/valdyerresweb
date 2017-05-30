@@ -21,7 +21,7 @@
 					<a href="/">Accueil</a>
 				</li>
 				<li>
-					<a href="{% url 'deveco.views.home' %}">Les membres du club «Entreprendre entre Yerres et Seine»</a>
+					<a href="{% url 'homedeveco' %}">Les membres du club «Entreprendre entre Yerres et Seine»</a>
 				</li>
 				<li class="active">
 					{{ entreprise.nom}} , {{entreprise.ville.nom }}
@@ -34,7 +34,7 @@
 			<img class="img-responsive"  alt="{{ entreprise.nom }}" src="{{ entreprise.image|resize:'130x100x1' }}">
 			{% endif %}</div>
             <div class="col-md-7">
-			<h1><a itemprop="url" href="{% url 'deveco.views.entreprise' slug=entreprise.slug %}"><span itemprop="name">{{ entreprise.nom }}</span></a></h1>
+			<h1><a itemprop="url" href="{% url 'entreprise' slug=entreprise.slug %}"><span itemprop="name">{{ entreprise.nom }}</span></a></h1>
                 {{ entreprise.presentation|safe }}
             </div>
             </div>
@@ -86,7 +86,7 @@
 			</address>
 			<hr/>
 			<div style="text-align: center;">
-				<a class="btn btn-primary" href="{% url 'deveco.views.entreprisevcard' slug=entreprise.slug %}">Ajouter cette entreprise à vos contacts <b>(Vcard)</b></a>
+				<a class="btn btn-primary" href="{% url 'entreprisevcard' slug=entreprise.slug %}">Ajouter cette entreprise à vos contacts <b>(Vcard)</b></a>
 				<br \><br \>
 				{{"vcard"|aide}}
 			</div>
