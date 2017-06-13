@@ -1,9 +1,9 @@
 <small><a class="hidden-phone text-error" id="lienAjax" style="display: none;" href="#widgetAlertes" role="button"
           data-toggle="modal" onclick="compteur();">{{ alerte.lien|safe }}</a></small>
-<small><a id="lienPost" href="{% url 'equipements.views.AlertesSansJs' equipement_slug=alerte.equipement.slug %}"
+<small><a id="lienPost" href="{% url 'alertes-sans-js' equipement_slug=alerte.equipement.slug %}"
           class="text-error">{{ alerte.lien|safe }}</a></small>
 <small><a class="visible-phone text-error"
-          href="{% url 'equipements.views.AlertesSansJs' equipement_slug=alerte.equipement.slug %}">{{ alerte.lien|safe }}</a>
+          href="{% url 'alertes-sans-js' equipement_slug=alerte.equipement.slug %}">{{ alerte.lien|safe }}</a>
 </small>
 
 <div style="text-align: left;" class="modal fade" id="widgetAlertes" tabindex="-1" role="dialog"

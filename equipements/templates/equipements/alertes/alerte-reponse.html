@@ -28,7 +28,7 @@
 						<div class="alert">Merci d'utiliser un courriel valide.</div>
 					</p>
 					<div style="text-align: center;">
-						<a href="{% url 'equipements.views.AlertesSansJs' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+						<a href="{% url 'alertes-sans-js' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
 					</div>
 				{% endif %}
 				{% if reponse == 1 %}
@@ -44,7 +44,7 @@
 						<div class="alert alert-danger">Une erreur est survenue lors de l'envoi de votre message, merci de réessayer plus tard.</div>
 					</p>
 					<div style="text-align: center;">
-						<a href="{% url 'equipements.views.AlertesSansJs' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+						<a href="{% url 'alertes-sans-js' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
 					</div>
 				{% endif %}
 				{% if reponse == 3 %}
@@ -52,7 +52,7 @@
 						<div class="alert alert">Merci d'utiliser un numéro de téléphone valide.</div>
 					</p>
 					<div style="text-align: center;">
-						<a href="{% url 'equipements.views.AlertesSansJs' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+						<a href="{% url 'alertes-sans-js' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
 					</div>
 				{% endif %}
 				{% if reponse == 4 %}
@@ -60,7 +60,7 @@
 						<div class="alert">Merci d'attendre une minute entre deux signalements.</div>
 					</p>
 					<div style="text-align: center;">
-						<a href="{% url 'equipements.views.AlertesSansJs' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+						<a href="{% url 'alertes-sans-js' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
 					</div>
 				{% endif %}
 				{% if reponse == 5 %}
@@ -68,7 +68,7 @@
 						<div class="alert">Vous devez accepter les cookies pour utiliser ce formulaire.</div>
 					</p>
 					<div style="text-align: center;">
-						<a href="{% url 'equipements.views.AlertesSansJs' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
+						<a href="{% url 'alertes-sans-js' equipement_slug=equipement.slug %}" class="btn">Retour au formulaire</a>
 					</div>
 				{% endif %}
 			</div>
