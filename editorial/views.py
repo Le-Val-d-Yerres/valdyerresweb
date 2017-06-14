@@ -112,9 +112,9 @@ def ActuList(request):
         if page == None:
             pages = paginator.page(1)
         elif page == "":
-            return redirect('actu-list')
+            return redirect('actulist')
         elif int(page) == 1:
-            return redirect('actu-list')
+            return redirect('actulist')
         else:
             pages = paginator.page(page)
     except ValueError:
