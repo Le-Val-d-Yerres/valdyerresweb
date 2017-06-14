@@ -112,7 +112,6 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     horaires = None
     periodes = Periode.objects.filter(date_debut__lte=today, date_fin__gte=today).filter(
         horaires__equipement=equipement.id).order_by('date_debut')
-    print(periodes[0])
     periodes.query.group_by = ['id']
     if len(periodes) >= 1:
         periode_active = periodes[len(periodes) - 1]
