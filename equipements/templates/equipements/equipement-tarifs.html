@@ -35,7 +35,7 @@
 			</ul>
 		</div>
 		<div class="col-md-12">
-			<h1><a href="{% url 'equipements.views.EquipementFonctionTarifs' equipement_fonction_slug=tarifs.0.categorie.equipement_fonction.slug  %}">{{tarifs.0.categorie.equipement_fonction.pluriel}} : tarif{{tarifs|pluralize}}</a></h1>
+			<h1><a href="{% url 'equipement-fonction-tarifs' equipement_fonction_slug=tarifs.0.categorie.equipement_fonction.slug  %}">{{tarifs.0.categorie.equipement_fonction.pluriel}} : tarif{{tarifs|pluralize}}</a></h1>
 			<hr/>
 		</div>
 		<div class="col-md-7">
