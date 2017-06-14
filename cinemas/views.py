@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponse ,HttpResponseGone
 from django.shortcuts import render_to_response , redirect , get_object_or_404
 from cinemas.models import Cinema,Film,Seance
 from cinemas.lib import eventAddlink
-from django.template import Context, loader
+from django.template import  loader
 from pytz import timezone
 from datetime import datetime
 from valdyerresweb import settings

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from aide.models import Aide
-from django.template import Context,loader
+from django.template import loader
 from django.views.decorators.cache import cache_page
 
 

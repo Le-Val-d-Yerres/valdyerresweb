@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response , redirect , get_object_or_404
 from evenements.models import *
 from django.db.models import Q
-from django.template import Context,loader
+from django.template import loader
 from evenements.customCalendar.calendrier import CAVYCalendar, entierAvecZero
 import calendar,datetime
 from equipements.models import Equipement

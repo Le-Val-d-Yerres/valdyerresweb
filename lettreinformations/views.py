@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from valdyerresweb import settings
 from lettreinformations import settings as conf
-from django.template import Context,loader
+from django.template import loader
 from django.core.cache import cache
 from lettreinformations.utils import mailjet
 from valdyerresweb.utils import functions
@@ -18,7 +18,7 @@ def mailForm(request):
     tokenCSRF = uuid.uuid1()
 
     myTemplate = loader.get_template('lettreinformations/mail-form.html')
-    myContext = Context({'token':tokenCSRF})
+    myContext = {'token':tokenCSRF}
     
     reponse = myTemplate.render(myContext)
     httpresp = HttpResponse(reponse)
@@ -39,7 +39,7 @@ def mailValidation(request, hash):
 
     tokenCSRF = uuid.uuid1()
     myTemplate = loader.get_template('lettreinformations/mail-validation-reponse.html')
-    myContext = Context({'reponse': rep, 'token': tokenCSRF})
+    myContext = {'reponse': rep, 'token': tokenCSRF}
     reponse = myTemplate.render(myContext)
     httpresp = HttpResponse(reponse)
     httpresp.set_cookie("csrftoken", tokenCSRF, 60*5)
@@ -158,7 +158,7 @@ def mailJetReponse(request, reponse):
         raise Http404
 
     myTemplate = loader.get_template('lettreinformations/mailjet-reponse.html')
-    myContext = Context({'reponse': reponse})
+    myContext = {'reponse': reponse}
 
     rep = myTemplate.render(myContext)
     httpresp = HttpResponse(rep)

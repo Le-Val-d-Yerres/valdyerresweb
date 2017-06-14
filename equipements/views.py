@@ -11,7 +11,7 @@ import datetime
 from django.db.models import Q
 from django.conf import settings
 from pytz import timezone
-from django.template import Context, loader
+from django.template import loader
 from valdyerresweb.utils.functions import GenerationQrCode, validateEmail, envoiMail
 from valdyerresweb.templatetags import filtres
 import uuid

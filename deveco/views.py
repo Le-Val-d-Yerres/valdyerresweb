@@ -3,7 +3,7 @@
 from django.shortcuts import render_to_response , redirect , get_object_or_404
 from .models import Entreprise, Dirigeant
 from valdyerresweb.utils.functions import GenerationQrCode
-from django.template import Context, loader
+from django.template import loader
 from django.http import Http404, HttpResponse
 
 
