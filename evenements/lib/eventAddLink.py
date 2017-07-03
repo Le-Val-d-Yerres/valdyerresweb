@@ -238,7 +238,7 @@ def GenerateExcelFile(evenements):
     return response
     
 def GenerateCSVFile(evenements):
-    myfile = io.BytesIO()
+    myfile = io.StringIO()
     file_type = 'application/csv'
     file_name = 'export.csv'
     mycsv = csv.writer(myfile, delimiter=';', quotechar='"')
@@ -253,7 +253,7 @@ def GenerateCSVFile(evenements):
             orgacelltxt += orga.nom+" " 
         url = reverse('event-details', kwargs={'slug': each.cadre_evenement.slug , 'evenement_slug': each.slug})
         url = settings.NOM_DOMAINE+url
-        mycsv.writerow([ville.encode('UTF-8'),nom.encode('UTF-8'),date.encode('UTF-8'),adresse.encode('UTF-8'),orgacelltxt.encode('UTF-8'),url.encode('UTF-8')])
+        mycsv.writerow([ville, nom, date, adresse, orgacelltxt, url])
     
     myfile.seek(0)     
     response = HttpResponse(myfile.read(), content_type=file_type)
