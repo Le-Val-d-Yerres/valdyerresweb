@@ -49,6 +49,29 @@
   ga('send', 'pageview');
 
 </script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#edeff5",
+      "text": "#838391"
+    },
+    "button": {
+      "background": "#4b81e8"
+    }
+  },
+  "theme": "classic",
+  "content": {
+    "message": "Ce site utilise des «cookies» pour la mesure d'audience. En poursuivant votre navigation sur ce site, vous acceptez leur utilisation. Pour en savoir plus, rendez-vous ici",
+    "dismiss": "Accepter",
+    "link": "En savoir plus",
+    "href": "/page/cookies.html"
+  }
+})});
+</script>
 </body>
 <!-- {% now "jS F Y H:i:s" %} -->
 </html>
