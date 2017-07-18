@@ -105,7 +105,7 @@ class EvenementAdmin(admin.ModelAdmin):
         path = reverse('saison-details', kwargs={'slug': obj.cadre_evenement.slug})
         functions.expire_page(path)
 
-        path = reverse('saison-details',
+        path = reverse('event-details',
                        kwargs={'slug': obj.cadre_evenement.slug, 'evenement_slug': obj.slug})
         functions.expire_page(path)
 
