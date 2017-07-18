@@ -24,7 +24,7 @@ class Annonce(models.Model):
     lieu_travail = models.TextField(verbose_name = "Lieu de travail:",blank=True)
     salaire_indicatif = models.CharField(max_length=255, verbose_name = "Salaire indicatif:",blank=True)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.intitule
     
     @permalink

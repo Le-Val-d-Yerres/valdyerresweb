@@ -14,7 +14,7 @@ class Cinema(Lieu):
     hash_maj = models.CharField(max_length=42)
     
     
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
     
 class Film(models.Model):
@@ -25,7 +25,7 @@ class Film(models.Model):
     image = models.ImageField(upload_to="cinema", verbose_name="Affiche du film", blank=True, null=True)
     note = models.FloatField(default=0,verbose_name="Note des utilisateurs allociné")
     slug = models.SlugField()
-    def __unicode__(self):
+    def __str__(self):
         return self.titre
     
 class Seance(models.Model):

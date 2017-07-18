@@ -11,7 +11,7 @@ class Ville(models.Model):
     meta_description = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
     class Meta:
@@ -28,7 +28,7 @@ class Lieu(models.Model):
     
     objects = InheritanceManager()
     
-    def __unicode__(self):
+    def __str__(self):
         return self.ville.nom+" | "+self.nom
 
     class Meta:

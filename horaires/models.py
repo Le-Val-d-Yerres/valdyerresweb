@@ -14,7 +14,7 @@ class Periode(models.Model):
         verbose_name_plural = "Periodes"
         ordering = ['date_debut']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
     
     def dateIn(self,date):
@@ -106,7 +106,7 @@ class Horaires(models.Model):
         verbose_name_plural = "Horaires"
         ordering = ['equipement__ville__nom', 'equipement__nom']
     
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
     def List_Periods(self):
         listPeriodes = self.periodes.all()

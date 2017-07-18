@@ -30,7 +30,7 @@ class Organisateur(models.Model):
     orga_equipement = models.ForeignKey(Equipement, blank=True, null=True)
     orga_ville = models.ForeignKey(Ville, blank=True, null=True, related_name='orga_orga_ville')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom + " / " + self.ville.nom
 
     class Meta:
@@ -47,12 +47,12 @@ class Saison(models.Model):
 
     objects = InheritanceManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 
 class SaisonCulturelle(Saison):
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
     class Meta:
@@ -62,7 +62,7 @@ class SaisonCulturelle(Saison):
 class Festival(Saison):
     saison_culture = models.ForeignKey(SaisonCulturelle)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 
@@ -70,7 +70,7 @@ class TypeEvenement(models.Model):
     nom = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
     class Meta:
@@ -121,7 +121,7 @@ class Evenement(models.Model):
     def Organisateurs(self):
         return "\n;\n".join([s.nom for s in self.organisateur.all()])
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
     def monthyeardebut(self):

@@ -17,7 +17,7 @@ class Alerte(models.Model):
     class Meta:
         verbose_name_plural = "Alertes"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 
@@ -31,7 +31,7 @@ class EquipementFonction(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     service = models.ForeignKey(Service, blank=True, null=True, verbose_name="Service Gestionnaire")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 
@@ -54,7 +54,7 @@ class Equipement(Lieu):
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements",
                             extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.ville.nom + " - " + self.nom
 
     class Meta:
@@ -75,7 +75,7 @@ class Facilite(models.Model):
                                    extensions=[".png"], blank=True, null=True)
     slug = models.SlugField(max_length=255, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
     class Meta:
@@ -86,7 +86,7 @@ class Facilites(models.Model):
     equipement = models.ForeignKey(Lieu)
     facilites = models.ManyToManyField(Facilite)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.equipement.nom
 
     def Equipement(self):
@@ -113,7 +113,7 @@ class TarifCategorie(models.Model):
     index = models.IntegerField("Ordre d'apparition (0 = le plus important et tarif de base affiché pour l'équipement)")
     equipement_fonction = models.ForeignKey(EquipementFonction, verbose_name="Catégorie d'équipement concernée")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
     class Meta:
@@ -130,7 +130,7 @@ class Tarif(models.Model):
     prix_residents = models.FloatField("Tarif résidents ( 0 = gratuit  )")
     prix_non_residents = models.FloatField("Tarif non résidents ( 0 = gratuit  )")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.designation
 
     class Meta:
@@ -148,7 +148,7 @@ class TarifSpecifique(models.Model):
     prix_residents = models.FloatField("Tarif résidents ( 0 = gratuit  )")
     prix_non_residents = models.FloatField("Tarif non résidents ( 0 = gratuit  )")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.designation
 
     def equipements_specifiques(self):

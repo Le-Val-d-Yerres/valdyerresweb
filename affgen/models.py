@@ -24,7 +24,7 @@ class Elu(models.Model):
     class Meta:
         ordering = ['nom']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 
@@ -45,7 +45,7 @@ class QualifMandat(models.Model):
     class Meta:
         ordering = ['index']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 

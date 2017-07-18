@@ -7,7 +7,7 @@ class Disciplinestagecrd(models.Model):
     nom = models.CharField(max_length=255)
     index = models.IntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
     class Meta:
@@ -29,7 +29,7 @@ class Fichestagecrd(models.Model):
         verbose_name_plural = 'fiches stage'
         ordering = ['nom']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 
@@ -43,7 +43,7 @@ class Intitulestage(models.Model):
         verbose_name_plural = u"intitulés stage"
         ordering = ['index']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 

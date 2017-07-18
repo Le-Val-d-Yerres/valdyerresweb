@@ -12,7 +12,7 @@ class Service(models.Model):
     description = models.TextField(null= True,blank=True)
     publie = models.BooleanField(verbose_name="Publié", default=False)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
     
     @permalink
@@ -28,7 +28,7 @@ class PageStatiqueService(models.Model):
     publie = models.BooleanField(verbose_name="Publié", default=False)
     index = models.IntegerField(verbose_name="Ordre apparition dans la liste")
     
-    def __unicode__(self):
+    def __str__(self):
         return self.titre
     
 
