@@ -38,13 +38,13 @@ class AnnonceAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
         
-        path = reverse('annoncesemploi.views.AnnonceDetail', kwargs={'annonce_slug':obj.slug,'service_slug':obj.service.slug})
+        path = reverse('annonce-detail', kwargs={'annonce_slug':obj.slug,'service_slug':obj.service.slug})
         functions.expire_page(path)
         
-        path = reverse('annoncesemploi.views.AnnoncesList', kwargs={})
+        path = reverse('annonces-list', kwargs={})
         functions.expire_page(path)
         
-        path = reverse('annoncesemploi.views.AnnoncesListService', kwargs={'service_slug':obj.service.slug})
+        path = reverse('annonces-list-service', kwargs={'service_slug':obj.service.slug})
         functions.expire_page(path)
     
 class ImportGIDEMAdmin(admin.ModelAdmin):
@@ -96,13 +96,13 @@ class ImportGIDEMAdmin(admin.ModelAdmin):
             annonce.save()
             loop = loop+1
             
-            path = reverse('annoncesemploi.views.AnnonceDetail', kwargs={'annonce_slug':annonce.slug,'service_slug':annonce.service.slug})
+            path = reverse('annonce-detail', kwargs={'annonce_slug':annonce.slug,'service_slug':annonce.service.slug})
             functions.expire_page(path)
             
-            path = reverse('annoncesemploi.views.AnnoncesList', kwargs={})
+            path = reverse('annonces-list', kwargs={})
             functions.expire_page(path)
             
-            path = reverse('annoncesemploi.views.AnnoncesListService', kwargs={'service_slug':annonce.service.slug})
+            path = reverse('annonces-list-service', kwargs={'service_slug':annonce.service.slug})
             functions.expire_page(path)
             
         

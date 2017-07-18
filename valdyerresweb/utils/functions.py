@@ -78,10 +78,10 @@ def resetEphemerideCache(debut):
     today = datetime.datetime.utcnow().replace(tzinfo=utc)
             
     if (debut-today).days <= 7:
-        path = reverse('editorial.views.Ephemeride', kwargs={'jour':'aujourd-hui'})
+        path = reverse('ephemeride', kwargs={'jour':'aujourd-hui'})
         expire_page(path)
         
-        path = reverse('editorial.views.Ephemeride', kwargs={'jour':'demain'})
+        path = reverse('ephemeride', kwargs={'jour':'demain'})
         expire_page(path)
         
         for i in range(2, 10):
@@ -89,7 +89,7 @@ def resetEphemerideCache(debut):
             
             slug = u""+str(day.day)+"-"+str(day.month)+"-"+str(day.year)
             
-            path = reverse('editorial.views.Ephemeride', kwargs={'jour':slug})
+            path = reverse('ephemeride', kwargs={'jour':slug})
             expire_page(path)
             
 def validateEmail(email):

@@ -83,7 +83,7 @@ class EvenementAdmin(admin.ModelAdmin):
             nbreEquipement = len(equipements)
             if nbreEquipement > 0:
                 for equipement in equipements:
-                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                    path = reverse('equipement-details',
                                    kwargs={'fonction_slug': equipement.fonction.slug,
                                            'equipement_slug': equipement.slug})
                     functions.expire_page(path)
@@ -93,7 +93,7 @@ class EvenementAdmin(admin.ModelAdmin):
             nbreEquipement = len(equipements)
             if nbreEquipement > 0:
                 for equipement in equipements:
-                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                    path = reverse('equipement-details',
                                    kwargs={'fonction_slug': equipement.fonction.slug,
                                            'equipement_slug': equipement.slug})
                     functions.expire_page(path)
@@ -102,10 +102,10 @@ class EvenementAdmin(admin.ModelAdmin):
 
         obj.save()
 
-        path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.cadre_evenement.slug})
+        path = reverse('saison-details', kwargs={'slug': obj.cadre_evenement.slug})
         functions.expire_page(path)
 
-        path = reverse('evenements.views.EvenementDetailsHtml',
+        path = reverse('saison-details',
                        kwargs={'slug': obj.cadre_evenement.slug, 'evenement_slug': obj.slug})
         functions.expire_page(path)
 
@@ -117,7 +117,7 @@ class TypeEvenementAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.save()
-        path = reverse('evenements.views.AgendaListTypePeriodOrga',
+        path = reverse('agenda-type-period-orga',
                        kwargs={'type_slug': obj.slug, 'period': 'toutes', 'orga_slug': 'tous'})
         functions.expire_page(path)
 
@@ -150,7 +150,7 @@ class OrganisateurAdmin(admin.ModelAdmin):
         obj.save()
 
         def save_model(self, request, obj, form, change):
-            path = reverse('evenements.views.AgendaListTypePeriodOrga',
+            path = reverse('agenda-type-period-orga',
                            kwargs={'type_slug': 'tous', 'period': 'toutes', 'orga_slug': obj.slug})
             functions.expire_page(path)
 
@@ -181,7 +181,7 @@ class FestivalAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
 
-        path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.slug})
+        path = reverse('saison-details', kwargs={'slug': obj.slug})
         functions.expire_page(path)
 
 
@@ -210,7 +210,7 @@ class SaisonCulturelleAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
 
-        path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.slug})
+        path = reverse('saison-details', kwargs={'slug': obj.slug})
         functions.expire_page(path)
 
 
@@ -296,7 +296,7 @@ class ManageBibEvenement(admin.ModelAdmin):
             nbrequipement = len(equipements)
             if nbrequipement > 0:
                 for equipement in equipements:
-                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                    path = reverse('equipement-details',
                                    kwargs={'fonction_slug': equipement.fonction.slug,
                                            'equipement_slug': equipement.slug})
                     functions.expire_page(path)
@@ -306,7 +306,7 @@ class ManageBibEvenement(admin.ModelAdmin):
             nbrequipement = len(equipements)
             if nbrequipement > 0:
                 for equipement in equipements:
-                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                    path = reverse('equipement-details',
                                    kwargs={'fonction_slug': equipement.fonction.slug,
                                            'equipement_slug': equipement.slug})
                     functions.expire_page(path)
@@ -317,10 +317,10 @@ class ManageBibEvenement(admin.ModelAdmin):
         obj.organisateur.add(userprofile.organisateur)
         obj.save()
 
-        path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.cadre_evenement.slug})
+        path = reverse('saison-details', kwargs={'slug': obj.cadre_evenement.slug})
         functions.expire_page(path)
 
-        path = reverse('evenements.views.EvenementDetailsHtml',
+        path = reverse('event-details',
                        kwargs={'slug': obj.cadre_evenement.slug, 'evenement_slug': obj.slug})
         functions.expire_page(path)
 
@@ -407,7 +407,7 @@ class ManageCrdEvenement(admin.ModelAdmin):
             nbrequipement = len(equipements)
             if nbrequipement > 0:
                 for equipement in equipements:
-                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                    path = reverse('equipement-details',
                                    kwargs={'fonction_slug': equipement.fonction.slug,
                                            'equipement_slug': equipement.slug})
                     functions.expire_page(path)
@@ -417,7 +417,7 @@ class ManageCrdEvenement(admin.ModelAdmin):
             nbrequipement = len(equipements)
             if nbrequipement > 0:
                 for equipement in equipements:
-                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                    path = reverse('equipement-details',
                                    kwargs={'fonction_slug': equipement.fonction.slug,
                                            'equipement_slug': equipement.slug})
                     functions.expire_page(path)
@@ -428,10 +428,10 @@ class ManageCrdEvenement(admin.ModelAdmin):
         obj.organisateur.add(userprofile.organisateur)
         obj.save()
 
-        path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.cadre_evenement.slug})
+        path = reverse('saison-details', kwargs={'slug': obj.cadre_evenement.slug})
         functions.expire_page(path)
 
-        path = reverse('evenements.views.EvenementDetailsHtml',
+        path = reverse('event-details',
                        kwargs={'slug': obj.cadre_evenement.slug, 'evenement_slug': obj.slug})
         functions.expire_page(path)
 
@@ -509,7 +509,7 @@ class ManageDevEcoEvenement(admin.ModelAdmin):
             nbrequipement = len(equipements)
             if nbrequipement > 0:
                 for equipement in equipements:
-                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                    path = reverse('equipement-details',
                                    kwargs={'fonction_slug': equipement.fonction.slug,
                                            'equipement_slug': equipement.slug})
                     functions.expire_page(path)
@@ -519,7 +519,7 @@ class ManageDevEcoEvenement(admin.ModelAdmin):
             nbrequipement = len(equipements)
             if nbrequipement > 0:
                 for equipement in equipements:
-                    path = reverse('equipements.views.EquipementsDetailsHtml',
+                    path = reverse('equipement-details',
                                    kwargs={'fonction_slug': equipement.fonction.slug,
                                            'equipement_slug': equipement.slug})
                     functions.expire_page(path)
@@ -530,10 +530,10 @@ class ManageDevEcoEvenement(admin.ModelAdmin):
         obj.organisateur.add(userprofile.organisateur)
         obj.save()
 
-        path = reverse('evenements.views.SaisonDetailsHtml', kwargs={'slug': obj.cadre_evenement.slug})
+        path = reverse('saison-details', kwargs={'slug': obj.cadre_evenement.slug})
         functions.expire_page(path)
 
-        path = reverse('evenements.views.EvenementDetailsHtml',
+        path = reverse('event-details',
                        kwargs={'slug': obj.cadre_evenement.slug, 'evenement_slug': obj.slug})
         functions.expire_page(path)
 

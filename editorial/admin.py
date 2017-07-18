@@ -54,13 +54,13 @@ class AdminActualite(admin.ModelAdmin):
         obj.date_mise_a_jour = datetime.datetime.utcnow()
         obj.save()
 
-        path = reverse('editorial.views.Home', kwargs={})
+        path = reverse('home', kwargs={})
         functions.expire_page(path)
 
-        path = reverse('editorial.views.ActuList', kwargs={})
+        path = reverse('actulist', kwargs={})
         functions.expire_page(path)
 
-        path = reverse('editorial.views.ActuDetail', kwargs={'actualite_slug': obj.slug})
+        path = reverse('actudetail', kwargs={'actualite_slug': obj.slug})
         functions.expire_page(path)
 
 
@@ -121,7 +121,7 @@ class AdminMagazine(admin.ModelAdmin):
 
         obj.save()
 
-        path = reverse('editorial.views.Magazines', kwargs={})
+        path = reverse('magazines', kwargs={})
         functions.expire_page(path)
 
 
@@ -140,7 +140,7 @@ class AdminRapportActivite(admin.ModelAdmin):
         obj.image = pdftojpg(settings.MEDIA_ROOT + obj.document.path).replace(settings.MEDIA_ROOT, "")
         obj.save()
 
-        path = reverse('editorial.views.Rapports', kwargs={})
+        path = reverse('rapports', kwargs={})
         functions.expire_page(path)
 
 
@@ -163,7 +163,7 @@ class AdminNewsletterBib(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.save()
-        path = reverse('editorial.views.newsletterbibhtml', kwargs={'equipement_slug': obj.bib.slug})
+        path = reverse('newsletterbibhtml', kwargs={'equipement_slug': obj.bib.slug})
         functions.expire_page(path)
 
 

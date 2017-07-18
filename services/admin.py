@@ -21,7 +21,7 @@ class AdminService(admin.ModelAdmin):
         ]
         
     def save_model(self, request, obj, form, change):
-        path = reverse('services.views.Services', kwargs={})
+        path = reverse('services', kwargs={})
         functions.expire_page(path)
         
         typesEquipement = EquipementFonction.objects.filter(service = obj.id)
@@ -30,7 +30,7 @@ class AdminService(admin.ModelAdmin):
             Equipements = Equipement.objects.filter(fonction = fonction.id)
             
             for equipement in Equipements:
-                path = reverse('equipements.views.EquipementsDetailsHtml', kwargs={'fonction_slug':fonction.slug,'equipement_slug':equipement.slug})
+                path = reverse('equipement-details', kwargs={'fonction_slug':fonction.slug,'equipement_slug':equipement.slug})
                 functions.expire_page(path)
         
         obj.save()
@@ -55,7 +55,7 @@ class AdminPageStatiqueService(admin.ModelAdmin):
     ]
     
     def save_model(self, request, obj, form, change):
-        path = reverse('services.views.PageContenu', kwargs={'service_slug':obj.service.slug,'page_slug':obj.slug})
+        path = reverse('page-contenu', kwargs={'service_slug':obj.service.slug,'page_slug':obj.slug})
         functions.expire_page(path)
         
         obj.save()

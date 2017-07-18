@@ -28,13 +28,13 @@ class EquipementAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
         
-        path = reverse('equipements.views.EquipementsDetailsHtml', kwargs={'fonction_slug':obj.fonction.slug,'equipement_slug':obj.slug})
+        path = reverse('equipement-details', kwargs={'fonction_slug':obj.fonction.slug,'equipement_slug':obj.slug})
         functions.expire_page(path)
         
-        path = reverse('equipements.views.EquipementsCarte', kwargs={})
+        path = reverse('equipements-carte', kwargs={})
         functions.expire_page(path)
 
-        path = reverse('equipements.views.EquipementVCF', kwargs={'slug':obj.slug})
+        path = reverse('equipement-vcf', kwargs={'slug':obj.slug})
         functions.expire_page(path)
         
     
@@ -63,10 +63,10 @@ class EquipementFonctionAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
         
-        path = reverse('equipements.views.EquipementsCarte', kwargs={})
+        path = reverse('equipements-carte', kwargs={})
         functions.expire_page(path)
 
-        path = reverse('equipements.views.FonctionDetailsHtml', kwargs={'fonction_slug':obj.slug})
+        path = reverse('onction-details-html', kwargs={'fonction_slug':obj.slug})
         functions.expire_page(path)
     
 class FaciliteAdmin(admin.ModelAdmin):
@@ -87,10 +87,10 @@ class FaciliteAdmin(admin.ModelAdmin):
             obj.slug = monslug
         obj.save()
         
-        path = reverse('equipements.views.FaciliteListe', kwargs={})
+        path = reverse('facilite-liste', kwargs={})
         functions.expire_page(path)
 
-        path = reverse('equipements.views.FaciliteCarte', kwargs={'slug':obj.slug})
+        path = reverse('facilite-carte', kwargs={'slug':obj.slug})
         functions.expire_page(path)
         
 class FacilitesAdmin(admin.ModelAdmin):
@@ -100,7 +100,7 @@ class FacilitesAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         obj.save()
-        path = reverse('equipements.views.FaciliteListe', kwargs={})
+        path = reverse('facilite-liste', kwargs={})
         functions.expire_page(path)
     
 
@@ -110,7 +110,7 @@ class TarifCategorieAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         obj.save()
-        path = reverse('equipements.views.EquipementTarifs', kwargs={})
+        path = reverse('equipement-tarifs', kwargs={})
         functions.expire_page(path)
     
     
@@ -119,7 +119,7 @@ class TarifAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         obj.save()
-        path = reverse('equipements.views.EquipementTarifs', kwargs={})
+        path = reverse('equipement-tarifs', kwargs={})
         functions.expire_page(path)
 
 
@@ -128,7 +128,7 @@ class TarifSpecifiqueAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.save()
-        path = reverse('equipements.views.EquipementTarifs', kwargs={})
+        path = reverse('equipement-tarifs', kwargs={})
         functions.expire_page(path)
         
 class AlerteAdmin(admin.ModelAdmin):

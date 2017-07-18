@@ -41,16 +41,16 @@ class HorairesAdmin(admin.ModelAdmin):
     filter_horizontal = ("periodes",)
     
     def save_model(self, request, obj, form, change):
-        path = reverse('equipements.views.EquipementsDetailsHtml', kwargs={'fonction_slug':obj.equipement.fonction.slug,'equipement_slug':obj.equipement.slug})
+        path = reverse('equipement-details', kwargs={'fonction_slug':obj.equipement.fonction.slug,'equipement_slug':obj.equipement.slug})
         functions.expire_page(path)
             
         today = datetime.datetime.utcnow().replace(tzinfo=utc)
         functions.resetEphemerideCache(today)
         
-        path = reverse('equipements.views.FonctionDetailsHtml', kwargs={'fonction_slug':obj.equipement.fonction.slug})
+        path = reverse('fonction-details-html', kwargs={'fonction_slug':obj.equipement.fonction.slug})
         functions.expire_page(path)
         
-        path = reverse('equipements.views.EquipementHoraires', kwargs={'equipement_slug':obj.equipement.slug})
+        path = reverse('equipement-horaires', kwargs={'equipement_slug':obj.equipement.slug})
         functions.expire_page(path)
         
         obj.save()
@@ -73,16 +73,16 @@ class PeriodeAdmin(admin.ModelAdmin):
         horaires = Horaires.objects.filter(periodes__id = obj.id)
         
         for horaire in horaires:
-            path = reverse('equipements.views.EquipementsDetailsHtml', kwargs={'fonction_slug':horaire.equipement.fonction.slug,'equipement_slug':horaire.equipement.slug})
+            path = reverse('equipement-details', kwargs={'fonction_slug':horaire.equipement.fonction.slug,'equipement_slug':horaire.equipement.slug})
             functions.expire_page(path)
             
             today = datetime.datetime.utcnow().replace(tzinfo=utc)
             functions.resetEphemerideCache(today)
             
-            path = reverse('equipements.views.FonctionDetailsHtml', kwargs={'fonction_slug':horaire.equipement.fonction.slug})
+            path = reverse('fonction-details-html', kwargs={'fonction_slug':horaire.equipement.fonction.slug})
             functions.expire_page(path)
             
-            path = reverse('equipements.views.EquipementHoraires', kwargs={'equipement_slug':horaire.equipement.slug})
+            path = reverse('equipement-horaires', kwargs={'equipement_slug':horaire.equipement.slug})
             functions.expire_page(path)
         
         obj.save()
