@@ -5,7 +5,7 @@ from filebrowser.fields import FileBrowseField
 from model_utils.managers import InheritanceManager
 from django.db.models import permalink
 from django.db import models
-
+from django.urls import reverse
 
 # Create your models here.
 from equipements.models import Equipement
@@ -27,20 +27,18 @@ class PageBase(models.Model):
 class PageStatique(PageBase):
     date_creation = models.DateTimeField()
     note_page_accueil = models.BooleanField("Lister dans les notes de la page d'accueil", default=False)
-    
-    @permalink
+
     def get_absolute_url(self):
-        return ('page-detail',(),{'page_slug':self.slug})
+        return reverse('page-detail', kwargs={'page_slug': self.slug})
 
 
 class Actualite(PageBase):
     
     date_publication = models.DateTimeField()
     page_accueil = models.BooleanField("Affichage en page d'accueil ?", default=False)
-    
-    @permalink
+
     def get_absolute_url(self):
-        return ('actudetail',(),{'actualite_slug':self.slug})
+        return reverse('actudetail', kwargs={'actualite_slug': self.slug})
    
     
 class DocumentAttache(models.Model):
@@ -73,6 +71,5 @@ class NewsletterBib(models.Model):
     evenement_fin = models.DateField("Date de fin des événements")
     bib = models.ForeignKey(Equipement)
 
-    @permalink
     def get_absolute_url(self):
-        return ('newsletterbibhtml', (), {'equipement_slug': self.bib.slug})
+        return reverse('newsletterbibhtml',  kwargs={'equipement_slug': self.bib.slug})
