@@ -92,6 +92,38 @@
                         {% endfor %}
                     </div>
                 </div>
+            <div class="margin-bottom-35">
+                    <hr class="hr-md">
+                </div>
+                <div class="magazine-news">
+                    <div class="row">
+                        {% for page in actualites|slice:"4:6" %}
+                            <div class="col-md-6">
+                                <div class="magazine-news-img">
+                                    <a href="{% url "actudetail" actualite_slug=page.slug %}"><img
+                                            class="img-responsive" src="{{ page.image|resize:'400x255x1' }}" alt=""></a>
+                                </div>
+                                <h3>
+                                    <a href="{% url "actudetail" actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
+                                </h3>
+                                <div class="by-author">
+                                    <span>Publié le {{ page.date_publication|dateSimple }}.</span>
+                                </div>
+                                <p>{{ page.contenu|resume:220|safe }}</p>
+                                <p style="text-align: right;">
+                                    <a class="btn btn-primary"
+                                       href="{% url "actudetail" actualite_slug=page.slug %}">Lire la
+                                        suite</a>
+                                </p>
+                            </div>
+                        {% endfor %}
+                   <div class="margin-bottom-35">
+                    <hr class="hr-md">
+                </div>
+                    <a class="btn btn-primary pull-right"
+                                       href="{% url "actulist" %}">Voir toutes les actualités</a>
+                    </div>
+                </div>
 
             </div>
             <!-- Right Sidebar -->

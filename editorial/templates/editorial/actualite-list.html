@@ -112,20 +112,35 @@
 
                 {% if pages.paginator.num_pages > 10 %}
                     {% if pages.number > 1 %}
-                        <li class="active">
+                        <li>
                             <a href="{% url 'actulist' %}?page=1">1</a>
                         </li>
+                        {% if pages.previous_page_number > 2 %}
                         <li class="disabled">
                             <a href=".">...</a>
                         </li>
+                        {% endif %}
                     {% endif %}
-                    <li class="disabled">
+                    {% if pages.previous_page_number > 1 %}
+                     <li>
+                        <a href="{% url 'actulist' %}?page={{ pages.number|add:-1 }}">{{ pages.number|add:-1 }}</a>
+                    </li>
+                        {% endif %}
+                    <li class="disabled active">
                         <a href="{% url 'actulist' %}?page={{ pages.number }}">{{ pages.number }}</a>
                     </li>
+                    {% if pages.number|add:1 < pages.paginator.num_pages %}
+                     <li>
+                        <a href="{% url 'actulist' %}?page={{ pages.number|add:1 }}">{{ pages.number|add:1 }}</a>
+                    </li>
+                        {% endif %}
                     {% if pages.number < pages.paginator.num_pages %}
+                        {% if pages.number|add:2 < pages.paginator.num_pages %}
                         <li  class="disabled">
                             <a href=".">...</a>
                         </li>
+                         {% endif %}
+
                         <li>
                             <a href="{% url 'actulist' %}?page={{ pages.paginator.num_pages }}">{{ pages.paginator.num_pages }}</a>
                         </li>
