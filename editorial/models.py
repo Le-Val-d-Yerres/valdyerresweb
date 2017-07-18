@@ -31,6 +31,8 @@ class PageStatique(PageBase):
     def get_absolute_url(self):
         return reverse('page-detail', kwargs={'page_slug': self.slug})
 
+    def __str__(self):
+        return self.titre
 
 class Actualite(PageBase):
     
@@ -39,6 +41,9 @@ class Actualite(PageBase):
 
     def get_absolute_url(self):
         return reverse('actudetail', kwargs={'actualite_slug': self.slug})
+
+    def __str__(self):
+        return self.titre
    
     
 class DocumentAttache(models.Model):
