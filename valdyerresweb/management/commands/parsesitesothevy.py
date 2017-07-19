@@ -4,8 +4,9 @@ from bs4 import BeautifulSoup
 import requests
 import subprocess
 import shlex
+import hashlib
 
-from django.core.management.base import NoArgsCommand
+from django.core.management.base import BaseCommand,CommandError
 from datetime import datetime, date, time, timedelta
 from django.template import defaultfilters
 import os
@@ -44,18 +45,30 @@ class evenement(object):
         self.lieu = ""
         self.copyrightimg = ""
 
+    def idhash(self):
+        m = hashlib.md5()
+        m.update(self.nom)
+        m.update(str(self.debut).encode())
+        return m.hexdigest()
+
 
 def parse_page(url):
     evt = evenement()
     r = requests.get(url)
     data_html = r.text
-    soup = BeautifulSoup(data_html)
+    soup = BeautifulSoup(data_html, "html.parser")
 
     nom = soup.find("h1").string
-    nom = unicode(nom)
-
+    nom = nom.strip()
+    if nom == "2017/2018 : Abonnez-vous !":
+        return
+    print(nom)
 
     dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next
+    print(dateheureville)
+    if "[ Date modifiée ]" in dateheureville:
+        dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next.next.next
+        print(dateheureville)
     dateevt, heure = dateheureville.split("|")
     dateevt = dateevt.strip()
     dateevt = dateevt.split(" ")
@@ -70,15 +83,21 @@ def parse_page(url):
             nummois = int(i)+1
             break
 
-    numannee = 2017
+    numannee = 2018
     if nummois > 6:
-        numannee = 2016
+        numannee = 2017
 
     dateevt = date(numannee, nummois, numjour)
 
 
     heure = heure.strip()
-    heure, minutes = heure.split("h")
+    if "&" in heure:
+        print("ATTENTION: heure non conventionnelle")
+        heure ="17"
+        minutes="00"
+    else:
+        heure, minutes = heure.split("h")
+
     heure = int(heure)
 
     if minutes == "":
@@ -132,9 +151,9 @@ def parse_page(url):
     if soup.find("iframe") is not None:
         desc += str(soup.find("iframe"))
 
-    desc = desc.encode("utf-8")
+
     desc = desc.replace("ᵉ","ème")
-    desc = desc.replace(codecs.BOM_UTF8,"")
+
 
     evt.nom = nom.encode("utf-8").strip()
     evt.debut = dateevt
@@ -152,7 +171,7 @@ def parse_list(url):
     link_list = list()
     r = requests.get(url)
     data_html = r.text
-    soup = BeautifulSoup(data_html)
+    soup = BeautifulSoup(data_html, "html.parser" )
     list_evt = soup.findAll("div", {"class": "category"})
 
     for item in list_evt:
@@ -197,20 +216,20 @@ def corresp(eventlist):
         img_traitement(event.image, evenement.slug)
 
         type = TypeEvenement.objects.get(slug=defaultfilters.slugify(event.type))
-        evenement.nom = event.nom
-        print evenement.nom
-        if evenement.nom == "La Traviata":
-            continue
-        evenement.description = event.description
+        evenement.nom = str(event.nom)
+        print(evenement.nom)
+        #if evenement.nom == "La Traviata":
+        #    continue
+        evenement.description = str(event.description)
 
         evenement.debut = myTimezone.localize(event.debut)
         evenement.fin = myTimezone.localize(event.fin)
-        evenement.cadre_evenement_id = 21
+        evenement.cadre_evenement_id = 27
         evenement.lieu_id = id_salles_spectacles[event.lieu]
-        meta_description = evenement.nom.decode('utf-8') +u" "+ evenement.description.decode("utf-8")
+        meta_description = evenement.nom+" "+ evenement.description
         meta_description = meta_description.replace("<br>",'')
         meta_description = meta_description[0:198]
-        meta_description = meta_description.encode("utf-8")
+        meta_description = meta_description
 
 
 
@@ -225,21 +244,31 @@ def corresp(eventlist):
 
 def proceed():
     liste_evenements = list()
-    for type, url in liste_themes.iteritems():
+    for type, url in liste_themes.items():
         for link in parse_list(url):
             event = parse_page(link)
+            if event is None:
+                continue
             event.type = type
-            liste_evenements.append(event)
+            myhash = event.idhash()
+            update = True
+            for myevent in liste_evenements:
+                if myevent.idhash() == myhash:
+                    update = False
+            if update is True:
+                liste_evenements.append(event)
     return liste_evenements
 
 
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
 
-    def handle_noargs(self, **options):
-        liste_evenements = list()
+    def handle(self, *args, **options):
         liste_evenements = proceed()
+        print(len(liste_evenements))
+        for item in liste_evenements:
+            print(item.nom)
         corresp(liste_evenements)
         #parse_page("http://spectacles.levaldyerres.fr/fr/robin-des-bois...-la-legende-ou-presque.html?cmp_id=77&news_id=424&vID=80")
 
