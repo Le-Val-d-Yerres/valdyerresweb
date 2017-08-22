@@ -28,6 +28,7 @@
             <div class="col-md-12">
                 <h1>Vos élus </h1>
                 {% for fonction in elusst %}
+                    {% if fonction.listeelus|length > 0 %}
                     <h3>Le{{fonction.listeelus|length|pluralize }}
                         {% with fonction.mandat.nom|splitwords as parts %}
                             {% for word in parts %}
@@ -56,6 +57,7 @@
                             </tr>
                         {% endfor %}
                     </table>
+                    {% endif %}
                 {% endfor %}
 
                 {% regroup elusnd by ville.nom as villes_list %}
