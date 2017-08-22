@@ -38,9 +38,11 @@ def duree(debut,fin):
     delta = fin - debut
     txttemps = ""
     secondes = delta.seconds - (delta.days * 3600 * 24)
-    heures = secondes/3600
+
+    heures = int(secondes/3600)
     secondes = secondes - (heures*3600)
-    minutes = secondes/60
+
+    minutes = int(secondes/60)
     if delta.days > 0:
         txttemps = str(delta.days)
         if delta.days == 1:
@@ -48,8 +50,8 @@ def duree(debut,fin):
         if delta.days > 1:
             txttemps += " jours"
     if heures > 0:
-        txttemps += " "+str(heures)+"H"
+        txttemps += " "+str(heures)+" h"
     if minutes > 0:
-        txttemps += " "+str(minutes)+"min"
+        txttemps += " "+str(minutes)+" min"
     return txttemps
 

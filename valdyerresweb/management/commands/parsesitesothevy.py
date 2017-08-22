@@ -5,6 +5,7 @@ import requests
 import subprocess
 import shlex
 import hashlib
+from collections import namedtuple
 
 from django.core.management.base import BaseCommand,CommandError
 from datetime import datetime, date, time, timedelta
@@ -47,7 +48,7 @@ class evenement(object):
 
     def idhash(self):
         m = hashlib.md5()
-        m.update(self.nom)
+        m.update(self.nom.encode())
         m.update(str(self.debut).encode())
         return m.hexdigest()
 
@@ -110,6 +111,10 @@ def parse_page(url):
     dateevt = datetime.combine(dateevt, heure_debut)
 
     ville = dateheureville.next.next
+    if u"|" in ville:
+        ville = dateheureville.next.next.next.next
+
+
 
     ville = ville.strip()
 
@@ -155,11 +160,13 @@ def parse_page(url):
     desc = desc.replace("ᵉ","ème")
 
 
-    evt.nom = nom.encode("utf-8").strip()
+    evt.nom = nom
     evt.debut = dateevt
     evt.fin = heure_fin
     if u"CEC" in ville:
         ville = u"YERRES"
+
+
     evt.lieu = ville
     evt.description = desc
     evt.image = urlimage
@@ -216,8 +223,8 @@ def corresp(eventlist):
         img_traitement(event.image, evenement.slug)
 
         type = TypeEvenement.objects.get(slug=defaultfilters.slugify(event.type))
-        evenement.nom = str(event.nom)
-        print(evenement.nom)
+        evenement.nom = event.nom
+
         #if evenement.nom == "La Traviata":
         #    continue
         evenement.description = str(event.description)
@@ -234,7 +241,12 @@ def corresp(eventlist):
 
 
         evenement.meta_description = meta_description
-        evenement.image = os.path.join(imgpath, evenement.slug +".jpg")
+        imageurl = os.path.join(imgpath, evenement.slug +".jpg")
+
+        tmpobjimage = namedtuple('Imagefield', ['path'])
+        tmpobjimage.path = imageurl
+
+        evenement.image = tmpobjimage
         evenement.type = type
         evenement.publish = True
         evenement.save()
@@ -251,12 +263,12 @@ def proceed():
                 continue
             event.type = type
             myhash = event.idhash()
-            update = True
-            for myevent in liste_evenements:
-                if myevent.idhash() == myhash:
-                    update = False
-            if update is True:
-                liste_evenements.append(event)
+            # update = True
+            # for myevent in liste_evenements:
+            #     if myevent.idhash() == myhash:
+            #         update = False
+            # if update is True:
+            liste_evenements.append(event)
     return liste_evenements
 
 
