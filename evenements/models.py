@@ -50,13 +50,12 @@ class Saison(models.Model):
     def __str__(self):
         return self.nom
 
+    class Meta:
+        ordering = ['-debut']
 
 class SaisonCulturelle(Saison):
     def __str__(self):
         return self.nom
-
-    class Meta:
-        ordering = ['-debut']
 
 
 class Festival(Saison):
