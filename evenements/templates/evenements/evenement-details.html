@@ -11,6 +11,21 @@
 
 {% block meta-description %}{{ evenement.meta_description }}{% endblock %}
 
+{% block head %}
+<meta property="og:title" content="{{ evenement.nom }}" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="{{ evenement.description }}" />
+<meta property="og:url" content="{{evenement.get_absolute_url}}" />
+<meta property="og:image" content="{{ evenement.image }}" />
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{evenement.get_absolute_url}}">
+<meta name="twitter:title" content="{{ evenement.nom }}">
+<meta name="twitter:description" content="{{ evenement.description }}">
+<meta name="twitter:image" content="{{ evenement.image }}" />
+
+{% endblock %}
+
 {% block menu %}{% getmenu %}{% endblock %}
 
 {% block contenu %}
