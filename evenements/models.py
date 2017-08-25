@@ -7,6 +7,7 @@ from services.models import Service
 from equipements.models import Equipement
 from localisations.models import Ville
 from django.db.models import permalink
+from django.contrib.sites.models import Site
 
 
 class Organisateur(models.Model):
@@ -129,6 +130,17 @@ class Evenement(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('event-details', (), {'slug': self.cadre_evenement.slug, 'evenement_slug': self.slug})
+
+    def get_full_url(self):
+        relative = self.get_absolute_url()
+        domain = Site.objects.get_current().domain
+        return 'http://%s%s' % (domain,relative)
+
+    def get_image_full_url(self):
+        relative = self.image
+        domain = Site.objects.get_current().domain
+        return 'http://%s/%s' % (domain, relative)
+
 
 
 class Prix(models.Model):
