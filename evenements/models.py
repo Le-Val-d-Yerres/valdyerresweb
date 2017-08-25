@@ -8,6 +8,7 @@ from equipements.models import Equipement
 from localisations.models import Ville
 from django.db.models import permalink
 from django.contrib.sites.models import Site
+from valdyerresweb import settings
 
 
 class Organisateur(models.Model):
@@ -138,8 +139,9 @@ class Evenement(models.Model):
 
     def get_image_full_url(self):
         relative = self.image
+
         domain = Site.objects.get_current().domain
-        return 'http://%s/%s' % (domain, relative)
+        return 'http://%s%s%s' % (domain,settings.MEDIA_DIR_NAME, relative)
 
 
 
