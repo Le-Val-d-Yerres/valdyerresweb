@@ -9,6 +9,8 @@ from django.urls import reverse
 
 # Create your models here.
 from equipements.models import Equipement
+from django.contrib.sites.models import Site
+from valdyerresweb import settings
 
 
 class PageBase(models.Model):
@@ -34,6 +36,17 @@ class PageStatique(PageBase):
     def __str__(self):
         return self.titre
 
+    def get_full_url(self):
+        relative = self.get_absolute_url()
+        domain = Site.objects.get_current().domain
+        return 'http://%s%s' % (domain, relative)
+
+    def get_image_full_url(self):
+        relative = self.image
+
+        domain = Site.objects.get_current().domain
+        return 'http://%s%s%s' % (domain, settings.MEDIA_DIR_NAME, relative)
+
 class Actualite(PageBase):
     
     date_publication = models.DateTimeField()
@@ -44,6 +57,16 @@ class Actualite(PageBase):
 
     def __str__(self):
         return self.titre
+
+    def get_full_url(self):
+        relative = self.get_absolute_url()
+        domain = Site.objects.get_current().domain
+        return 'http://%s%s' % (domain, relative)
+
+    def get_image_full_url(self):
+        relative = self.image
+        domain = Site.objects.get_current().domain
+        return 'http://%s%s%s' % (domain, settings.MEDIA_DIR_NAME, relative)
    
     
 class DocumentAttache(models.Model):

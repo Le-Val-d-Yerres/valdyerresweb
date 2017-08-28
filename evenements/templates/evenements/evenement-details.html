@@ -14,14 +14,14 @@
 {% block head %}
 <meta property="og:title" content="{{ evenement.nom }}" />
 <meta property="og:type" content="website" />
-<meta property="og:description" content="{{ evenement.description }}" />
+<meta property="og:description" content="{{ evenement.description|resume:500 }}" />
 <meta property="og:url" content="{{evenement.get_full_url}}" />
 <meta property="og:image" content="{{ evenement.get_image_full_url }}" />
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="{{evenement.get_full_url}}">
 <meta name="twitter:title" content="{{ evenement.nom }}">
-<meta name="twitter:description" content="{{ evenement.description }}">
+<meta name="twitter:description" content="{{ evenement.description|resume:500 }}">
 <meta name="twitter:image" content="{{ evenement.get_image_full_url }}" />
 
 {% endblock %}
