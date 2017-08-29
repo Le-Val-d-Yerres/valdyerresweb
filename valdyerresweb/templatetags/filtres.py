@@ -11,6 +11,7 @@ from PIL import Image, ImageOps, ImageFilter, ImageChops
 from django.templatetags.static import static
 
 import datetime
+import html
 import valdyerresweb
 
 register = template.Library()
@@ -120,6 +121,9 @@ def resume(text, longueur):
         textResult = text
     return textResult
 
+@register.filter(is_safe = True)
+def cleanhtml(text):
+    return html.unescape(text)
 
 @register.filter(is_safe=True)
 def toFloatjs(num):

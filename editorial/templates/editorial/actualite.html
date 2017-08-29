@@ -11,14 +11,14 @@
 {% block head %}
 <meta property="og:title" content="{{ page.titre }}" />
 <meta property="og:type" content="website" />
-<meta property="og:description" content="{{ page.contenu|resume:500 }}" />
+<meta property="og:description" content="{{ page.contenu|resume:500|cleanhtml }}" />
 <meta property="og:url" content="{{page.get_full_url}}" />
 <meta property="og:image" content="{{ page.get_image_full_url }}" />
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="{{page.get_full_url}}">
 <meta name="twitter:title" content="{{ page.titre }}">
-<meta name="twitter:description" content="{{ page.contenu|resume:500 }}">
+<meta name="twitter:description" content="{{ page.contenu|resume:500|cleanhtml }}">
 <meta name="twitter:image" content="{{ page.get_image_full_url }}" />
 
 {% endblock %}
