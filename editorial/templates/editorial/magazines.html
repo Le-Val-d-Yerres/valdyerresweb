@@ -7,7 +7,7 @@
 {% load tz %}
 
 {% block title %}Le magazine : page {{page}} {% endblock %}
-{% block meta-description %}Le magazine du Val d'Yerres:{% endblock %}
+{% block meta-description %}Le magazine du Val d'Yerres Val de Seine:{% endblock %}
 
 {% block menu %}{% getmenu %}{% endblock %}
 
@@ -29,7 +29,7 @@
 
 		<div class="col-md-11">
 
-			<h1><a href="{% url 'magazines'  %}">Le magazine du Val d'Yerres:</a></h1>
+			<h1><a href="{% url 'magazines'  %}">Le magazine du Val d'Yerres Val de Seine:</a></h1>
 
 				
 				<br/>
@@ -44,7 +44,7 @@
 							Dossier : <strong>{{magazine.titre}}</strong>
 							<br/>
 
-							Téléchargez : <a href="{{magazine.document.url}}">Le magazine du Val d'Yerres ({{magazine.date_parution|moisannee|lower}}) au format PDF ({{magazine.document.filesize|filesizeformat}})</a>
+							Téléchargez : <a href="{{magazine.document.url}}">Le magazine ({{magazine.date_parution|moisannee|lower}}) au format PDF ({{magazine.document.filesize|filesizeformat}})</a>
 						</p>
 					</div>
 				</div>
