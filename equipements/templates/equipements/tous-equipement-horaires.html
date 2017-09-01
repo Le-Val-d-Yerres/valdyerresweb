@@ -36,7 +36,7 @@
 			{% if forloop.counter != 1 %}
 				<hr \>
 			{% endif%}
-			<h2><a href="{% url 'equipement-details' fonction_slug=each.fonction.slug equipement_slug=each.slug%}">{{ each.nom }}</a></h2>
+			<h2><a href="{% url 'equipement-details' fonction_slug=each.fonction.slug equipement_slug=each.slug%}">{{ each.nom }}</a><small> - {{ each.ville }}</small></h2>
 			
 			<h3>Horaires :</h3>
 			
