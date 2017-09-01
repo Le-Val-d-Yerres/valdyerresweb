@@ -1,10 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters %}
+{% load tz %}
+{% load staticfiles %}
+
+
+{% block title %}Formulaire inscription espaces public numeriques{% endblock %}
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block meta-description %}Formulaire en ligne d'inscription aux espaces public numeriques EPN{% endblock %}
+
+ {% block head %}
+     <link rel="stylesheet" href="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css"%} ">
+     <link rel="stylesheet" href="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css"%} ">
+{% endblock %}
+
+{% block contenu %}
+
+    <div class="container">
+        <div class="row-fluid">
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="{% url 'actulist' %}">Actualités</a></li>
+                    <li class="active">{{ page.titre }}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="col-md-12">
+                <h1><a href="">Formulaire d'inscription aux espaces public numériques</a></h1>
+            </div>
+            <div class="col-md-6">
+                <form class="sky-form" action="" method="post">
+                    <div class="form-group">
+                        <label for="InputNom">Nom</label>
+                        <input type="text" class="form-control" id="InputNom" placeholder="Entrez votre nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputPrenom">Prénom</label>
+                        <input type="text" class="form-control" id="InputPrenom"
+                               placeholder="Entrez votre prénom">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputDate">Date de naissance</label>
+                        <input type="text" class="hasDatepicker" id="InputDate"
+                               placeholder="Entrez votre date de naissance">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jsload %}
+    {% include "include/jquery-bootstrap.html" %}
+        <script src= "{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js"%}"></script>
+        <script src= "{% static 'valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js' %}"></script>
+        <script src= "{% static 'valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js'%} "></script>
+
+    <!--[if lt IE 9]>
+    <script src="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"%}></script>
+    <![endif]-->
+
+    <!--[if lt IE 10]>
+    <script src="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.placeholder.min.js"%}></script>
+    <![endif]-->
+
+    <script src="{% static "valdyerresweb/assets/js/plugins/masking.js" %}"></script>
+
+    <script src="{% static "valdyerresweb/assets/js/plugins/datepicker.js" %}"></script>
+
+    <script src="{% static "valdyerresweb/assets/js/plugins/validation.js" %}"></script>
+    <script>
+    jQuery(document).ready(function() {
+    Masking.initMasking();
+    //or
+    Datepicker.initDatepicker();
+    //or
+    Validation.initValidation();
+        $( function() {
+    $( ".hasDatepicker" ).datepicker();
+    alert('hello');
+  } );
+    });
+    </script>
+{% endblock %}

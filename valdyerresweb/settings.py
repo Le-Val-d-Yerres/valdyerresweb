@@ -159,6 +159,7 @@ INSTALLED_APPS = (
     'forms',
     'deveco',
     'affgen',
+    'epn',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
