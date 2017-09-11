@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class FicheInscription(models.Model):
@@ -8,7 +9,7 @@ class FicheInscription(models.Model):
         (homme, 'Homme'),
         (femme, 'Femme')
     )
-
+    dateinscription = models.DateTimeField(auto_now=True)
     nom = models.CharField(max_length=255)
     prenom = models.CharField(max_length=255)
     datenaissance = models.DateField()
