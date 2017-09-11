@@ -13,9 +13,10 @@
 
 {% block meta-description %}Formulaire en ligne d'inscription aux espaces public numeriques EPN{% endblock %}
 
- {% block head %}
-     <link rel="stylesheet" href="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css"%} ">
-     <link rel="stylesheet" href="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css"%} ">
+{% block head %}
+    <link rel="stylesheet" href="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css" %} ">
+    <link rel="stylesheet"
+          href="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css" %} ">
 {% endblock %}
 
 {% block contenu %}
@@ -35,22 +36,86 @@
                 <h1><a href="">Formulaire d'inscription aux espaces public numériques</a></h1>
             </div>
             <div class="col-md-6">
-                <form class="sky-form" action="" method="post">
-                    <div class="form-group">
-                        <label for="InputNom">Nom</label>
-                        <input type="text" class="form-control" id="InputNom" placeholder="Entrez votre nom">
-                    </div>
-                    <div class="form-group">
-                        <label for="InputPrenom">Prénom</label>
-                        <input type="text" class="form-control" id="InputPrenom"
-                               placeholder="Entrez votre prénom">
-                    </div>
-                    <div class="form-group">
-                        <label for="InputDate">Date de naissance</label>
-                        <input type="text" class="hasDatepicker" id="InputDate"
-                               placeholder="Entrez votre date de naissance">
-                    </div>
-                </form>
+                <div class="panel-body">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="nom">Nom</label>
+                            <input name="nom" type="text" class="form-control" id="InputNom" placeholder="Entrez votre nom"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prenom">Prénom</label>
+                            <input name="prenom" type="text" class="form-control" id="InputPrenom"
+                                   placeholder="Entrez votre prénom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="datenaissance">Date de naissance</label>
+                            <input name="datenaissance"  type="text" class="form-control" id="hasDatepicker"
+                                   placeholder="Entrez votre date de naissance" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sexe">Sexe</label>
+                            <div class="radio"><label><input type="radio" name="sexe" class="form-control" value="H"
+                                                             required>
+                                Homme </label></div>
+
+
+                            <div class="radio"><label><input type="radio" name="sexe" class="form-control" value="F"
+                                                             required>
+                                Femme </label></div>
+
+
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input name="email" type="email" class="form-control" id="InputPrenom"
+                                   placeholder="Entrez votre email" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="telephone">Email</label>
+                            <input name="telephone" type="text" class="form-control" id="InputPrenom"
+                                    placeholder="Entrez votre téléphone" required>
+                         </div>
+
+                        <div class="form-group">
+                            <label for="adresse">Adresse</label>
+                            <input name ="adresse" type="text" class="form-control" id="InputPrenom"
+                                   placeholder="Entrez votre adresse" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="codepostal">Code Postal</label>
+                            <input name="codepostal" type="text" class="form-control" id="InputPrenom"
+                                   placeholder="Entrez votre code postal" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ville">Ville</label>
+                            <input name = "ville" type="text" class="form-control" id="InputPrenom"
+                                   placeholder="Entrez votre ville" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profession">Profession</label>
+                            <input name= "profession" type="text" class="form-control" id="InputPrenom"
+                                   placeholder="Entrez votre profession" required>
+                        </div>
+
+                        <div class="form-group">
+
+                            <input type="submit" class="btn btn-lg btn-primary" id="InputPrenom">
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p>
+                <ul>
+                    <li>L'inscription est validée par la remise d'une carte nominative au prix de 5 €.</li>
+                    <li>La carte est à présenter à chaque visite.</li>
+                    <li>En cas de perte de la carte le renouvellement sera facturé 5 €.</li>
+                </ul>
+                </p>
             </div>
         </div>
     </div>
@@ -59,9 +124,9 @@
 
 {% block jsload %}
     {% include "include/jquery-bootstrap.html" %}
-        <script src= "{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js"%}"></script>
-        <script src= "{% static 'valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js' %}"></script>
-        <script src= "{% static 'valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js'%} "></script>
+    <script src="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js" %}"></script>
+    <script src="{% static 'valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js' %} "></script>
 
     <!--[if lt IE 9]>
     <script src="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"%}></script>
@@ -77,16 +142,21 @@
 
     <script src="{% static "valdyerresweb/assets/js/plugins/validation.js" %}"></script>
     <script>
-    jQuery(document).ready(function() {
-    Masking.initMasking();
-    //or
-    Datepicker.initDatepicker();
-    //or
-    Validation.initValidation();
-        $( function() {
-    $( ".hasDatepicker" ).datepicker();
-    alert('hello');
-  } );
-    });
+        jQuery(document).ready(function () {
+            Masking.initMasking();
+            //or
+            Datepicker.initDatepicker();
+            //or
+            Validation.initValidation();
+            $(function () {
+                $.datepicker.setDefaults($.datepicker.regional["fr"]);
+                $("#hasDatepicker").datepicker(
+                    {
+                        currentText: "Now"
+                    }
+                );
+
+            });
+        });
     </script>
 {% endblock %}
