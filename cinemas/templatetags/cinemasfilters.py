@@ -14,11 +14,11 @@ mois_courts = [u'jan', u'fév', u'mars', u'avril', u'mai', u'juin', u'juil', u'a
 @register.filter(is_safe=True)
 def dureesec(secondes):
     txttemps = ""
-    jours = secondes/(3600*24)
-    secondes = secondes - (jours * 3600 * 24)
-    heures = secondes/3600
-    secondes = secondes - (heures*3600)
-    minutes = secondes/60
+    jours = int(secondes/(3600*24))
+    secondes = int(secondes - (jours * 3600 * 24))
+    heures = int(secondes/3600)
+    secondes = int(secondes - (heures*3600))
+    minutes = int(secondes/60)
     if jours > 0:
         txttemps = str(jours)
         if jours == 1:
@@ -26,8 +26,10 @@ def dureesec(secondes):
         if jours > 1:
             txttemps += "jours"
     if heures > 0 :
-        txttemps+=str(heures)+"H"
-    if minutes > 0 :    
+        txttemps+=str(heures)+"h"
+    if minutes > 0 :
+        if len(str(minutes)) < 2:
+            minutes = "0"+str(minutes)
         txttemps+=str(minutes)+"min"
     return txttemps
 

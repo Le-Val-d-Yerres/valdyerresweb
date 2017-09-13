@@ -52,6 +52,8 @@ def duree(debut,fin):
     if heures > 0:
         txttemps += " "+str(heures)+" h"
     if minutes > 0:
+        if len(str(minutes)) < 2:
+            minutes = "0"+str(minutes)
         txttemps += " "+str(minutes)+" min"
     return txttemps
 

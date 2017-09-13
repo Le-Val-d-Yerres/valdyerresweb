@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from .models import Elu, TitreHorsAgglo, MandatAgglo, QualifMandat
+from .models import Elu, TitreHorsAgglo, MandatAgglo, QualifMandat, Cptrendu
 
 # Register your models here.
 
@@ -41,6 +41,10 @@ class EluAdmin(admin.ModelAdmin):
         TitreHorsAggloInline,MandatAggloInline
     ]
 
+class CptrenduAdmin(admin.ModelAdmin):
+    list_display = ['date', 'entite']
+
 
 admin.site.register(Elu,EluAdmin)
 admin.site.register(QualifMandat,QualifMandatAdmin)
+admin.site.register(Cptrendu, CptrenduAdmin)

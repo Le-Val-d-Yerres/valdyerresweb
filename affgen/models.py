@@ -64,7 +64,7 @@ class MandatAgglo(models.Model):
 ENTITE = (
     ('vyvs', u'Val d’Yerres Val de Seine'),
     ('casvs', u'Val de Seine'),
-    ('cavt', u'Val d’Yerres')
+    ('cavy', u'Val d’Yerres')
 )
 
 
