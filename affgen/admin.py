@@ -41,6 +41,7 @@ class EluAdmin(admin.ModelAdmin):
         TitreHorsAggloInline,MandatAggloInline
     ]
 
+
 class CptrenduAdmin(admin.ModelAdmin):
     list_display = ['date', 'entite']
 

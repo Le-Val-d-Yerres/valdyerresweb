@@ -75,5 +75,5 @@ class Cptrendu(models.Model):
 
     class Meta:
         ordering = ['date']
-        verbose_name = u"Mandat dans l'agglo"
-        verbose_name_plural = u"Mandats dans l'agglo"
+        verbose_name = u"Compte rendu conseil"
+        verbose_name_plural = u"Comptes rendus"
