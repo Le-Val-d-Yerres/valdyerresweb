@@ -15,7 +15,7 @@ class Ville(models.Model):
         return self.nom
 
     class Meta:
-        verbose_name_plural = "Lieux"
+        verbose_name_plural = "Villes"
         ordering = ['nom']
 
 class Lieu(models.Model):
