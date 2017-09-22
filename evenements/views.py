@@ -164,6 +164,8 @@ def SaisonDetailsHtml(request,slug):
         evenementspasses =  Evenement.objects.select_related().filter(fin__lt=datetime.datetime.now(utcTZ)).filter(publish=1).filter(cadre_evenement_id=saison.id)
         festival = saison
         saison = festival.saison_culture
+        evenements = evenements.order_by('debut')
+
     else:
         Qevenements = Evenement.objects.select_related().filter(fin__gt=datetime.datetime.now(utcTZ)).filter(publish=1)
         QevenementsPast = Evenement.objects.select_related().filter(fin__lt=datetime.datetime.now(utcTZ)).filter(publish=1)
