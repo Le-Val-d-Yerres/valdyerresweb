@@ -327,7 +327,7 @@
 		myMarker['longitude'] ={{evenement.lieu.longitude|toFloatjs}}  ;
 		myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}};
 
-{% if evenement.lieu.image %}
+{% if evenement.lieu.fonction %}
 	myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{  evenement.lieu.nom }}" src="{{  evenement.lieu.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url 'equipement-details' fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">{{  evenement.lieu.nom }}</a><br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}</p></div></div>';
 	{% else %}
 	myMarker['description'] = '{{  evenement.lieu.nom }}<br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}';{% endif %}
