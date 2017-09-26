@@ -213,9 +213,9 @@
 						<a itemprop="url" href="{% url 'event-details' slug=each.cadre_evenement.slug evenement_slug=each.slug %}"><span itemprop="name" >{{ each.nom }}</span></a>&raquo;
 						</td> 
 						<td style="text-align:right;">
-						<time itemprop="startDate" datetime=“{{each.debut|dateSEO}}”>
+						<time itemprop="startDate" content=“{{each.debut|dateSEO}}”>
 						{{ each.debut|dateCustom:each.fin }}
-						</time>
+						</time><span itemprop="location" content="{{equipement.nom}}"/>
 						</td>
 					</tr>
 				{% endfor %}
