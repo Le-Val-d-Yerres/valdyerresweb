@@ -30,6 +30,7 @@ class EquipementFonction(models.Model):
                             extensions=[".png"])
     slug = models.SlugField(max_length=255, unique=True)
     service = models.ForeignKey(Service, blank=True, null=True, verbose_name="Service Gestionnaire")
+    schema_url = models.URLField(verbose_name="Schema URL", default="http://schema.org/Place")
 
     def __str__(self):
         return self.nom
