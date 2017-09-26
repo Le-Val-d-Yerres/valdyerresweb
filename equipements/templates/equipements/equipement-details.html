@@ -39,7 +39,7 @@
 
 			<h1><a itemprop="url" href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}"><span itemprop="name">{{ equipement.nom }}</span></a></h1>
 			{% if equipement.image %}
-			<img class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
+			<img  itemprop="image" class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
 			{% endif %}
 			{% if equipement.fonction.service %}
 			<p>
@@ -58,29 +58,29 @@
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 					<strong>{{ equipement.nom }}</strong>
 					<br/>
-					<span>{{ equipement.rue }}</span>
+					<span itemprop="streetAddress">>{{equipement.rue}}</span>
 					<br/>
-					<span>{{ equipement.ville.code_postal }}</span> <span itemprop="addressLocality">{{ equipement.ville.nom }}</span>
+					<span itemprop="postalCode">{{equipement.ville.code_postal}}</span> <span itemprop="addressLocality">{{ equipement.ville.nom }}</span>
 					<br/>
 					{% if equipement.telephone %}
-					<span><abbr title="Téléphone">Tel</abbr>: {{ equipement.telephone }}</span>
+					<span><abbr title="Téléphone">Tel</abbr>: {{equipement.telephone}}</span>
 					<br/>
 					{% endif %}
 
 					{% if equipement.fax %}
 					<p>
-						Fax : {{ equipement.fax }}
+						Fax : {{equipement.fax}}
 					</p>
 					{% endif %}
 
 					{% if equipement.email %}
 					<p>
-						Courriel : <a href="mailto:{{ equipement.email }}">{{ equipement.email }}</a>
+						Courriel : <a href="mailto:{{equipement.email}}">{{equipement.email}}</a>
 					</p>
 					{% endif %}
 					{% if equipement.url %}
 					<p>
-						Site Web : <a href="{{equipement.url}}">{{ equipement.nom }}</a>
+						Site Web : <a href="{{equipement.url}}">{{equipement.nom}}</a>
 					</p>
 					{% endif %}
 				</div>
@@ -124,7 +124,8 @@
 					<td>
 						<ul>
 							{% for horaire in horaires %}
-								<li>{{horaire.nom}} : <b>{{horaire|horaires_aujourdhui}}</b></li>
+
+								<li> {{horaire.nom}} : <b>{{horaire|horaires_aujourdhui}}</b>{{horaire|schema_horaires_aujourdhui | safe}} </li>
 							{%endfor%}
 						</ul>
 					</td>
@@ -145,7 +146,7 @@
 					<td>
 						<ul>
 					{% for horaire in horaires %}
-					<li>{{horaire.nom}} : <b>{{forloop.parentloop.counter|horaire_journee_timedelta:horaire}}</b></li>
+					<li>{{horaire.nom}} : <b>{{forloop.parentloop.counter|horaire_journee_timedelta:horaire}}</b>{{forloop.parentloop.counter|schema_horaire_journee_timedelta:horaire|safe}}</li>
 					{% endfor %}
 						</ul>
 					</td>

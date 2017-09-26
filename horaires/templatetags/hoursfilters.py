@@ -4,7 +4,8 @@ register = template.Library()
 import datetime
 
 mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre', u'octobre', u'novembre' ,u'décembre']
-WeekDay = ['lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi','dimanche']    
+WeekDay = ['lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi','dimanche']
+SchemaDay = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
 #une journée en général
 @register.filter(is_safe=True) 
@@ -28,6 +29,34 @@ def horaires_journee(numjour,horaire):
         txthours += "après-midi de "+myday.heure_am_debut.strftime("%H:%M")+" à "+myday.heure_am_fin.strftime("%H:%M")
     return txthours+"."
 
+
+@register.filter(is_safe=True)
+def schema_horaires_journee(numjour, horaire):
+    txthours = ""
+    numjour = int(numjour)
+    myday = horaire.GetDay(numjour)
+    numjour = numjour -1 # pour l'index du tableau
+    balise = "<span itemprop=\"openingHours\" content=\"{{hours}}\"/>"
+    if myday.matin_ferme and myday.am_ferme:
+        return ""
+
+    if myday.journee_continue:
+        return balise.replace("{{hours}}", SchemaDay[numjour] +" "+ myday.heure_matin_debut.strftime("%H:%M") + " - " + myday.heure_am_fin.strftime(
+            "%H:%M"))
+    if myday.matin_ferme:
+        txthours +=""
+    else:
+        txthours += balise.replace("{{hours}}", SchemaDay[numjour] +" "+ myday.heure_matin_debut.strftime("%H:%M") + " - " + myday.heure_matin_fin.strftime(
+            "%H:%M"))
+
+    if myday.am_ferme:
+        txthours += ""
+    else:
+        txthours += balise.replace("{{hours}}", SchemaDay[numjour] +" "+ myday.heure_am_debut.strftime("%H:%M") + " - " + myday.heure_am_fin.strftime(
+            "%H:%M"))
+    return txthours
+
+
 #un jour précis
 def horaires_jour(day,horaire):
     return horaires_journee(day.isoweekday(), horaire)  
@@ -37,6 +66,12 @@ def horaires_jour(day,horaire):
 def horaire_journee_timedelta(delta,horaire):
     day = datetime.date.today() + datetime.timedelta(days=delta)
     return horaires_jour(day, horaire)
+
+@register.filter(is_safe=True)
+def schema_horaire_journee_timedelta(delta,horaire):
+    day = datetime.date.today() + datetime.timedelta(days=delta)
+    return schema_horaires_journee(day.isoweekday(), horaire)
+
 
 @register.filter(is_safe=True)
 def horaires_semaine(horaire, periode):
@@ -66,6 +101,11 @@ def horaires_aujourdhui(horaire):
     return horaires_jour(today,horaire)
 
 @register.filter(is_safe=True)
+def schema_horaires_aujourdhui(horaire):
+    today = datetime.datetime.today()
+    return schema_horaires_journee(today.isoweekday(), horaire)
+
+@register.filter(is_safe=True)
 def horaires_demain(horaire):
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     return horaires_jour(tomorrow,horaire)
@@ -75,6 +115,10 @@ def nom_jour_aujourdhui():
     day = datetime.datetime.today()
     return WeekDay[day.weekday()] +" "+day.strftime(u"%d")+u" "+mois[int(day.strftime(u"%m"))-1]
 
+@register.simple_tag()
+def schema_day_aujourdhui():
+    day = datetime.datetime.today()
+    return SchemaDay[day.weekday()]
 
 @register.simple_tag()
 def nom_jour_demain():
@@ -85,6 +129,11 @@ def nom_jour_demain():
 def nom_jour_index(index):
     day = datetime.date.today() + datetime.timedelta(days=index)
     return WeekDay[day.weekday()] +" "+day.strftime(u"%d")+u" "+mois[int(day.strftime(u"%m"))-1]
+
+@register.filter(is_safe=True)
+def schema_day_index(index):
+    day = datetime.date.today() + datetime.timedelta(days=index)
+    return WeekDay[day.weekday()]
 
 @register.filter(is_safe=True)
 def dates_periode(debut, fin):
