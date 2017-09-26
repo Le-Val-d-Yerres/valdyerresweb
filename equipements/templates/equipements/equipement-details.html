@@ -58,12 +58,13 @@
 				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 					<strong>{{ equipement.nom }}</strong>
 					<br/>
-					<span itemprop="streetAddress">>{{equipement.rue}}</span>
+					<span itemprop="streetAddress">{{equipement.rue}}</span>
 					<br/>
 					<span itemprop="postalCode">{{equipement.ville.code_postal}}</span> <span itemprop="addressLocality">{{ equipement.ville.nom }}</span>
 					<br/>
+                    </div>
 					{% if equipement.telephone %}
-					<span><abbr title="Téléphone">Tel</abbr>: {{equipement.telephone}}</span>
+					<abbr title="Téléphone">Tel</abbr>: <span itemprop="telephone">{{equipement.telephone}}</span>
 					<br/>
 					{% endif %}
 
@@ -83,7 +84,7 @@
 						Site Web : <a href="{{equipement.url}}">{{equipement.nom}}</a>
 					</p>
 					{% endif %}
-				</div>
+
 			</address>
 			<hr/>
 			<div style="text-align: center;">
