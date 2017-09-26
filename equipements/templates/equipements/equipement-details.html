@@ -211,11 +211,19 @@
 					<tr itemscope itemtype="http://schema.org/Event">
 						<td>{{ each.type.nom }} : &laquo;
 						<a itemprop="url" href="{% url 'event-details' slug=each.cadre_evenement.slug evenement_slug=each.slug %}"><span itemprop="name" >{{ each.nom }}</span></a>&raquo;
-						</td> 
+						</td>
 						<td style="text-align:right;">
-						<time itemprop="startDate" content=“{{each.debut|dateSEO}}”>
+						<time itemprop="startDate" content="{{each.debut|dateSEO}}">
 						{{ each.debut|dateCustom:each.fin }}
-						</time><span itemprop="location" content="{{equipement.nom}}"/>
+						</time>
+                            <span itemprop="location" itemtype="http://schema.org/Place">
+                            <span itemprop="url" content="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}"></span>
+                            <span itemprop="name" content="{{equipement.nom}}"></span>
+                                <span itemprop="adress" itemtype="http://schema.org/PostalAdress">
+                                    <span itemprop="streetAddress" content="{{ equipement.rue }}"></span>
+                                    <span itemprop="addressLocality" content="{{ equipement.ville }}"></span>
+                                </span>
+                            </span>
 						</td>
 					</tr>
 				{% endfor %}
