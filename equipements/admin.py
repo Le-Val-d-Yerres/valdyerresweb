@@ -50,7 +50,7 @@ class EquipementFonctionAdmin(admin.ModelAdmin):
     list_display = ['nom']
     
     fieldsets = [
-        (None, {'fields': ['nom', 'pluriel', 'picto','logo','service']}),
+        (None, {'fields': ['nom', 'pluriel', 'picto','logo','service','schema_url']}),
     ]
     
     def save_model(self, request, obj, form, change):
