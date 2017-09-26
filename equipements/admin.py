@@ -66,7 +66,7 @@ class EquipementFonctionAdmin(admin.ModelAdmin):
         path = reverse('equipements-carte', kwargs={})
         functions.expire_page(path)
 
-        path = reverse('onction-details-html', kwargs={'fonction_slug':obj.slug})
+        path = reverse('fonction-details-html', kwargs={'fonction_slug':obj.slug})
         functions.expire_page(path)
     
 class FaciliteAdmin(admin.ModelAdmin):
