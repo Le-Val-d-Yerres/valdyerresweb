@@ -3,349 +3,375 @@
 {% load aidefilters %}
 {% load eventfilters %}
 {% load menufilters %}
-{% load aidefilters%}
+{% load aidefilters %}
 {% load tz %}
 {% if saison %}
 
-{% block title %} {{ evenement.nom}} {% endblock %}
+    {% block title %} {{ evenement.nom }} {% endblock %}
 
-{% block meta-description %}{{ evenement.meta_description }}{% endblock %}
+    {% block meta-description %}{{ evenement.meta_description }}{% endblock %}
 
-{% block head %}
-<meta property="og:title" content="{{ evenement.nom }}" />
-<meta property="og:type" content="website" />
-<meta property="og:description" content="{{ evenement.description|resume:500|cleanhtml }}" />
-<meta property="og:url" content="{{evenement.get_full_url}}" />
-<meta property="og:image" content="{{ evenement.get_image_full_url }}" />
+    {% block head %}
+        <meta property="og:title" content="{{ evenement.nom }}"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:description" content="{{ evenement.description|resume:500|cleanhtml }}"/>
+        <meta property="og:url" content="{{ evenement.get_full_url }}"/>
+        <meta property="og:image" content="{{ evenement.get_image_full_url }}"/>
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="{{evenement.get_full_url}}">
-<meta name="twitter:title" content="{{ evenement.nom }}">
-<meta name="twitter:description" content="{{ evenement.description|resume:500|cleanhtml }}">
-<meta name="twitter:image" content="{{ evenement.get_image_full_url }}" />
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:url" content="{{ evenement.get_full_url }}">
+        <meta name="twitter:title" content="{{ evenement.nom }}">
+        <meta name="twitter:description" content="{{ evenement.description|resume:500|cleanhtml }}">
+        <meta name="twitter:image" content="{{ evenement.get_image_full_url }}"/>
 
-{% endblock %}
+    {% endblock %}
 
-{% block menu %}{% getmenu %}{% endblock %}
+    {% block menu %}{% getmenu %}{% endblock %}
 
-{% block contenu %}
+    {% block contenu %}
 
-<div itemscope itemtype="http://schema.org/Event" class="container">
-	<div  class="row-fluid">
-		<div class="col-md-12">
-			<ul class="breadcrumb">
-				<li>
-					<a href="/">Accueil</a>
-				</li>
+        <div itemscope itemtype="http://schema.org/Event" class="container">
+            <div class="row-fluid">
+                <div class="col-md-12">
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="/">Accueil</a>
+                        </li>
 
-				<li>
-					<a href="{% url 'agenda-global' %}">Agenda</a>
-				</li>
-				{% if festival %}
-				<li>
-					<a href="{% url 'saison-details' slug=saison.slug %}">{{saison.nom}}</a>
-				</li>
-				<li class="active">
-					<a href="{%url 'saison-details' slug=festival.slug %}">{{festival.nom}}</a>
-				</li>
-				<li class="active">
-					{{ evenement.nom }}
-				</li>
-				{% else %}
-				<li>
-					<a href="{% url 'saison-details' slug=saison.slug %}">{{saison.nom}}</a>
-				</li>
-				<li class="active">
-					{{ evenement.nom }}
-				</li>
-				{% endif %}
-			</ul>
-		</div>
-		<div class="col-md-8">
-			{% if not a_venir %}
-			<div class="alert alert-danger" role="alert">
-				<strong>Cet événement est terminé.</strong>
-				<br/>
-				Pour les événements à venir consultez <a href="{% url 'agenda-global' %}">l'agenda</a>.
-			</div>
-			{% endif %}
-			
-			
-			{% if festival %}
-			<h1 itemprop="name"><a itemprop="url" href="{% url 'event-details' slug=festival.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
-			{% else %}
-			<h1 itemprop="name"><a itemprop="url" href="{% url 'event-details' slug=saison.slug evenement_slug=evenement.slug%}">{{ evenement.nom }}</a></h1>
-			{% endif %}
-			<p>
-				Organisé par :
-			</p>
-				<ul>
-					{% for each in evenement.organisateur.all %}
-					<li>
-						<a href="{% url 'organisateur_html' organisateur_slug=each.slug%}"> {{ each.nom }}</a>
-					</li>
-					{% endfor %}
-				</ul>
-			
-			{% if evenement.image %}
-			{% if evenement.image.width >= evenement.image.height %}
-			<div class="img-responsive">
-				{% if a_venir and evenement.complet %}
-				<span class="label label-important label-complet">Complet</span>
-				{% endif %}
-				<img alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
-				
-			</div>
-			{% endif %}
+                        <li>
+                            <a href="{% url 'agenda-global' %}">Agenda</a>
+                        </li>
+                        {% if festival %}
+                            <li>
+                                <a href="{% url 'saison-details' slug=saison.slug %}">{{ saison.nom }}</a>
+                            </li>
+                            <li class="active">
+                                <a href="{% url 'saison-details' slug=festival.slug %}">{{ festival.nom }}</a>
+                            </li>
+                            <li class="active">
+                                {{ evenement.nom }}
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'saison-details' slug=saison.slug %}">{{ saison.nom }}</a>
+                            </li>
+                            <li class="active">
+                                {{ evenement.nom }}
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-md-8">
+                    {% if not a_venir %}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Cet événement est terminé.</strong>
+                            <br/>
+                            Pour les événements à venir consultez <a href="{% url 'agenda-global' %}">l'agenda</a>.
+                        </div>
+                    {% endif %}
 
-			{% if evenement.image.height > evenement.image.width %}
-			<div class ="img-reponsive" style="text-align:center;">
-				{% if a_venir and evenement.complet %}
-				
-				<div class="label label-important label-complet">Complet</div>
-				{% endif %}
-				<img alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'300x375x1' }}">
-				
-			</div>
-			{% endif %}
-			{% endif %}
-			<meta itemprop="startDate" content="{{ evenement.debut|dateSEO }}">
-			<meta itemprop="endDate" content="{{ evenement.fin|dateSEO }}">
 
-			<p>
-				Date : {{ evenement.debut|dateCustom:evenement.fin }}
-				<br/>
-				Durée : {{evenement.debut|duree:evenement.fin}}
-				<br/>
-				Type : <a href="{% url 'agenda-type-period-orga' type_slug=evenement.type.slug period="toutes"  orga_slug="tous" %}" >{{evenement.type}}</a>
+                    {% if festival %}
+                        <h1 itemprop="name"><a itemprop="url"
+                                               href="{% url 'event-details' slug=festival.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a>
+                        </h1>
+                    {% else %}
+                        <h1 itemprop="name"><a itemprop="url"
+                                               href="{% url 'event-details' slug=saison.slug evenement_slug=evenement.slug %}">{{ evenement.nom }}</a>
+                        </h1>
+                    {% endif %}
+                    <p>
+                        Organisé par :
+                    </p>
+                    <ul>
+                        {% for each in evenement.organisateur.all %}
+                            <li>
+                                <a href="{% url 'organisateur_html' organisateur_slug=each.slug %}"> {{ each.nom }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
 
-			</p>
+                    {% if evenement.image %}
+                        {% if evenement.image.width >= evenement.image.height %}
+                            <div class="img-responsive">
+                                {% if a_venir and evenement.complet %}
+                                    <span class="label label-important label-complet">Complet</span>
+                                {% endif %}
+                                <img itemprop="image" alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'670x375x1' }}">
 
-			<div itemprop="description">
-				{{ evenement.description|safe }}
-			</div>
+                            </div>
+                        {% endif %}
 
-			{% if a_venir %}
-			{% if evenement.url_reservation != "" and  evenement.url_reservation != None %}
+                        {% if evenement.image.height > evenement.image.width %}
+                            <div class="img-reponsive" style="text-align:center;">
+                                {% if a_venir and evenement.complet %}
 
-			<div class="plusinfos" style="text-align:right;">
-				<p>
-					<a class="btn btn-info btn-large " href="{{ evenement.url_reservation }}"  data-toggle="tooltip" data-original-title="Réservation en suivant ce lien : {{ evenement.url_reservation}}" data-placement="top" onclick="_gaq.push(['_trackEvent', 'Evenement', 'Reservation', '{{evenement.nom}}']);">Réservation</a>
-				</p>
-			</div>
+                                    <div class="label label-important label-complet">Complet</div>
+                                {% endif %}
+                                <img itemprop="image" alt="{{ evenement.nom }}" src="{{ evenement.image|resize:'300x375x1' }}">
 
-			{% elif evenement.url != "" and evenement.url != None %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <meta itemprop="startDate" content="{{ evenement.debut|dateSEO }}">
+                    <meta itemprop="endDate" content="{{ evenement.fin|dateSEO }}">
 
-			<div class="plusinfos" style="text-align:right;">
-				<p>
-					<a class="btn btn-info " href="{{ evenement.url }}" data-toggle="tooltip" data-original-title="Plus d'infos en suivant ce lien : {{ evenement.url}}" data-placement="top">+ d'infos</a>
-				</p>
-			</div>
-			
-			{% endif %}
-			{% endif %}
-		{% if documentattache|length > 0 %}
-			<hr/>
-				{% with total=documentattache|length%}
-				<p>
-					{{total}} document{{total|pluralize}} attaché{{total|pluralize}} :
-				</p>
-				<ul class="span6 nav nav-tabs nav-stacked">
-					{% for doc in documentattache %}
-					<li>
-						<a href="{{doc.document.url}}">{{doc.nom}}, ({{doc.document.filesize|filesizeformat}}).</a>
-					</li>
-					{% endfor %}
-				</ul>
-				{% endwith %}
-			
-			{% endif %}
-        <hr/>
-			<h2>Géolocalisation:
-			<br/>
-			<small>{{evenement.lieu.nom}}
-				<br/>
-				{{evenement.lieu.rue}}, {{evenement.lieu.ville.code_postal}} {{evenement.lieu.ville.nom }}</small></h2>
-			<div id="map_canvas" style="width: 512px; height: 450px"></div>
-		</div>
+                    <p>
+                        Date : {{ evenement.debut|dateCustom:evenement.fin }}
+                        <br/>
+                        Durée : {{ evenement.debut|duree:evenement.fin }}
+                        <br/>
+                        Type : <a
+                            href="{% url 'agenda-type-period-orga' type_slug=evenement.type.slug period="toutes"  orga_slug="tous" %}">{{ evenement.type }}</a>
 
-		<div class="col-md-4">
-			<br/>
-			<address>
-				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
-					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-						{% if evenement.lieu.presentation %}
-						<strong><a itemprop="url" href="{% url 'equipement-details' fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug%}"><span itemprop="name">{{ evenement.lieu.nom }}</span></a></strong>
-						<br/>
-						{% else %}
-						<strong>{{ evenement.lieu.nom }}</strong>
-						<br/>
-						{% endif %}
-						<span itemprop="streetAddress" >{{ evenement.lieu.rue }}</span>
-						<br/>
-						<span>{{ evenement.lieu.ville.code_postal }}</span> <span itemprop="addressLocality" >{{ evenement.lieu.ville.nom }}</span>
-						<br/>
-						{% if evenement.lieu.telephone %}<span><abbr title="Téléphone">Tel</abbr>: {{ evenement.lieu.telephone }}</span>
-						<br/>
-						{% endif %}
+                    </p>
 
-					</div>
-					<span itemprop="geo" itemscope itemtype="http://data-vocabulary.org/​GeoCoordinates">
-						<meta itemprop="latitude" content="{{ evenement.lieu.latitude }}" />
-						<meta itemprop="longitude" content="{{ evenement.lieu.longitude }}" />
+                    <div itemprop="description">
+                        {{ evenement.description|safe }}
+                    </div>
+
+                    {% if a_venir %}
+                        {% if evenement.url_reservation != "" and  evenement.url_reservation != None %}
+
+                            <div class="plusinfos" style="text-align:right;">
+                                <p>
+                                    <a class="btn btn-info btn-large " href="{{ evenement.url_reservation }}"
+                                       data-toggle="tooltip"
+                                       data-original-title="Réservation en suivant ce lien : {{ evenement.url_reservation }}"
+                                       data-placement="top"
+                                       onclick="_gaq.push(['_trackEvent', 'Evenement', 'Reservation', '{{ evenement.nom }}']);">Réservation</a>
+                                </p>
+                            </div>
+
+                        {% elif evenement.url != "" and evenement.url != None %}
+
+                            <div class="plusinfos" style="text-align:right;">
+                                <p>
+                                    <a class="btn btn-info " href="{{ evenement.url }}" data-toggle="tooltip"
+                                       data-original-title="Plus d'infos en suivant ce lien : {{ evenement.url }}"
+                                       data-placement="top">+ d'infos</a>
+                                </p>
+                            </div>
+
+                        {% endif %}
+                    {% endif %}
+                    {% if documentattache|length > 0 %}
+                        <hr/>
+                        {% with total=documentattache|length %}
+                            <p>
+                                {{ total }} document{{ total|pluralize }} attaché{{ total|pluralize }} :
+                            </p>
+                            <ul class="span6 nav nav-tabs nav-stacked">
+                                {% for doc in documentattache %}
+                                    <li>
+                                        <a href="{{ doc.document.url }}">{{ doc.nom }},
+                                            ({{ doc.document.filesize|filesizeformat }}).</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endwith %}
+
+                    {% endif %}
+                    <hr/>
+                    <h2>Géolocalisation:
+                        <br/>
+                        <small>{{ evenement.lieu.nom }}
+                            <br/>
+                            {{ evenement.lieu.rue }}, {{ evenement.lieu.ville.code_postal }} {{ evenement.lieu.ville.nom }}
+                        </small>
+                    </h2>
+                    <div id="map_canvas" style="width: 512px; height: 450px"></div>
+                </div>
+
+                <div class="col-md-4">
+                    <br/>
+                    <address>
+                        <div itemprop="location" itemscope itemtype="http://schema.org/Place">
+
+                            {% if evenement.lieu.presentation %}
+                                <strong>
+                                    <a itemprop="url"
+                                       href="{% url 'equipement-details' fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">
+                                        <span itemprop="name">{{ evenement.lieu.nom }}</span>
+                                    </a>
+                                </strong>
+                                <br/>
+                            {% else %}
+                                <strong><span itemprop="name">{{evenement.lieu.nom }}</span></strong>
+
+                                <br/>
+                            {% endif %}
+                            <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                                <span itemprop="streetAddress">{{ evenement.lieu.rue }}</span>
+                                <br/>
+                                <span>{{ evenement.lieu.ville.code_postal }}</span> <span
+                                    itemprop="addressLocality">{{ evenement.lieu.ville.nom }}</span>
+                                <br/>
+                                {% if evenement.lieu.telephone %}
+                                    <span><abbr title="Téléphone">Tel</abbr>: {{ evenement.lieu.telephone }}</span>
+                                    <br/>
+                                {% endif %}
+
+                            </div>
+                            <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+						<meta itemprop="latitude" content="{{ evenement.lieu.latitude }}"/>
+						<meta itemprop="longitude" content="{{ evenement.lieu.longitude }}"/>
 					</span>
-				</div>
-			</address>
-			<hr/>
+                        </div>
+                    </address>
+                    <hr/>
 
-			{% if  a_venir and tarification %}
-			<div itemprop="offers" itemscope itemtype="http://schema.org/AggregateOffer">
-				<p>
-					<strong>Tarification</strong>
-					<br/>
-					{% for item in tarification %}
+                    {% if  a_venir and tarification %}
+                        <div itemprop="offers" itemscope itemtype="http://schema.org/AggregateOffer">
+                            <p>
+                                <strong>Tarification</strong>
+                                <br/>
+                                {% for item in tarification %}
 
-					{% if forloop.first%}
-					{{item.intitule}} : <span itemprop="lowPrice">{{item.prix|monnaie}}</span>
-					<br/>
-					{% elif forloop.last %}
-					{{item.intitule}} : <span itemprop="highPrice">{{item.prix|monnaie}}</span>
-					<br/>
-					{% else %}
-					{{item.intitule}} : {{item.prix|monnaie}}
-					<br/>
-					{% endif %}
+                                    {% if forloop.first %}
+                                        {{ item.intitule }} : <span itemprop="lowPrice">{{ item.prix|monnaie }}</span>
+                                        <br/>
+                                    {% elif forloop.last %}
+                                        {{ item.intitule }} : <span itemprop="highPrice">{{ item.prix|monnaie }}</span>
+                                        <br/>
+                                    {% else %}
+                                        {{ item.intitule }} : {{ item.prix|monnaie }}
+                                        <br/>
+                                    {% endif %}
 
-					{% endfor %}
-				</p>
-			</div>
-			<hr/>
-			{% endif %}
-
-
-			{% if a_venir %}
-                <div class="post margin-bottom-25">
-                     <dl class="dl-horizontal">{{evenement.get_absolute_url|facebook:evenement.nom|safe}}</dl>
-                    <dl class="dl-horizontal">{{evenement.get_absolute_url|twitter:evenement.nom|safe}}</dl>
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <hr/>
+                    {% endif %}
 
 
-			    </div>
-				<hr/>
-				{{evenement|calendaraddlinklist|safe}}
+                    {% if a_venir %}
+                        <div class="post margin-bottom-25">
+                            <dl class="dl-horizontal">{{ evenement.get_absolute_url|facebook:evenement.nom|safe }}</dl>
+                            <dl class="dl-horizontal">{{ evenement.get_absolute_url|twitter:evenement.nom|safe }}</dl>
 
-				{{"ical"|aide}}
-			
-			<hr class="hidden-phone" />
-			<div class="hidden-phone" style="text-align:center;">
-				Ajouter cet événement à votre agenda :
-				<br/>
-				(Format QR Code) :
-				<br/>
-				<img alt="QrCode : {{ evenement.nom }}" src="data:image/png;base64,{{ evenement_qr }}"/>
-				<br/>
-				{{"qr-code"|aide}}
-			</div>
-			<hr/>
-			
-			{% endif %}
-			
-			
-			
-		</div>
 
-		<div class="span4">
+                        </div>
+                        <hr/>
+                        {{ evenement|calendaraddlinklist|safe }}
 
-			<p style="text-align:center;">
-				Les coordonnées GPS :
-				<br/>
-				Latitude : {{ evenement.lieu.latitude }}
-				<br/>
-				Longitude : {{ evenement.lieu.longitude }}
-			</p>
-			<hr/>
-			<div class="hidden-phone" style="text-align:center;">
-				Les coordonnées GPS :
-				<br/>
-				(Format QR Code)
-				<br/>
-				<img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ localisation_qr }}"/>
+                        {{ "ical"|aide }}
 
-				<br/>
-				<br/>
-				<ul style="list-style:none;">
-					<li>
-						<a class="btn btn-primary" href="http://www.openstreetmap.org/index.html?mlat={{evenement.lieu.latitude|toFloatjs}}&amp;mlon={{evenement.lieu.longitude|toFloatjs}}&amp;zoom=18"> Voir l'emplacement sur OpenstreetMap</a>
-					</li>
-					<li>&nbsp;</li>
-					<li>
-						<a class="btn btn-primary" href="http://maps.google.com/?q={{evenement.lieu.latitude|toFloatjs}},{{evenement.lieu.longitude|toFloatjs}}&amp;z=19"> Voir l'emplacement sur Google Maps</a>
-					</li>
-				</ul>
-				</div>
-			
-			<br/>
-		</div>
+                        <hr class="hidden-phone"/>
+                        <div class="hidden-phone" style="text-align:center;">
+                            Ajouter cet événement à votre agenda :
+                            <br/>
+                            (Format QR Code) :
+                            <br/>
+                            <img alt="QrCode : {{ evenement.nom }}" src="data:image/png;base64,{{ evenement_qr }}"/>
+                            <br/>
+                            {{ "qr-code"|aide }}
+                        </div>
+                        <hr/>
 
-	</div>
-	{% if tarifs %}
-	<div class="row-fluid">
-		<div class="span7">
-			<hr/>
-			<h2>Tarification :</h2>
-			<ul>
-				{% for each in tarifs.prix.all %}
-				<li>
-					{{ each.nom }} : {{ each.prix }}
-				</li>
-				{% endfor %}
-			</ul>
-		</div>
+                    {% endif %}
 
-	</div>
-	{% endif %}
-</div>
 
-{% endblock %}
+                </div>
+
+                <div class="span4">
+
+                    <p style="text-align:center;">
+                        Les coordonnées GPS :
+                        <br/>
+                        Latitude : {{ evenement.lieu.latitude }}
+                        <br/>
+                        Longitude : {{ evenement.lieu.longitude }}
+                    </p>
+                    <hr/>
+                    <div class="hidden-phone" style="text-align:center;">
+                        Les coordonnées GPS :
+                        <br/>
+                        (Format QR Code)
+                        <br/>
+                        <img alt="QrCode : {{ each.nom }}" src="data:image/png;base64,{{ localisation_qr }}"/>
+
+                        <br/>
+                        <br/>
+                        <ul style="list-style:none;">
+                            <li>
+                                <a class="btn btn-primary"
+                                   href="http://www.openstreetmap.org/index.html?mlat={{ evenement.lieu.latitude|toFloatjs }}&amp;mlon={{ evenement.lieu.longitude|toFloatjs }}&amp;zoom=18">
+                                    Voir l'emplacement sur OpenstreetMap</a>
+                            </li>
+                            <li>&nbsp;</li>
+                            <li>
+                                <a class="btn btn-primary"
+                                   href="http://maps.google.com/?q={{ evenement.lieu.latitude|toFloatjs }},{{ evenement.lieu.longitude|toFloatjs }}&amp;z=19">
+                                    Voir l'emplacement sur Google Maps</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <br/>
+                </div>
+
+            </div>
+            {% if tarifs %}
+                <div class="row-fluid">
+                    <div class="span7">
+                        <hr/>
+                        <h2>Tarification :</h2>
+                        <ul>
+                            {% for each in tarifs.prix.all %}
+                                <li>
+                                    {{ each.nom }} : {{ each.prix }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            {% endif %}
+        </div>
+
+    {% endblock %}
 {% else %}
-<p>
-	Erreur interne.
-</p>
+    <p>
+        Erreur interne.
+    </p>
 {% endif %}
 
-{% block jsload%}
+{% block jsload %}
 
-{% include "include/jquery-bootstrap.html" %}
+    {% include "include/jquery-bootstrap.html" %}
 
-<script>{% if evenement.url != "" or evenement.url_reservation != ""%}
-	$('.plusinfos').tooltip({
-		selector : "a[data-toggle=tooltip]"
-	})
-{% endif %}
-	function LoadMap() {
-		var tabEquipement = Array();
-		var myMarker = Object();
-		myMarker['longitude'] ={{evenement.lieu.longitude|toFloatjs}}  ;
-		myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}};
+    <script>{% if evenement.url != "" or evenement.url_reservation != ""%}
+        $('.plusinfos').tooltip({
+            selector: "a[data-toggle=tooltip]"
+        })
+    {% endif %}
+    function LoadMap() {
+        var tabEquipement = Array();
+        var myMarker = Object();
+        myMarker['longitude'] ={{evenement.lieu.longitude|toFloatjs}};
+        myMarker['latitude'] ={{evenement.lieu.latitude|toFloatjs}};
 
-{% if evenement.lieu.fonction %}
-	myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{  evenement.lieu.nom }}" src="{{  evenement.lieu.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url 'equipement-details' fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">{{  evenement.lieu.nom }}</a><br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}</p></div></div>';
-	{% else %}
-	myMarker['description'] = '{{  evenement.lieu.nom }}<br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}';{% endif %}
+        {% if evenement.lieu.fonction %}
+            myMarker['description'] = '<div style="width:250px;height:250px "><div><img class="img-polaroid" alt="{{  evenement.lieu.nom }}" src="{{  evenement.lieu.image|resize:'250x140x0' }}"/></div><div><p><a href="{% url 'equipement-details' fonction_slug=evenement.lieu.fonction.slug equipement_slug=evenement.lieu.slug %}">{{  evenement.lieu.nom }}</a><br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}</p></div></div>';
+        {% else %}
+            myMarker['description'] = '{{  evenement.lieu.nom }}<br  \>{{  evenement.lieu.rue }}<br  \>{{  evenement.lieu.ville.code_postal }}<br  \>{{  evenement.lieu.ville.nom }}';{% endif %}
 
-	myMarker['marker'] = '{{evenement.lieu|lieuMarker }}';
-	tabEquipement.push(myMarker);
-	setMarkers(tabEquipement);
-	map_init();
+        myMarker['marker'] = '{{evenement.lieu|lieuMarker }}';
+        tabEquipement.push(myMarker);
+        setMarkers(tabEquipement);
+        map_init();
 
-	}
+    }
 
-	$(window).resize(function() {
-	var h = $('#map_canvas').parent().width();
-	$('#map_canvas').css('height', (h));
-	$('#map_canvas').css('width', (h));
-	}).resize();
+    $(window).resize(function () {
+        var h = $('#map_canvas').parent().width();
+        $('#map_canvas').css('height', (h));
+        $('#map_canvas').css('width', (h));
+    }).resize();
 
-</script>
+    </script>
 
-{% include "include/maps-ressources.html" %}
-{% endblock%}
+    {% include "include/maps-ressources.html" %}
+{% endblock %}
