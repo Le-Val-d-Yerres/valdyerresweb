@@ -83,6 +83,7 @@ EVENEMENT_CATEGORIES = (
     ('crd', u'Conservatoires'),
     ('sty', u'Sothevy'),
     ('eco', u'Développement Économique'),
+    ('mde', u"Maison de l'environnement"),
     ('aut', u'Autres'),
 )
 
@@ -201,3 +202,17 @@ class EvenementDevEco(Evenement):
         proxy = True
         verbose_name_plural = u"Événements Dev Eco"
         verbose_name = u"Événement Dev Eco"
+
+
+class EvenementMdeManager(models.Manager):
+    def get_queryset(self):
+        return super(EvenementMdeManager,self).get_queryset().filter(categorie='mde')
+
+
+class EvenementMde(Evenement):
+    objects = EvenementMdeManager()
+
+    class Meta:
+        proxy = True
+        verbose_name_plural = "Événements MDE"
+        verbose_name = "Événement MDE"
