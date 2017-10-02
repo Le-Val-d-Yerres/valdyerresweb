@@ -511,7 +511,7 @@ def MultiEvenementsDetailsIcalendar(evenements):
     
     
 def EvenementDetailsHtml(request, slug, evenement_slug):
-    evenement = get_object_or_404(Evenement.objects.select_related().prefetch_related('organisateur'), slug=evenement_slug)
+    evenement = get_object_or_404(Evenement.objects.select_related().prefetch_related('organisateur').filter(publish=True), slug=evenement_slug)
     saison = get_object_or_404(Saison.objects.select_related().select_subclasses(), slug=slug)
     if evenement.cadre_evenement.id != saison.id:
         raise Http404
