@@ -29,7 +29,7 @@ class Lieu(models.Model):
     objects = InheritanceManager()
     
     def __str__(self):
-        return self.ville.nom+" | "+self.nom
+        return self.ville.nom+" | "+self.nom + " | "+self.rue
 
     class Meta:
         verbose_name_plural = "Lieux"

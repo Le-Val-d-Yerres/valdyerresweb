@@ -26,6 +26,7 @@
             </ul>
         </div>
         <div class="col-md-12">
+            <h1><a href="{% url 'compterendus' %}">Comptes rendus du Conseil Communautaire</a></h1>
         <ul>
         {% regroup cptrd by date|date:"Y" as objects_by_year %}
             {% for year in objects_by_year %}
