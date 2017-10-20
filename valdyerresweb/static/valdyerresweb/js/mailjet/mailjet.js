@@ -60,7 +60,7 @@ function affichageReponse()
 	}
 	else if (ajaxReponse == "3")
 	{
-		document.getElementById('lettreErreur').innerHTML = "Vous êtes déjà abonné à la lettre d'informations du Val d'Yerres.";
+		document.getElementById('lettreErreur').innerHTML = "Vous êtes déjà abonné à la lettre d'informations du Val d'Yerres Val de Seine.";
 		document.getElementById('lettreErreur').className = "alert mailMsg alert-info";
 	}
 	else if (ajaxReponse == "4")

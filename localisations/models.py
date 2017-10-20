@@ -18,6 +18,7 @@ class Ville(models.Model):
         verbose_name_plural = "Villes"
         ordering = ['nom']
 
+
 class Lieu(models.Model):
     nom = models.CharField(max_length=255, verbose_name="Nom")
     rue = models.CharField(max_length=255)

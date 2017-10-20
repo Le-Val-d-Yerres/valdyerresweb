@@ -218,7 +218,7 @@ AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
 PICTO_LIEU = 'uploads/picto/lieu.png'
 
-NOM_ORGANISATION = "Le Val d'Yerres"
+NOM_ORGANISATION = "Le Val d'Yerres "
 GRAPPELLI_ADMIN_TITLE = NOM_ORGANISATION
 
 USE_X_FORWARDED_HOST = True
