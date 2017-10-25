@@ -11,13 +11,8 @@
 {% block title %}Formulaire inscription espaces public numeriques{% endblock %}
 {% block menu %}{% getmenu %}{% endblock %}
 
-{% block meta-description %}Formulaire en ligne d'inscription aux espaces public numeriques EPN{% endblock %}
+{% block meta-description %}Merci pour votre inscription.{% endblock %}
 
-{% block head %}
-    <link rel="stylesheet" href="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css" %} ">
-    <link rel="stylesheet"
-          href="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css" %} ">
-{% endblock %}
 
 {% block contenu %}
 
@@ -27,7 +22,7 @@
                 <ul class="breadcrumb">
                     <li><a href="/">Accueil</a></li>
                     <li><a href="{% url 'actulist' %}">Actualités</a></li>
-                    <li class="active">{{ page.titre }}</li>
+                    <li class="active">Confirmation inscription</li>
                 </ul>
             </div>
         </div>
@@ -120,43 +115,4 @@
         </div>
     </div>
 
-{% endblock %}
-
-{% block jsload %}
-    {% include "include/jquery-bootstrap.html" %}
-    <script src="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js" %}"></script>
-    <script src="{% static 'valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js' %} "></script>
-
-    <!--[if lt IE 9]>
-    <script src="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"%}></script>
-    <![endif]-->
-
-    <!--[if lt IE 10]>
-    <script src="{% static "valdyerresweb/assets/plugins/sky-forms-pro/skyforms/js/jquery.placeholder.min.js"%}></script>
-    <![endif]-->
-
-    <script src="{% static "valdyerresweb/assets/js/plugins/masking.js" %}"></script>
-
-    <script src="{% static "valdyerresweb/assets/js/plugins/datepicker.js" %}"></script>
-
-    <script src="{% static "valdyerresweb/assets/js/plugins/validation.js" %}"></script>
-    <script>
-        jQuery(document).ready(function () {
-            Masking.initMasking();
-            //or
-            Datepicker.initDatepicker();
-            //or
-            Validation.initValidation();
-            $(function () {
-                $.datepicker.setDefaults($.datepicker.regional["fr"]);
-                $("#hasDatepicker").datepicker(
-                    {
-                        currentText: "Now"
-                    }
-                );
-
-            });
-        });
-    </script>
 {% endblock %}

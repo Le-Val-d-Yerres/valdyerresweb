@@ -20,7 +20,12 @@ def formficheinscription(request):
         fiche.adresse = request.POST["adresse"]
         fiche.code_postal = request.POST["codepostal"]
         fiche.ville = request.POST["ville"]
-
+        fiche.save()
 
     params = {}
+
+
     return render_to_response('formficheinscription.html', params)
+
+def merci(request):
+    return render_to_response('merci.html')

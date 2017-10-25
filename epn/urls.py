@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     url(r'^form-fiche-inscription.html$', views.formficheinscription, name="formficheinscription"),
+
 ]
