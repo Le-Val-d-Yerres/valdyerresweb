@@ -29,6 +29,7 @@ utcTZ = timezone("UTC")
 
 def Home(request):
     today = date.today()
+    now = datetime.datetime.now()
 
     startdate = datetime.datetime.combine(today, datetime.time(0, 0, 1))
     enddate = datetime.datetime.combine(today, datetime.time(23, 59, 59))
@@ -38,7 +39,7 @@ def Home(request):
     enddate = enddate.replace(tzinfo=utcTZ)
     plussept = startdate + datetime.timedelta(days=7)
 
-    actualites = Actualite.objects.filter(publie=True, page_accueil=True).order_by('-date_publication')[0:6]
+    actualites = Actualite.objects.filter(publie=True, date_publication__lt=now , page_accueil=True).order_by('-date_publication')[0:6]
     evenements_une_lg1 = Evenement.objects.filter(publish=True, fin__gte=startdate, fin__lte=plussept).order_by(
         'debut')
     evenements_une_lg2 = Evenement.objects.filter(page_accueil=True, publish=True, fin__gt=startdate).order_by('debut')[
@@ -103,7 +104,8 @@ def Home(request):
 
 
 def ActuList(request):
-    pages = get_list_or_404(Actualite.objects.filter(publie=True).order_by('-date_publication'))
+    now = datetime.datetime.now()
+    pages = get_list_or_404(Actualite.objects.filter(publie=True,date_publication__lt=now).order_by('-date_publication'))
 
     paginator = Paginator(pages, 6)
     page = request.GET.get('page')
@@ -126,7 +128,8 @@ def ActuList(request):
 
 
 def ActuDetail(request, actualite_slug):
-    page = get_object_or_404(Actualite.objects.filter(publie=True), slug=actualite_slug)
+    now = datetime.datetime.now()
+    page = get_object_or_404(Actualite.objects.filter(publie=True,date_publication__lt=now), slug=actualite_slug)
     documentattache = DocumentAttache.objects.filter(reference=page.id)
     return render_to_response('editorial/actualite.html', {'page': page, 'documentattache': documentattache})
 
