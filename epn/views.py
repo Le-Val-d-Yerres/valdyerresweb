@@ -11,15 +11,20 @@ from .models import FicheInscription
 
 def formficheinscription(request):
     if request.method == "POST":
-        fiche = FicheInscription
+        fiche = FicheInscription()
         fiche.nom = request.POST["nom"]
         fiche.prenom = request.POST["prenom"]
-        fiche.datenaissance = request.POST["datenaissance"]
+        datenaissance = request.POST["datenaissance"]
+        datenaissance = datenaissance.split('/')
+        datenaissance = datenaissance[2]+'-'+datenaissance[1]+'-'+datenaissance[0]
+        fiche.datenaissance = datenaissance
         fiche.sexe = request.POST["sexe"]
         fiche.email = request.POST["email"]
         fiche.adresse = request.POST["adresse"]
         fiche.code_postal = request.POST["codepostal"]
         fiche.ville = request.POST["ville"]
+        fiche.telephone = request.POST["telephone"]
+        fiche.profession = request.POST["profession"]
         fiche.save()
 
     params = {}
