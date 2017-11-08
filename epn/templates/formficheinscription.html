@@ -35,12 +35,16 @@
             <div class="col-md-12">
                 <h1><a href="">Formulaire d'inscription aux espaces public numériques</a></h1>
             </div>
+            {% if message %}
+
+            {% endif %}
             <div class="col-md-6">
                 <div class="panel-body">
                     <form action="" method="post">
                         <div class="form-group">
                             <label for="nom">Nom</label>
-                            <input name="nom" type="text" class="form-control" id="InputNom" placeholder="Entrez votre nom"
+                            <input name="nom" type="text" class="form-control" id="InputNom"
+                                   placeholder="Entrez votre nom"
                                    required>
                         </div>
                         <div class="form-group">
@@ -50,36 +54,36 @@
                         </div>
                         <div class="form-group">
                             <label for="datenaissance">Date de naissance</label>
-                            <input name="datenaissance"  type="text" class="form-control" id="hasDatepicker"
+                            <input name="datenaissance" type="text" class="form-control" id="hasDatepicker"
                                    placeholder="Entrez votre date de naissance" required>
                         </div>
                         <div class="form-group">
                             <label for="sexe">Sexe</label>
-                            <div class="radio"><label><input type="radio" name="sexe" class="form-control" value="H"
-                                                             required>
-                                Homme </label></div>
-
-
-                            <div class="radio"><label><input type="radio" name="sexe" class="form-control" value="F"
-                                                             required>
-                                Femme </label></div>
-
-
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="sexe" class="form-control" value="H" required>
+                                Homme </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="sexe" class="form-control" value="F" required>
+                                Femme </label>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input name="email" type="email" class="form-control" id="InputPrenom"
                                    placeholder="Entrez votre email" required>
                         </div>
-                         <div class="form-group">
+                        <div class="form-group">
                             <label for="telephone">Téléphone</label>
                             <input name="telephone" type="text" class="form-control" id="InputPrenom"
-                                    placeholder="Entrez votre téléphone" required>
-                         </div>
+                                   placeholder="Entrez votre téléphone" required>
+                        </div>
 
                         <div class="form-group">
                             <label for="adresse">Adresse</label>
-                            <input name ="adresse" type="text" class="form-control" id="InputPrenom"
+                            <input name="adresse" type="text" class="form-control" id="InputPrenom"
                                    placeholder="Entrez votre adresse" required>
                         </div>
 
@@ -92,12 +96,12 @@
                         <div class="form-group">
 
                             <label for="ville">Ville</label>
-                            <input name = "ville" type="text" class="form-control" id="InputPrenom"
+                            <input name="ville" type="text" class="form-control" id="InputPrenom"
                                    placeholder="Entrez votre ville" required>
                         </div>
                         <div class="form-group">
                             <label for="profession">Profession</label>
-                            <input name= "profession" type="text" class="form-control" id="InputPrenom"
+                            <input name="profession" type="text" class="form-control" id="InputPrenom"
                                    placeholder="Entrez votre profession" required>
                         </div>
 
