@@ -5,11 +5,13 @@ from .models import FicheInscription
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from .models import FicheInscription
+import time
 
 # Create your views here.
 
 
 def formficheinscription(request):
+    message = None
     if request.method == "POST":
         fiche = FicheInscription()
         fiche.nom = request.POST["nom"]
@@ -26,10 +28,11 @@ def formficheinscription(request):
         fiche.telephone = request.POST["telephone"]
         fiche.profession = request.POST["profession"]
         fiche.save()
+        mydatenaissance = time.strptime(datenaissance, "%d-%m-%Y")
+        print(mydatenaissance)
 
-    params = {}
 
-
+    params = {'message': message}
     return render_to_response('formficheinscription.html', params)
 
 def merci(request):
