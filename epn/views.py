@@ -5,9 +5,30 @@ from .models import FicheInscription
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from .models import FicheInscription
-import time
+import datetime
 
 # Create your views here.
+
+def check12y(datenaiss):
+    tabdate = datenaiss.split("-")
+    year = int(tabdate[0])
+    month = int(tabdate[1])
+    day = int(tabdate[2])
+
+
+    if month == 2 and day == 29:
+        month = 2
+        day = 28
+
+    mydate = datetime.date(year=year, month=month, day=day)
+    today = datetime.date.today()
+    datecheck = None
+    if mydate.year >= (today.year - 12):
+        datecheck = datetime.date(today.year-12 ,month=month, day=day)
+
+
+
+
 
 
 def formficheinscription(request):
@@ -29,7 +50,7 @@ def formficheinscription(request):
         fiche.profession = request.POST["profession"]
         fiche.save()
         mydatenaissance = time.strptime(datenaissance, "%d-%m-%Y")
-        print(mydatenaissance)
+
 
 
     params = {'message': message}
