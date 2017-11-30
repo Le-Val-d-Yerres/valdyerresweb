@@ -1,5 +1,6 @@
 # Django settings for valdyerresweb project.
 from django.templatetags.static import static
+from collections import namedtuple
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
@@ -230,3 +231,7 @@ LOGO_ORGANISATION = os.path.join(BASE_DIR,"static/valdyerresweb/img/logo/logo-va
 MAIL_ORGANISATION = "levaldyerres@levaldyerres.fr"
 
 NOM_DOMAINE = 'http://valdyerresweb'
+
+Emailvyvs = namedtuple('Emailvyvs','server','login','password')
+
+epnemailvyvs = Emailvyvs('mailing.vyvs.fr','xxxxxx', 'xxxxxx')
