@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from uuid import uuid4
 
 class FicheInscription(models.Model):
     homme = "H"
@@ -9,6 +9,8 @@ class FicheInscription(models.Model):
         (homme, 'Homme'),
         (femme, 'Femme')
     )
+    adultereferent = models.ForeignKey("self", models.SET_NULL, null=True, blank=True, default=None)
+    uuid = models.CharField(max_length=36, default=str(uuid4()), editable=False)
     dateinscription = models.DateTimeField(auto_now=True)
     nom = models.CharField(max_length=255)
     prenom = models.CharField(max_length=255)

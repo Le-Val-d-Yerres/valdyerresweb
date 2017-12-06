@@ -35,8 +35,18 @@
             <div class="col-md-12">
                 <h1><a href="">Formulaire d'inscription aux espaces public numériques</a></h1>
             </div>
-            {% if message %}
-                <p>{{message}}</p>
+            {% if message18y %}
+                <h2>Inscription d'un mineur</h2>
+                <p>Les enfants de moins de 12ans doivent en permanence être accompagnés d’un adulte référent et
+                    responsable lui-même inscrit aux EPN.</p>
+                <p>La présence des mineurs de plus de 12 ans dans les EPN sera autorisée si l’un des tuteurs légaux
+                    signe la décharge ci-dessous :</p>
+                <p>Pour completer cette inscription il vous est donc demandé d'insrire l'adulte responsable à l'aide du
+                    formulaire ci dessous : </p>
+            {% endif %}
+            {% if message18ybis %}
+                <h2>Inscription d'un mineur</h2>
+                <p>Vous devez enregistrer un mineur (c'est fait) <b>puis</b> un majeur responsable à l'aide du formulaire ci dessous :</p>
             {% endif %}
 
             <div class="col-md-6">
@@ -63,12 +73,12 @@
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="sexe" class="form-control" value="H" required>
-                                Homme </label>
+                                    Homme </label>
                             </div>
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="sexe" class="form-control" value="F" required>
-                                Femme </label>
+                                    Femme </label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -110,6 +120,9 @@
 
                             <input type="submit" class="btn btn-lg btn-primary" id="InputPrenom">
                         </div>
+                        {% if message18y or message18ybis %}
+                            <input id ="idmineur" name="idmineur" type="hidden" value="{{mineurid}}">
+                        {% endif %}
 
                     </form>
                 </div>
