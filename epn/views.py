@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import FicheInscription
 from django.views.decorators.cache import never_cache
@@ -35,8 +35,9 @@ def check18y(datenaiss):
 
 
 def formficheinscription(request):
-    message18y = False
-    message18ybis = False
+    message18y = None
+    message18ybis = None
+    fichemineur = None
     if request.method == "POST":
         mineurid = request.POST["mineurid"]
         fiche = FicheInscription()
@@ -78,9 +79,20 @@ def formficheinscription(request):
     message18y = False
     message18ybis = False
     params = {'message18y': message18y, 'message18ybis': message18ybis, 'mineurid': None}
-    return render_to_response('formficheinscription.html', params)
+    if fichemineur:
+        fiche = fichemineur
+
+    return redirect('inscription', fiche.uuid)
 
 
 
-def merci(request):
-    return render_to_response('merci.html')
+def inscription(request, uuid):
+    fiche = get_object_or_404(FicheInscription, uuid=uuid)
+    params = {'fiche': fiche}
+    return render_to_response('inscription.html')
+
+
+
+def getpdf(request, uuid):
+
+    return render_to_response('pdf.html')
