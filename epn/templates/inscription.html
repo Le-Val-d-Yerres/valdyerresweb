@@ -35,10 +35,14 @@
             <div class="col-md-12">
                 <h1><a href="">Inscription aux espaces public numériques</a></h1>
             </div>
-            Merci de télécharger le document (Format PDF) en suivant ce lien et de le retourner
-            signé à l'Espace Public Numérique de votre choix .
-            <a href="{% url 'getpdf:fiche.uuid' %}" class="btn btn-primary"></a>
+            <div class="col-md-6">
+            <p>Merci de télécharger le document (Format PDF) en suivant <a href="{% url 'getpdf' uuid=fiche.uuid %}">ce lien</a> et de le retourner
+                signé à l'Espace Public Numérique de votre choix .</p>
 
+             <p style="text-align: right">
+            <a href="{% url 'getpdf' uuid=fiche.uuid %}" class="btn btn-primary">Téléchargez le PDF</a>
+                </p>
+            </div>
 
             <div class="col-md-6">
                 <p>

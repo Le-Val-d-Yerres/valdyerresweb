@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse
+from django.template.loader import render_to_string
 from .models import FicheInscription
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from .models import FicheInscription
 import datetime
+import io
+import cairosvg
 
 # Create your views here.
 
@@ -21,25 +24,33 @@ def check18y(datenaiss):
     mydate = datetime.date(year=year, month=month, day=day)
     today = datetime.date.today()
     datecheck = None
-    if mydate.year > ((today.year - 18)):
-        return True
-    if mydate.year <= (today.year - 18):
+    if mydate.year >= (today.year - 18):
         datecheck = datetime.date(today.year-12 ,month=month, day=day)
-        if (today - datecheck) >= 0:
+        if (mydate.year == datecheck.year) and ((today - datecheck).days >= 0):
             return True
         else:
             return False
+    if mydate.year < (today.year - 18):
+        return True
+
 
 
 
 
 
 def formficheinscription(request):
-    message18y = None
-    message18ybis = None
+    message18y = False
+    message18ybis = False
+    mineurid = None
     fichemineur = None
+    fiche = None
+
     if request.method == "POST":
-        mineurid = request.POST["mineurid"]
+        try:
+            mineurid = request.POST["mineurid"]
+        except Exception:
+            mineurid = None
+
         fiche = FicheInscription()
         fiche.nom = request.POST["nom"]
         fiche.prenom = request.POST["prenom"]
@@ -54,8 +65,6 @@ def formficheinscription(request):
         fiche.ville = request.POST["ville"]
         fiche.telephone = request.POST["telephone"]
         fiche.profession = request.POST["profession"]
-
-
 
         if check18y(datenaissance) is False:
             if mineurid:
@@ -72,27 +81,48 @@ def formficheinscription(request):
         if mineurid:
             fichemineur = get_object_or_404(FicheInscription, uuid=mineurid)
             fiche.adultereferent_id = fichemineur.id
-            fiche.save()
+
+        fiche.save()
 
 
 
-    message18y = False
-    message18ybis = False
-    params = {'message18y': message18y, 'message18ybis': message18ybis, 'mineurid': None}
-    if fichemineur:
-        fiche = fichemineur
+        message18y = False
+        message18ybis = False
+        params = {'message18y': message18y, 'message18ybis': message18ybis, 'mineurid': None}
+        if fichemineur:
+            fiche = fichemineur
 
-    return redirect('inscription', fiche.uuid)
+        return redirect('inscription', fiche.uuid)
 
+    params = {'message18y' : message18y, 'message18ybis': message18ybis, 'mineurid': mineurid}
+    return render_to_response('formficheinscription.html', params)
 
 
 def inscription(request, uuid):
     fiche = get_object_or_404(FicheInscription, uuid=uuid)
     params = {'fiche': fiche}
-    return render_to_response('inscription.html')
+    return render_to_response('inscription.html',params)
 
 
 
 def getpdf(request, uuid):
+    fiche = get_object_or_404(FicheInscription, uuid=uuid)
+    ficheadulte = None
+    svg = None
+    params = {'fiche': fiche}
 
-    return render_to_response('pdf.html')
+
+    if fiche.adultereferent_id:
+        ficheadulte = get_object_or_404(FicheInscription,uuid=uuid)
+        params = {'fiche': fiche, 'ficheadulte': ficheadulte}
+        svg = render_to_string('fiche-mineur.svg', params)
+    else:
+        svg = render_to_string('fiche-new.svg', params)
+
+    buffer = io.BytesIO()
+    buffer.write(cairosvg.svg2pdf(svg))
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="fiche-inscription.pdf"'
+    buffer.seek(0)
+    response.write(buffer.getvalue())
+    return response
