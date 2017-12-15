@@ -6,9 +6,11 @@ from .models import FicheInscription
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from .models import FicheInscription
+from uuid import uuid4
 import datetime
 import io
 import cairosvg
+
 
 # Create your views here.
 
@@ -52,6 +54,7 @@ def formficheinscription(request):
             mineurid = None
 
         fiche = FicheInscription()
+        fiche.uuid = str(uuid4())
         fiche.nom = request.POST["nom"]
         fiche.prenom = request.POST["prenom"]
         datenaissance = request.POST["datenaissance"]
@@ -78,11 +81,12 @@ def formficheinscription(request):
                 params = {'message18y': message18y, 'message18ybis': message18ybis, 'mineurid':fiche.uuid}
             return render_to_response('formficheinscription.html', params)
 
+        fiche.save()
+
         if mineurid:
             fichemineur = get_object_or_404(FicheInscription, uuid=mineurid)
-            fiche.adultereferent_id = fichemineur.id
-
-        fiche.save()
+            fichemineur.adultereferent_id = fiche.id
+            fichemineur.save()
 
 
 
@@ -101,7 +105,7 @@ def formficheinscription(request):
 def inscription(request, uuid):
     fiche = get_object_or_404(FicheInscription, uuid=uuid)
     params = {'fiche': fiche}
-    return render_to_response('inscription.html',params)
+    return render_to_response('inscription.html', params)
 
 
 
@@ -113,7 +117,7 @@ def getpdf(request, uuid):
 
 
     if fiche.adultereferent_id:
-        ficheadulte = get_object_or_404(FicheInscription,uuid=uuid)
+        ficheadulte = get_object_or_404(FicheInscription,id=fiche.adultereferent_id)
         params = {'fiche': fiche, 'ficheadulte': ficheadulte}
         svg = render_to_string('fiche-mineur.svg', params)
     else:

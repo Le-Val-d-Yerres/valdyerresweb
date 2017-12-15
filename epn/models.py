@@ -10,7 +10,7 @@ class FicheInscription(models.Model):
         (femme, 'Femme')
     )
     adultereferent = models.ForeignKey("self", models.SET_NULL, null=True, blank=True, default=None)
-    uuid = models.CharField(max_length=36, default=str(uuid4()), editable=False)
+    uuid = models.CharField(max_length=36, default=None, null=True, editable=False)
     dateinscription = models.DateTimeField(auto_now=True)
     nom = models.CharField(max_length=255)
     prenom = models.CharField(max_length=255)
