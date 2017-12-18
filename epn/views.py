@@ -1,3 +1,9 @@
+from uuid import uuid4
+import datetime
+import io
+import cairosvg
+import csv
+
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse
@@ -6,10 +12,7 @@ from .models import FicheInscription
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
 from .models import FicheInscription
-from uuid import uuid4
-import datetime
-import io
-import cairosvg
+
 
 
 # Create your views here.
@@ -129,4 +132,25 @@ def getpdf(request, uuid):
     response['Content-Disposition'] = 'attachment; filename="fiche-inscription.pdf"'
     buffer.seek(0)
     response.write(buffer.getvalue())
+    return response
+
+
+@never_cache
+@login_required(login_url='/admin/login/')
+def exportepn(request):
+    myfile = io.StringIO()
+    file_type = 'application/csv'
+    file_name = 'export.csv'
+    mycsv = csv.writer(myfile, delimiter=';', quotechar='"')
+    fiches = FicheInscription.objects.all().order_by('dateinscription')
+    headers = (u"id",u"nom", u"prenom", u'date de naissance', u"sexe", u"email", u"adresse",u"code postal", u"ville", u"profession", u'telephone', 'referent')
+    mycsv.writerow(headers)
+    for fiche in fiches:
+        row = (fiche.id,fiche.nom, fiche.prenom, fiche.datenaissance, fiche.sexe, fiche.email, fiche.adresse, fiche.code_postal, fiche.ville, fiche.profession, fiche.telephone, fiche.adultereferent_id)
+        mycsv.writerow(row)
+
+    myfile.seek(0)
+    response = HttpResponse(myfile.read(), content_type=file_type)
+    response['Content-Disposition'] = 'attachment; filename='+file_name
+    response['Content-Length'] = myfile.tell()
     return response

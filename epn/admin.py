@@ -4,7 +4,7 @@ from .models import FicheInscription
 
 
 class FicheInscriptionAdmin(admin.ModelAdmin):
-    list_display= ['nom', 'prenom', 'datenaissance', 'email', 'ville']
+    list_display = ['nom', 'prenom', 'datenaissance', 'email', 'ville', 'uuid']
 
 
 admin.site.register(FicheInscription, FicheInscriptionAdmin)
