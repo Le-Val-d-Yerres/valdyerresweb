@@ -76,19 +76,19 @@
                         </div>
                         <div class="form-group">
                             <label for="datenaissance">Date de naissance</label>
-                            <input name="datenaissance" type="text" class="form-control" id="hasDatepicker"
+                            <input  name="datenaissance" type="text" class="form-control date1" id="hasDatepicker"
                                    placeholder="Entrez votre date de naissance" required>
                         </div>
                         <div class="form-group">
-                            <label for="sexe">Sexe</label>
+                            <label for="sexe">Etat Civil</label>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="sexe" class="form-control" value="H" required>
+                                    <input type="radio" name="sexe"  value="H" required>
                                     Homme </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="sexe" class="form-control" value="F" required>
+                                    <input type="radio" name="sexe"  value="F" required>
                                     Femme </label>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                         </div>
                         <div class="form-group">
                             <label for="telephone">Téléphone</label>
-                            <input name="telephone" type="text" class="form-control" id="InputPrenom"
+                            <input id="phone" name="telephone" type="text" class="form-control" id="InputPrenom"
                                    placeholder="Entrez votre téléphone" required>
                         </div>
 
@@ -111,7 +111,7 @@
 
                         <div class="form-group">
                             <label for="codepostal">Code Postal</label>
-                            <input name="codepostal" type="text" class="form-control" id="InputPrenom"
+                            <input id="postal" name="codepostal" type="text" class="form-control" id="InputPrenom"
                                    placeholder="Entrez votre code postal" required>
                         </div>
 
@@ -129,7 +129,7 @@
 
                         <div class="form-group">
 
-                            <input type="submit" class="btn btn-lg btn-primary" id="InputPrenom">
+                            <button type="submit" class="btn btn-lg btn-primary" id="InputPrenom">Valider</button>
                         </div>
                         {% if message18y or message18ybis %}
                             <input id ="mineurid" name="mineurid" type="hidden" value="{{mineurid}}">
@@ -141,9 +141,8 @@
             <div class="col-md-6">
                 <p>
                 <ul>
-                    <li>L'inscription est validée par la remise d'une carte nominative au prix de 5 €.</li>
+                    <li>L'inscription est validée par la remise d'une carte nominative.</li>
                     <li>La carte est à présenter à chaque visite.</li>
-                    <li>En cas de perte de la carte le renouvellement sera facturé 5 €.</li>
                 </ul>
                 </p>
             </div>
