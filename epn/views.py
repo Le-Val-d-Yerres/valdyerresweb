@@ -30,7 +30,7 @@ def check18y(datenaiss):
     today = datetime.date.today()
     datecheck = None
     if mydate.year >= (today.year - 18):
-        datecheck = datetime.date(today.year-12 ,month=month, day=day)
+        datecheck = datetime.date(today.year-18, month=month, day=day)
         if (mydate.year == datecheck.year) and ((today - datecheck).days >= 0):
             return True
         else:
@@ -143,10 +143,10 @@ def exportepn(request):
     file_name = 'export.csv'
     mycsv = csv.writer(myfile, delimiter=';', quotechar='"')
     fiches = FicheInscription.objects.all().order_by('dateinscription')
-    headers = (u"id",u"nom", u"prenom", u'date de naissance', u"sexe", u"email", u"adresse",u"code postal", u"ville", u"profession", u'telephone', 'referent')
+    headers = (u"id",u"nom", u"prenom", u'date de naissance', u"sexe", u"email", u"adresse",u"code postal", u"ville", u"profession", u'telephone', u'referent',u'numero adherent')
     mycsv.writerow(headers)
     for fiche in fiches:
-        row = (fiche.id,fiche.nom, fiche.prenom, fiche.datenaissance, fiche.sexe, fiche.email, fiche.adresse, fiche.code_postal, fiche.ville, fiche.profession, fiche.telephone, fiche.adultereferent_id)
+        row = (fiche.id,fiche.nom, fiche.prenom, fiche.datenaissance, fiche.sexe, fiche.email, fiche.adresse, fiche.code_postal, fiche.ville, fiche.profession, fiche.telephone, fiche.adultereferent_id, fiche.numero_adherent)
         mycsv.writerow(row)
 
     myfile.seek(0)

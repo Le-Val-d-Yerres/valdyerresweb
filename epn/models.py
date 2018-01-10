@@ -22,3 +22,4 @@ class FicheInscription(models.Model):
     ville = models.CharField(max_length=255)
     profession = models.CharField(max_length=255)
     telephone = models.CharField(max_length=255)
+    numero_adherent = models.CharField(max_length=15, null=True, blank=True, default=None)
