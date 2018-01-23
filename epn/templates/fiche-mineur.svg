@@ -309,7 +309,7 @@
          sodipodi:role="line"
          x="24.495171"
          y="978.20294"
-         id="tspan4316">Fait à : {{ficheadulte.ville}} 				le : {{ficheadulte.dateinscription|date:&quot;d/m/Y&quot;}}		Signature :</tspan><tspan
+         id="tspan4316">Fait à : {{ficheadulte.ville}} 				le : {{ficheadulte.dateinscription|date:"d/m/Y"}}		Signature :</tspan><tspan
          sodipodi:role="line"
          x="24.495171"
          y="1000.0779"
@@ -446,7 +446,7 @@
          id="tspan4384"
          x="38.385796"
          y="777.49921"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start">Fait à : {{ficheadulte.ville}} 				le : {{ficheadulte.dateinscription|date:&quot;d/m/Y&quot;}}		Signature :</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.5px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start">Fait à : {{ficheadulte.ville}} 				le : {{ficheadulte.dateinscription|date:"d/m/Y"}}		Signature :</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0.05px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"

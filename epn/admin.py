@@ -5,15 +5,22 @@ from django.core import urlresolvers
 
 
 class FicheInscriptionAdmin(admin.ModelAdmin):
-    list_display = ['nom', 'prenom', 'datenaissance', 'email', 'ville', 'link_to_referent']
-
+    raw_id_fields = ("adultereferent",)
+    list_display = ['nom', 'prenom','numero_adherent','datenaissance', 'email', 'ville', 'link_to_pdf']
+    search_fields = ['nom','numero_adherent']
+    exclude = ['adultereferent']
     def link_to_referent(self, obj):
-        link = urlresolvers.reverse("admin:epn_ficheinscription_change", args=[obj.adultereferent.id])
-        return u'<a href="%s">%s</a>' % (link, "telecharger pdf")
+        if obj.adultereferent.id:
+            link = urlresolvers.reverse("admin:epn_ficheinscription_change", args=[obj.adultereferent.id])
+            nom = obj.adultereferent.nom +" "+obj.adultereferent.prenom
+        else:
+            link="#"
+            nom = "NA"
+        return u'<a href="%s">%s</a>' % (link, nom)
     link_to_referent.allow_tags = True
 
     def link_to_pdf(self, obj):
-        link = urlresolvers.reverse("views:getpdf", args=[obj.uuid])
+        link = urlresolvers.reverse("getpdf", args=[obj.uuid])
         return u'<a href="%s">%s</a>' % (link, "telecharger pdf")
 
     link_to_pdf.allow_tags = True

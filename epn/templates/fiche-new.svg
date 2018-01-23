@@ -328,7 +328,7 @@
          sodipodi:role="line"
          x="32.576389"
          y="851.20221"
-         id="tspan5969">Fait à : {{fiche.ville}} 				le : {{fiche.dateinscription|date:&quot;d/m/Y&quot;}}		Signature :</tspan><tspan
+         id="tspan5969">Fait à : {{fiche.ville}} 				le : {{fiche.dateinscription|date:"d/m/Y"}}		Signature :</tspan><tspan
          sodipodi:role="line"
          x="32.576389"
          y="873.07721"
