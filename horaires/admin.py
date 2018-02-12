@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 
 class HorairesAdmin(admin.ModelAdmin):
     list_display = ['nom', 'equipement', 'List_Periods']
-    search_fields = ['equipement']
+    search_fields = ['nom', 'equipement__nom', 'periodes__nom']
 
     fieldsets= (
                 ("Infos", 
