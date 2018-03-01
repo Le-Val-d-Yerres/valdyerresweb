@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.core.management.base import NoArgsCommand
+from django.core.management.base import BaseCommand
 from cinemas.models import Cinema,Film,Seance
 import requests,lxml,unicodedata
 import time,hashlib
@@ -9,7 +9,7 @@ from datetime import date, datetime, timedelta
 from pytz import timezone
 from valdyerresweb import settings
 from PIL import Image, ImageFile
-from StringIO import StringIO
+from io import StringIO, BytesIO
 from django.template import defaultfilters
 import os, glob  , base64, urllib
 import json
@@ -21,9 +21,9 @@ ImageFile.MAXBLOCK = 2**20
 
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
 
-    def handle_noargs(self, **options):
+    def handle(self,*args,**options):
         
         api_url = "http://api.allocine.fr/rest/v3/showtimelist"
         user_agent = {"User-agent":"Dalvik/1.6.0 (Linux; U; Android 4.0.4; WIKO-CINK SLIM Build/IMM76D)"}
@@ -37,11 +37,11 @@ class Command(NoArgsCommand):
         cinemas.order_by('nom')
         for cinema in cinemas:
             url_parameters = []
-            url_parameters.append(('partner', partner_key))
-            url_parameters.append(('format',export_format)) 
-            url_parameters.append(('theaters', cinema.id_allocine_cine))
-            url_parameters.append(('sed', time.strftime("%Y%m%d")))
-            url_parameters.append(( 'sig' ,base64.b64encode(hashlib.sha1(secret_key+urllib.urlencode(url_parameters)).digest())))
+            url_parameters.append(("partner", partner_key))
+            url_parameters.append(("format",export_format))
+            url_parameters.append(("theaters", cinema.id_allocine_cine))
+            url_parameters.append(("sed", time.strftime("%Y%m%d")))
+            url_parameters.append(("sig" ,base64.b64encode(hashlib.sha1(str(secret_key+urllib.parse.urlencode(url_parameters)).encode('utf-8')).digest())))
             response = None
             try :
                 response =  requests.get(api_url,params=url_parameters, headers = user_agent )
@@ -113,11 +113,12 @@ class Command(NoArgsCommand):
                     monfilm.save()
                     time.sleep(1)
                     response = requests.get(monfilm.url_allocine_image)
-                    webimage = Image.open(StringIO(response.content))
+                    webimage = Image.open(BytesIO(response.content))
                     film_id = str(monfilm.id)
                     filename = monfilm.slug+"-"+film_id+".jpg"
                     directory= settings.MEDIA_ROOT+'cinemas/'
                     absfilename = os.path.join(directory,filename)
+                    print(absfilename)
                     try:
                         webimage.save(absfilename, webimage.format, quality=90, optimize=1, progressive=True)
                     except:
