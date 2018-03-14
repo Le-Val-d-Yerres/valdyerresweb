@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from .models import Elu, TitreHorsAgglo, MandatAgglo, QualifMandat, Cptrendu
+from .models import Elu, TitreHorsAgglo, MandatAgglo, QualifMandat, Cptrendu, Deliberation
+from django.forms import FileField
+from filebrowser.fields import FileBrowseField
+
+from django.db import models
 
 # Register your models here.
 
@@ -41,11 +45,19 @@ class EluAdmin(admin.ModelAdmin):
         TitreHorsAggloInline,MandatAggloInline
     ]
 
+class DeliberationInline(admin.TabularInline):
+    model = Deliberation
+    extra = 5
 
 class CptrenduAdmin(admin.ModelAdmin):
     list_display = ['date', 'entite']
+    inlines = [DeliberationInline, ]
+
+    formfield_overrides = {
+        Cptrendu.document: {'widget': FileField},
+    }
 
 
 admin.site.register(Elu,EluAdmin)
-admin.site.register(QualifMandat,QualifMandatAdmin)
+admin.site.register(QualifMandat, QualifMandatAdmin)
 admin.site.register(Cptrendu, CptrenduAdmin)

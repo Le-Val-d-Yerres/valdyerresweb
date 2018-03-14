@@ -31,11 +31,34 @@
         {% regroup cptrd by date|date:"Y" as objects_by_year %}
             {% for year in objects_by_year %}
                 <li>{{ year.grouper }}</li>
-                <ul>
+
                 {% for item in year.list %}
-                    <li><a href ="{{ item.document.url }}">Téléchargez le compte rendu du {{item.date}} (Format PDF)</a></li>
+
+                    <div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-{{item.id}}">
+										Compte rendu de la scéance du {{item.date}}
+									</a>
+								</h4>
+							</div>
+							<div id="collapse-{{item.id}}" class="panel-collapse collapse">
+								<div class="panel-body">
+									<a href ="{{ item.document.url }}">Téléchargez le compte rendu du {{item.date}} (Format PDF)</a>
+                                    {% if item.deliberations %}
+                                        <p>Délibérations :
+                                        <ul>
+                                    {% for delib in item.deliberations %}
+                                        <li>{{ delib.titre }} ({{delib.numreference}}) <a href="{{delib.fichier.url}} ">télécharger au format PDF</a></li>
+                                    {% endfor %}
+                                        </ul></p>
+                                    {% endif %}
+								</div>
+							</div>
+						</div>
+
                     {% endfor %}
-                </ul>
+
             {% endfor %}
         </ul>
         </div>

@@ -74,6 +74,24 @@ class Cptrendu(models.Model):
     document = FileBrowseField("Document PDF", max_length=200, directory="comptesrendus", extensions=[".pdf"])
 
     class Meta:
-        ordering = ['date']
+        ordering = ['-date']
         verbose_name = u"Compte rendu conseil"
         verbose_name_plural = u"Comptes rendus"
+
+    def deliberations(self):
+        return Deliberation.objects.all().filter(compterendu=self.id)
+
+class Deliberation(models.Model):
+    compterendu = models.ForeignKey(Cptrendu)
+    numreference = models.CharField(verbose_name="Numéro de référence", max_length=32)
+    titre = models.CharField(max_length=255)
+    ficher = models.FileField("Fichier PDF", upload_to="uploads/deliberations/")
+
+    class Meta:
+        ordering = ['numreference']
+        verbose_name = u"Délibération"
+        verbose_name_plural = u"Délibérations"
+
+
+
+

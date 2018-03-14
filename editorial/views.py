@@ -4,7 +4,7 @@ from django.template.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response, redirect, get_object_or_404, \
     get_list_or_404
-from affgen.models import Elu, MandatAgglo,QualifMandat,TitreHorsAgglo, Cptrendu
+from affgen.models import Elu, MandatAgglo,QualifMandat,TitreHorsAgglo, Cptrendu, Deliberation
 from editorial.models import Magazine, RapportActivite, Actualite, DocumentAttache, PageBase, PageStatique, \
     NewsletterBib
 from cinemas.models import Seance
