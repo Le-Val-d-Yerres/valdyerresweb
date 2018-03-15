@@ -18,7 +18,5 @@ urlpatterns = [
     url(r'^ephemeride/$', views.Ephemeride, name="ephemeride"),
     url(r'^newsletters/(?P<equipement_slug>[^\/]+).html$', views.newsletterbibhtml, name='newsletterbibhtml'),
     url(r'^newsletters/', views.newsletterbiblist, name="newsletterbiblist"),
-    url(r'^elus/', views.elus, name='elus'),
-    url(r'^comptes-rendus/',views.comptesrendus, name='compterendus' )
 
 ]

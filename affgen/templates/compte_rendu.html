@@ -1,0 +1,66 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters %}
+{% load tz %}
+
+{% block title %}Comptes rendus du Conseil Communautaire du Val d'Yerres Val de Seine{% endblock %}
+
+{% block meta-description %}Les comptes rendus du Conseil Communautaire de la communauté d'agglomération Val d'Yerres Val de Seine{% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+
+
+
+    <div class="container">
+    <div class="row-fluid">
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a href="/">Accueil</a></li>
+                <li ><a href="{% url 'comptesrendus' %}">Comptes rendus du Conseil Communautaire</a></li>
+                <li>
+            </ul>
+        </div>
+        <div class="col-md-12">
+            <h1><a href="{% url 'compterendu' cptrendu.date %}">Compte rendu du Conseil Communautaire du {{cptrendu.date}} </a></h1>
+        <h2>Compte rendu sommaire</h2>
+        <p>
+            Le compte rendu de la scéance du {{cptrendu.date}} est disponible au format PDF : <a href="{{ cptrendu.document.url }}" class="btn btn-info"><i class="fa fa-share"></i> Voir le compte rendu</a></td>
+        </p>
+
+        {% if cptrendu.deliberations %}
+            <h2>Les délibérations</h2>
+                <table class="table  table-hover">
+                <tbody>
+                <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Objet</th>
+                    <th>Consulter</th>
+                </tr>
+                </thead>
+
+                {% for item in cptrendu.deliberations %}
+
+
+									<tr>
+                                            <td>{{ item.numreference }}</td>
+											<td>{{item.titre}}</td>
+											<td><a href="{{ item.document.url }}" class="btn btn-info"><i class="fa fa-share"></i> Voir la délibération {{item.numreference}}</a></td>
+										</tr>
+                {% endfor %}
+                </tbody>
+                </table>
+        {% endif %}
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block jsload %}
+    {% include "include/jquery-bootstrap.html" %}
+{% endblock %}

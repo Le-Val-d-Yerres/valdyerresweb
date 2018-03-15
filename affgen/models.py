@@ -71,7 +71,7 @@ ENTITE = (
 class Cptrendu(models.Model):
     date = models.DateField(verbose_name="Date du conseil")
     entite = models.CharField(max_length=5, choices=ENTITE, default='vyvs')
-    document = FileBrowseField("Document PDF", max_length=200, directory="comptesrendus", extensions=[".pdf"])
+    document = models.FileField("Document PDF", max_length=200,  upload_to="uploads/comptesrendus")
 
     class Meta:
         ordering = ['-date']
@@ -85,7 +85,7 @@ class Deliberation(models.Model):
     compterendu = models.ForeignKey(Cptrendu)
     numreference = models.CharField(verbose_name="Numéro de référence", max_length=32)
     titre = models.CharField(max_length=255)
-    ficher = models.FileField("Fichier PDF", upload_to="uploads/deliberations/")
+    document = models.FileField("Fichier PDF", upload_to="uploads/deliberations/")
 
     class Meta:
         ordering = ['numreference']

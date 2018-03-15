@@ -183,7 +183,7 @@ def Rapports(request):
     except EmptyPage:
         raise Http404
 
-    return render_to_response('editorial/rapports.html', {'rapports': rapports, 'page': page})
+    return render_to_response('editorial/../affgen/templates/rapports.html', {'rapports': rapports, 'page': page})
 
 
 def Ephemeride(request, jour='aujourd-hui'):
@@ -302,35 +302,3 @@ def newsletterbibhtml(request, equipement_slug):
                                                                         'activites_ttpublic': activites_ttpublic,
                                                                         'edito': newsletter.edito
                                                                         })
-
-def elus(request):
-    mandats = QualifMandat.objects.all().order_by('index')
-    elusst = list()
-    elusnd = list()
-
-    MandatTuple = namedtuple('MandatTuple','mandat listeelus')
-
-    for mandat in mandats[:3]:
-
-        elustmp = list()
-        leselus =Elu.objects.filter(publie=True, mandatagglo__qualif_id=mandat.id).order_by('mandatagglo__index').select_related()
-        for elu in leselus:
-            elustmp.append(elu)
-
-        mandatagglo = MandatTuple(mandat, elustmp)
-        elusst.append(mandatagglo)
-
-
-    for mandat in mandats[3:]:
-        leselus = Elu.objects.filter(publie=True, mandatagglo__qualif_id=mandat.id).order_by(
-            'ville','mandatagglo__index').select_related()
-        for elu in leselus:
-            elusnd.append(elu)
-
-
-    return render_to_response('editorial/elus/liste_elus.html', {'elusst': elusst,'elusnd':elusnd} )
-
-
-def comptesrendus(request):
-    cptrd = Cptrendu.objects.all().order_by('-date')
-    return render_to_response('editorial/comptesrendus/comptes_rendus.html', {'cptrd':cptrd})

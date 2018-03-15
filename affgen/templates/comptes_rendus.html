@@ -1,0 +1,51 @@
+{% extends "include/main.html" %}
+{% load filtres %}
+{% load aidefilters %}
+{% load eventfilters %}
+{% load menufilters %}
+{% load aidefilters %}
+{% load tz %}
+
+{% block title %}Comptes rendus du Conseil Communautaire du Val d'Yerres Val de Seine{% endblock %}
+
+{% block meta-description %}Les comptes rendus du Conseil Communautaire de la communauté d'agglomération Val d'Yerres Val de Seine{% endblock %}
+
+{% block menu %}{% getmenu %}{% endblock %}
+
+{% block contenu %}
+    <div class="container">
+    <div class="row-fluid">
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a href="/">Accueil</a></li>
+                <li class="active">Comptes rendus du Conseil Communautaire
+                <li>
+            </ul>
+        </div>
+        <div class="col-md-12">
+            <h1><a href="{% url 'comptesrendus' %}">Comptes rendus du Conseil Communautaire</a></h1>
+        <ul>
+
+        {% regroup cptrd by date|date:"Y" as objects_by_year %}
+            {% for year in objects_by_year %}
+                <li>{{ year.grouper }}</li>
+                <table class="table  table-hover">
+                <tbody>
+                {% for item in year.list %}
+				<tr>
+					<td>Compte rendu du {{item.date}}</td>
+    				<td><a href="{% url 'compterendu' item.date %}" class="btn btn-info"><i class="fa fa-share"></i> Voir le compte rendu</a></td>
+				</tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            {% endfor %}
+
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block jsload %}
+    {% include "include/jquery-bootstrap.html" %}
+{% endblock %}

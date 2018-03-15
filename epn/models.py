@@ -11,7 +11,7 @@ class FicheInscription(models.Model):
     )
     adultereferent = models.ForeignKey("self", models.SET_NULL, null=True, blank=True, default=None)
     uuid = models.CharField(max_length=36, default=None, null=True, editable=False)
-    dateinscription = models.DateTimeField(auto_now=True)
+    dateinscription = models.DateTimeField()
     nom = models.CharField(max_length=255)
     prenom = models.CharField(max_length=255)
     datenaissance = models.DateField()
@@ -23,3 +23,4 @@ class FicheInscription(models.Model):
     profession = models.CharField(max_length=255)
     telephone = models.CharField(max_length=255)
     numero_adherent = models.CharField(max_length=15, null=True, blank=True, default=None)
+    commentaire = models.TextField("Commentaire, usage administratif uniquement pas de commentaires sur la personalité", null=True, blank=True)

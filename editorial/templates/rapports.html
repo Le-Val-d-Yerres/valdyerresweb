@@ -65,7 +65,7 @@
                             <a href="{% url 'rapports' %}?page=1">1</a>
                         </li>
                         <li class="disabled">
-                            <a href=".">...</a>
+                            <a href="editorial">...</a>
                         </li>
                     {% endif %}
                     <li class="disabled">
@@ -73,7 +73,7 @@
                     </li>
                     {% if rapports.number < rapports.paginator.num_rapports %}
                         <li  class="disabled">
-                            <a href=".">...</a>
+                            <a href="editorial">...</a>
                         </li>
                         <li>
                             <a href="{% url 'rapports' %}?page={{ rapports.paginator.num_rapports }}">{{ rapports.paginator.num_rapports }}</a>
@@ -86,7 +86,7 @@
 
                         {% if rapports.number == page %}
                             <li class="active">
-                                <a href=".">{{ page }}</a>
+                                <a href="editorial">{{ page }}</a>
                             </li>
                         {% else %}
                             <li>

@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^forms/', include('forms.urls')),
     url(r'^deveco/', include('deveco.urls')),
     url(r'^epn/', include('epn.urls')),
+    url(r'^agglo/', include('affgen.urls')),
     url(r'', include('editorial.urls')),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'))
 ]

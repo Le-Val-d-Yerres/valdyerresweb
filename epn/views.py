@@ -71,6 +71,7 @@ def formficheinscription(request):
         fiche.ville = request.POST["ville"]
         fiche.telephone = request.POST["telephone"]
         fiche.profession = request.POST["profession"]
+        fiche.dateinscription = datetime.datetime.now()
 
         if check18y(datenaissance) is False:
             if mineurid:
