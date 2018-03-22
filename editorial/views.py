@@ -183,7 +183,7 @@ def Rapports(request):
     except EmptyPage:
         raise Http404
 
-    return render_to_response('editorial/../affgen/templates/rapports.html', {'rapports': rapports, 'page': page})
+    return render_to_response('rapports.html', {'rapports': rapports, 'page': page})
 
 
 def Ephemeride(request, jour='aujourd-hui'):
