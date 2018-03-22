@@ -33,7 +33,8 @@ urlpatterns = [
     url(r'^epn/', include('epn.urls')),
     url(r'^agglo/', include('affgen.urls')),
     url(r'', include('editorial.urls')),
-    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain'))
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
+    url(r'^search/', include('haystack.urls')),
 ]
 
 if settings.DEBUG:

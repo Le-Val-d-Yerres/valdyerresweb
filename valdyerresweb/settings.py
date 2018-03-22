@@ -139,6 +139,8 @@ TEMPLATE_LOADERS = (
 )
 
 INSTALLED_APPS = (
+    'haystack',
+    'whoosh',
     'valdyerresweb',              
     'grappelli.dashboard',
     'lettreinformations',
@@ -172,6 +174,13 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'debug_toolbar',
 )
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
