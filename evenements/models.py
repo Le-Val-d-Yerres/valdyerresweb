@@ -17,7 +17,7 @@ class Organisateur(models.Model):
     meta_description = models.CharField(max_length=200)
     description = models.TextField()
     logo = FileBrowseField("Image", max_length=255, directory="evenements",
-                           extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, null=True)
+                           extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, default="")
     url = models.URLField("Site de cet organisateur:  (facultatif) ", blank=True)
     email = models.EmailField("Mail (facultatif)", max_length=255, blank=True)
     telephone = models.CharField(max_length=25)
@@ -103,7 +103,7 @@ class Evenement(models.Model):
     fin = models.DateTimeField("Date de fin")
     organisateur = models.ManyToManyField(Organisateur)
     image = FileBrowseField("Image (facultatif)", max_length=255, directory="evenements",
-                            extensions=[".jpg", ".png", ".gif", ".jpeg", ".pdf"], blank=True, null=True)
+                            extensions=[".jpg", ".png", ".gif", ".jpeg", ".pdf"], blank=True ,default="")
     url = models.URLField("Un lien vers plus d'infos: (facultatif)", blank=True, null=True)
     url_reservation = models.URLField(
         "Un lien vers la page de reservation: (facultatif, annule le lien vers plus d'infos) ", blank=True, null=True)

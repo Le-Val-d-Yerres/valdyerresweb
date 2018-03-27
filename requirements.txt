@@ -9,6 +9,7 @@ Django==1.11
 django-debug-toolbar==1.7
 django-filebrowser==3.9.1
 django-grappelli==2.10.2
+django-haystack==2.8.0
 django-localflavor==1.4.1
 django-model-utils==3.0.0
 gunicorn==19.6.0
@@ -26,5 +27,6 @@ six==1.10.0
 sqlparse==0.2.3
 tinycss2==0.6.1
 webencodings==0.5
+Whoosh==2.7.4
 xlrd==1.0.0
 xlwt==1.2.0
