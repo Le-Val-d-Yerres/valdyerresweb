@@ -55,7 +55,7 @@
 			<img alt="logo : {{equipement.fonction.nom}}" src="{{equipement.fonction.logo.url}}" style="float:left;margin-right:15px;" />
 			{% endif %}
 			<address>
-				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+				<div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
 					<strong>{{ equipement.nom }}</strong>
 					<br/>
 					<span itemprop="streetAddress">{{equipement.rue}}</span>
@@ -208,7 +208,7 @@
 					
 					{% for each in eventmonth.list %}
 					
-					<tr itemscope itemtype="http://schema.org/Event">
+					<tr itemscope itemtype="https://schema.org/Event">
 						<td>{{ each.type.nom }} : &laquo;
 						<a itemprop="url" href="{% url 'event-details' slug=each.cadre_evenement.slug evenement_slug=each.slug %}"><span itemprop="name" >{{ each.nom }}</span></a>&raquo;
 						</td>
@@ -216,10 +216,10 @@
 						<time itemprop="startDate" content="{{each.debut|dateSEO}}">
 						{{ each.debut|dateCustom:each.fin }}
 						</time>
-                            <span itemprop="location" itemtype="http://schema.org/Place">
+                            <span itemprop="location" itemtype="https://schema.org/Place">
                             <span itemprop="url" content="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}"></span>
                             <span itemprop="name" content="{{equipement.nom}}"></span>
-                                <span itemprop="adress" itemtype="http://schema.org/PostalAdress">
+                                <span itemprop="adress" itemtype="https://schema.org/PostalAdress">
                                     <span itemprop="streetAddress" content="{{ equipement.rue }}"></span>
                                     <span itemprop="addressLocality" content="{{ equipement.ville }}"></span>
                                 </span>
@@ -263,7 +263,7 @@
 			<div id="map_canvas" style="text-align:center;margin-left:auto;margin-right:auto;"></div>
 
 		</div>
-		<div style="text-align:center;" class="col-md-4" itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+		<div style="text-align:center;" class="col-md-4" itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates">
 			<hr/>
 			<p>
 				 Les coordonnées GPS : 
@@ -301,6 +301,7 @@
 {% endblock %}
 
 	{% block jsload%}
+    {% include "equipements/equipement-json-ld.html" %}
 	{% include "include/jquery-bootstrap.html" %}
     {% include "include/alertes.html" %}
 

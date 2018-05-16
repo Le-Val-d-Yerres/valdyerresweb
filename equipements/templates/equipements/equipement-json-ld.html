@@ -1,0 +1,25 @@
+{% load hoursfilters%}
+{% load tz %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "{{ equipement.fonction.schema_url }}",
+    "pricerange":"$",
+    "name": "{{ equipement.nom }}",
+    "telephone": "{{ equipement.telephone }}",
+    "image":"{{ equipement.image.url }}",
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "{{ equipement.ville.nom }}",
+        "postalCode": "{{ equipement.ville.code_postal }}",
+        "streetAddress": "{{ equipement.rue }}"
+    },
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "{{ equipement.latitude }}",
+        "longitude": "{{ equipement.longitude }}"
+    }{% if toushoraires %},{% endif%}
+
+{% for horaire in toushoraires %}{% for periode_horaire in horaire.periodes.all %}{% if toutesperiodes.0.id == periode_horaire.id %}{{horaire|horaires_semaine_schema:toutesperiodes.0|safe}}{% endif %}{% endfor %}{% endfor %}}
+
+</script>

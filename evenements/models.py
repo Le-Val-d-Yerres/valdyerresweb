@@ -101,7 +101,7 @@ class Evenement(models.Model):
     description = models.TextField()
     debut = models.DateTimeField("Date de début")
     fin = models.DateTimeField("Date de fin")
-    organisateur = models.ManyToManyField(Organisateur)
+    organisateur = models.ManyToManyField(Organisateur,blank=True,null=True)
     image = FileBrowseField("Image (facultatif)", max_length=255, directory="evenements",
                             extensions=[".jpg", ".png", ".gif", ".jpeg", ".pdf"], blank=True ,default="")
     url = models.URLField("Un lien vers plus d'infos: (facultatif)", blank=True, null=True)

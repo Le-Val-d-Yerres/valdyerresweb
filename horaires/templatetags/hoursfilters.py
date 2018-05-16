@@ -6,6 +6,7 @@ import datetime
 mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre', u'octobre', u'novembre' ,u'décembre']
 WeekDay = ['lundi','mardi','mercredi', 'jeudi' , 'vendredi','samedi','dimanche']
 SchemaDay = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+SchemaDayLD = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 #une journée en général
 @register.filter(is_safe=True) 
@@ -94,6 +95,84 @@ def horaires_semaine(horaire, periode):
         return txthoraires
     except:
         return u"Erreur"
+
+
+@register.filter(is_safe=True)
+def horaires_semaine_schema(horaire, periode):
+    txthoraires = ""
+
+    nbreJour = (periode.date_fin - periode.date_debut).days
+
+    if nbreJour >= 6:
+        listeJour = range(1, 8)
+    else:
+        listeJour = []
+        prochainJour = periode.date_debut
+        while (periode.date_fin - prochainJour).days >= 0:
+            listeJour.append(prochainJour.weekday() + 1)
+
+            prochainJour += datetime.timedelta(days=1)
+    try:
+        txthoraires = "\"openingHoursSpecification\":[\n"
+        for day in listeJour:
+            txthoraires += horaires_journee_schema(day, horaire)
+            if listeJour.index(day) == len(listeJour)-1:
+                txthoraires += "\n"
+            else:
+                txthoraires += ",\n"
+        txthoraires += "]"
+        return txthoraires
+    except:
+        return u"Erreur"
+
+@register.filter(is_safe=True)
+def horaires_journee_schema(numjour, horaire):
+    txthours = ""
+    numjour = int(numjour)
+    myday = horaire.GetDay(numjour)
+    numjour = numjour -1 # pour l'index du tableau
+    txthoraires = "{\n"
+    txthoraires += "\"@type\": \"OpeningHoursSpecification\",\n"
+    txthoraires += "\"dayOfWeek\": \"" + SchemaDayLD[numjour] + "\",\n"
+    txthoraires += "\"opens\": \"{{opens}}\",\n"
+    txthoraires += "\"closes\":\"{{closes}}\"\n"
+    txthoraires += "}"
+
+    if myday.matin_ferme and myday.am_ferme:
+        tmpopens = "00:00:00"
+        txthoraires = txthoraires.replace("{{opens}}", tmpopens)
+        txthoraires = txthoraires.replace("{{closes}}", tmpopens)
+        return txthoraires
+
+    if myday.journee_continue:
+        tmpopens = myday.heure_matin_debut.strftime("%H:%M:%S")
+        tmpcloses = myday.heure_am_fin.strftime("%H:%M:%S")
+        txthoraires = txthoraires.replace("{{opens}}", tmpopens)
+        txthoraires = txthoraires.replace("{{closes}}", tmpcloses)
+        return txthoraires
+
+
+    if not myday.matin_ferme:
+        tmpopens = myday.heure_matin_debut.strftime("%H:%M:%S")
+        tmpcloses = myday.heure_matin_fin.strftime("%H:%M:%S")
+        txthoraires1 = txthoraires.replace("{{opens}}", tmpopens)
+        txthoraires1 = txthoraires1.replace("{{closes}}", tmpcloses)
+
+    if not myday.am_ferme:
+        tmpopens = myday.heure_am_debut.strftime("%H:%M:%S")
+        tmpcloses = myday.heure_am_fin.strftime("%H:%M:%S")
+        txthoraires2 = txthoraires.replace("{{opens}}", tmpopens)
+        txthoraires2 = txthoraires2.replace("{{closes}}", tmpcloses)
+        if not myday.matin_ferme:
+            txthoraires1 = txthoraires1 + ",\n"
+            txthoraires = txthoraires1 + txthoraires2
+            return txthoraires
+        else:
+            txthoraires = txthoraires2
+
+
+    return txthoraires
+
 
 @register.filter(is_safe=True)
 def horaires_aujourdhui(horaire):

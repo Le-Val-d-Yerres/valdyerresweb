@@ -170,15 +170,23 @@ def EquipementsDetailsHtml(request, fonction_slug, equipement_slug):
     else:
         alerte = None
 
+    # pour le json-ld
+    toutesperiodes = Periode.objects.filter(date_fin__gte=today).filter(horaires__equipement=equipement.id).order_by(
+        'date_debut')
+    toutesperiodes.query.group_by = ['id']
+    toushoraires = Horaires.objects.prefetch_related('periodes').select_related().filter(equipement=equipement.id)
+    for ttperiode in toutesperiodes:
+        toushoraires.filter(periodes__id=ttperiode.id)
+
+
     reponse = render_to_response('equipements/equipement-details.html',
                                  {'alerte': alerte, 'equipement': equipement, 'qr_code_geo': qr_code_geo,
                                   'qr_code_vcard': qr_code_vcard, 'facilites': facilites, 'evenements': evenements,
                                   'horaires': horaires, 'periode_active': periode_active,
                                   'autres_periodes': autres_periodes, 'horaires_demain': horaires_demain,
                                   'periode_active_demain': periode_active_demain, 'horaires_plus_7': horaires_plus_7,
-                                  'tarifs_principaux': tarifs_principaux})
+                                  'tarifs_principaux': tarifs_principaux,'toutesperiodes':toutesperiodes, 'toushoraires':toushoraires})
     reponse.set_cookie("csrftoken", tokenCSRF, 60 * 60 * 5)
-
     return reponse
 
 
