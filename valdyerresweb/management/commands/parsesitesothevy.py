@@ -22,7 +22,7 @@ mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet',
 jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
 types = [u'MUSIQUE CLASSIQUE', u'HUMOUR',u'DANSE', u'CHANSON',u'THÉÂTRE',u'COMÉDIE MUSICALE', u'SPECTACLE MUSICAL',
          u'CONTE MUSICAL', u'GRAND SPECTACLE', u'GRAND SPECTACLE / CABARET',u'THÉÂTRE / HUMOUR',u"THÉÂTRE CLASSIQUE"]
-id_salles_spectacles = {u'BOUSSY-SAINT-ANTOINE': 5, u'YERRES': 6, u'BRUNOY': 8, u'CROSNE': 9, u'EPINAY-SOUS-SENART': 24, u'QUINCY-SOUS-SENART': 10, u"VIGNEUX-SUR-SEINE":83}
+id_salles_spectacles = {u'BOUSSY-SAINT-ANTOINE': 5, u'YERRES': 6, u'BRUNOY': 8, u'CROSNE': 9, u'EPINAY-SOUS-SENART': 24, u'QUINCY-SOUS-SENART': 10, u"VIGNEUX-SUR-SEINE":83, "MONTGERON":137}
 
 liste_themes = {
     u'Chanson': u'http://spectacles.levaldyerres.fr/fr/spectacles/recital.html',
@@ -61,15 +61,19 @@ def parse_page(url):
 
     nom = soup.find("h1").string
     nom = nom.strip()
-    if nom == "2017/2018 : Abonnez-vous !":
+    if nom == "2018/2019 : Abonnez-vous !":
         return
     print(nom)
-
     dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next
     print(dateheureville)
     if "[ Date modifiée ]" in dateheureville:
         dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next.next.next
         print(dateheureville)
+    if not "|" in dateheureville:
+        heure = soup.find("div", {"class": "about-project bottom-2"}).next.next.next
+        dateheureville = dateheureville + heure
+    print(dateheureville)
+
     dateevt, heure = dateheureville.split("|")
     dateevt = dateevt.strip()
     dateevt = dateevt.split(" ")
@@ -84,9 +88,9 @@ def parse_page(url):
             nummois = int(i)+1
             break
 
-    numannee = 2018
+    numannee = 2019
     if nummois > 6:
-        numannee = 2017
+        numannee = 2018
 
     dateevt = date(numannee, nummois, numjour)
 
@@ -281,7 +285,7 @@ class Command(BaseCommand):
         print(len(liste_evenements))
         for item in liste_evenements:
             print(item.nom)
-        corresp(liste_evenements)
+        #corresp(liste_evenements)
         #parse_page("http://spectacles.levaldyerres.fr/fr/robin-des-bois...-la-legende-ou-presque.html?cmp_id=77&news_id=424&vID=80")
 
 
