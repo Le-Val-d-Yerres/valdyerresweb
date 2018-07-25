@@ -22,7 +22,7 @@ mois = [u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet',
 jours = [u'dimanche',u'lundi',u'mardi',u'mercredi', u'jeudi' , u'vendredi',u'samedi']
 types = [u'MUSIQUE CLASSIQUE', u'HUMOUR',u'DANSE', u'CHANSON',u'THÉÂTRE',u'COMÉDIE MUSICALE', u'SPECTACLE MUSICAL',
          u'CONTE MUSICAL', u'GRAND SPECTACLE', u'GRAND SPECTACLE / CABARET',u'THÉÂTRE / HUMOUR',u"THÉÂTRE CLASSIQUE"]
-id_salles_spectacles = {u'BOUSSY-SAINT-ANTOINE': 5, u'YERRES': 6, u'BRUNOY': 8, u'CROSNE': 9, u'EPINAY-SOUS-SENART': 24, u'QUINCY-SOUS-SENART': 10, u"VIGNEUX-SUR-SEINE":83, "MONTGERON":137}
+id_salles_spectacles = {u'BOUSSY-SAINT-ANTOINE': 5, u'YERRES': 6, u'BRUNOY': 8, u'CROSNE': 9, u'EPINAY-SOUS-SENART': 24, u'QUINCY-SOUS-SENART': 10, u"VIGNEUX-SUR-SEINE":83, "MONTGERON":137, u'ÉPINAY-SOUS-SÉNART ': 24,"QUINCY-SOUS-SÉNART":10}
 
 liste_themes = {
     u'Chanson': u'http://spectacles.levaldyerres.fr/fr/spectacles/recital.html',
@@ -54,6 +54,7 @@ class evenement(object):
 
 
 def parse_page(url):
+    print("----------------")
     evt = evenement()
     r = requests.get(url)
     data_html = r.text
@@ -65,10 +66,9 @@ def parse_page(url):
         return
     print(nom)
     dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next
-    print(dateheureville)
+
     if "[ Date modifiée ]" in dateheureville:
         dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next.next.next
-        print(dateheureville)
     if not "|" in dateheureville:
         heure = soup.find("div", {"class": "about-project bottom-2"}).next.next.next
         dateheureville = dateheureville + heure
@@ -98,8 +98,12 @@ def parse_page(url):
     heure = heure.strip()
     if "&" in heure:
         print("ATTENTION: heure non conventionnelle")
-        heure ="17"
-        minutes="00"
+        horaire = heure.split("&")
+        heure, minutes = horaire[0].split("h")
+    elif "et" in heure:
+        print("ATTENTION: heure non conventionnelle")
+        horaire = heure.split("et")
+        heure, minutes = horaire[0].split("h")
     else:
         heure, minutes = heure.split("h")
 
@@ -114,13 +118,13 @@ def parse_page(url):
 
     dateevt = datetime.combine(dateevt, heure_debut)
 
-    ville = dateheureville.next.next
-    if u"|" in ville:
-        ville = dateheureville.next.next.next.next
+    dateheureville = soup.find("div", {"class": "about-project bottom-2"}).text
 
-
-
-    ville = ville.strip()
+    for v,id in id_salles_spectacles.items():
+        if v in dateheureville:
+            ville = v
+            break
+    print(ville)
 
     duree = soup.find("ul", {"class": "arrow-list job bottom-2"})
     duree = duree.findAll("li")
@@ -129,8 +133,13 @@ def parse_page(url):
         duree = duree[1].text.split(":")[1].strip()
     except:
         duree = "1h30"
-    duree_heure, duree_minute = duree.split("h")
-    duree_heure = int(duree_heure)
+
+    if "min" in duree:
+        duree_minute = duree.replace("min","")
+        duree_heure = 0
+    else:
+        duree_heure, duree_minute = duree.split("h")
+        duree_heure = int(duree_heure)
     if duree_minute == "":
         duree_minute = 0
     else:
@@ -229,13 +238,11 @@ def corresp(eventlist):
         type = TypeEvenement.objects.get(slug=defaultfilters.slugify(event.type))
         evenement.nom = event.nom
 
-        #if evenement.nom == "La Traviata":
-        #    continue
         evenement.description = str(event.description)
 
         evenement.debut = myTimezone.localize(event.debut)
         evenement.fin = myTimezone.localize(event.fin)
-        evenement.cadre_evenement_id = 27
+        evenement.cadre_evenement_id = 37
         evenement.lieu_id = id_salles_spectacles[event.lieu]
         meta_description = evenement.nom+" "+ evenement.description
         meta_description = meta_description.replace("<br>",'')
@@ -285,7 +292,7 @@ class Command(BaseCommand):
         print(len(liste_evenements))
         for item in liste_evenements:
             print(item.nom)
-        #corresp(liste_evenements)
+        corresp(liste_evenements)
         #parse_page("http://spectacles.levaldyerres.fr/fr/robin-des-bois...-la-legende-ou-presque.html?cmp_id=77&news_id=424&vID=80")
 
 
