@@ -7,6 +7,7 @@
     "pricerange":"$",
     "name": "{{ equipement.nom }}",
     "telephone": "{{ equipement.telephone }}",
+    "url": "{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}",
     "image":"{{ equipement.image.url }}",
     "address": {
         "@type": "PostalAddress",
@@ -23,3 +24,41 @@
 {% for horaire in toushoraires %}{% for periode_horaire in horaire.periodes.all %}{% if toutesperiodes.0.id == periode_horaire.id %}{{horaire|horaires_semaine_schema:toutesperiodes.0|safe}}{% endif %}{% endfor %}{% endfor %}}
 
 </script>
+
+{% if evenements %}
+
+{% regroup evenements by monthyeardebut as eventlist %}
+
+{% for eventmonth in eventlist %}
+
+
+    {% for each in eventmonth.list %}
+
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Event",
+      "location": {
+        "@type": "{{ equipement.fonction.schema_url }}",
+        "address": {
+          "@type": "PostalAddress",
+        "addressLocality": "{{ equipement.ville.nom }}",
+        "postalCode": "{{ equipement.ville.code_postal }}",
+        "streetAddress": "{{ equipement.rue }}"
+        },
+        "name": "{{ equipement.nom }}"
+      },
+      "name": "{{ each.nom }}",
+
+      "url": "{% url 'event-details' slug=each.cadre_evenement.slug evenement_slug=each.slug %}"
+
+      },
+      "startDate": "{{each.debut|dateSEO}}"
+    }
+    </script>
+
+    {% endfor %}
+
+{% endfor %}
+
+{% endif %}

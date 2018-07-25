@@ -17,7 +17,7 @@
 
 
 {% block contenu %}	
-<div itemscope itemtype="{{equipement.fonction.schema_url}}" class="container">
+<div class="container">
 	<div class="row-fluid">
 		<div class="col-md-12">
 			<ul class="breadcrumb">
@@ -37,9 +37,9 @@
 		</div>
 		<div class="col-md-8" >
 
-			<h1><a itemprop="url" href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}"><span itemprop="name">{{ equipement.nom }}</span></a></h1>
+			<h1><a href="{% url 'equipement-details' fonction_slug=equipement.fonction.slug equipement_slug=equipement.slug%}">{{ equipement.nom }}</a></h1>
 			{% if equipement.image %}
-			<img  itemprop="image" class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
+			<img class="img-polaroid-fix"  alt="{{ equipement.nom }}" src="{{ equipement.image|resize:'670x375x1' }}">
 			{% endif %}
 			{% if equipement.fonction.service %}
 			<p>
@@ -55,16 +55,16 @@
 			<img alt="logo : {{equipement.fonction.nom}}" src="{{equipement.fonction.logo.url}}" style="float:left;margin-right:15px;" />
 			{% endif %}
 			<address>
-				<div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+				<div>
 					<strong>{{ equipement.nom }}</strong>
 					<br/>
-					<span itemprop="streetAddress">{{equipement.rue}}</span>
+					<span>{{equipement.rue}}</span>
 					<br/>
-					<span itemprop="postalCode">{{equipement.ville.code_postal}}</span> <span itemprop="addressLocality">{{ equipement.ville.nom }}</span>
+					<span>{{equipement.ville.code_postal}}</span> <span>{{ equipement.ville.nom }}</span>
 					<br/>
                     </div>
 					{% if equipement.telephone %}
-					<abbr title="Téléphone">Tel</abbr>: <span itemprop="telephone">{{equipement.telephone}}</span>
+					<abbr title="Téléphone">Tel</abbr>: <span>{{equipement.telephone}}</span>
 					<br/>
 					{% endif %}
 
@@ -263,7 +263,7 @@
 			<div id="map_canvas" style="text-align:center;margin-left:auto;margin-right:auto;"></div>
 
 		</div>
-		<div style="text-align:center;" class="col-md-4" itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates">
+		<div style="text-align:center;" class="col-md-4">
 			<hr/>
 			<p>
 				 Les coordonnées GPS : 
@@ -272,8 +272,8 @@
 				<br/>
 				Longitude : {{equipement.longitude}}
 			</p>
-			<meta itemprop="latitude" content="{{equipement.latitude}}" />
-			<meta itemprop="longitude" content="{{equipement.longitude}}" />
+			<meta content="{{equipement.latitude}}" />
+			<meta content="{{equipement.longitude}}" />
 			<hr/>
 			<p class="hidden-phone" style="text-align: center;">
 				 Les coordonnées GPS :
