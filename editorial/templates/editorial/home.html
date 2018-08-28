@@ -52,9 +52,6 @@
                                 <h3>
                                     <a href="{% url "actudetail" actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                                 </h3>
-                                <div class="by-author">
-                                    <span>Publié le {{ page.date_publication|dateSimple }}.</span>
-                                </div>
                                 <p>{{ page.contenu|resume:220|safe }}</p>
                                 <p style="text-align: right;">
                                     <a class="btn btn-primary"
@@ -79,9 +76,7 @@
                                 <h3>
                                     <a href="{% url "actudetail" actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                                 </h3>
-                                <div class="by-author">
-                                    <span>Publié le {{ page.date_publication|dateSimple }}.</span>
-                                </div>
+
                                 <p>{{ page.contenu|resume:220|safe }}</p>
                                 <p style="text-align: right;">
                                     <a class="btn btn-primary"
@@ -106,9 +101,7 @@
                                 <h3>
                                     <a href="{% url "actudetail" actualite_slug=page.slug %}">{{ page.titre|safe }}</a>
                                 </h3>
-                                <div class="by-author">
-                                    <span>Publié le {{ page.date_publication|dateSimple }}.</span>
-                                </div>
+
                                 <p>{{ page.contenu|resume:220|safe }}</p>
                                 <p style="text-align: right;">
                                     <a class="btn btn-primary"
