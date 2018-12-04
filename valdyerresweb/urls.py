@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^agenda/', include('evenements.urls')),
     url(r'^equipements/', include('equipements.urls')),
+    url(r'^tourisme/', include('sitestouristiques.urls')),
     url(r'^cinemas/', include('cinemas.urls')),
     url(r'^services/', include('services.urls')),
     url(r'^annoncesemploi/', include('annoncesemploi.urls')),
