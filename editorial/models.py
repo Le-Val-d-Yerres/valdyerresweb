@@ -17,7 +17,7 @@ class PageBase(models.Model):
     titre = models.CharField(max_length=255, verbose_name="Titre")
     slug = models.SlugField(max_length=255)
     meta_description = models.CharField(max_length=200)
-    image = FileBrowseField("Image principale de l'article (facultatif)", max_length=200, directory="editorial", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True, null=True)
+    image = FileBrowseField("Image principale de l'article (facultatif)", max_length=200, directory="editorial", extensions=[".jpg", ".png", ".giff", ".jpeg"], blank=True)
     contenu = models.TextField()
     publie = models.BooleanField(verbose_name="Publié", default=False)
     date_mise_a_jour = models.DateTimeField()

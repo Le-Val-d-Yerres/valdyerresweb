@@ -13,7 +13,7 @@ from django.utils.timezone import utc
 import datetime
 import os
 from django.forms import FileField
-
+from filebrowser.base import FileObject
 
 class PrixInline(admin.TabularInline):
     model = Prix
@@ -74,7 +74,7 @@ class EvenementAdmin(admin.ModelAdmin):
             imageextension = imageextension.lower()
             if imageextension == ".pdf":
                 abspath_image = pdftojpg(os.path.join(settings.MEDIA_ROOT, obj.image.path), subpath="")
-                obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
+                obj.image = FileObject(os.path.relpath(abspath_image, settings.MEDIA_ROOT))
         if obj.id != None:
             evenementInfo = Evenement.objects.select_related().get(slug=obj.slug)
 
@@ -286,7 +286,7 @@ class ManageBibEvenement(admin.ModelAdmin):
             imageextension = imageextension.lower()
             if imageextension == ".pdf":
                 abspath_image = pdftojpg(os.path.join(settings.MEDIA_ROOT, obj.image.path), subpath="")
-                obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
+                obj.image = FileObject(os.path.relpath(abspath_image, settings.MEDIA_ROOT))
 
         if obj.id != None:
             evenementinfo = Evenement.objects.select_related().get(slug=obj.slug)
@@ -397,7 +397,7 @@ class ManageCrdEvenement(admin.ModelAdmin):
             imageextension = imageextension.lower()
             if imageextension == ".pdf":
                 abspath_image = pdftojpg(os.path.join(settings.MEDIA_ROOT, obj.image.path), subpath="")
-                obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
+                obj.image = FileObject(os.path.relpath(abspath_image, settings.MEDIA_ROOT))
 
         if obj.id != None:
             evenementinfo = Evenement.objects.select_related().get(slug=obj.slug)
@@ -499,7 +499,7 @@ class ManageDevEcoEvenement(admin.ModelAdmin):
             imageextension = imageextension.lower()
             if imageextension == ".pdf":
                 abspath_image = pdftojpg(os.path.join(settings.MEDIA_ROOT, obj.image.path), subpath="")
-                obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
+                obj.image = FileObject(os.path.relpath(abspath_image, settings.MEDIA_ROOT))
 
         if obj.id != None:
             evenementinfo = Evenement.objects.select_related().get(slug=obj.slug)
@@ -601,7 +601,7 @@ class ManageMdeEvenement(admin.ModelAdmin):
             imageextension = imageextension.lower()
             if imageextension == ".pdf":
                 abspath_image = pdftojpg(os.path.join(settings.MEDIA_ROOT, obj.image.path), subpath="")
-                obj.image = os.path.relpath(abspath_image, settings.MEDIA_ROOT)
+                obj.image = FileObject(os.path.relpath(abspath_image, settings.MEDIA_ROOT))
 
         if obj.id != None:
             evenementinfo = Evenement.objects.select_related().get(slug=obj.slug)
