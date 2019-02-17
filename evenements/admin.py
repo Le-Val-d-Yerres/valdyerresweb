@@ -64,11 +64,15 @@ class EvenementAdmin(admin.ModelAdmin):
         monslug = defaultfilters.slugify(obj.nom)
 
         if obj.slug == "":
-            listevenement = Evenement.objects.filter(slug__startswith=monslug)
+            listevenement = Evenement.objects.filter(slug__startswith=monslug).order_by('-slug')
             listsize = len(listevenement)
             if listsize > 0:
-                monslug = monslug + '-' + str(listsize + 1)
+                lastslug = listevenement[0].slug
+                lastslugtab = lastslug.split('-')
+                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
+
         if obj.image != "":
             pouet, imageextension = os.path.splitext(obj.image.path)
             imageextension = imageextension.lower()
@@ -276,11 +280,16 @@ class ManageBibEvenement(admin.ModelAdmin):
         obj.cadre_evenement = saisonculturelle
 
         if obj.slug == "":
-            listevenement = Evenement.objects.filter(slug__startswith=monslug)
+            listevenement = Evenement.objects.filter(slug__startswith=monslug).order_by('-slug')
             listsize = len(listevenement)
             if listsize > 0:
-                monslug = monslug + '-' + str(listsize + 1)
+                lastslug = listevenement[0].slug
+                lastslugtab = lastslug.split('-')
+                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
+
+
         if obj.image != "":
             pouet, imageextension = os.path.splitext(obj.image.path)
             imageextension = imageextension.lower()
@@ -386,12 +395,18 @@ class ManageCrdEvenement(admin.ModelAdmin):
 
         obj.cadre_evenement = saisonculturelle
 
+
         if obj.slug == "":
-            listevenement = Evenement.objects.filter(slug__startswith=monslug)
+            listevenement = Evenement.objects.filter(slug__startswith=monslug).order_by('-slug')
             listsize = len(listevenement)
             if listsize > 0:
-                monslug = monslug + '-' + str(listsize + 1)
+                lastslug = listevenement[0].slug
+                lastslugtab = lastslug.split('-')
+                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
+
+
         if obj.image != "":
             pouet, imageextension = os.path.splitext(obj.image.path)
             imageextension = imageextension.lower()
@@ -489,11 +504,15 @@ class ManageDevEcoEvenement(admin.ModelAdmin):
         obj.cadre_evenement = saisonculturelle
 
         if obj.slug == "":
-            listevenement = Evenement.objects.filter(slug__startswith=monslug)
+            listevenement = Evenement.objects.filter(slug__startswith=monslug).order_by('-slug')
             listsize = len(listevenement)
             if listsize > 0:
-                monslug = monslug + '-' + str(listsize + 1)
+                lastslug = listevenement[0].slug
+                lastslugtab = lastslug.split('-')
+                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
+
         if obj.image != "":
             pouet, imageextension = os.path.splitext(obj.image.path)
             imageextension = imageextension.lower()
@@ -591,11 +610,15 @@ class ManageMdeEvenement(admin.ModelAdmin):
         obj.cadre_evenement = saisonculturelle
 
         if obj.slug == "":
-            listevenement = Evenement.objects.filter(slug__startswith=monslug)
+            listevenement = Evenement.objects.filter(slug__startswith=monslug).order_by('-slug')
             listsize = len(listevenement)
             if listsize > 0:
-                monslug = monslug + '-' + str(listsize + 1)
+                lastslug = listevenement[0].slug
+                lastslugtab = lastslug.split('-')
+                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
+
         if obj.image != "":
             pouet, imageextension = os.path.splitext(obj.image.path)
             imageextension = imageextension.lower()
