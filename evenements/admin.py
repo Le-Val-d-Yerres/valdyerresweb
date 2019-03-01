@@ -285,7 +285,10 @@ class ManageBibEvenement(admin.ModelAdmin):
             if listsize > 0:
                 lastslug = listevenement[0].slug
                 lastslugtab = lastslug.split('-')
-                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                if str(lastslugtab[len(lastslugtab) - 1]).isdigit():
+                    lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                else:
+                    lastslugindex = 0
                 monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
 
@@ -402,7 +405,10 @@ class ManageCrdEvenement(admin.ModelAdmin):
             if listsize > 0:
                 lastslug = listevenement[0].slug
                 lastslugtab = lastslug.split('-')
-                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                if str(lastslugtab[len(lastslugtab) - 1]).isdigit():
+                    lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                else:
+                    lastslugindex = 0
                 monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
 
@@ -509,7 +515,10 @@ class ManageDevEcoEvenement(admin.ModelAdmin):
             if listsize > 0:
                 lastslug = listevenement[0].slug
                 lastslugtab = lastslug.split('-')
-                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                if str(lastslugtab[len(lastslugtab) - 1]).isdigit():
+                    lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                else:
+                    lastslugindex = 0
                 monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
 
@@ -615,7 +624,10 @@ class ManageMdeEvenement(admin.ModelAdmin):
             if listsize > 0:
                 lastslug = listevenement[0].slug
                 lastslugtab = lastslug.split('-')
-                lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                if str(lastslugtab[len(lastslugtab) - 1]).isdigit():
+                    lastslugindex = int(lastslugtab[len(lastslugtab) - 1])
+                else:
+                    lastslugindex = 0
                 monslug = monslug + '-' + str(lastslugindex + 1)
             obj.slug = monslug
 
