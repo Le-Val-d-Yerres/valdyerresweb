@@ -26,7 +26,7 @@ class EquipementFonction(models.Model):
     pluriel = models.CharField(max_length=255, verbose_name="Nom de la fonction au pluriel")
     logo = FileBrowseField("Logo", max_length=200, directory="picto/equipements", extensions=[".png"], blank=True, default="")
     picto = FileBrowseField("Pictogramme pour geolocalisation", max_length=200, directory="picto/equipements",
-                            extensions=[".png"])
+                            extensions=[".png"],blank=True)
     slug = models.SlugField(max_length=255, unique=True)
     service = models.ForeignKey(Service, blank=True, null=True, verbose_name="Service Gestionnaire")
     schema_url = models.URLField(verbose_name="Schema URL", default="http://schema.org/Place")
@@ -52,7 +52,7 @@ class Equipement(Lieu):
     meta_description = models.CharField(max_length=200)
     alerte = models.ForeignKey(Alerte, blank=True, null=True, default=None)
     image = FileBrowseField("Image (facultatif)", max_length=200, directory="equipements",
-                            extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True, null=True)
+                            extensions=[".jpg", ".png", ".gif", ".jpeg"], blank=True)
 
     def __str__(self):
         return self.ville.nom + " - " + self.nom
@@ -72,7 +72,7 @@ class Facilite(models.Model):
         "Degrée d'importance (de 0 + important à 100 - important ). Entre 0 et 20 c'est géolocalisable au delà de 20 non.")
     picto = FileBrowseField("Pictogramme", max_length=200, directory="picto", extensions=[".png"])
     picto_geoloc = FileBrowseField("Pictogramme pour la géolocalisation", max_length=200, directory="picto",
-                                   extensions=[".png"], blank=True, null=True)
+                                   extensions=[".png"], blank=True)
     slug = models.SlugField(max_length=255, unique=True)
 
     def __str__(self):
