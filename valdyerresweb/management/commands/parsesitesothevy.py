@@ -12,6 +12,7 @@ from datetime import datetime, date, time, timedelta
 from django.template import defaultfilters
 import os
 from evenements.models import Evenement, Organisateur, TypeEvenement
+from evenements.admin import get_unique_slug
 from pytz import timezone
 from valdyerresweb import settings
 from localisations.models import Lieu
@@ -55,6 +56,7 @@ class evenement(object):
 
 def parse_page(url):
     print("----------------")
+    print(url)
     evt = evenement()
     r = requests.get(url)
     data_html = r.text
@@ -62,7 +64,7 @@ def parse_page(url):
 
     nom = soup.find("h1").string
     nom = nom.strip()
-    if nom == "2018/2019 : Abonnez-vous !":
+    if nom == "2019/2020 : Abonnez-vous !":
         return
     print(nom)
     dateheureville = soup.find("div", {"class": "about-project bottom-2"}).next
@@ -88,9 +90,9 @@ def parse_page(url):
             nummois = int(i)+1
             break
 
-    numannee = 2019
+    numannee = 2020
     if nummois > 6:
-        numannee = 2018
+        numannee = 2019
 
     dateevt = date(numannee, nummois, numjour)
 
@@ -226,13 +228,8 @@ def corresp(eventlist):
 
         evenement.slug = defaultfilters.slugify(event.nom)
 
+        evenement.slug = get_unique_slug(evenement.slug)
 
-
-        listevenement = Evenement.objects.filter(slug__startswith=evenement.slug)
-        listsize = len(listevenement)
-
-        if listsize > 0:
-            evenement.slug = evenement.slug+'-'+str(listsize+1)
         img_traitement(event.image, evenement.slug)
 
         type = TypeEvenement.objects.get(slug=defaultfilters.slugify(event.type))
@@ -242,12 +239,13 @@ def corresp(eventlist):
 
         evenement.debut = myTimezone.localize(event.debut)
         evenement.fin = myTimezone.localize(event.fin)
-        evenement.cadre_evenement_id = 37
+        evenement.cadre_evenement_id = 48
         evenement.lieu_id = id_salles_spectacles[event.lieu]
         meta_description = evenement.nom+" "+ evenement.description
         meta_description = meta_description.replace("<br>",'')
         meta_description = meta_description[0:198]
         meta_description = meta_description
+
 
 
 
@@ -260,6 +258,7 @@ def corresp(eventlist):
         evenement.image = tmpobjimage
         evenement.type = type
         evenement.publish = True
+        print("Inserting : " + evenement.nom)
         evenement.save()
         evenement.organisateur.add(orga)
         evenement.save()
