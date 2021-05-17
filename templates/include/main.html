@@ -51,7 +51,7 @@
   ga('send', 'pageview');
 
 </script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+{% comment %}<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
 <script>
 window.addEventListener("load", function(){
@@ -73,7 +73,9 @@ window.cookieconsent.initialise({
     "href": "/page/cookies.html"
   }
 })});
-</script>
+</script>{% endcomment %}
+
+<script src="https://consent.cookiefirst.com/banner.js" data-cookiefirst-key="9a636cdc-9e3e-407e-99a5-642130384c30"></script>
 </body>
 <!-- {% now "jS F Y H:i:s" %} -->
 </html>
