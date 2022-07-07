@@ -13,7 +13,7 @@ lxml==3.0.1
 python-memcached==1.48
 pytz==2012d
 qrcode==2.4.1
-requests==1.1.0
+requests==2.20.0
 sqlparse==0.1.14
 wsgiref==0.1.2
 xlrd==0.8.0
